@@ -10,22 +10,19 @@
             </v-toolbar>
             <v-list dense>
                 <v-list-item v-for="layer in paperScope.project.layers" :key="layer.id">
-                    <v-list-tile :v-model="layer.selected">
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{ layer.name }}</v-list-tile-title>
-                        </v-list-tile-content>
-                        <v-list-tile-action>
-                            <v-btn icon @click.native="selectLayer(layer)">
-                                <v-icon class="grey--text text--lighten-1">info</v-icon>
-                            </v-btn>
-                        </v-list-tile-action>
-                        <v-list-tile-action>
-                            <v-btn @click.native="exportJSON(layer)" icon ripple>
-                                <v-icon class="grey--text">save</v-icon>
-                            </v-btn>
-                        </v-list-tile-action>
-                    </v-list-tile>
-                    <v-divider></v-divider>
+                    <span @click="selectLayer(layer)" @click.shift="addToSelection(layer)">
+                        <v-list-tile>
+                            <v-list-tile-content>
+                                <v-list-tile-title>{{ layer.name }}</v-list-tile-title>
+                            </v-list-tile-content>
+                            <v-list-tile-action>
+                                <v-btn @click.native="exportJSON(layer)" icon ripple>
+                                    <v-icon class="grey--text">save</v-icon>
+                                </v-btn>
+                            </v-list-tile-action>
+                        </v-list-tile>
+                        <v-divider></v-divider>
+                    </span>
                 </v-list-item>
             </v-list>
         </v-card>
@@ -38,6 +35,10 @@ import paper from 'paper'
 export default {
     props: ['paperScope'],
     methods: {
+
+        sayHello() {
+            console.log("Hi there fuckface")
+        },
 
         // Add a new layer with a default name
         newLayer () {
@@ -57,6 +58,14 @@ export default {
             // Select the given layer
             layer.selected = true;
             layer.activate();
+        },
+
+        // This doesn't work at the moment, well it might but currently
+        // using the activaLayer selection to exportJSON and highlight the
+        // selected items as full layers so it's not effective as such
+        addToSelection (layer) {
+            console.log("adding to selection")
+            layer.selected = true;
         },
 
         // Save the selected layers as a JSON object to the console

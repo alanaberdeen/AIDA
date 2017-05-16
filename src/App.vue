@@ -52,17 +52,7 @@ export default {
             name: 'Layer 1',
         }))
 
-        // Plot a circle at click place tool
-        function plotCirlce(event) {
-            var centerX = Math.round(event.point.x)
-            var centerY = Math.round(event.point.y)
-            var myCircle = new paper.Path.Circle(new paper.Point(centerX, centerY), 10)
-            myCircle.fillColor = 'black'
-        }
-
-        var tool = new paper.Tool();
-        tool.onMouseDown = plotCirlce
-        tool.activate();
+        
 
     },
 
