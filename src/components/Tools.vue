@@ -58,7 +58,7 @@ export default {
             rect.remove();
 
             // Rebuild in new config
-            rect = new paper.Path.Rectangle(e.downPoint.x,e.downPoint.y,width,height)
+            rect = new paper.Path.Rectangle(e.downPoint.x, e.downPoint.y, width,height)
             rect.strokeColor = 'black';
             rect.strokeWidth = 1;
         }

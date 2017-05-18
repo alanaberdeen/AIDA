@@ -13,7 +13,22 @@
                     <span @click="selectLayer(layer)" @click.shift="addToSelection(layer)">
                         <v-list-tile>
                             <v-list-tile-content>
-                                <v-list-tile-title>{{ layer.name }}</v-list-tile-title>
+                                <v-list-tile-title
+                                    @dblclick="editLayerName(layer)"
+                                    :class="{editing: layer.id == editedLayer}"
+                                    >
+                                    {{ layer.name }}
+                                </v-list-tile-title>
+                                <v-text-field
+                                    class="editContent"
+                                    :class="{editing: layer.id != editedLayer}"
+                                    name="input-1-3"
+                                    single-line
+                                    v-model="layer.name"
+                                    @blur="doneEdit(layer)"
+                                    @keyup.enter.native="doneEdit(layer)"
+                                    @keyup.esc.native="cancelEdit(layer)">
+                                ></v-text-field>
                             </v-list-tile-content>
                             <v-list-tile-action>
                                 <v-btn @click.native="exportJSON(layer)" icon ripple>
@@ -34,10 +49,45 @@ import paper from 'paper'
 
 export default {
     props: ['paperScope'],
+    data(){
+        return {
+            editedLayer: null,
+            beforeEditCache: null,
+        }
+    },
     methods: {
 
         sayHello() {
-            console.log("Hi there fuckface")
+            console.log("Hi there")
+        },
+
+        // Begin editing
+        editLayerName (layer) {
+            this.beforeEditCache = layer.name
+            this.editedLayer = layer.id
+        },
+
+        // Housekeeping once finsihed editing layer
+        doneEdit (layer) {
+            if (!this.editedLayer) {
+                return
+            }
+
+            // Reset currently editing data
+            this.editedLayer = null
+
+            // If no layer name then set to untitled else trim
+            if (layer.name == undefined) {
+                layer.name = "Untitled Layer"
+            } else {
+                layer.name = layer.name.trim()
+            }
+        },
+
+        // Housekeeping on canceling edit
+        cancelEdit (layer) {
+            this.editedLayer = null
+            layer.name = this.beforeEditCache
         },
 
         // Add a new layer with a default name
@@ -64,7 +114,6 @@ export default {
         // using the activaLayer selection to exportJSON and highlight the
         // selected items as full layers so it's not effective as such
         addToSelection (layer) {
-            console.log("adding to selection")
             layer.selected = true;
         },
 
@@ -82,4 +131,9 @@ export default {
     margin-top: 30px;
     margin-left: 10px;
 }
+
+.editing {
+    display: none;
+}
+
 </style>
