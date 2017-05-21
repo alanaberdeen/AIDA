@@ -14,6 +14,7 @@
             <v-container fluid>
                 <v-row>
                     <v-col xs3>
+                            <app-image-loader :paperScope="paperScope"></app-image-loader>
                             <app-tools :paperScope="paperScope"></app-tools>
                             <app-layers :paperScope="paperScope"></app-layers>
                     </v-col>
@@ -34,6 +35,7 @@ import Tools from './components/Tools.vue'
 import Layers from './components/Layers.vue'
 import Test from './components/Test.vue'
 import Canvas from './components/Canvas.vue'
+import ImageLoader from './components/ImageLoader.vue'
 
 export default {
     data() {
@@ -52,7 +54,7 @@ export default {
             name: 'Layer 1',
         }))
 
-        
+
 
     },
 
@@ -60,7 +62,8 @@ export default {
         'app-tools': Tools,
         'app-layers': Layers,
         'app-test': Test,
-        'app-canvas': Canvas
+        'app-canvas': Canvas,
+        'app-image-loader': ImageLoader
     }
 }
 </script>
