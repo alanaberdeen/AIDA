@@ -1,6 +1,6 @@
 <template lang="html">
     <v-btn @click.native="toolPencil.activate()" primary dark>
-        <i class="fa fa-pencil" aria-hidden="true"></i>
+        <v-icon class="white--text text--lighten-1">timeline</v-icon>
     </v-btn>
 </template>
 
