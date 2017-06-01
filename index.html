@@ -9,17 +9,17 @@
 
     <!-- Font Awesome from CDN -->
     <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
+
+    <!-- atm Vuetify isn't loaded here so can't use the styles and grid as normal -->
     <div class='canvas-container'>
-        <v-container fluid>
-            <v-row>
-                <v-col xs6 offset-xs3>
-                        <canvas id="view" class="elevation-3"></canvas>
-                </v-col>
-            </v-row>
-        </v-container>
+        <div id='osd-canvas'>
+            <div id="openseadragon2" class="elevation-3"></div>
+            <canvas id="paper-canvas"></canvas>
+        </div>
     </div>
 
     <div id="app-container">

@@ -1,5 +1,5 @@
 <template lang="html">
-    <v-btn @click.native="toolPencil.activate()" primary dark>
+    <v-btn @click.native="initialiseTool" primary dark>
         <v-icon class="white--text text--lighten-1">timeline</v-icon>
     </v-btn>
 </template>
@@ -15,10 +15,20 @@ export default {
         }
     },
 
+    methods: {
+        initialiseTool() {
+            if (this.paperScope.view.element.classList.contains('pointers-no')){
+                this.paperScope.view.element.classList.remove('pointers-no')
+            }
+            this.toolPencil.activate();
+        }
+    },
+
     created() {
         // Create a new path once, when the script is executed:
         var myPath = new paper.Path();
-        myPath.strokeColor = 'black';
+        myPath.strokeColor = 'red';
+        myPath.strokeWidth = 10;
 
         function addPoint(event) {
             // If option key is held down then close the path

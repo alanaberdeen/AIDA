@@ -13,6 +13,12 @@
                     <v-divider></v-divider>
                     <app-pencil :paperScope="paperScope"></app-pencil>
                     <v-divider></v-divider>
+                    <app-move :paperScope="paperScope"></app-move>
+                    <v-divider></v-divider>
+                    <app-pan :paperScope="paperScope"
+                             :osdViewer="osdViewer">
+                    </app-pan>
+                    <v-divider></v-divider>
                 </v-list-item>
             </v-list>
         </v-card>
@@ -26,9 +32,11 @@ import paper from 'paper'
 import Circle from './Tools/Circle.vue'
 import Rectangle from './Tools/Rectangle.vue'
 import Pencil from './Tools/Pencil.vue'
+import Move from './Tools/Move.vue'
+import Pan from './Tools/Pan.vue'
 
 export default {
-    props: ['paperScope'],
+    props: ['paperScope', 'osdViewer'],
     data() {
         return {
             toolCircle: null,
@@ -39,7 +47,9 @@ export default {
     components: {
         'app-circle': Circle,
         'app-rectangle': Rectangle,
-        'app-pencil': Pencil
+        'app-pencil': Pencil,
+        'app-move': Move,
+        'app-pan': Pan
     },
 
     methods: {

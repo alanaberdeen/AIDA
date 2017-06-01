@@ -1,5 +1,5 @@
 <template lang="html">
-    <v-btn @click.native="toolRect.activate()" primary dark>
+    <v-btn @click.native="initialiseTool" primary dark>
         <v-icon class="white--text text--lighten-1">crop_landscape</v-icon>
     </v-btn>
 </template>
@@ -12,6 +12,15 @@ export default {
     data() {
         return {
             toolRect: null
+        }
+    },
+
+    methods: {
+        initialiseTool() {
+            if (this.paperScope.view.element.classList.contains('pointers-no')){
+                this.paperScope.view.element.classList.remove('pointers-no')
+            }
+            this.toolRect.activate();
         }
     },
 
@@ -31,7 +40,7 @@ export default {
 
             // Rebuild as defined by new config
             rect = new paper.Path.Rectangle(e.downPoint.x, e.downPoint.y, width,height)
-            rect.strokeColor = 'black';
+            rect.strokeColor = 'red';
             rect.strokeWidth = 1;
         }
 

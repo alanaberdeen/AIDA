@@ -8,6 +8,8 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "openseadragon": "^2.2.1",
+    "openseadragon-paperjs-overlay": "^0.1.2",
     "paper": "^0.11.3",
     "vue": "^2.2.6",
     "vue-router": "^2.2.0",

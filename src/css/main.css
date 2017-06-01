@@ -1,23 +1,29 @@
 /** CSS Styles */
 
-#view {
+#paper-canvas {
+    position: absolute;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
     width: 500px;
     height: 500px;
-    background-color: pink;
-    padding: 0;
-    margin: auto;
-    display: block;
-    margin-top: 100px;
-    z-index: 10;
+    z-index: 20;
 }
 
-.view {
+#osd-canvas {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: 500px;
     height: 500px;
-    padding: 0;
-    margin: auto;
-    display: block;
-    margin-top: 37px;
+}
+
+#openseadragon2 {
+    position: absolute;
+    width: 500px;
+    height: 500px;
     z-index: 10;
 }
 
@@ -33,11 +39,14 @@
 }
 #canvas-container {
   position: absolute;
-  width: 100%;
   margin: auto;
   z-index: 10;
 }
 
 .pointers-please {
     pointer-events: auto;
+}
+
+.pointers-no {
+    pointer-events: none;
 }
