@@ -55,8 +55,8 @@ export default {
         // Save it to the VueModel
         this.osdViewer = OpenSeadragon({
             id: "openseadragon2",
-            prefixUrl: "/docs/images/openseadragon/images/",
-            tileSources: "/docs/images/duomo/duomo.dzi",
+            prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+            tileSources: "http://openseadragon.github.io/example-images/duomo/duomo.dzi",
         });
 
         // Create the PaperJS instance.
