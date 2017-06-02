@@ -56,7 +56,7 @@ export default {
         this.osdViewer = OpenSeadragon({
             id: "openseadragon2",
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-            tileSources: "http://openseadragon.github.io/example-images/duomo/duomo.dzi",
+            tileSources: "https://openseadragon.github.io/example-images/duomo/duomo.dzi",
         });
 
         // Create the PaperJS instance.
