@@ -29,7 +29,7 @@ export default {
         function plotCirlce(event) {
             var centerX = Math.round(event.point.x)
             var centerY = Math.round(event.point.y)
-            var myCircle = new paper.Path.Circle(new paper.Point(centerX, centerY), 500)
+            var myCircle = new paper.Path.Circle(new paper.Point(centerX, centerY), 3000)
             myCircle.fillColor = 'red'
         }
 

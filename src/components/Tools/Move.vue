@@ -29,62 +29,72 @@ export default {
         var item = null;
         var itemBounds = null;
         var hitResult = null;
+
+        //TODO: set the click tolerance to be determined by the current zoom level
         var hitOptions = {
             segments: true,
             stroke: true,
             bounds: true,
             handles: true,
             fill: true,
-            bounds: true,
-            tolerance: 5
+            tolerance: 100
         }
 
+        // On mouseClick fucntionality
         function clickMove(e) {
 
             // Deselect all current selections
             vm.paperScope.project.deselectAll()
 
+            // Save hitResult
             hitResult = paper.project.hitTest(e.point, hitOptions)
 
-            // If user has clicked on a path
-            if (hitResult.type == 'segments'    ||
-                hitResult.type == 'fill'        ||
-                hitResult.type == 'stroke') {
+            // Check if use selected something
+            if(hitResult) {
 
-                itemBounds = new paper.Path.Rectangle(hitResult.item.bounds)
+                // Check if item
+                if (hitResult.type == 'segments'    ||
+                    hitResult.type == 'fill'        ||
+                    hitResult.type == 'stroke') {
 
-                // Save the item for use in further interaction events
-                // For example, this is useful if the user drags the mouse
-                // off the item before the move anmiation can keep up - the
-                // selected item is not 'lost'
-                item = hitResult.item
-                itemBounds.fullySelected = true
-            } else if (hitResult.type == 'bounds') {
-                itemBounds.fullySelected = true
-            } else {
-                item = null
+                    // Create rectangle and select it to display the item bounds
+                    // Remove previous rectangle as housekeeping.
+                    if(itemBounds){
+                        itemBounds.remove()
+                    }
+                    itemBounds = new paper.Path.Rectangle(hitResult.item.handleBounds);
+                    itemBounds.fullySelected = true
+                    console.log(itemBounds);
+
+                    // Save the item for use in further interaction events
+                    // For example, this is useful if the user drags the mouse
+                    // off the item before the move anmiation can keep up - the
+                    // selected item is not 'lost'
+                    item = hitResult.item
+
+                // Else check if item bounds
+                } else if (hitResult.type == 'bounds') {
+                    itemBounds.fullySelected = true
+
+                // Else nothing was selected
+                } else {
+                    item = null
+                }
             }
-
         }
 
-        // Install a drag event handler that moves the path along.
+        // On mouseDrag functionality
         function dragMove (e) {
 
-            // If clicked on the path itself then drag to move
-            // TODO: could make this be clicking INSIDE the bounds but NOT on
-            // might be a better way to do it as difficult to click on skinny
-            // lines.
-            // TODO: This is jumping so the user always holds the centre of the
-            // circle, but they should be able to move it from an arbitrary point.
-            if (hitResult.type == 'segments'    ||
-                hitResult.type == 'fill'        ||
-                hitResult.type == 'stroke') {
-
-                item.position = e.point;
-                itemBounds.position = e.point;
+            // Check if user has selected a point within the bounds rectangle.
+            // Therefore consider their intention is to drag the item.
+            if (itemBounds.contains(e.point)) {
+                item.position = item.position.add(e.delta);
+                itemBounds.position = itemBounds.position.add(e.delta);
+                itemBounds.fullySelected = true
 
             // If clicked on the boundary then need to scale in some way.
-            } else if (hitResult.type == 'bounds') {
+            } else if (hitResult && hitResult.type == 'bounds') {
 
                 // Itembounds rectangle for scale factor rectangle
                 var scaleRect = itemBounds.bounds;
@@ -103,7 +113,7 @@ export default {
                     item.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomRight)
                     itemBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomRight)
 
-                } else if (hitResult.name == 'top-right') {
+                } else if (hitResult && hitResult.name == 'top-right') {
 
                     // Calc scale factors
                     var newWidth = e.point.x - scaleRect.topLeft.x;
@@ -116,7 +126,7 @@ export default {
                     item.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomLeft)
                     itemBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomLeft)
 
-                } else if (hitResult.name == 'bottom-right') {
+                } else if (hitResult && hitResult.name == 'bottom-right') {
 
                     // Calc scale factors
                     var newWidth = e.point.x - scaleRect.bottomLeft.x;
@@ -129,7 +139,7 @@ export default {
                     item.scale(horizScaleFactor, vertScaleFactor, scaleRect.topLeft)
                     itemBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.topLeft)
 
-                } else if (hitResult.name == 'bottom-left') {
+                } else if (hitResult && hitResult.name == 'bottom-left') {
 
                     // Calc scale factors
                     var newWidth = e.point.x - scaleRect.bottomRight.x;
@@ -141,12 +151,11 @@ export default {
                     // Scale items
                     item.scale(horizScaleFactor, vertScaleFactor, scaleRect.topRight)
                     itemBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.topRight)
-
                 }
             }
         }
 
-        // Housekeeping on MouseUp
+        // on MouseUp housekeeping functionality.
         function releaseMove (e) {
             hitResult = null;
         }
