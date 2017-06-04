@@ -25,10 +25,12 @@ export default {
     },
 
     created() {
+
         var vm = this;
         var item = null;
         var itemBounds = null;
         var hitResult = null;
+        var status = null;
 
         //TODO: set the click tolerance to be determined by the current zoom level
         var hitOptions = {
@@ -40,8 +42,8 @@ export default {
             tolerance: 100
         }
 
-        // On mouseClick fucntionality
-        function clickMove(e) {
+        // On mouseDown fucntionality
+        function mouseDown(e) {
 
             // Deselect all current selections
             vm.paperScope.project.deselectAll()
@@ -64,37 +66,61 @@ export default {
                     }
                     itemBounds = new paper.Path.Rectangle(hitResult.item.handleBounds);
                     itemBounds.fullySelected = true
-                    console.log(itemBounds);
 
-                    // Save the item for use in further interaction events
-                    // For example, this is useful if the user drags the mouse
-                    // off the item before the move anmiation can keep up - the
-                    // selected item is not 'lost'
                     item = hitResult.item
+                    status = 'moving'
 
                 // Else check if item bounds
+                // User can only click bounds after clicking item therefore
+                // can leave var item as is.
                 } else if (hitResult.type == 'bounds') {
                     itemBounds.fullySelected = true
-
-                // Else nothing was selected
-                } else {
-                    item = null
+                    status = 'scaling'
                 }
+
+            // Check if user has selected a point within the bounds rectangle.
+            // Then assume their intention is to drag the item.
+            } else if(itemBounds && itemBounds.contains(e.point)){
+                status = 'moving'
+
+            // Else nothing was selected
+            } else {
+                item = null;
+                status = null;
             }
         }
 
-        // On mouseDrag functionality
-        function dragMove (e) {
+        // On mouseMove functionality
+        function mouseMove(e) {
 
-            // Check if user has selected a point within the bounds rectangle.
-            // Therefore consider their intention is to drag the item.
-            if (itemBounds.contains(e.point)) {
+            hitResult = paper.project.hitTest(e.point, hitOptions)
+
+            // Check if hovering over item
+            if (hitResult &&
+                (hitResult.type == 'segments'    ||
+                hitResult.type == 'fill'        ||
+                hitResult.type == 'stroke')) {
+
+                    // Create rectangle and select it to display the item bounds
+                    // Remove previous rectangle as housekeeping.
+                    if(itemBounds){
+                        itemBounds.remove()
+                    }
+                    itemBounds = new paper.Path.Rectangle(hitResult.item.handleBounds);
+                    itemBounds.fullySelected = true
+                }
+        }
+
+        // On mouseDrag functionality
+        function mouseDrag (e) {
+
+            if (status == 'moving') {
                 item.position = item.position.add(e.delta);
                 itemBounds.position = itemBounds.position.add(e.delta);
                 itemBounds.fullySelected = true
 
             // If clicked on the boundary then need to scale in some way.
-            } else if (hitResult && hitResult.type == 'bounds') {
+            } else if (status == 'scaling') {
 
                 // Itembounds rectangle for scale factor rectangle
                 var scaleRect = itemBounds.bounds;
@@ -156,14 +182,15 @@ export default {
         }
 
         // on MouseUp housekeeping functionality.
-        function releaseMove (e) {
+        function mouseUp (e) {
             hitResult = null;
         }
 
         this.toolMove = new paper.Tool()
-        this.toolMove.onMouseDown = clickMove
-        this.toolMove.onMouseDrag = dragMove
-        this.toolMove.onMouseUp = releaseMove
+        this.toolMove.onMouseDown = mouseDown
+        this.toolMove.onMouseDrag = mouseDrag
+        this.toolMove.onMouseUp = mouseUp
+        this.toolMove.onMouseMove = mouseMove
     }
 }
 

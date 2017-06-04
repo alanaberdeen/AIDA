@@ -28,7 +28,7 @@ export default {
         // Create a new path once, when the script is executed:
         var myPath = new paper.Path();
         myPath.strokeColor = 'red';
-        myPath.strokeWidth = 10;
+        myPath.strokeWidth = 100;
 
         function addPoint(event) {
             // If option key is held down then close the path
