@@ -8,10 +8,11 @@
 import paper from 'paper'
 
 export default {
-    props: ['paperScope'],
+    props: ['paperScope', 'osdViewer'],
     data() {
         return {
-            toolMove: null
+            toolMove: null,
+            hitOptions: null
         }
     },
 
@@ -21,10 +22,28 @@ export default {
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
             this.toolMove.activate();
+
+            // Set the hitTolerance for user clicks to be depenent on current
+            // viewport parameters
+            var viewportZoom = this.osdViewer.viewport.getZoom(true);
+            var hitTolerance = 100/viewportZoom;
+            this.hitOptions = {
+                segments: true,
+                stroke: true,
+                bounds: true,
+                handles: true,
+                fill: true,
+                tolerance: hitTolerance
+            }
+
         }
     },
 
     created() {
+
+        //TODO: seems to be a bug when moving items that have overlapping
+        // itembounds. E.g being able to move and item by selecting another
+        // item's bounding box in some cases. Investigate this.
 
         var vm = this;
         var item = null;
@@ -32,30 +51,20 @@ export default {
         var hitResult = null;
         var status = null;
 
-        //TODO: set the click tolerance to be determined by the current zoom level
-        var hitOptions = {
-            segments: true,
-            stroke: true,
-            bounds: true,
-            handles: true,
-            fill: true,
-            tolerance: 100
-        }
-
-        // On mouseDown fucntionality
+        // On mouseDown functionality
         function mouseDown(e) {
 
             // Deselect all current selections
             vm.paperScope.project.deselectAll()
 
             // Save hitResult
-            hitResult = paper.project.hitTest(e.point, hitOptions)
+            hitResult = paper.project.hitTest(e.point, vm.hitOptions)
 
             // Check if use selected something
             if(hitResult) {
 
                 // Check if item
-                if (hitResult.type == 'segments'    ||
+                if (hitResult.type == 'segment'     ||
                     hitResult.type == 'fill'        ||
                     hitResult.type == 'stroke') {
 
@@ -93,7 +102,7 @@ export default {
         // On mouseMove functionality
         function mouseMove(e) {
 
-            hitResult = paper.project.hitTest(e.point, hitOptions)
+            hitResult = paper.project.hitTest(e.point, vm.hitOptions)
 
             // Check if hovering over item
             if (hitResult &&

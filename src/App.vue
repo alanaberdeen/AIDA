@@ -28,12 +28,18 @@
 </template>
 
 <script>
+//TODO: check if the program still runs with 1000s of objects on the canvas
+// does it slow to a horrible crawl - hope not!
+
+//TODO: add hint text to the bottom when users select tools. Similar to Affinity. 
+
+
 // Import JS libraries
 import paper from 'paper'
 import openseadragon from 'openseadragon'
 
 // Import child components
-import Tools from './components/Tools.vue'
+import Tools from './components/Tools/Tools.vue'
 import Layers from './components/Layers.vue'
 import Test from './components/Test.vue'
 import ImageLoader from './components/ImageLoader.vue'

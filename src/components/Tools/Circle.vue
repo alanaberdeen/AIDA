@@ -1,6 +1,6 @@
 <template lang="html">
     <v-btn @click.native="initialiseTool" primary dark>
-        <v-icon class="white--text text--lighten-1">radio_button_unchecked</v-icon>
+        <i class="fa fa-circle" aria-hidden="true"></i>
     </v-btn>
 </template>
 
