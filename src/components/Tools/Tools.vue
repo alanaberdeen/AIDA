@@ -1,9 +1,8 @@
 <template lang="html">
-    <div class="pointers-please tools-container">
+    <div class="pointers-please tools-container elevation-2">
         <v-card class="tools-panel">
             <v-toolbar>
                 <v-toolbar-title>Tools</v-toolbar-title>
-                <v-spacer></v-spacer>
             </v-toolbar>
             <v-list>
                 <v-list-item>
@@ -31,7 +30,7 @@
 </template>
 
 <script>
-//TODO: make it so that the active tool has a 'depressed' visual on the button 
+//TODO: make it so that the active tool has a 'depressed' visual on the button
 
 
 import paper from 'paper'
@@ -61,7 +60,7 @@ export default {
 <style lang="css">
 
 .tools-container{
-    margin-top: 24px;
+    margin-top: 20px;
     margin-left: 10px;
 }
 

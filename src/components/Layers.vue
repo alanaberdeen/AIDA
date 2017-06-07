@@ -1,9 +1,8 @@
 <template lang="html">
-    <div class="pointers-please layer-panel">
+    <div class="pointers-please layer-panel elevation-2">
         <v-card>
             <v-toolbar>
                 <v-toolbar-title>Layers</v-toolbar-title>
-                <v-spacer></v-spacer>
                 <v-btn @click.native="newLayer" icon ripple>
                     <v-icon class="white--text">tab</v-icon>
                 </v-btn>
