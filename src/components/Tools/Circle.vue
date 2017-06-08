@@ -1,6 +1,6 @@
 <template lang="html">
     <v-btn @click.native="initialiseTool" primary dark>
-        <i class="fa fa-circle" aria-hidden="true"></i>
+        <i :class="dependentClasses" aria-hidden="true"></i>
     </v-btn>
 </template>
 
@@ -16,12 +16,31 @@ export default {
     },
 
     methods: {
+        stateDialog() {
+            console.log("Current dialog value is: " + this.dialog)
+        },
+
         initialiseTool() {
             if (this.paperScope.view.element.classList.contains('pointers-no')){
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
             this.toolCircle.activate();
+
+            // Save tool name as currently active
+            //this.paperScope.data.activeTool = 'circle'
         }
+    },
+
+    computed: {
+        dependentClasses: function() {
+            return {
+                'btn--light-flat-pressed': this.paperScope.data.activeTool == 'circle',
+                'fa': true,
+                'fa-circle': true,
+                'fa-icons': true
+            }
+        }
+
     },
 
     created() {

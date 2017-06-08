@@ -14,6 +14,7 @@
     margin-left: 165px;
     width: 80%;
     height: 80%;
+    z-index: 10;
 }
 
 #osd-canvas {
@@ -28,6 +29,10 @@
     filter: alpha(opacity=70);
     width: 100%;
     height: 100%;
+}
+
+.fa-icons {
+    color: white;
 }
 
 #app-container {

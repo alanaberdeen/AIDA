@@ -1,28 +1,22 @@
 <template>
-        <v-app top-toolbar z-index=5 pointer-events='none'>
+        <v-app top-toolbar pointer-events='none'>
             <header>
-                <v-toolbar>
-                    <v-toolbar-logo>Annotate</v-toolbar-logo>
-                    <v-toolbar-items>
-                        <v-toolbar-item>
-
-                        </v-toolbar-item>
-                    </v-toolbar-items>
-                </v-toolbar>
+                <app-toolbar></app-toolbar>
             </header>
 
             <v-container fluid>
-                <v-row>
-                    <v-col xs2>
+                <v-layout>
+                    <v-flex xs2>
                         <app-tools  :paperScope="paperScope"
                                     :osdViewer="osdViewer">
                         </app-tools>
                         <app-layers :paperScope="paperScope"></app-layers>
-                    </v-col>
-                    <v-col xs3 offset-xs9>
-                    </v-col>
-                </v-row>
+                    </v-flex>
+                    <v-flex xs3 offset-xs9>
+                    </v-flex>
+                </v-layout>
             </v-container>
+
         </v-app>
 </template>
 
@@ -41,7 +35,7 @@ import openseadragon from 'openseadragon'
 import Tools from './components/Tools/Tools.vue'
 import Layers from './components/Layers.vue'
 import ImageLoader from './components/ImageLoader.vue'
-import ControlToggle from './components/ControlToggle.vue'
+import Toolbar from './components/Toolbar/Toolbar.vue'
 
 export default {
     data() {
@@ -61,11 +55,17 @@ export default {
             id: "osd-canvas",
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
             tileSources: "https://openseadragon.github.io/example-images/duomo/duomo.dzi",
+            showNavigationControl: false
         });
 
         // Create the PaperJS instance.
         // Save it to the VueModel
         this.paperScope = paper.setup(document.getElementById('paper-canvas'))
+
+        // Add some custom data to the paperScope object to serve further func
+        this.paperScope.data = {
+            activeTool: null
+        };
 
         // Add a handler fucntion that will run when osd-viewport is updated.
         // This will synchronously update the paperJS viewport.
@@ -94,7 +94,7 @@ export default {
         'app-tools': Tools,
         'app-layers': Layers,
         'app-image-loader': ImageLoader,
-        'app-control-toggle': ControlToggle,
+        'app-toolbar': Toolbar
     }
 }
 </script>

@@ -2,7 +2,7 @@
     <div class="pointers-please layer-panel elevation-2">
         <v-card>
             <v-toolbar>
-                <v-toolbar-title>Layers</v-toolbar-title>
+                <v-toolbar-title class='white--text'>Layers</v-toolbar-title>
                 <v-btn @click.native="newLayer" icon ripple>
                     <v-icon class="white--text">tab</v-icon>
                 </v-btn>

@@ -1,6 +1,6 @@
 <template lang="html">
     <v-btn @click.native="initialiseTool" primary dark>
-        <i class="fa fa-location-arrow" aria-hidden="true"></i>
+        <i class="fa fa-location-arrow fa-icons" aria-hidden="true"></i>
     </v-btn>
 </template>
 

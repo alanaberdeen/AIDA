@@ -1,8 +1,8 @@
 <template lang="html">
     <div class="pointers-please tools-container elevation-2">
         <v-card class="tools-panel">
-            <v-toolbar>
-                <v-toolbar-title>Tools</v-toolbar-title>
+            <v-toolbar primary dark>
+                <v-toolbar-title class='white--text'>Tools</v-toolbar-title>
             </v-toolbar>
             <v-list>
                 <v-list-item>
