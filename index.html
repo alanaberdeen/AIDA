@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <title>Annotate - Dataset Annotation Tool</title>
     <meta charset="utf-8">
+    <title>Annotate - Dataset Annotation Tool</title>
+    <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico"/>
+
+    <!-- Get Material spec font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
-    <link rel="icon" type="image/png" href="public/favicon.ico" sizes="32x32">
 
-    <!-- Font Awesome from CDN -->
+    <!-- Get font awesome -->
     <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel="stylesheet" type="text/css">
-
 </head>
 
 <body>
 
-    <!-- atm Vuetify isn't loaded here so can't use the styles and grid as normal -->
     <div id='canvas' class='elevation-2'>
         <div id="osd-canvas"></div>
         <canvas id="paper-canvas"></canvas>
@@ -24,7 +24,6 @@
         <div id="app"></div>
     </div>
 
-    <script src="/dist/build.js"></script>
 </body>
 
 </html>
