@@ -1,24 +1,55 @@
 <template>
-    <!-- <v-dialog v-model="dialog">
-      <v-btn primary light slot="activator">Open Dialog</v-btn>
-      <v-card>
-        <v-card-row>
-          <v-card-title>Use Google's location service?</v-card-title>
-        </v-card-row>
-        <v-card-row>
-          <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-        </v-card-row>
-        <v-card-row actions>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
-          <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
-        </v-card-row>
-      </v-card>
-    </v-dialog> -->
+    <v-layout row justify-center>
+        <v-dialog v-model="dialog" scrollable>
+
+            <!-- Button toggles the activated status of dialog -->
+            <v-btn slot="activator" icon class="white--text">
+                <v-icon>settings</v-icon>
+            </v-btn>
+
+            <v-card>
+                <v-card-title>Settings</v-card-title>
+                <v-divider></v-divider>
+
+                <v-card-row height="500px">
+                    <v-list two-line subheader class='options'>
+                        <v-subheader>Tools</v-subheader>
+
+                        <!-- For each tool add an option to activate or otherwise -->
+                        <v-list-item v-for="tool in config.tools" :key="tool.name">
+                            <v-list-tile avatar>
+
+                                <v-list-tile-action>
+                                    <v-checkbox v-model="tool.active"></v-checkbox>
+                                </v-list-tile-action>
+
+                                <v-list-tile-content>
+                                    <v-list-tile-title> {{ tool.name }} </v-list-tile-title>
+                                    <v-list-tile-sub-title> {{ tool.caption }}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+
+                            </v-list-tile>
+                        </v-list-item>
+
+                    </v-list>
+                </v-card-row>
+                <v-divider></v-divider>
+                <v-card-row actions>
+                    <v-btn class="blue--text darken-1" flat @click.native="dialog = false">Close</v-btn>
+                </v-card-row>
+
+            </v-card>
+        </v-dialog>
+    </v-layout>
 </template>
 
 <script>
 
+
+
 export default {
+    props: ['config'],
+
     data () {
       return {
         dialog: false
@@ -29,4 +60,13 @@ export default {
 </script>
 
 <style lang="css">
+
+.dialog__content{
+    z-index: 200;
+}
+
+.options {
+    width: 100%;
+}
+
 </style>

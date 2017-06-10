@@ -1,14 +1,15 @@
 <template>
         <v-app top-toolbar pointer-events='none'>
             <header>
-                <app-toolbar></app-toolbar>
+                <app-toolbar :config='config'></app-toolbar>
             </header>
 
             <v-container fluid>
                 <v-layout>
                     <v-flex xs2>
-                        <app-tools  :paperScope="paperScope"
-                                    :osdViewer="osdViewer">
+                        <app-tools  :paperScope='paperScope'
+                                    :osdViewer='osdViewer'
+                                    :config='config'>
                         </app-tools>
                         <app-layers :paperScope="paperScope"></app-layers>
                     </v-flex>
@@ -41,7 +42,41 @@ export default {
     data() {
         return {
             paperScope: null,
-            osdViewer: null
+            osdViewer: null,
+            config: {
+                tools: {
+                    circle: {
+                        active: true,
+                        name: 'Circle',
+                        caption: 'Plot filled circles',
+                    },
+                    rectangle: {
+                        active: true,
+                        name: 'Rectangle',
+                        caption: 'Draw rectangles'
+                    },
+                    path: {
+                        active: true,
+                        name: 'Path',
+                        caption: 'Draw smooth paths'
+                    },
+                    move: {
+                        active: true,
+                        name: 'Move',
+                        caption: 'Move and scale annotation items'
+                    },
+                    pan: {
+                        active: true,
+                        name: 'Pan and Zoom',
+                        caption: 'Pan and zoom the image and annotations'
+                    },
+                    node: {
+                        active: true,
+                        name: 'Node',
+                        caption: 'Manipulate path node and handles'
+                    }
+                }
+            }
         }
     },
 
@@ -102,4 +137,10 @@ export default {
 <style lang="stylus">
   @import '../node_modules/vuetify/src/stylus/main'
   @import './css/main.css'
+</style>
+
+<style media="screen">
+    .application {
+        background-color: transparent;
+    }
 </style>

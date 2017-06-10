@@ -1,23 +1,28 @@
 <template lang="html">
     <div class="pointers-please layer-panel elevation-2">
         <v-card>
+
             <v-toolbar>
                 <v-toolbar-title class='white--text'>Layers</v-toolbar-title>
                 <v-btn @click.native="newLayer" icon ripple>
                     <v-icon class="white--text">tab</v-icon>
                 </v-btn>
             </v-toolbar>
+
             <v-list dense>
                 <v-list-item v-for="layer in paperScope.project.layers" :key="layer.id">
                     <span @click="selectLayer(layer)" @click.shift="addToSelection(layer)">
+
                         <v-list-tile>
                             <v-list-tile-content>
+
                                 <v-list-tile-title
                                     @dblclick="editLayerName(layer)"
                                     :class="{editing: layer.id == editedLayer}"
                                     >
                                     {{ layer.name }}
                                 </v-list-tile-title>
+
                                 <v-text-field
                                     class="editContent"
                                     :class="{editing: layer.id != editedLayer}"
@@ -28,12 +33,15 @@
                                     @keyup.enter.native="doneEdit(layer)"
                                     @keyup.esc.native="cancelEdit(layer)">
                                 ></v-text-field>
+
                             </v-list-tile-content>
+
                             <v-list-tile-action>
                                 <v-btn @click.native="exportJSON(layer)" icon ripple>
                                     <v-icon class="grey--text">save</v-icon>
                                 </v-btn>
                             </v-list-tile-action>
+                            
                         </v-list-tile>
                         <v-divider></v-divider>
                     </span>

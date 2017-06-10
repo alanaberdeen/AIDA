@@ -14,7 +14,6 @@
     margin-left: 165px;
     width: 80%;
     height: 80%;
-    z-index: 10;
 }
 
 #osd-canvas {
@@ -44,6 +43,8 @@
   left: 0px;
   pointer-events: none;
 }
+
+
 
 .pointers-please {
     pointer-events: auto;
