@@ -7,6 +7,9 @@ import App from './App'
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 
+// Event bus to handle child-child communication
+export const eventBus = new Vue(); 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

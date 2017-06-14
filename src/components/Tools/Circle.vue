@@ -1,25 +1,28 @@
 <template lang="html">
-    <v-btn @click.native="initialiseTool" primary dark>
-        <i :class="dependentClasses" aria-hidden="true"></i>
+    <v-btn @click.native="initialiseTool" primary dark :class='buttonClasses'>
+        <i :class="iconClasses" aria-hidden="true"></i>
     </v-btn>
 </template>
 
 <script>
 import paper from 'paper'
+import { eventBus } from '../../main'
 
 export default {
     props: ['paperScope'],
     data() {
         return {
-            toolCircle: null
+            toolCircle: null,
+            iconClasses: {
+                'fa': true,
+                'fa-circle': true,
+                'fa-icons': true
+            }
+
         }
     },
 
     methods: {
-        stateDialog() {
-            console.log("Current dialog value is: " + this.dialog)
-        },
-
         initialiseTool() {
             if (this.paperScope.view.element.classList.contains('pointers-no')){
                 this.paperScope.view.element.classList.remove('pointers-no')
@@ -27,28 +30,31 @@ export default {
             this.toolCircle.activate();
 
             // Save tool name as currently active
-            //this.paperScope.data.activeTool = 'circle'
+            eventBus.$emit('toolActivated', 'circle')
         }
     },
 
     computed: {
-        dependentClasses: function() {
+        buttonClasses: function() {
             return {
-                'btn--light-flat-pressed': this.paperScope.data.activeTool == 'circle',
-                'fa': true,
-                'fa-circle': true,
-                'fa-icons': true
+                'btn--light-flat-pressed': true,
+                'z-depth-2': true
             }
         }
-
     },
 
     created() {
+        var vm = this;
+
         // Plot a cirlce at pointer location
         function plotCirlce(event) {
+
+            // Deselect all current selections
+            vm.paperScope.project.deselectAll()
+
             var centerX = Math.round(event.point.x)
             var centerY = Math.round(event.point.y)
-            var myCircle = new paper.Path.Circle(new paper.Point(centerX, centerY), 3000)
+            var myCircle = new paper.Path.Circle(new paper.Point(centerX, centerY), 1000)
             myCircle.fillColor = 'red'
         }
 

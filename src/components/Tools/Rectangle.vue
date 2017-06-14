@@ -21,6 +21,7 @@ export default {
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
             this.toolRect.activate();
+
         }
     },
 
@@ -41,7 +42,7 @@ export default {
             // Rebuild as defined by new config
             rect = new paper.Path.Rectangle(e.downPoint.x, e.downPoint.y, width,height)
             rect.strokeColor = 'red';
-            rect.strokeWidth = 1;
+            rect.strokeWidth = 100;
         }
 
         function keepRect(e){

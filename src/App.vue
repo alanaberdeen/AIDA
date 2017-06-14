@@ -4,30 +4,23 @@
                 <app-toolbar :config='config'></app-toolbar>
             </header>
 
-            <v-container fluid>
+            <v-container fluid id='content-container'>
                 <v-layout>
                     <v-flex xs2>
-                        <app-tools  :paperScope='paperScope'
+                        <app-tools  :paperScope.sync='paperScope'
                                     :osdViewer='osdViewer'
                                     :config='config'>
                         </app-tools>
                         <app-layers :paperScope="paperScope"></app-layers>
                     </v-flex>
-                    <v-flex xs3 offset-xs9>
-                    </v-flex>
                 </v-layout>
             </v-container>
 
+            <app-footer></app-footer>
         </v-app>
 </template>
 
 <script>
-//TODO: check if the program still runs with 1000s of objects on the canvas
-// does it slow to a horrible crawl - hope not!
-
-//TODO: add hint text to the bottom when users select tools. Similar to Affinity.
-
-
 // Import JS libraries
 import paper from 'paper'
 import openseadragon from 'openseadragon'
@@ -37,6 +30,7 @@ import Tools from './components/Tools/Tools.vue'
 import Layers from './components/Layers.vue'
 import ImageLoader from './components/ImageLoader.vue'
 import Toolbar from './components/Toolbar/Toolbar.vue'
+import Footer from './components/Footer.vue'
 
 export default {
     data() {
@@ -46,32 +40,32 @@ export default {
             config: {
                 tools: {
                     circle: {
-                        active: true,
+                        include: true,
                         name: 'Circle',
                         caption: 'Plot filled circles',
                     },
                     rectangle: {
-                        active: true,
+                        include: true,
                         name: 'Rectangle',
                         caption: 'Draw rectangles'
                     },
                     path: {
-                        active: true,
+                        include: true,
                         name: 'Path',
                         caption: 'Draw smooth paths'
                     },
                     move: {
-                        active: true,
+                        include: true,
                         name: 'Move',
                         caption: 'Move and scale annotation items'
                     },
                     pan: {
-                        active: true,
+                        include: true,
                         name: 'Pan and Zoom',
                         caption: 'Pan and zoom the image and annotations'
                     },
                     node: {
-                        active: true,
+                        include: true,
                         name: 'Node',
                         caption: 'Manipulate path node and handles'
                     }
@@ -96,11 +90,6 @@ export default {
         // Create the PaperJS instance.
         // Save it to the VueModel
         this.paperScope = paper.setup(document.getElementById('paper-canvas'))
-
-        // Add some custom data to the paperScope object to serve further func
-        this.paperScope.data = {
-            activeTool: null
-        };
 
         // Add a handler fucntion that will run when osd-viewport is updated.
         // This will synchronously update the paperJS viewport.
@@ -129,7 +118,8 @@ export default {
         'app-tools': Tools,
         'app-layers': Layers,
         'app-image-loader': ImageLoader,
-        'app-toolbar': Toolbar
+        'app-toolbar': Toolbar,
+        'app-footer': Footer
     }
 }
 </script>
@@ -140,7 +130,14 @@ export default {
 </style>
 
 <style media="screen">
-    .application {
+    #app {
         background-color: transparent;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #content-container {
+        flex: 1 0 auto;
     }
 </style>

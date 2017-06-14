@@ -20,7 +20,7 @@
                             <v-list-tile avatar>
 
                                 <v-list-tile-action>
-                                    <v-checkbox v-model="tool.active"></v-checkbox>
+                                    <v-checkbox v-model="tool.include"></v-checkbox>
                                 </v-list-tile-action>
 
                                 <v-list-tile-content>

@@ -6,31 +6,31 @@
             </v-toolbar>
             <v-list>
                 <v-list-item>
-                    <app-circle :paperScope="paperScope"
-                                v-if='config.tools.circle.active'>
+                    <app-circle :paperScope.sync="paperScope"
+                                v-if='config.tools.circle.include'>
                     </app-circle>
                     <v-divider></v-divider>
-                    <app-rectangle  :paperScope="paperScope"
-                                    v-if='config.tools.rectangle.active'>
+                    <app-rectangle  :paperScope.sync="paperScope"
+                                    v-if='config.tools.rectangle.include'>
                     </app-rectangle>
                     <v-divider></v-divider>
                     <app-path :paperScope="paperScope"
-                              v-if='config.tools.path.active'>
+                              v-if='config.tools.path.include'>
                     </app-path>
                     <v-divider></v-divider>
                     <app-move :paperScope="paperScope"
                               :osdViewer="osdViewer"
-                              v-if='config.tools.move.active'>
+                              v-if='config.tools.move.include'>
                     </app-move>
                     <v-divider></v-divider>
                     <app-pan :paperScope="paperScope"
                              :osdViewer="osdViewer"
-                             v-if='config.tools.pan.active'>
+                             v-if='config.tools.pan.include'>
                     </app-pan>
                     <v-divider></v-divider>
                     <app-node :paperScope="paperScope"
                               :osdViewer="osdViewer"
-                              v-if='config.tools.node.active'>
+                              v-if='config.tools.node.include'>
                     </app-node>
                     <v-divider></v-divider>
                 </v-list-item>
@@ -41,8 +41,6 @@
 
 <script>
 //TODO: make it so that the active tool has a 'depressed' visual on the button
-
-
 import paper from 'paper'
 
 // Import child components
