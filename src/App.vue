@@ -6,17 +6,17 @@
 
             <v-container fluid id='content-container'>
                 <v-layout>
-                    <v-flex xs2>
+                    <v-flex xs1>
                         <app-tools  :paperScope.sync='paperScope'
                                     :osdViewer='osdViewer'
                                     :config='config'>
                         </app-tools>
-                        <app-layers :paperScope="paperScope"></app-layers>
+                        <!-- <app-layers :paperScope="paperScope"></app-layers> -->
                     </v-flex>
                 </v-layout>
             </v-container>
 
-            <app-footer></app-footer>
+            <!-- <app-footer></app-footer> -->
         </v-app>
 </template>
 
@@ -31,6 +31,8 @@ import Layers from './components/Layers.vue'
 import ImageLoader from './components/ImageLoader.vue'
 import Toolbar from './components/Toolbar/Toolbar.vue'
 import Footer from './components/Footer.vue'
+
+import { eventBus } from './main'
 
 export default {
     data() {
@@ -139,5 +141,10 @@ export default {
 
     #content-container {
         flex: 1 0 auto;
+        padding: 0px;
+    }
+
+    #content {
+        background-color: blue;
     }
 </style>

@@ -1,17 +1,21 @@
 <template lang="html">
-    <v-btn @click.native="initialiseTool" primary dark>
-        <v-icon class="white--text text--lighten-1">timeline</v-icon>
-    </v-btn>
+    <v-list-item>
+        <v-btn @click.native="initialiseTool" block class="tool elevation-1">
+            <v-icon :class="{'blue--text darken-2--text': this.active}">
+                    timeline
+            </v-icon>
+        </v-btn>
+    </v-list-item>
 </template>
 
 <script>
 import paper from 'paper'
 
 export default {
-    props: ['paperScope'],
+    props: ['paperScope', 'active'],
     data() {
         return {
-            toolPencil: null
+            toolPen: null
         }
     },
 
@@ -20,7 +24,7 @@ export default {
             if (this.paperScope.view.element.classList.contains('pointers-no')){
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
-            this.toolPencil.activate();
+            this.toolPen.activate();
         }
     },
 
@@ -43,8 +47,8 @@ export default {
 
         }
 
-        this.toolPencil = new paper.Tool()
-        this.toolPencil.onMouseDown = addPoint
+        this.toolPen = new paper.Tool()
+        this.toolPen.onMouseDown = addPoint
     }
 }
 

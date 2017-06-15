@@ -1,14 +1,21 @@
 <template lang="html">
-    <v-btn @click.native="initialiseTool" primary dark>
-        <i class="fa fa-mouse-pointer fa-icons" aria-hidden="true"></i>
-    </v-btn>
+    <v-list-item>
+        <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+            <i :class="{
+                    'fa': true,
+                    'fa-mouse-pointer': true,
+                    'faIcons': !this.active,
+                    'faIconsActive': this.active
+                    }"></i>
+        </v-btn>
+    </v-list-item>
 </template>
 
 <script>
 import paper from 'paper'
 
 export default {
-    props: ['paperScope', 'osdViewer'],
+    props: ['paperScope', 'osdViewer', 'active'],
     data() {
         return {
             toolMove: null,

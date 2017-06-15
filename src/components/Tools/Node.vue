@@ -1,7 +1,15 @@
 <template lang="html">
-    <v-btn @click.native="initialiseTool" primary dark>
-        <i class="fa fa-location-arrow fa-icons" aria-hidden="true"></i>
-    </v-btn>
+    <v-list-item>
+        <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+            <i :class="{
+                    'fa': true,
+                    'fa-location-arrow': true,
+                    'faIcons': !this.active,
+                    'faIconsActive': this.active
+                    }">
+            </i>
+        </v-btn>
+    </v-list-item>
 </template>
 
 <script>
@@ -15,7 +23,7 @@ import paper from 'paper'
 // at the moment it is selected bounds.
 
 export default {
-    props: ['paperScope', 'osdViewer'],
+    props: ['paperScope', 'osdViewer', 'active'],
     data() {
         return {
             toolNode: null,

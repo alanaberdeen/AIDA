@@ -1,14 +1,19 @@
 <template lang="html">
-    <v-btn @click.native="initialiseTool" primary dark>
-        <v-icon class="white--text text--lighten-1">crop_landscape</v-icon>
-    </v-btn>
+    <v-list-item>
+        <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+            <v-icon :class="{'blue--text darken-2--text': this.active}">
+                    crop_landscape
+            </v-icon>
+        </v-btn>
+    </v-list-item>
 </template>
 
 <script>
 import paper from 'paper'
+import { eventBus } from '../../main'
 
 export default {
-    props: ['paperScope'],
+    props: ['paperScope', 'active'],
     data() {
         return {
             toolRect: null
@@ -21,7 +26,6 @@ export default {
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
             this.toolRect.activate();
-
         }
     },
 

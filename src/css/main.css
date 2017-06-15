@@ -30,8 +30,12 @@
     height: 100%;
 }
 
-.fa-icons {
-    color: white;
+.faIcons {
+    color: #616161;
+}
+
+.faIconsActive {
+    color: #1E88E5;
 }
 
 #app-container {

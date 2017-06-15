@@ -1,41 +1,52 @@
 <template lang="html">
-    <div class="pointers-please tools-container elevation-2">
-        <v-card class="tools-panel">
-            <v-toolbar primary dark>
-                <v-toolbar-title class='white--text'>Tools</v-toolbar-title>
-            </v-toolbar>
+    <div class="pointers-please left-side-bar elevation-2">
             <v-list>
-                <v-list-item>
-                    <app-circle :paperScope.sync="paperScope"
-                                v-if='config.tools.circle.include'>
-                    </app-circle>
-                    <v-divider></v-divider>
-                    <app-rectangle  :paperScope.sync="paperScope"
-                                    v-if='config.tools.rectangle.include'>
-                    </app-rectangle>
-                    <v-divider></v-divider>
-                    <app-path :paperScope="paperScope"
-                              v-if='config.tools.path.include'>
-                    </app-path>
-                    <v-divider></v-divider>
-                    <app-move :paperScope="paperScope"
-                              :osdViewer="osdViewer"
-                              v-if='config.tools.move.include'>
-                    </app-move>
-                    <v-divider></v-divider>
+                <v-list-item id='pan-toggle'>
                     <app-pan :paperScope="paperScope"
                              :osdViewer="osdViewer"
+                             :active="(this.activeTool === 'pan')"
+                             @click.native="activeTool = 'pan'"
                              v-if='config.tools.pan.include'>
                     </app-pan>
-                    <v-divider></v-divider>
-                    <app-node :paperScope="paperScope"
-                              :osdViewer="osdViewer"
-                              v-if='config.tools.node.include'>
-                    </app-node>
-                    <v-divider></v-divider>
+                </v-list-item>
+                <v-list-item id='annotation-tools'>
+                    <v-list>
+
+                        <app-circle :paperScope="paperScope"
+                                    :active="(this.activeTool === 'circle')"
+                                    @click.native="activeTool = 'circle'"
+                                    v-if='config.tools.circle.include'>
+                        </app-circle>
+
+
+                        <app-rectangle  :paperScope="paperScope"
+                                        :active="(this.activeTool === 'rectangle')"
+                                        @click.native="activeTool = 'rectangle'"
+                                        v-if='config.tools.rectangle.include'>
+                        </app-rectangle>
+
+                        <app-pen    :paperScope="paperScope"
+                                    :active="(this.activeTool === 'pen')"
+                                    @click.native="activeTool = 'pen'"
+                                    v-if='config.tools.path.include'>
+                        </app-pen>
+
+                        <app-move :paperScope="paperScope"
+                                  :osdViewer="osdViewer"
+                                  :active="(this.activeTool === 'move')"
+                                  @click.native="activeTool = 'move'"
+                                  v-if='config.tools.move.include'>
+                        </app-move>
+
+                        <app-node :paperScope="paperScope"
+                                  :osdViewer="osdViewer"
+                                  :active="(this.activeTool === 'node')"
+                                  @click.native="activeTool = 'node'"
+                                  v-if='config.tools.node.include'>
+                        </app-node>
+                    </v-list>
                 </v-list-item>
             </v-list>
-        </v-card>
     </div>
 </template>
 
@@ -46,7 +57,7 @@ import paper from 'paper'
 // Import child components
 import toolCircle from './Circle.vue'
 import toolRectangle from './Rectangle.vue'
-import toolPath from './Pencil.vue'
+import toolPen from './Pen.vue'
 import toolMove from './Move.vue'
 import toolPan from './Pan.vue'
 import toolNode from './Node.vue'
@@ -54,10 +65,16 @@ import toolNode from './Node.vue'
 export default {
     props: ['paperScope', 'osdViewer', 'config'],
 
+    data() {
+        return{
+            activeTool: ''
+        }
+    },
+
     components: {
         'app-circle': toolCircle,
         'app-rectangle': toolRectangle,
-        'app-path': toolPath,
+        'app-pen': toolPen,
         'app-move': toolMove,
         'app-pan': toolPan,
         'app-node': toolNode
@@ -67,9 +84,21 @@ export default {
 
 <style lang="css">
 
-.tools-container{
-    margin-top: 20px;
-    margin-left: 10px;
+.left-side-bar{
+    margin-top: 0px;
+    width: 100%;
+    height: 100vh;
+    background-color: #EEEEEE;
+}
+
+.tool {
+    min-width: 50px;
+    margin: 1px 0px 1px 0px;
+    background-color: #EEEEEE;
+}
+
+#pan-toggle{
+    margin: 20px 0px 20px 0px;
 }
 
 </style>

@@ -1,7 +1,15 @@
 <template lang="html">
-    <v-btn @click.native="initialiseTool" primary dark>
-        <i class="fa fa-hand-rock-o  fa-icons" aria-hidden="true"></i>
-    </v-btn>
+    <v-list-item>
+        <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+            <i :class="{
+                    'fa': true,
+                    'fa-hand-rock-o': true,
+                    'faIcons': !this.active,
+                    'faIconsActive': this.active
+                    }">
+            </i>
+        </v-btn>
+    </v-list-item>
 </template>
 
 <script>
@@ -9,7 +17,7 @@ import paper from 'paper'
 import openseadragon from 'openseadragon'
 
 export default {
-    props: ['paperScope', 'osdViewer'],
+    props: ['paperScope', 'osdViewer', 'active'],
     data() {
         return {
             toolPan: null,

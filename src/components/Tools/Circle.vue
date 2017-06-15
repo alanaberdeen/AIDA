@@ -1,24 +1,28 @@
 <template lang="html">
-    <v-btn @click.native="initialiseTool" primary dark :class='buttonClasses'>
-        <i :class="iconClasses" aria-hidden="true"></i>
-    </v-btn>
+    <v-list-item>
+        <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+            <i :class="{
+                    'fa': true,
+                    'fa-circle': true,
+                    'faIcons': !this.active,
+                    'faIconsActive': this.active
+                    }">
+            </i>
+        </v-btn>
+    </v-list-item>
 </template>
+
+
 
 <script>
 import paper from 'paper'
 import { eventBus } from '../../main'
 
 export default {
-    props: ['paperScope'],
+    props: ['paperScope', 'active'],
     data() {
         return {
             toolCircle: null,
-            iconClasses: {
-                'fa': true,
-                'fa-circle': true,
-                'fa-icons': true
-            }
-
         }
     },
 
@@ -28,19 +32,7 @@ export default {
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
             this.toolCircle.activate();
-
-            // Save tool name as currently active
-            eventBus.$emit('toolActivated', 'circle')
-        }
-    },
-
-    computed: {
-        buttonClasses: function() {
-            return {
-                'btn--light-flat-pressed': true,
-                'z-depth-2': true
-            }
-        }
+        },
     },
 
     created() {
@@ -65,4 +57,6 @@ export default {
 </script>
 
 <style lang="css">
+
+
 </style>
