@@ -6,14 +6,10 @@
 
 #canvas {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin-top: 84px;
-    margin-left: 165px;
-    width: 80%;
-    height: 80%;
+    margin: 65px auto auto 8.3%;
+    width: 75%;
+    height: 75%;
+    background-color: #FAFAFA;
 }
 
 #osd-canvas {
@@ -54,4 +50,8 @@
 
 .pointers-no {
     pointer-events: none;
+}
+
+body {
+    background-color: #F5F5F5;
 }

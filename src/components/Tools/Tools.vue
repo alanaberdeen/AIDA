@@ -26,6 +26,7 @@
                         </app-rectangle>
 
                         <app-pen    :paperScope="paperScope"
+                                    :osdViewer="osdViewer"
                                     :active="(this.activeTool === 'pen')"
                                     @click.native="activeTool = 'pen'"
                                     v-if='config.tools.path.include'>
@@ -92,7 +93,7 @@ export default {
 }
 
 .tool {
-    min-width: 50px;
+    min-width: 20px;
     margin: 1px 0px 1px 0px;
     background-color: #EEEEEE;
 }

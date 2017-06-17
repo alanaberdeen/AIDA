@@ -12,10 +12,11 @@
 import paper from 'paper'
 
 export default {
-    props: ['paperScope', 'active'],
+    props: ['paperScope', 'active', 'osdViewer'],
     data() {
         return {
-            toolPen: null
+            toolPen: null,
+            hitOptions: null
         }
     },
 
@@ -25,30 +26,65 @@ export default {
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
             this.toolPen.activate();
+            this.newPath()
+
+            // Set tool hitOptions
+            var viewportZoom = this.osdViewer.viewport.getZoom(true);
+            var hitTolerance = 100/viewportZoom;
+            this.hitOptions = {
+                segments: true,
+                tolerance: hitTolerance
+            }
+        },
+
+        newPath() {
+            var myPath = new paper.Path();
+            myPath.strokeColor = 'red';
+            myPath.strokeWidth = 100;
+            myPath.selected = true;
         }
     },
 
     created() {
-        // Create a new path once, when the script is executed:
-        var myPath = new paper.Path();
-        myPath.strokeColor = 'red';
-        myPath.strokeWidth = 100;
+        var vm = this;
 
-        function addPoint(event) {
+        function addPoint(e) {
+            // Get currently activate item
+            var myPath = vm.paperScope.project.activeLayer.lastChild;
+
+            var hitResult = myPath.hitTest(e.point, vm.hitOptions);
+            console.log('The hitResult is:')
+            console.log(hitResult);
+
             // If option key is held down then close the path
-            if(event.modifiers.option) {
+            if(e.modifiers.option) {
                 myPath.closed = true;
                 myPath.smooth()
-            } else {
-                // Add a segment to the path at the position of the mouse:
-                myPath.add(event.point);
+
+                // start a new path
+                vm.newPath()
+
+            // If user has clicked on the last segment again then complete
+            // the path and create a new one.
+            } else if(hitResult && hitResult.segment == myPath.lastSegment) {
+                myPath.selected = false
+                vm.newPath()
+            }else {
+                myPath.add(e.point)
                 myPath.smooth()
             }
+        }
 
+        function finishPath(e) {
+            myPath.add(e.point);
+            myPath.smooth()
+
+            vm.newPath()
         }
 
         this.toolPen = new paper.Tool()
         this.toolPen.onMouseDown = addPoint
+
     }
 }
 

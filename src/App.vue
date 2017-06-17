@@ -7,11 +7,14 @@
             <v-container fluid id='content-container'>
                 <v-layout>
                     <v-flex xs1>
-                        <app-tools  :paperScope.sync='paperScope'
+                        <app-tools  :paperScope='paperScope'
                                     :osdViewer='osdViewer'
                                     :config='config'>
                         </app-tools>
-                        <!-- <app-layers :paperScope="paperScope"></app-layers> -->
+                    </v-flex>
+                    <v-flex xs2 offset-xs9>
+                        <app-right-panel :paperScope='paperScope'>
+                        </app-right-panel>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -27,9 +30,9 @@ import openseadragon from 'openseadragon'
 
 // Import child components
 import Tools from './components/Tools/Tools.vue'
-import Layers from './components/Layers.vue'
 import ImageLoader from './components/ImageLoader.vue'
 import Toolbar from './components/Toolbar/Toolbar.vue'
+import RightPanel from './components/Studio/RightPanel.vue'
 import Footer from './components/Footer.vue'
 
 import { eventBus } from './main'
@@ -118,10 +121,10 @@ export default {
 
     components: {
         'app-tools': Tools,
-        'app-layers': Layers,
         'app-image-loader': ImageLoader,
         'app-toolbar': Toolbar,
-        'app-footer': Footer
+        'app-footer': Footer,
+        'app-right-panel': RightPanel
     }
 }
 </script>
