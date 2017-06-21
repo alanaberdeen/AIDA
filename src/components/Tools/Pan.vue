@@ -14,6 +14,9 @@
 </template>
 
 <script>
+// TODO: Add a keyboard short cut that can be held down to activate
+// pan and zoom controls.
+
 import paper from 'paper'
 import openseadragon from 'openseadragon'
 

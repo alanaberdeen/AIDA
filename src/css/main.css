@@ -6,9 +6,9 @@
 
 #canvas {
     position: absolute;
-    margin: 65px auto auto 8.3%;
+    margin: 65px auto 50px 8.3%;
     width: 75%;
-    height: 75%;
+    height: 85%;
     background-color: #FAFAFA;
 }
 

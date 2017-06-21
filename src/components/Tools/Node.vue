@@ -90,7 +90,7 @@ export default {
         // On mouseDrag functionality
         function mouseDrag(e) {
 
-            if (status == 'adjusting') {
+            if (hitResult && (status == 'adjusting')) {
                 if (hitResult.type == 'segment'){
                     hitResult.segment.point = hitResult.segment.point.add(e.delta)
                 } else if (hitResult.type == 'handle-out') {

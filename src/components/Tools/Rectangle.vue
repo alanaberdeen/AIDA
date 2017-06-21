@@ -31,6 +31,9 @@ export default {
 
     created() {
 
+        // Deselect any current selection
+        this.paperScope.project.deselectAll()
+
         // Define an intial rect just so we can always remove one where necessary
         // in the drawing loop.
         var rect = new paper.Path.Rectangle([100,100], 100)
@@ -46,11 +49,12 @@ export default {
             // Rebuild as defined by new config
             rect = new paper.Path.Rectangle(e.downPoint.x, e.downPoint.y, width,height)
             rect.strokeColor = 'red';
-            rect.strokeWidth = 100;
+            rect.strokeWidth = 400;
         }
 
         function keepRect(e){
             var myRect = rect.clone();
+            rect.remove();
         }
 
         this.toolRect = new paper.Tool();

@@ -31,7 +31,7 @@ import openseadragon from 'openseadragon'
 // Import child components
 import Tools from './components/Tools/Tools.vue'
 import ImageLoader from './components/ImageLoader.vue'
-import Toolbar from './components/Toolbar/Toolbar.vue'
+import Toolbar from './components/Header/Toolbar.vue'
 import RightPanel from './components/Studio/RightPanel.vue'
 import Footer from './components/Footer.vue'
 
@@ -88,7 +88,7 @@ export default {
         this.osdViewer = OpenSeadragon({
             id: "osd-canvas",
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-            tileSources: "https://openseadragon.github.io/example-images/duomo/duomo.dzi",
+            tileSources: "../static/HEDZ/HEDZ.dzi",
             showNavigationControl: false
         });
 
@@ -111,12 +111,20 @@ export default {
             vm.paperScope.view.zoom = image1.viewportToImageZoom(viewportZoom);
             var center = vm.osdViewer.viewport.viewportToImageCoordinates(vm.osdViewer.viewport.getCenter(true));
             vm.paperScope.view.center = new paper.Point(center.x, center.y);
-        });
 
-        // Add a first layer to the project
-        paper.project.addLayer(new paper.Layer({
-            name: 'Layer 1',
-        }))
+            // Update paths to have strokeWidth reactive to zoom level
+            // This might be computationally-expensive but will try for now.
+            // Loop through each item in the project checking if it's a path
+            // item and resizing the strokeWidth to be relative to the zoom level.
+            vm.paperScope.project.layers.forEach((layer) => {
+                layer.children.forEach((child) => {
+                    if(child.className === 'Path') {
+                        console.log('Adjusting the strokeWidth of a path');
+                        child.strokeWidth = 400/viewportZoom
+                    }
+                })
+            })
+        });
     },
 
     components: {
@@ -145,9 +153,5 @@ export default {
     #content-container {
         flex: 1 0 auto;
         padding: 0px;
-    }
-
-    #content {
-        background-color: blue;
     }
 </style>

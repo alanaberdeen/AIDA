@@ -6,7 +6,8 @@
                     'fa-mouse-pointer': true,
                     'faIcons': !this.active,
                     'faIconsActive': this.active
-                    }"></i>
+                }">
+            </i>
         </v-btn>
     </v-list-item>
 </template>
@@ -33,7 +34,7 @@ export default {
             // Set the hitTolerance for user clicks to be depenent on current
             // viewport parameters
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 100/viewportZoom;
+            var hitTolerance = 400/viewportZoom;
             this.hitOptions = {
                 segments: true,
                 stroke: true,
@@ -48,7 +49,7 @@ export default {
 
     created() {
 
-        // TODO: seems to be a bug when moving items that have overlapping
+        // TODO: BUG: seems to be a bug when moving items that have overlapping
         // itembounds. E.g being able to move and item by selecting another
         // item's bounding box in some cases. Investigate this.
 
@@ -67,19 +68,21 @@ export default {
 
             // Save hitResult
             hitResult = paper.project.hitTest(e.point, vm.hitOptions)
+            console.log('The hitResult is: ');
+            console.log(hitResult);
 
             // Check if user has selected a point within the bounds rectangle.
             // Then assume their intention is to drag the item.
             if(groupBounds && groupBounds.contains(e.point)){
                 groupBounds.selected = true;
-                status = 'moving'
+                status = 'moving';
 
             // Check if use selected something
             } else if(hitResult) {
 
                 // Remove previous itemBounds rect as housekeeping.
                 if(groupBounds){
-                    groupBounds.remove()
+                    groupBounds.remove();
                 }
 
                 // Check if item
@@ -88,32 +91,30 @@ export default {
                     hitResult.type == 'stroke') {
 
                     if(!e.modifiers.shift){
-                        vm.paperScope.project.deselectAll()
+                        vm.paperScope.project.deselectAll();
                     }
 
                     // Select item
-                    hitResult.item.selected = true
+                    hitResult.item.selected = true;
 
                     // Created selectedGroup
-                    selectedGroup = new paper.Group(vm.paperScope.project.selectedItems)
-                    selectedGroup.selected = true
+                    selectedGroup = new paper.Group(vm.paperScope.project.selectedItems);
+                    selectedGroup.selected = true;
 
                     // Draw bounding rectangle for selectedGroup
                     groupBounds = new paper.Path.Rectangle(selectedGroup.strokeBounds);
                     groupBounds.selected = true;
 
                     // Set transform status
-                    status = 'moving'
+                    status = 'moving';
 
                 // Else check if item bounds
                 // User can only click bounds after clicking item therefore
                 // can leave var item as is.
                 } else if (hitResult.type == 'bounds') {
-                    groupBounds.selected = true
-                    status = 'scaling'
+                    groupBounds.selected = true;
+                    status = 'scaling';
                 }
-
-
 
             // Else nothing was selected
             } else {
@@ -127,16 +128,21 @@ export default {
         // On mouseMove functionality
         function mouseMove(e) {
 
-            hitResult = paper.project.hitTest(e.point, vm.hitOptions)
+            hitResult = paper.project.hitTest(e.point, vm.hitOptions);
 
-            // Adjust cursor icon based on hitResult
-            if (hitResult && (hitResult.name == 'top-right' || hitResult.name == 'bottom-left')) {
-                document.getElementById('paper-canvas').style.cursor = "nesw-resize";
-            } else if (hitResult && (hitResult.name == 'top-left' || hitResult.name == 'bottom-right')) {
-                document.getElementById('paper-canvas').style.cursor = "nwse-resize";
+            // If there the cursor is over the group bounds
+            if(hitResult && hitResult.item.className === 'Group') {
+                // Adjust cursor icon based on hitResult
+                if (hitResult.name == 'top-right' || hitResult.name == 'bottom-left') {
+                    document.getElementById('paper-canvas').style.cursor = "nesw-resize";
+                } else if (hitResult.name == 'top-left' || hitResult.name == 'bottom-right') {
+                    document.getElementById('paper-canvas').style.cursor = "nwse-resize";
+                }
             } else {
                 document.getElementById('paper-canvas').style.cursor = "auto";
             }
+
+
         }
 
         // On mouseDrag functionality
@@ -149,14 +155,14 @@ export default {
             if (status == 'moving') {
                 selectedGroup.position = selectedGroup.position.add(e.delta);
                 groupBounds.position = groupBounds.position.add(e.delta);
-                groupBounds.selected = true
+                groupBounds.selected = true;
 
             // If clicked on the boundary then need to scale in some way.
             } else if (status == 'scaling') {
 
                 // Itembounds rectangle for scale factor rectangle
                 var scaleRect = groupBounds.bounds;
-                scaleRect.selected = true
+                scaleRect.selected = true;
 
                 // Check exactly which handle affected in order to adjust scaling point
                 if (hitResult.name == 'top-left') {
@@ -169,8 +175,8 @@ export default {
                     var vertScaleFactor = Math.abs(newHeight/scaleRect.height);
 
                     // Scale items
-                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomRight)
-                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomRight)
+                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomRight);
+                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomRight);
 
                 } else if (hitResult && hitResult.name == 'top-right') {
 
@@ -182,8 +188,8 @@ export default {
                     var vertScaleFactor = Math.abs(newHeight/scaleRect.height);
 
                     // Scale items
-                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomLeft)
-                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomLeft)
+                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomLeft);
+                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomLeft);
 
                 } else if (hitResult && hitResult.name == 'bottom-right') {
 
@@ -195,8 +201,8 @@ export default {
                     var vertScaleFactor = Math.abs(newHeight/scaleRect.height);
 
                     // Scale items
-                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.topLeft)
-                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.topLeft)
+                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.topLeft);
+                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.topLeft);
 
                 } else if (hitResult && hitResult.name == 'bottom-left') {
 
@@ -208,8 +214,8 @@ export default {
                     var vertScaleFactor = Math.abs(newHeight/scaleRect.height);
 
                     // Scale items
-                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.topRight)
-                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.topRight)
+                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.topRight);
+                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.topRight);
                 }
             }
         }
@@ -224,13 +230,13 @@ export default {
                     // For each item selected remove if not a layer
                     vm.paperScope.project.selectedItems.forEach(function(item){
                         if(item.className != 'Layer'){
-                            item.remove()
+                            item.remove();
                         }
                     })
 
                     // If itemBounds has been added then remove this also
                     if(groupBounds){
-                        groupBounds.remove()
+                        groupBounds.remove();
                     }
                 }
             }
@@ -241,12 +247,12 @@ export default {
             hitResult = null;
         }
 
-        this.toolMove = new paper.Tool()
-        this.toolMove.onMouseDown = mouseDown
-        this.toolMove.onMouseDrag = mouseDrag
-        this.toolMove.onMouseUp = mouseUp
-        this.toolMove.onKeyUp = onKeyUp
-        this.toolMove.onMouseMove = mouseMove
+        this.toolMove = new paper.Tool();
+        this.toolMove.onMouseDown = mouseDown;
+        this.toolMove.onMouseDrag = mouseDrag;
+        this.toolMove.onMouseUp = mouseUp;
+        this.toolMove.onKeyUp = onKeyUp;
+        this.toolMove.onMouseMove = mouseMove;
     }
 }
 

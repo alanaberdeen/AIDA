@@ -30,7 +30,7 @@ export default {
 
             // Set tool hitOptions
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 100/viewportZoom;
+            var hitTolerance = 400/viewportZoom;
             this.hitOptions = {
                 segments: true,
                 tolerance: hitTolerance
@@ -38,9 +38,10 @@ export default {
         },
 
         newPath() {
+            var viewportZoom = this.osdViewer.viewport.getZoom(true);
             var myPath = new paper.Path();
             myPath.strokeColor = 'red';
-            myPath.strokeWidth = 100;
+            myPath.strokeWidth = 400/viewportZoom;
             myPath.selected = true;
         }
     },

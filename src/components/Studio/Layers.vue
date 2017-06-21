@@ -71,6 +71,11 @@ export default {
             beforeEditCache: null,
         }
     },
+
+    created() {
+        this.paperScope.project.activeLayer.name = 'Layer 1'
+    },
+
     methods: {
 
         sayHello() {
@@ -108,9 +113,11 @@ export default {
 
         // Add a new layer with a default name
         newLayer () {
+            var layerIndex = this.paperScope.project.layers.length + 1;
+
             var layer = new paper.Layer({
-              name: 'New Layer',
-              position: this.paperScope.view.center
+                name: 'Layer ' + layerIndex,
+                position: this.paperScope.view.center
             })
             this.selectLayer(layer)
         },
@@ -119,7 +126,7 @@ export default {
         selectLayer (layer) {
             // Deselect all layers
             this.paperScope.project.layers.forEach((l) => {
-              l.selected = false
+                l.selected = false
             })
             // Select the given layer
             layer.selected = true;
