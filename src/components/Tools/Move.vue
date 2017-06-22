@@ -20,7 +20,7 @@ export default {
     data() {
         return {
             toolMove: null,
-            hitOptions: null
+            selectOptions: null
         }
     },
 
@@ -34,8 +34,8 @@ export default {
             // Set the hitTolerance for user clicks to be depenent on current
             // viewport parameters
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 400/viewportZoom;
-            this.hitOptions = {
+            var hitTolerance = 500/viewportZoom;
+            this.selectOptions = {
                 segments: true,
                 stroke: true,
                 bounds: true,
@@ -48,211 +48,180 @@ export default {
     },
 
     created() {
-
-        // TODO: BUG: seems to be a bug when moving items that have overlapping
-        // itembounds. E.g being able to move and item by selecting another
-        // item's bounding box in some cases. Investigate this.
-
-        // TODO: BUG: sometimes on moving the rectangular paths a copy is made
-        // instead of moving the original. Think this has something to do with
-        // accidently selecting the bounds rather than the path itself.
-
         var vm = this;
-        var selectedGroup = null;
-        var groupBounds = null;
         var hitResult = null;
-        var status = null;
+        var selectedGroup = null;
+        var toolStatus = '';
 
-        // On mouseDown functionality
-        function mouseDown(e) {
+        // Based on the mouseEvent set the appropriate tool toolStatus.
+        function toolDown(e) {
 
-            // Save hitResult
-            hitResult = paper.project.hitTest(e.point, vm.hitOptions)
+            // Get details of the element the user has clicked on.
+            hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
             console.log('The hitResult is: ');
             console.log(hitResult);
 
-            // Check if user has selected a point within the bounds rectangle.
-            // Then assume their intention is to drag the item.
-            if(groupBounds && groupBounds.contains(e.point)){
-                groupBounds.selected = true;
-                status = 'moving';
+            if (selectedGroup && selectedGroup.bounds.contains(e.point) && !e.modifiers.shift){
 
-            // Check if use selected something
-            } else if(hitResult) {
+                if(hitResult && hitResult.type === 'bounds'){
 
-                // Remove previous itemBounds rect as housekeeping.
-                if(groupBounds){
-                    groupBounds.remove();
+                } else {
+                    toolStatus = 'move';
+                    return
+                }
+            }
+
+            // Remove bounds rectangle of previous selection as will always
+            // be updated.
+            if(selectedGroup) {
+                selectedGroup.bounds.selected = false;
+            }
+
+            // If no modiefiers and item has been selected then create the
+            // selection group and select the bounding rectangle.
+            if( hitResult                       &&
+                !e.modifiers.shift              &&
+                hitResult.type !== 'bounds'     &&
+                (   hitResult.type === 'fill'   ||
+                    hitResult.type === 'stroke' ||
+                    hitResult.type === 'segment'
+                )){
+
+                // If preivous selection then unselect it
+                if (selectedGroup) {
+                    selectedGroup.selected = false;
                 }
 
-                // Check if item
-                if (hitResult.type == 'segment'     ||
-                    hitResult.type == 'fill'        ||
-                    hitResult.type == 'stroke') {
+                selectedGroup = new paper.Group([hitResult.item]);
+                selectedGroup.selected = true;
+                selectedGroup.bounds.selected = true;
 
-                    if(!e.modifiers.shift){
-                        vm.paperScope.project.deselectAll();
+                toolStatus = 'move';
+
+            // If user has clicked bounds then assume transforming.
+            } else if(hitResult && hitResult.type === 'bounds'){
+                toolStatus = 'transform';
+
+                if(selectedGroup){
+                    selectedGroup.selected = true;
+                    selectedGroup.bounds.selected = true;
+                }
+
+
+            // If shift modifer is pressed then assume adding element(s).
+            } else if (e.modifiers.shift){
+
+                if(hitResult &&
+                    (   hitResult.type === 'fill'   ||
+                        hitResult.type === 'stroke' ||
+                        hitResult.type === 'segment'
+                    )){
+
+                        if(!selectedGroup){
+                            selectedGroup = new paper.Group([hitResult.item]);
+                        } else {
+                            selectedGroup.addChild(hitResult.item);
+                        }
                     }
 
-                    // Select item
-                    hitResult.item.selected = true;
+                // Select the items in the group
+                selectedGroup.selected = true;
+                selectedGroup.bounds.selected = true;
 
-                    // Created selectedGroup
-                    selectedGroup = new paper.Group(vm.paperScope.project.selectedItems);
-                    selectedGroup.selected = true;
-
-                    // Draw bounding rectangle for selectedGroup
-                    groupBounds = new paper.Path.Rectangle(selectedGroup.strokeBounds);
-                    groupBounds.selected = true;
-
-                    // Set transform status
-                    status = 'moving';
-
-                // Else check if item bounds
-                // User can only click bounds after clicking item therefore
-                // can leave var item as is.
-                } else if (hitResult.type == 'bounds') {
-                    groupBounds.selected = true;
-                    status = 'scaling';
-                }
-
-            // Else nothing was selected
+                toolStatus = 'selecting';
             } else {
-                vm.paperScope.project.deselectAll()
+                vm.paperScope.project.deselectAll();
                 selectedGroup = null;
-                status = null;
-                groupBounds = null;
+                toolStatus = 'selecting';
             }
         }
 
-        // On mouseMove functionality
-        function mouseMove(e) {
+        // Functionality for user dragging the tool.
+        // Specified action should have been set on the mouseDown event.
+        function toolDrag(e) {
 
-            hitResult = paper.project.hitTest(e.point, vm.hitOptions);
+            if(toolStatus === 'move'){
+                selectedGroup.position = selectedGroup.position.add(e.delta);
 
-            // If there the cursor is over the group bounds
-            if(hitResult && hitResult.item.className === 'Group') {
-                // Adjust cursor icon based on hitResult
-                if (hitResult.name == 'top-right' || hitResult.name == 'bottom-left') {
-                    document.getElementById('paper-canvas').style.cursor = "nesw-resize";
-                } else if (hitResult.name == 'top-left' || hitResult.name == 'bottom-right') {
+            } else if(toolStatus === 'transform'){
+                var newWidth = null;
+                var newHeight = null;
+                var transfromCenter = null;
+
+                // Set tranformation parameters for each scaling option.
+                if (hitResult && hitResult.name === 'top-left'){
+                    newWidth = e.point.x - selectedGroup.bounds.topRight.x;
+                    newHeight = e.point.y - selectedGroup.bounds.bottomLeft.y;
+                    transfromCenter = selectedGroup.bounds.bottomRight;
+                } else if (hitResult && hitResult.name === 'top-right') {
+                    newWidth = e.point.x - selectedGroup.bounds.topLeft.x;
+                    newHeight = e.point.y - selectedGroup.bounds.bottomRight.y;
+                    transfromCenter = selectedGroup.bounds.bottomLeft;
+                } else if (hitResult && hitResult.name === 'bottom-right') {
+                    newWidth = e.point.x - selectedGroup.bounds.bottomLeft.x;
+                    newHeight = e.point.y - selectedGroup.bounds.topRight.y;
+                    transfromCenter = selectedGroup.bounds.topLeft;
+                } else if (hitResult && hitResult.name === 'bottom-left') {
+                    newWidth = e.point.x - selectedGroup.bounds.bottomRight.x;
+                    newHeight = e.point.y - selectedGroup.bounds.topLeft.y;
+                    transfromCenter = selectedGroup.bounds.topRight;
+                }
+
+            // Set scale factors.
+            var horizScaleFactor = Math.abs(newWidth/selectedGroup.bounds.width);
+            var vertScaleFactor = Math.abs(newHeight/selectedGroup.bounds.height);
+
+            // Scale group
+            selectedGroup.scale(horizScaleFactor, vertScaleFactor, transfromCenter)
+
+            }
+        }
+
+        // Housekeeping on mouseUp toolEvent
+        function toolUp(e) {
+            toolStatus = '';
+        }
+
+        // Feedforward tool options
+        function toolMove(e) {
+            hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
+
+            if (hitResult) {
+                if (hitResult.name === 'bottom-right' || hitResult.name === 'top-left') {
                     document.getElementById('paper-canvas').style.cursor = "nwse-resize";
+                } else if (hitResult.name === 'bottom-left' || hitResult.name === 'top-right'){
+                    document.getElementById('paper-canvas').style.cursor = "nesw-resize";
                 }
             } else {
                 document.getElementById('paper-canvas').style.cursor = "auto";
             }
-
-
         }
 
-        // On mouseDrag functionality
-        function mouseDrag (e) {
+        // handlers for keyEvents.
+        function toolKeyUp (e) {
 
-            // TODO: on dragging one corner past the opposite the item should be
-            // mirrored along that diagonal axis. Instead it's be scaled by the
-            // magnitude of the distance.
-
-            if (status == 'moving') {
-                selectedGroup.position = selectedGroup.position.add(e.delta);
-                groupBounds.position = groupBounds.position.add(e.delta);
-                groupBounds.selected = true;
-
-            // If clicked on the boundary then need to scale in some way.
-            } else if (status == 'scaling') {
-
-                // Itembounds rectangle for scale factor rectangle
-                var scaleRect = groupBounds.bounds;
-                scaleRect.selected = true;
-
-                // Check exactly which handle affected in order to adjust scaling point
-                if (hitResult.name == 'top-left') {
-
-                    // Calc scale factors
-                    var newWidth = e.point.x - scaleRect.topRight.x;
-                    var horizScaleFactor = Math.abs(newWidth/scaleRect.width);
-
-                    var newHeight = e.point.y - scaleRect.bottomLeft.y;
-                    var vertScaleFactor = Math.abs(newHeight/scaleRect.height);
-
-                    // Scale items
-                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomRight);
-                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomRight);
-
-                } else if (hitResult && hitResult.name == 'top-right') {
-
-                    // Calc scale factors
-                    var newWidth = e.point.x - scaleRect.topLeft.x;
-                    var horizScaleFactor = Math.abs(newWidth/scaleRect.width);
-
-                    var newHeight = e.point.y - scaleRect.bottomRight.y;
-                    var vertScaleFactor = Math.abs(newHeight/scaleRect.height);
-
-                    // Scale items
-                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomLeft);
-                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.bottomLeft);
-
-                } else if (hitResult && hitResult.name == 'bottom-right') {
-
-                    // Calc scale factors
-                    var newWidth = e.point.x - scaleRect.bottomLeft.x;
-                    var horizScaleFactor = Math.abs(newWidth/scaleRect.width);
-
-                    var newHeight = e.point.y - scaleRect.topRight.y;
-                    var vertScaleFactor = Math.abs(newHeight/scaleRect.height);
-
-                    // Scale items
-                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.topLeft);
-                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.topLeft);
-
-                } else if (hitResult && hitResult.name == 'bottom-left') {
-
-                    // Calc scale factors
-                    var newWidth = e.point.x - scaleRect.bottomRight.x;
-                    var horizScaleFactor = Math.abs(newWidth/scaleRect.width);
-
-                    var newHeight = e.point.y - scaleRect.topLeft.y;
-                    var vertScaleFactor = Math.abs(newHeight/scaleRect.height);
-
-                    // Scale items
-                    selectedGroup.scale(horizScaleFactor, vertScaleFactor, scaleRect.topRight);
-                    groupBounds.scale(horizScaleFactor, vertScaleFactor, scaleRect.topRight);
-                }
-            }
-        }
-
-        // On backSpace KeyEvent
-        function onKeyUp (e) {
-
+            // Remove items
             if (e.key == 'backspace'){
                 // Check for current selection
                 if (vm.paperScope.project.selectedItems) {
-
-                    // For each item selected remove if not a layer
+                    // For each item selected remove if item is not a layer
                     vm.paperScope.project.selectedItems.forEach(function(item){
                         if(item.className != 'Layer'){
                             item.remove();
                         }
                     })
-
-                    // If itemBounds has been added then remove this also
-                    if(groupBounds){
-                        groupBounds.remove();
-                    }
                 }
             }
         }
 
-        // on MouseUp housekeeping functionality.
-        function mouseUp (e) {
-            hitResult = null;
-        }
-
+        // Assign tool to paper instance.
         this.toolMove = new paper.Tool();
-        this.toolMove.onMouseDown = mouseDown;
-        this.toolMove.onMouseDrag = mouseDrag;
-        this.toolMove.onMouseUp = mouseUp;
-        this.toolMove.onKeyUp = onKeyUp;
-        this.toolMove.onMouseMove = mouseMove;
+        this.toolMove.onMouseDown = toolDown;
+        this.toolMove.onMouseDrag = toolDrag;
+        this.toolMove.onMouseUp = toolUp;
+        this.toolMove.onMouseMove = toolMove;
+        this.toolMove.onKeyUp = toolKeyUp;
+
     }
 }
 
