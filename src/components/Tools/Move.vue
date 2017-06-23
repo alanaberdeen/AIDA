@@ -51,13 +51,15 @@ export default {
     created() {
         var vm = this;
         var hitResult = null;
+
         var selectedGroup = null;
-        var toolStatus = '';
-        var selectionRect = new paper.Path.Rectangle([100,100], 100);
+        var toBeSelected = [];
+        var selectionRect = new paper.Path.Rectangle([0,0], 0);
         selectionRect.remove();
 
-        var projectPathItems = null;
+        var toolStatus = '';
 
+        var projectPathItems = null;
 
         // Based on the mouseEvent set the appropriate tool toolStatus.
         function toolDown(e) {
@@ -178,13 +180,20 @@ export default {
                     if (projectPathItems.hasOwnProperty(path)) {
                         if (projectPathItems[path].isInside(selectionRect.bounds)){
                             projectPathItems[path].selected = true;
+
+                            // Add to array of items to be selected
+                            toBeSelected.push(projectPathItems[path]);
                         } else {
                             projectPathItems[path].selected = false;
+
+                            // Remove from array of items to be selected
+                            var index = toBeSelected.indexOf(projectPathItems[path]);
+                            if (index > -1) {
+                                toBeSelected.splice(index, 1);
+                            }
                         }
                     }
                 }
-
-                toolStatus = 'select-drag';
 
             } else if (toolStatus === 'move'){
                 selectedGroup.position = selectedGroup.position.add(e.delta);
@@ -226,23 +235,21 @@ export default {
         // Check for multiple selections and adjust if so.
         function toolUp(e) {
 
-            if (toolStatus === 'select-drag') {
+            if (toolStatus === 'select') {
                 if (e.modifiers.shift){
                     if(!selectedGroup){
-                        selectedGroup = new paper.Group(vm.paperScope.project.selectedItems);
+                        selectedGroup = new paper.Group(toBeSelected);
                     } else {
-                        selectedGroup.addChildren(vm.paperScope.project.selectedItems);
+                        selectedGroup.addChildren(toBeSelected);
                     }
                 } else {
-                    // If preivous selection then unselect it
-                    if (selectedGroup) {
-                        selectedGroup.selected = false;
-                    }
-                    selectedGroup = new paper.Group(vm.paperScope.project.selectedItems);
+                    // Deselect all current selection
+                    vm.paperScope.project.deselectAll();
+                    selectedGroup = new paper.Group(toBeSelected);
                 }
 
                 // Select the items in the group
-                if (selectedGroup){
+                if (selectedGroup && selectedGroup.hasChildren()){
                     selectedGroup.selected = true;
                     selectedGroup.bounds.selected = true;
                 }
@@ -251,6 +258,7 @@ export default {
             // Housekeeping
             toolStatus = '';
             selectionRect.remove();
+            toBeSelected = [];
         }
 
         // Feedforward tool options
