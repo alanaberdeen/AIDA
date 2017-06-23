@@ -26,7 +26,6 @@ export default {
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
             this.toolPen.activate();
-            this.newPath()
 
             // Set tool hitOptions
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
@@ -43,48 +42,71 @@ export default {
             myPath.strokeColor = 'red';
             myPath.strokeWidth = 400/viewportZoom;
             myPath.selected = true;
+
+            return myPath
         }
     },
 
     created() {
         var vm = this;
+        var path = null;
 
-        function addPoint(e) {
-            // Get currently activate item
-            var myPath = vm.paperScope.project.activeLayer.lastChild;
+        function toolDown(e) {
 
-            var hitResult = myPath.hitTest(e.point, vm.hitOptions);
+            // If there is no current active path then create one.
+            if(!path || !path.data.active){
+                console.log('creating new path');
+                path = vm.newPath()
+                path.data.active = true;
+            }
+
+            var hitResult = path.hitTest(e.point, vm.hitOptions);
             console.log('The hitResult is:')
             console.log(hitResult);
 
             // If option key is held down then close the path
             if(e.modifiers.option) {
-                myPath.closed = true;
-                myPath.smooth()
+                path.closed = true;
+                path.smooth();
+                path.selected = false;
+                path.data.active = false;
 
-                // start a new path
-                vm.newPath()
+            // If first segment clicked, close path.
+            } else if (hitResult && hitResult.segment == path.firstSegment){
+                path.closed = true;
+                path.smooth();
+                path.selected = false;
+                path.data.active = false;
 
-            // If user has clicked on the last segment again then complete
-            // the path and create a new one.
-            } else if(hitResult && hitResult.segment == myPath.lastSegment) {
-                myPath.selected = false
-                vm.newPath()
-            }else {
-                myPath.add(e.point)
-                myPath.smooth()
+            // If last segment clicked close path
+            } else if (hitResult && hitResult.segment == path.lastSegment) {
+                path.selected = false;
+                path.data.active = false;
+
+            // Else ad new point
+            } else {
+                path.add(e.point)
+                path.smooth();
             }
         }
 
-        function finishPath(e) {
-            myPath.add(e.point);
-            myPath.smooth()
+        // ToolDrag for drawing
+        function toolDrag(e){
+            
+        }
 
-            vm.newPath()
+        // Feedfoward information on mouseMove
+        function toolMove(e) {
+            var hitResult = path.hitTest(e.point, vm.hitOptions);
+
+            // If hovering over first segment
+            if(hitResult && hitResult.segment == path.firstSegment){
+
+            }
         }
 
         this.toolPen = new paper.Tool()
-        this.toolPen.onMouseDown = addPoint
+        this.toolPen.onMouseDown = toolDown
 
     }
 }
