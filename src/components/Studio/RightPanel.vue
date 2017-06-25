@@ -5,6 +5,12 @@
                 <app-layers :paperScope='paperScope'>
                 </app-layers>
             </v-list-item>
+
+            <v-list-item>
+                <app-channels   :paperScope='paperScope'
+                                :osdViewer='osdViewer'>
+                </app-channels>
+            </v-list-item>
         </v-list>
     </div>
 
@@ -13,12 +19,14 @@
 <script>
 // Import child components
 import layers from './Layers.vue'
+import channels from './Channels.vue'
 
 export default {
-    props: ['paperScope'],
+    props: ['paperScope', 'osdViewer'],
 
     components: {
         'app-layers': layers,
+        'app-channels': channels
     }
 }
 </script>

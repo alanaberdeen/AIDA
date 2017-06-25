@@ -4,6 +4,8 @@
                 <app-toolbar :config='config'></app-toolbar>
             </header>
 
+
+
             <v-container fluid id='content-container'>
                 <v-layout>
                     <v-flex xs1>
@@ -12,8 +14,13 @@
                                     :config='config'>
                         </app-tools>
                     </v-flex>
-                    <v-flex xs2 offset-xs9>
-                        <app-right-panel :paperScope='paperScope'>
+                    <v-flex xs9 class='center-col'>
+                        <app-stepper>
+                        </app-stepper>
+                    </v-flex>
+                    <v-flex xs2>
+                        <app-right-panel    :paperScope='paperScope'
+                                            :osdViewer='osdViewer'>
                         </app-right-panel>
                     </v-flex>
                 </v-layout>
@@ -34,6 +41,7 @@ import ImageLoader from './components/ImageLoader.vue'
 import Toolbar from './components/Header/Toolbar.vue'
 import RightPanel from './components/Studio/RightPanel.vue'
 import Footer from './components/Footer.vue'
+import Stepper from './components/Stepper.vue'
 
 import { eventBus } from './main'
 
@@ -88,8 +96,32 @@ export default {
         this.osdViewer = OpenSeadragon({
             id: "osd-canvas",
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-            tileSources: "../static/HEDZ/HEDZ.dzi",
             showNavigationControl: false
+        });
+
+        // Add image tile sources to the viewer.
+        // These will be the different channels.
+        // TODO: make this reactive to the number of channels in the image source.
+        // at the moment it is merely hardcoded.
+        this.osdViewer.addTiledImage({
+            tileSource: "../static/dzi_images/CD3DZ/CD3DZ.dzi",
+            x: 0,
+            y: 0,
+            opacity: 0.5
+        });
+
+        this.osdViewer.addTiledImage({
+            tileSource: "../static/dzi_images/HEDZ/HEDZ.dzi",
+            x: 0,
+            y: 0,
+            opacity: 0.5
+        });
+
+        this.osdViewer.addTiledImage({
+            tileSource: "../static/dzi_images/CD20DZ/CD20DZ.dzi",
+            x: 0,
+            y: 0,
+            opacity: 0.5
         });
 
         // Create the PaperJS instance.
@@ -109,7 +141,7 @@ export default {
             var viewportZoom = vm.osdViewer.viewport.getZoom(true);
             var image1 = vm.osdViewer.world.getItemAt(0);
             vm.paperScope.view.zoom = image1.viewportToImageZoom(viewportZoom);
-            var center = vm.osdViewer.viewport.viewportToImageCoordinates(vm.osdViewer.viewport.getCenter(true));
+            var center = image1.viewportToImageCoordinates(vm.osdViewer.viewport.getCenter(true));
             vm.paperScope.view.center = new paper.Point(center.x, center.y);
 
             // Update paths to have strokeWidth reactive to zoom level
@@ -132,7 +164,8 @@ export default {
         'app-image-loader': ImageLoader,
         'app-toolbar': Toolbar,
         'app-footer': Footer,
-        'app-right-panel': RightPanel
+        'app-right-panel': RightPanel,
+        'app-stepper': Stepper
     }
 }
 </script>
@@ -153,5 +186,10 @@ export default {
     #content-container {
         flex: 1 0 auto;
         padding: 0px;
+    }
+
+    .center-col {
+        padding-left: 0px;
+        padding-right: 0px;
     }
 </style>

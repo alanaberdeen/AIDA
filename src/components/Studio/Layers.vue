@@ -78,10 +78,6 @@ export default {
 
     methods: {
 
-        sayHello() {
-            console.log("Hi there")
-        },
-
         // Begin editing
         editLayerName (layer) {
             this.beforeEditCache = layer.name
