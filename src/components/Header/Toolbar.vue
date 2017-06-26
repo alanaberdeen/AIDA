@@ -1,6 +1,6 @@
 <template lang="html">
     <v-toolbar class="pointers-please">
-        <v-toolbar-logo class='white--text'>Annotate</v-toolbar-logo>
+        <v-toolbar-logo class='white--text'>AIDA</v-toolbar-logo>
         <v-toolbar-items>
             <v-toolbar-item>
                 <app-settings :config='config'></app-settings>

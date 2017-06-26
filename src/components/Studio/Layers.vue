@@ -42,10 +42,7 @@
 
                             <v-list-tile-action>
                                 <v-btn @click.native="exportJSON(layer)" icon ripple class='button'>
-                                    <v-icon :class="{
-                                        'icon--dark': !(layer == paperScope.project.activeLayer),
-                                        'blue--text darken-2--text': (layer == paperScope.project.activeLayer)
-                                        }">
+                                    <v-icon class="icon--dark">
                                         save
                                     </v-icon>
                                 </v-btn>
