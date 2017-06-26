@@ -90,7 +90,7 @@ export default {
 .left-side-bar{
     margin-top: 0px;
     width: 100%;
-    height: 100vh;
+    height: 93vh;
     background-color: #EEEEEE;
 }
 

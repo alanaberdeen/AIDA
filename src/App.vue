@@ -1,7 +1,8 @@
 <template>
         <v-app top-toolbar pointer-events='none'>
             <header>
-                <app-toolbar :config='config'></app-toolbar>
+                <app-toolbar :config='config' id='toolbar'>
+                </app-toolbar>
             </header>
 
 
@@ -190,5 +191,13 @@ export default {
     .center-col {
         padding-left: 0px;
         padding-right: 0px;
+    }
+
+    #toolbar {
+        height: 100%;
+    }
+
+    header {
+        height: 7%;
     }
 </style>
