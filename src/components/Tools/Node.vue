@@ -99,9 +99,9 @@ export default {
 
                     status = 'adjusting-handle';
 
-                } else {
-                    vm.paperScope.project.deselectAll();
                 }
+            } else {
+                vm.paperScope.project.deselectAll();
             }
         }
 
