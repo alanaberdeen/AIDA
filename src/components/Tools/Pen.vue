@@ -16,7 +16,8 @@ export default {
     data() {
         return {
             toolPen: null,
-            hitOptions: null
+            hitOptions: null,
+            path: null
         }
     },
 
@@ -29,7 +30,7 @@ export default {
 
             // Set tool hitOptions
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 400/viewportZoom;
+            var hitTolerance = 500/viewportZoom;
             this.hitOptions = {
                 segments: true,
                 tolerance: hitTolerance
@@ -49,64 +50,75 @@ export default {
 
     created() {
         var vm = this;
-        var path = null;
 
         function toolDown(e) {
 
             // If there is no current active path then create one.
-            if(!path || !path.data.active){
+            if(!vm.path || !vm.path.data.active){
                 console.log('creating new path');
-                path = vm.newPath()
-                path.data.active = true;
+                vm.path = vm.newPath()
+                vm.path.data.active = true;
             }
 
-            var hitResult = path.hitTest(e.point, vm.hitOptions);
+            var hitResult = vm.path.hitTest(e.point, vm.hitOptions);
             console.log('The hitResult is:')
             console.log(hitResult);
 
             // If option key is held down then close the path
             if(e.modifiers.option) {
-                path.closed = true;
-                path.smooth();
-                path.selected = false;
-                path.data.active = false;
+                vm.path.closed = true;
+                vm.path.smooth();
+                vm.path.selected = false;
+                vm.path.data.active = false;
 
             // If first segment clicked, close path.
-            } else if (hitResult && hitResult.segment == path.firstSegment){
-                path.closed = true;
-                path.smooth();
-                path.selected = false;
-                path.data.active = false;
+            } else if (hitResult && hitResult.segment == vm.path.firstSegment){
+                vm.path.closed = true;
+                vm.path.smooth();
+                vm.path.selected = false;
+                vm.path.data.active = false;
 
             // If last segment clicked close path
-            } else if (hitResult && hitResult.segment == path.lastSegment) {
-                path.selected = false;
-                path.data.active = false;
+            } else if (hitResult && hitResult.segment == vm.path.lastSegment) {
+                vm.path.selected = false;
+                vm.path.data.active = false;
 
             // Else ad new point
             } else {
-                path.add(e.point)
-                path.smooth();
+                vm.path.add(e.point)
+                vm.path.smooth();
             }
         }
 
         // ToolDrag for drawing
         function toolDrag(e){
-            
+
         }
 
         // Feedfoward information on mouseMove
         function toolMove(e) {
-            var hitResult = path.hitTest(e.point, vm.hitOptions);
+            var hitResult = vm.paperScope.project.hitTest(e.point, vm.hitOptions);
 
-            // If hovering over first segment
-            if(hitResult && hitResult.segment == path.firstSegment){
+            // If hovering over first/last segment then remove the selected
+            // highlighting to indicate path will be finsihed.
+            if (hitResult &&
+                    (hitResult.segment == hitResult.item.firstSegment ||
+                     hitResult.segment == hitResult.item.lastSegment)){
 
+                if (vm.path && vm.path.data.active){
+                    vm.path.selected = false;
+                }
+
+            } else {
+                if (vm.path && vm.path.data.active){
+                    vm.path.selected = true;
+                }
             }
         }
 
-        this.toolPen = new paper.Tool()
-        this.toolPen.onMouseDown = toolDown
+        this.toolPen = new paper.Tool();
+        this.toolPen.onMouseDown = toolDown;
+        this.toolPen.onMouseMove = toolMove;
 
     }
 }

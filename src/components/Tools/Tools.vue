@@ -2,13 +2,16 @@
     <div class="pointers-please left-side-bar elevation-2">
             <v-list>
                 <v-list-item id='pan-toggle'>
+
                     <app-pan :paperScope="paperScope"
                              :osdViewer="osdViewer"
                              :active="(this.activeTool === 'pan')"
                              @click.native="activeTool = 'pan'"
                              v-if='config.tools.pan.include'>
                     </app-pan>
+
                 </v-list-item>
+
                 <v-list-item id='annotation-tools'>
                     <v-list>
 
@@ -17,7 +20,6 @@
                                     @click.native="activeTool = 'circle'"
                                     v-if='config.tools.circle.include'>
                         </app-circle>
-
 
                         <app-rectangle  :paperScope="paperScope"
                                         :active="(this.activeTool === 'rectangle')"
@@ -45,6 +47,7 @@
                                   @click.native="activeTool = 'node'"
                                   v-if='config.tools.node.include'>
                         </app-node>
+
                     </v-list>
                 </v-list-item>
             </v-list>
@@ -52,7 +55,6 @@
 </template>
 
 <script>
-//TODO: make it so that the active tool has a 'depressed' visual on the button
 import paper from 'paper'
 
 // Import child components

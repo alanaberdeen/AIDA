@@ -151,7 +151,6 @@ export default {
             vm.paperScope.project.layers.forEach((layer) => {
                 layer.children.forEach((child) => {
                     if(child.className === 'Path') {
-                        console.log('Adjusting the strokeWidth of a path');
                         child.strokeWidth = 400/viewportZoom
                     }
                 })

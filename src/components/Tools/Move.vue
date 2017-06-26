@@ -58,7 +58,6 @@ export default {
         selectionRect.remove();
 
         var toolStatus = '';
-
         var projectPathItems = null;
 
         // Based on the mouseEvent set the appropriate tool toolStatus.
@@ -74,9 +73,6 @@ export default {
             projectPathItems = vm.paperScope.project.getItems({
                 className: 'Path'
             })
-
-
-
 
             // If user clicked inside a bounds selection rectangle
             if (selectedGroup && selectedGroup.bounds.contains(e.point) && !e.modifiers.shift){
