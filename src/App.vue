@@ -152,7 +152,7 @@ export default {
             vm.paperScope.project.layers.forEach((layer) => {
                 layer.children.forEach((child) => {
                     if(child.className === 'Path') {
-                        child.strokeWidth = 400/viewportZoom
+                        child.strokeWidth = 500/viewportZoom
                     }
                 })
             })
