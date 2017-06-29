@@ -1,6 +1,6 @@
 <template>
     <v-layout row justify-center>
-        <v-dialog v-model="dialog" scrollable width='70%'>
+        <v-dialog v-model="dialog" scrollable>
 
             <!-- Button toggles the activated status of dialog -->
             <v-btn slot="activator" icon class="white--text">
@@ -8,48 +8,81 @@
             </v-btn>
 
             <v-card>
-                <v-card-title>Settings</v-card-title>
+                <v-layout>
+                    <v-card-title class='card-title'>Settings</v-card-title>
+                </v-layout>
+
                 <v-divider></v-divider>
 
-                <v-card-row>
-                    <v-card-col>
-                        <v-list>
+                <v-layout>
+                    <v-flex xs3 class='tabs' style='padding-right: 0px;'>
+
+                        <v-list class='options'>
+
                             <v-list-item>
-                                <v-list-tile>
-                                    <v-list-tile-content>
-                                        tools
+                                <v-list-tile @click.native="active = 'Task'"
+                                             :class="{ 'option-active': (active === 'Task') }">
+                                    <v-list-tile-content class='option'>
+                                        Task
                                     </v-list-tile-content>
                                 </v-list-tile>
                             </v-list-item>
-                        </v-list>
-                    </v-card-col>
 
-                    <v-card-col>
-                        <v-list two-line subheader>
-
-                            <!-- For each tool add an option to activate or otherwise -->
-                            <v-list-item v-for="tool in config.tools" :key="tool.name">
-                                <v-list-tile avatar>
-
-                                    <v-list-tile-action>
-                                        <v-checkbox v-model="tool.include"></v-checkbox>
-                                    </v-list-tile-action>
-
-                                    <v-list-tile-content>
-                                        <v-list-tile-title> {{ tool.name }} </v-list-tile-title>
-                                        <v-list-tile-sub-title> {{ tool.caption }}</v-list-tile-sub-title>
+                            <v-list-item>
+                                <v-list-tile @click.native="active = 'Images'"
+                                             :class="{ 'option-active': (active === 'Images') }">
+                                    <v-list-tile-content class='option'>
+                                        Images
                                     </v-list-tile-content>
+                                </v-list-tile>
+                            </v-list-item>
 
+                            <v-list-item>
+                                <v-list-tile @click.native="active = 'Tools'"
+                                             :class="{ 'option-active': (active === 'Tools') }">
+                                    <v-list-tile-content class='option'>
+                                        Tools
+                                    </v-list-tile-content>
                                 </v-list-tile>
                             </v-list-item>
 
                         </v-list>
-                    </v-card-col>
-                </v-card-row>
-                <v-divider></v-divider>
-                <v-card-row actions>
-                    <v-btn class="blue--text darken-1" flat @click.native="dialog = false">Close</v-btn>
-                </v-card-row>
+                    </v-flex>
+
+                    <v-flex xs9>
+
+                        <v-card-row class='settings'>
+                            <v-layout>
+                                 <!-- Adjust which tools are activated.  -->
+                                <v-list two-line subheader v-if="active === 'Tools'">
+                                    <v-list-item v-for="tool in config.tools" :key="tool.name">
+                                        <v-list-tile avatar>
+
+                                            <v-list-tile-action>
+                                                <v-checkbox v-model="tool.include"></v-checkbox>
+                                            </v-list-tile-action>
+
+                                            <v-list-tile-content>
+                                                <v-list-tile-title> {{ tool.name }} </v-list-tile-title>
+                                                <v-list-tile-sub-title> {{ tool.caption }}</v-list-tile-sub-title>
+                                            </v-list-tile-content>
+
+                                        </v-list-tile>
+                                    </v-list-item>
+                                </v-list>
+                            </v-layout>
+                        </v-card-row>
+
+                        <v-layout>
+                            <v-card-row actions>
+                                <v-btn class="blue--text darken-1" flat @click.native="dialog = false">
+                                    Close
+                                </v-btn>
+                            </v-card-row>
+                        </v-layout>
+
+                    </v-flex>
+                </v-layout>
 
             </v-card>
         </v-dialog>
@@ -65,7 +98,8 @@ export default {
 
     data () {
       return {
-        dialog: false
+        dialog: false,
+        active: 'Tools'
       }
     }
 }
@@ -74,14 +108,47 @@ export default {
 
 <style lang="css">
 
-.dialog__content{
-    z-index: 200;
+.dialog {
+    min-width: 75%;
 }
 
-.dialog-active {
-    width: 70%;
+.card-title {
+    padding-left: 36px;
 }
 
+.tabs {
+    border-right: 1px solid rgba(0,0,0,0.12);
+}
 
+.options {
+    padding: 0px;
+}
+
+.option {
+    padding-left: 8px;
+}
+
+.option-active {
+    background-color: rgba(0,0,0,0.07);
+    font-weight: bold;
+}
+
+.settings {
+    min-height: 400px;
+    max-height: 400px;
+    padding-top: 30px;
+}
+
+.list__tile__title {
+    font-size: 14px;
+}
+
+.list__tile__sub-title {
+    font-size: 12px;
+}
+
+.material-icons {
+    font-size: 20px;
+}
 
 </style>
