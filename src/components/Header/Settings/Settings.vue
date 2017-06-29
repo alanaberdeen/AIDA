@@ -53,23 +53,17 @@
 
                         <v-card-row class='settings'>
                             <v-layout>
-                                 <!-- Adjust which tools are activated.  -->
-                                <v-list two-line subheader v-if="active === 'Tools'">
-                                    <v-list-item v-for="tool in config.tools" :key="tool.name">
-                                        <v-list-tile avatar>
 
-                                            <v-list-tile-action>
-                                                <v-checkbox v-model="tool.include"></v-checkbox>
-                                            </v-list-tile-action>
+                                <!-- Show tool settings -->
+                                <app-tool-settings v-if="active === 'Tools'"
+                                                   :config='config'>
+                                </app-tool-settings>
 
-                                            <v-list-tile-content>
-                                                <v-list-tile-title> {{ tool.name }} </v-list-tile-title>
-                                                <v-list-tile-sub-title> {{ tool.caption }}</v-list-tile-sub-title>
-                                            </v-list-tile-content>
+                                <!-- Show task settings -->
+                                <app-task-settings v-if="active === 'Task'"
+                                                   :config='config'>
+                                </app-task-settings>
 
-                                        </v-list-tile>
-                                    </v-list-item>
-                                </v-list>
                             </v-layout>
                         </v-card-row>
 
@@ -91,16 +85,23 @@
 
 <script>
 
-
+// Import child components
+import ToolSettings from './ToolSettings.vue'
+import TaskSettings from './TaskSettings.vue'
 
 export default {
     props: ['config'],
 
     data () {
-      return {
-        dialog: false,
-        active: 'Tools'
-      }
+        return {
+            dialog: false,
+            active: 'Task'
+        }
+    },
+
+    components: {
+        'app-tool-settings': ToolSettings,
+        'app-task-settings': TaskSettings
     }
 }
 

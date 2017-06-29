@@ -5,8 +5,6 @@
                 </app-toolbar>
             </header>
 
-
-
             <v-container fluid id='content-container'>
                 <v-layout>
                     <v-flex xs1>
@@ -83,7 +81,15 @@ export default {
                         name: 'Node',
                         caption: 'Manipulate path node and handles'
                     }
-                }
+                },
+                steps: [
+                    {   tools: [],
+                        regionOfIntereset: '',
+                        instruction: ''
+                    }
+                ]
+
+
             }
         }
     },

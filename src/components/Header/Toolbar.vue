@@ -12,16 +12,10 @@
 <script>
 
 // Import child components
-import Settings from './Settings.vue'
+import Settings from './Settings/Settings.vue'
 
 export default {
     props: ['config'],
-
-    data() {
-        return {
-
-        }
-    },
 
     components: {
         'app-settings': Settings
