@@ -8,86 +8,105 @@
             </v-btn>
 
             <v-card>
-                <v-layout>
-                    <v-card-title class='card-title'>Settings</v-card-title>
-                </v-layout>
-
+                <v-card-title>Settings</v-card-title>
                 <v-divider></v-divider>
-
                 <v-layout>
                     <v-flex xs3 class='tabs' style='padding-right: 0px;'>
 
-                        <v-list class='options'>
-
-                            <v-list-item>
-                                <v-list-tile @click.native="active = 'Task'"
-                                             :class="{ 'option-active': (active === 'Task') }">
-                                    <v-list-tile-content class='option'>
-                                        Task
+                        <v-list>
+                            <v-list-group v-model="steps">
+                                <v-list-tile slot="item"
+                                             @click.native="active = ''">
+                                    <v-list-tile-content>
+                                        <v-list-tile-title> Steps </v-list-tile-title>
                                     </v-list-tile-content>
+                                    <v-list-tile-action>
+                                        <v-icon>keyboard_arrow_down</v-icon>
+                                    </v-list-tile-action>
                                 </v-list-tile>
-                            </v-list-item>
+
+                                <v-list-item v-for="(step,index) in config.steps" :key="index">
+                                    <v-list-tile @click.native="activeStep = index"
+                                                 :class="{ 'option-active': (activeStep === index) }">
+                                        <v-list-tile-content>
+                                            <v-list-tile-title> {{index + 1}} </v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list-item>
+
+                                <v-list-item>
+                                    <v-list-tile>
+                                        <v-list-tile-content>
+                                            <v-list-tile-title> + add </v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list-item>
+
+
+                            </v-list-group>
 
                             <v-list-item>
-                                <v-list-tile @click.native="active = 'Images'"
+                                <v-list-tile slot="item"
+                                             @click.native="active = 'Images'; steps=false"
                                              :class="{ 'option-active': (active === 'Images') }">
-                                    <v-list-tile-content class='option'>
-                                        Images
+                                    <v-list-tile-content>
+                                        <v-list-tile-title> Images </v-list-tile-title>
                                     </v-list-tile-content>
                                 </v-list-tile>
                             </v-list-item>
 
                             <v-list-item>
-                                <v-list-tile @click.native="active = 'Tools'"
+                                <v-list-tile slot="item"
+                                             @click.native="active = 'Tools'; steps=false"
                                              :class="{ 'option-active': (active === 'Tools') }">
-                                    <v-list-tile-content class='option'>
-                                        Tools
+                                    <v-list-tile-content>
+                                        <v-list-tile-title> Tools </v-list-tile-title>
                                     </v-list-tile-content>
                                 </v-list-tile>
                             </v-list-item>
 
                         </v-list>
+
                     </v-flex>
 
                     <v-flex xs9>
+                        <v-card-row height="400px">
 
-                        <v-card-row class='settings'>
-                            <v-layout>
-
+                            <v-card-text>
                                 <!-- Show tool settings -->
                                 <app-tool-settings v-if="active === 'Tools'"
                                                    :config='config'>
                                 </app-tool-settings>
 
                                 <!-- Show task settings -->
-                                <app-task-settings v-if="active === 'Task'"
-                                                   :config='config'>
-                                </app-task-settings>
+                                <app-step-settings v-if="steps"
+                                                   :config='config'
+                                                   :step='activeStep'>
+                                </app-step-settings>
+                            </v-card-text>
 
-                            </v-layout>
                         </v-card-row>
-
-                        <v-layout>
-                            <v-card-row actions>
-                                <v-btn class="blue--text darken-1" flat @click.native="dialog = false">
-                                    Close
-                                </v-btn>
-                            </v-card-row>
-                        </v-layout>
-
                     </v-flex>
+
                 </v-layout>
+                <v-divider></v-divider>
+
+                <v-card-row actions>
+                    <v-btn class="blue--text darken-1" flat @click.native="dialog = false">
+                        Close
+                    </v-btn>
+                </v-card-row>
 
             </v-card>
-        </v-dialog>
-    </v-layout>
+            </v-dialog>
+        </v-layout>
 </template>
 
 <script>
 
 // Import child components
 import ToolSettings from './ToolSettings.vue'
-import TaskSettings from './TaskSettings.vue'
+import StepSettings from './StepSettings.vue'
 
 export default {
     props: ['config'],
@@ -95,13 +114,15 @@ export default {
     data () {
         return {
             dialog: false,
-            active: 'Task'
+            active: 'Task',
+            steps: false,
+            activeStep: 1
         }
     },
 
     components: {
         'app-tool-settings': ToolSettings,
-        'app-task-settings': TaskSettings
+        'app-step-settings': StepSettings
     }
 }
 

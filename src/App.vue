@@ -14,7 +14,7 @@
                         </app-tools>
                     </v-flex>
                     <v-flex xs9 class='center-col'>
-                        <app-stepper>
+                        <app-stepper :config='config'>
                         </app-stepper>
                     </v-flex>
                     <v-flex xs2>
@@ -51,6 +51,11 @@ export default {
             osdViewer: null,
             config: {
                 tools: {
+                    pan: {
+                        include: true,
+                        name: 'Pan and Zoom',
+                        caption: 'Pan and zoom the image and annotations'
+                    },
                     circle: {
                         include: true,
                         name: 'Circle',
@@ -71,11 +76,6 @@ export default {
                         name: 'Move',
                         caption: 'Move and scale annotation items'
                     },
-                    pan: {
-                        include: true,
-                        name: 'Pan and Zoom',
-                        caption: 'Pan and zoom the image and annotations'
-                    },
                     node: {
                         include: true,
                         name: 'Node',
@@ -83,6 +83,18 @@ export default {
                     }
                 },
                 steps: [
+                    {   tools: [],
+                        regionOfIntereset: '',
+                        instruction: 'Instructions for Step 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                    },
+                    {   tools: [],
+                        regionOfIntereset: '',
+                        instruction: 'Instructions for Step 2: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+                    },
+                    {   tools: [],
+                        regionOfIntereset: '',
+                        instruction: ''
+                    },
                     {   tools: [],
                         regionOfIntereset: '',
                         instruction: ''
