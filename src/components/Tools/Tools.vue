@@ -78,7 +78,7 @@ export default {
 
     data() {
         return{
-            activeTool: ''
+            activeTool: 'pan'
         }
     },
 

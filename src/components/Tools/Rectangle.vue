@@ -32,14 +32,14 @@ export default {
     created() {
 
         // Deselect any current selection
-        this.paperScope.project.deselectAll()
+        this.paperScope.project.deselectAll();
 
         // Define an intial rect just so we can always remove one where necessary
         // in the drawing loop.
-        var rect = new paper.Path.Rectangle([100,100], 100)
-        rect.remove()
+        var rect = new paper.Path.Rectangle([100,100], 100);
+        rect.remove();
 
-        function drawRect(e) {
+        function toolDrag(e) {
             var width = e.point.x - e.downPoint.x;
             var height = e.point.y - e.downPoint.y;
 
@@ -47,20 +47,20 @@ export default {
             rect.remove();
 
             // Rebuild as defined by new config
-            rect = new paper.Path.Rectangle(e.downPoint.x, e.downPoint.y, width,height)
-            rect.strokeColor = 'red';
+            rect = new paper.Path.Rectangle(e.downPoint.x, e.downPoint.y, width,height);
+            rect.strokeColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 1});
             rect.strokeWidth = 400;
         }
 
-        function keepRect(e){
+        function toolUp(e){
             var myRect = rect.clone();
+            myRect.fillColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 0.4});
             rect.remove();
         }
 
         this.toolRect = new paper.Tool();
-        this.toolRect.onMouseDrag = drawRect;
-        this.toolRect.onMouseUp = keepRect
-        this.toolRect.activate();
+        this.toolRect.onMouseDrag = toolDrag;
+        this.toolRect.onMouseUp = toolUp;
     }
 
 }

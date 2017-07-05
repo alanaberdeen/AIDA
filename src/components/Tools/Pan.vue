@@ -33,6 +33,10 @@ export default {
             // Relinquish control of PaperJS interface
             this.paperScope.view.element.setAttribute("class", "pointers-no");
         }
+    },
+
+    created() {
+        this.initialiseTool();
     }
 }
 </script>

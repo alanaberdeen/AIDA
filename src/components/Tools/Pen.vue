@@ -40,7 +40,7 @@ export default {
         newPath() {
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
             var myPath = new paper.Path();
-            myPath.strokeColor = 'red';
+            myPath.strokeColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 1});
             myPath.strokeWidth = 400/viewportZoom;
             myPath.selected = true;
 
@@ -71,6 +71,7 @@ export default {
             // If first segment clicked, close path.
             } else if (hitResult && hitResult.segment == vm.path.firstSegment){
                 vm.path.closed = true;
+                vm.path.fillColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 0.4});
                 vm.path.smooth();
                 vm.path.selected = false;
                 vm.path.data.active = false;

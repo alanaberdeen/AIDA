@@ -35,7 +35,7 @@ export default {
 
             // Set tool hitOptions
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 500/viewportZoom;
+            var hitTolerance = 3000/viewportZoom;
             this.hitOptions = {
                 segments: true,
                 tolerance: hitTolerance
@@ -45,7 +45,7 @@ export default {
         newPath() {
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
             var myPath = new paper.Path();
-            myPath.strokeColor = 'red';
+            myPath.strokeColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 1});
             myPath.strokeWidth = 400/viewportZoom;
             myPath.selected = true;
 
@@ -64,7 +64,6 @@ export default {
 
             // If there is no current active path then create one.
             if(!vm.path || !vm.path.data.active){
-                console.log('creating new path');
                 vm.path = vm.newPath();
                 vm.path.data.active = true;
             }
@@ -74,7 +73,34 @@ export default {
         	vm.path.add(event.point);
         }
 
+        // This doesn't work because onMouseMove events are not fired when
+        // mouse button is held down. onMouseDrag events are instead.
+        // function onToolMove(event){
+        //
+        //     // Feedforward information applied when path being worked on.
+        //     if(vm.path){
+        //         // If user releases mouse near the first segment then assume
+        //         // trying to close the path and apply Feedfoward information.
+        //         var hitResult = vm.path.hitTest(event.point, vm.hitOptions);
+        //         if (hitResult && hitResult.segment === vm.path.firstSegment){
+        //             vm.path.closed = true;
+        //         } else {
+        //             vm.path.close = false;
+        //         }
+        //     }
+        // }
+
         function onToolUp(event) {
+
+            // If user releases mouse near the first segment then close path
+            // and set fill.
+            var hitResult = vm.path.hitTest(event.point, vm.hitOptions);
+            if (hitResult && hitResult.segment === vm.path.firstSegment){
+                vm.path.closed = true;
+                vm.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0.4})
+            }
+
+            // Deselect path.
         	vm.path.selected = false;
 
             // The path.segments array is analyzed and replaced by a more
@@ -84,9 +110,12 @@ export default {
             vm.path.data.active = false;
         }
 
+
+
         this.toolPencil = new paper.Tool();
         this.toolPencil.onMouseDown = onToolDown;
         this.toolPencil.onMouseDrag = onToolDrag;
+        // this.toolPencil.onMouseMove = onToolMove;
         this.toolPencil.onMouseUp = onToolUp;
 
 
