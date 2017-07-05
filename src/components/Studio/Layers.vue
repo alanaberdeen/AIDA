@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="pointers-please layer-panel elevation-1">
+    <div class="pointers-please layer-panel elevation-1" ondragstart="return false;" ondrop="return false;">
         <v-card class='panel'>
 
             <v-toolbar class='toolbar elevation-1'>
@@ -49,7 +49,6 @@
                             </v-list-tile-action>
 
                         </v-list-tile>
-                        <v-divider></v-divider>
                     </span>
                 </v-list-item>
             </v-list>

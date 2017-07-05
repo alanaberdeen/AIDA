@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="pointers-please channel-panel elevation-1">
+    <div class="pointers-please channel-panel elevation-1" ondragstart="return false;" ondrop="return false;">
         <v-card class='panel'>
 
             <v-toolbar class='toolbar elevation-1'>
@@ -9,14 +9,13 @@
             </v-toolbar>
 
             <v-list dense>
-                <v-list-item v-for="(channel, channelIndex) in channels" :key="channelIndex">
-                    <span>
+                <v-list-group v-for="(channel, channelIndex) in channels" :key="channelIndex">
 
-                        <v-list-tile class='tile'>
+                        <v-list-tile slot="item" class='tile'>
                             <v-list-tile-content>
 
                                 <v-list-tile-title class='channel-name'>
-                                    Ch. {{channel}}
+                                    Ch. {{channel.id + 1}}
                                 </v-list-tile-title>
 
                             </v-list-tile-content>
@@ -32,16 +31,25 @@
                                         <span v-else>
                                             visibility_off
                                         </span>
-
                                     </v-icon>
 
                                 </v-btn>
                             </v-list-tile-action>
-
+                            <v-divider></v-divider>
                         </v-list-tile>
-                        <v-divider></v-divider>
-                    </span>
-                </v-list-item>
+
+                        <v-list-item>
+                            <v-list-tile >
+                                <v-list-tile-content>
+                                    <v-slider   v-model="channel.opacity"
+                                                @input="onInput(channelIndex, channel.opacity)">
+                                    </v-slider>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list-item>
+
+                </v-list-group>
+
             </v-list>
         </v-card>
     </div>
@@ -54,21 +62,36 @@ export default {
     props: ['paperScope', 'osdViewer'],
     data(){
         return {
-            channels: 0,
-            visibility: 'visibility'
+            channels: [],
+            value1: 0
         }
     },
 
     created() {
         var vm = this;
+
         // Add event handler for when items are added/removed from osd world
         // this will update the total number of channels.
         this.osdViewer.world.addHandler('add-item', function() {
-            vm.channels = vm.osdViewer.world.getItemCount();
+            vm.channels.push({
+                id: vm.channels.length,
+                opacity: (vm.getOpacity(vm.channels.length)*100)
+            })
         });
 
+
+        // As, at this moment not sure which channel may have been removed
+        // reconstruct the array. Probably slightly wasteful way of doing it.
         this.osdViewer.world.addHandler('remove-item', function() {
-            vm.channels = vm.osdViewer.world.getItemCount();
+            vm.channels = []
+            var numChannels = vm.osdViewer.world.getItemCount();
+
+            for (i=0; i < numChannels; i++){
+                vm.channels.push({
+                    id: vm.channels.length,
+                    opacity: (vm.getOpacity(vm.channels.length)*100)
+                })
+            }
         });
     },
 
@@ -79,8 +102,10 @@ export default {
             var channel = this.osdViewer.world.getItemAt(channelIndex);
             if (channel.getOpacity() === 0){
                 channel.setOpacity(0.5);
+                this.channels[channelIndex].opacity = 50;
             } else {
                 channel.setOpacity(0);
+                this.channels[channelIndex].opacity = 0;
             }
         },
 
@@ -97,6 +122,11 @@ export default {
         getOpacity(channelIndex) {
             var channel = this.osdViewer.world.getItemAt(channelIndex);
             return channel.getOpacity();
+        },
+
+        onInput(channelIndex, channelOpacity){
+            var channel = this.osdViewer.world.getItemAt(channelIndex);
+            channel.setOpacity((channelOpacity/100));
         }
     }
 }
@@ -156,5 +186,8 @@ export default {
     width: 20px;
 }
 
+.list--group .list__tile {
+    padding-left: 10px;
+}
 
 </style>
