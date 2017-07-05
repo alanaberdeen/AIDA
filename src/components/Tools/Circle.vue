@@ -47,7 +47,8 @@ export default {
             var centerX = Math.round(event.point.x)
             var centerY = Math.round(event.point.y)
             var myCircle = new paper.Path.Circle(new paper.Point(centerX, centerY), 1000)
-            myCircle.fillColor = 'red'
+            myCircle.strokeColor = new paper.Color({hue: 140, saturation: 0.7, lightness: 0.5, alpha: 1});
+            myCircle.fillColor = new paper.Color({hue: 140, saturation: 0.7, lightness: 0.5, alpha: 0.4});
         }
 
         this.toolCircle = new paper.Tool();
