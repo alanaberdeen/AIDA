@@ -66,10 +66,15 @@ export default {
                         name: 'Rectangle',
                         caption: 'Draw rectangles'
                     },
-                    path: {
+                    pen: {
                         include: true,
-                        name: 'Path',
-                        caption: 'Draw smooth paths'
+                        name: 'Pen',
+                        caption: 'Draw smooth paths by dropping nodes'
+                    },
+                    pencil: {
+                        include: true,
+                        name: 'Pencil',
+                        caption: 'Draw smooth paths by dragging the mouse'
                     },
                     move: {
                         include: true,

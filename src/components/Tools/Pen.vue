@@ -55,14 +55,11 @@ export default {
 
             // If there is no current active path then create one.
             if(!vm.path || !vm.path.data.active){
-                console.log('creating new path');
                 vm.path = vm.newPath()
                 vm.path.data.active = true;
             }
 
             var hitResult = vm.path.hitTest(e.point, vm.hitOptions);
-            console.log('The hitResult is:')
-            console.log(hitResult);
 
             // If option key is held down then close the path
             if(e.modifiers.option) {

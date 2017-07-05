@@ -31,8 +31,15 @@
                                     :osdViewer="osdViewer"
                                     :active="(this.activeTool === 'pen')"
                                     @click.native="activeTool = 'pen'"
-                                    v-if='config.tools.path.include'>
+                                    v-if='config.tools.pen.include'>
                         </app-pen>
+
+                        <app-pencil :paperScope="paperScope"
+                                  :osdViewer="osdViewer"
+                                  :active="(this.activeTool === 'pencil')"
+                                  @click.native="activeTool = 'pencil'"
+                                  v-if='config.tools.pencil.include'>
+                        </app-pencil>
 
                         <app-move :paperScope="paperScope"
                                   :osdViewer="osdViewer"
@@ -61,6 +68,7 @@ import paper from 'paper'
 import toolCircle from './Circle.vue'
 import toolRectangle from './Rectangle.vue'
 import toolPen from './Pen.vue'
+import toolPencil from './Pencil.vue'
 import toolMove from './Move.vue'
 import toolPan from './Pan.vue'
 import toolNode from './Node.vue'
@@ -80,7 +88,8 @@ export default {
         'app-pen': toolPen,
         'app-move': toolMove,
         'app-pan': toolPan,
-        'app-node': toolNode
+        'app-node': toolNode,
+        'app-pencil': toolPencil
     }
 }
 </script>
