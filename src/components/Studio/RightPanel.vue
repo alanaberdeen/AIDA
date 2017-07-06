@@ -11,6 +11,13 @@
                                 :osdViewer='osdViewer'>
                 </app-channels>
             </v-list-item>
+
+            <v-list-item>
+                <app-properties   :paperScope='paperScope'
+                                  :osdViewer='osdViewer'
+                                 >
+                </app-properties>
+            </v-list-item>
         </v-list>
     </div>
 
@@ -20,13 +27,15 @@
 // Import child components
 import layers from './Layers.vue'
 import channels from './Channels.vue'
+import properties from './Properties.vue'
 
 export default {
     props: ['paperScope', 'osdViewer'],
 
     components: {
         'app-layers': layers,
-        'app-channels': channels
+        'app-channels': channels,
+        'app-properties': properties
     }
 }
 </script>

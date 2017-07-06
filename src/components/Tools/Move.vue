@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import paper from 'paper'
+import paper from 'paper';
+import { eventBus } from '../../main';
 
 export default {
     props: ['paperScope', 'osdViewer', 'active'],
@@ -65,8 +66,6 @@ export default {
 
             // Get details of the element the user has clicked on.
             hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
-            console.log('The hitResult is: ');
-            console.log(hitResult);
 
             // Check which path items are in the project at this moment.
             // This is useful for group selection.
@@ -255,6 +254,11 @@ export default {
             toolStatus = '';
             selectionRect.remove();
             toBeSelected = [];
+
+            // Emit selection event to the eventBus so that the properties
+            // panel can be updated.
+            eventBus.$emit('selectionChanged', vm.paperScope.project.selectedItems)
+
         }
 
         // Feedforward tool options

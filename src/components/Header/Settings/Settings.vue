@@ -98,8 +98,8 @@
                 </v-card-row>
 
             </v-card>
-            </v-dialog>
-        </v-layout>
+        </v-dialog>
+    </v-layout>
 </template>
 
 <script>
