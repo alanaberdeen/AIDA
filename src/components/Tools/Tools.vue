@@ -24,6 +24,7 @@
 
                         <app-rectangle  :paperScope="paperScope"
                                         :active="(this.activeTool === 'rectangle')"
+                                        :osdViewer="osdViewer"
                                         @click.native="activeTool = 'rectangle'"
                                         v-if='config.steps[config.activeStep].tools.rectangle'>
                         </app-rectangle>

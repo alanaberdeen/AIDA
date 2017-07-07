@@ -59,7 +59,7 @@ export default {
         var secondPoint;
         var radius = 2000;
 
-        // Plot a circle at pointer location
+        // Set the required zoom dependent variables 
         function toolDown(event) {
 
             // Set the strokewidth relative to zoom level.
