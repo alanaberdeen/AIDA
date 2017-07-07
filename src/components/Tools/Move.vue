@@ -257,7 +257,7 @@ export default {
 
             // Emit selection event to the eventBus so that the properties
             // panel can be updated.
-            eventBus.$emit('selectionChanged', vm.paperScope.project.selectedItems)
+            eventBus.$emit('selectionChanged', vm.paperScope.project.selectedItems);
 
         }
 
@@ -290,6 +290,10 @@ export default {
                         }
                     })
                 }
+
+                // Emit selection event to the eventBus so that the properties
+                // panel can be updated.
+                eventBus.$emit('selectionChanged', vm.paperScope.project.selectedItems);
             }
         }
 
