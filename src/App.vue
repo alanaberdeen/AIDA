@@ -50,6 +50,7 @@ export default {
             paperScope: null,
             osdViewer: null,
             config: {
+                activeStep: 0,
                 tools: {
                     pan: {
                         include: true,
@@ -89,24 +90,29 @@ export default {
                 },
                 steps: [
                     {   id: 1,
-                        tools: [],
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
                     },
                     {   id: 2,
-                        tools: [],
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 2: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
                     },
                     {   id: 3,
-                        tools: [],
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
                         regionOfIntereset: '',
-                        instruction: ''
+                        instruction: 'Instructions for Step 3:'
                     },
                     {   id: 4,
-                        tools: [],
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
                         regionOfIntereset: '',
-                        instruction: ''
+                        instruction: 'Instructions for Step 4:'
+                    },
+                    {   id: 5,
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
+                        regionOfIntereset: '',
+                        instruction: 'Instructions for Step 5:'
                     }
                 ]
 

@@ -9,9 +9,92 @@
             counter
             multi-line
             max="200"
-            rows="2"
+            rows="3"
             required
         ></v-text-field>
+
+        <div>
+            <p class='label'> Tools required: </p>
+
+            <v-btn  @click.native="config.steps[step].tools.pan = !config.steps[step].tools.pan"
+                    small
+                    :flat="!config.steps[step].tools.pan"
+                    class="tool elevation-1">
+                <i :class="{
+                        'fa': true,
+                        'fa-lock': true,
+                        'faIcons': true,
+                        }">
+                </i>
+            </v-btn>
+
+            <v-btn @click.native="config.steps[step].tools.circle = !config.steps[step].tools.circle"
+                    small
+                    :flat="!config.steps[step].tools.circle"
+                    class="tool elevation-1">
+                <i :class="{
+                        'fa': true,
+                        'fa-circle': true,
+                        'faIcons': true,
+                        }">
+                </i>
+            </v-btn>
+
+            <v-btn @click.native="config.steps[step].tools.rectangle = !config.steps[step].tools.rectangle"
+                    small
+                    :flat="!config.steps[step].tools.rectangle"
+                    class="tool elevation-1">
+                <v-icon>
+                        crop_landscape
+                </v-icon>
+            </v-btn>
+
+            <v-btn @click.native="config.steps[step].tools.pen = !config.steps[step].tools.pen"
+                    small
+                    :flat="!config.steps[step].tools.pen"
+                    class="tool elevation-1">
+                <v-icon>
+                        timeline
+                </v-icon>
+            </v-btn>
+
+            <v-btn @click.native="config.steps[step].tools.pencil = !config.steps[step].tools.pencil"
+                    small
+                    :flat="!config.steps[step].tools.pencil"
+                    class="tool elevation-1">
+                <i  :class="{
+                        'fa': true,
+                        'fa-pencil': true,
+                        'faIcons': true,
+                    }">
+               </i>
+            </v-btn>
+
+            <v-btn @click.native="config.steps[step].tools.move = !config.steps[step].tools.move"
+                    small
+                    :flat="!config.steps[step].tools.move"
+                    class="tool elevation-1">
+                <i :class="{
+                        'fa': true,
+                        'fa-mouse-pointer': true,
+                        'faIcons': true,
+                    }">
+                </i>
+            </v-btn>
+
+            <v-btn @click.native="config.steps[step].tools.node = !config.steps[step].tools.node"
+                    small
+                    :flat="!config.steps[step].tools.node"
+                    class="tool elevation-1">
+                <i :class="{
+                        'fa': true,
+                        'fa-location-arrow': true,
+                        'faIcons': true,
+                        }">
+                </i>
+            </v-btn>
+
+        </div>
 
     </div>
 </template>
@@ -26,6 +109,11 @@ export default {
         return {
             title: ''
         }
+    },
+
+    created() {
+
+        console.log(this.config.steps[this.step].tools.pan);
     }
 }
 </script>
@@ -44,5 +132,12 @@ export default {
 .instruction-input{
     font-size: 14px;
 }
+
+.label {
+    color: rgba(0,0,0,0.38);
+    font-size: 16px;
+}
+
+
 
 </style>

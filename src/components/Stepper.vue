@@ -6,7 +6,7 @@
                     <v-stepper-step
                                     :step=stepItem.id
                                     editable
-                                    @click.native="activeStep = stepIndex"
+                                    @click.native="setActive(stepIndex)"
                                     >
                     </v-stepper-step>
                     <v-divider></v-divider>
@@ -16,7 +16,7 @@
 
         <div class='hint-card'>
             <p class="hint">
-                {{ config.steps[activeStep].instruction }}
+                {{ config.steps[config.activeStep].instruction }}
             </p>
         </div>
     </div>
@@ -28,13 +28,17 @@ export default {
 
     props: ['config'],
 
-    data() {
-        return {
-            activeStep: 0
+    computed: {
+        activeStep() {
+            return this.config.activeStep
+        }
+    },
+
+    methods: {
+        setActive(stepIndex){
+            this.config.activeStep = stepIndex;
         }
     }
-
-
 }
 </script>
 

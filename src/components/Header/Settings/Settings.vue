@@ -26,8 +26,8 @@
                                 </v-list-tile>
 
                                 <v-list-item v-for="(step,index) in config.steps" :key="index">
-                                    <v-list-tile @click.native="activeStep = index"
-                                                 :class="{ 'option-active': (activeStep === index) }">
+                                    <v-list-tile @click.native="config.activeStep = index"
+                                                 :class="{ 'option-active': (config.activeStep === index) }">
                                         <v-list-tile-content>
                                             <v-list-tile-title> {{index + 1}} </v-list-tile-title>
                                         </v-list-tile-content>
@@ -55,16 +55,6 @@
                                 </v-list-tile>
                             </v-list-item>
 
-                            <v-list-item>
-                                <v-list-tile slot="item"
-                                             @click.native="active = 'Tools'; steps=false"
-                                             :class="{ 'option-active': (active === 'Tools') }">
-                                    <v-list-tile-content>
-                                        <v-list-tile-title> Tools </v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                            </v-list-item>
-
                         </v-list>
 
                     </v-flex>
@@ -73,15 +63,10 @@
                         <v-card-row height="400px">
 
                             <v-card-text>
-                                <!-- Show tool settings -->
-                                <app-tool-settings v-if="active === 'Tools'"
-                                                   :config='config'>
-                                </app-tool-settings>
-
                                 <!-- Show task settings -->
                                 <app-step-settings v-if="steps"
                                                    :config='config'
-                                                   :step='activeStep'>
+                                                   :step='config.activeStep'>
                                 </app-step-settings>
                             </v-card-text>
 
@@ -116,7 +101,7 @@ export default {
             dialog: false,
             active: 'Task',
             steps: false,
-            activeStep: 1
+            activeStep: 0
         }
     },
 

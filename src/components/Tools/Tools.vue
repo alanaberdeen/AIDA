@@ -7,7 +7,7 @@
                              :osdViewer="osdViewer"
                              :active="(this.activeTool === 'pan')"
                              @click.native="activeTool = 'pan'"
-                             v-if='config.tools.pan.include'>
+                             v-if='config.steps[config.activeStep].tools.pan'>
                     </app-pan>
 
                 </v-list-item>
@@ -19,41 +19,41 @@
                                     :active="(this.activeTool === 'circle')"
                                     :osdViewer="osdViewer"
                                     @click.native="activeTool = 'circle'"
-                                    v-if='config.tools.circle.include'>
+                                    v-if='config.steps[config.activeStep].tools.circle'>
                         </app-circle>
 
                         <app-rectangle  :paperScope="paperScope"
                                         :active="(this.activeTool === 'rectangle')"
                                         @click.native="activeTool = 'rectangle'"
-                                        v-if='config.tools.rectangle.include'>
+                                        v-if='config.steps[config.activeStep].tools.rectangle'>
                         </app-rectangle>
 
                         <app-pen    :paperScope="paperScope"
                                     :osdViewer="osdViewer"
                                     :active="(this.activeTool === 'pen')"
                                     @click.native="activeTool = 'pen'"
-                                    v-if='config.tools.pen.include'>
+                                    v-if='config.steps[config.activeStep].tools.pen'>
                         </app-pen>
 
                         <app-pencil :paperScope="paperScope"
                                   :osdViewer="osdViewer"
                                   :active="(this.activeTool === 'pencil')"
                                   @click.native="activeTool = 'pencil'"
-                                  v-if='config.tools.pencil.include'>
+                                  v-if='config.steps[config.activeStep].tools.pencil'>
                         </app-pencil>
 
                         <app-move :paperScope="paperScope"
                                   :osdViewer="osdViewer"
                                   :active="(this.activeTool === 'move')"
                                   @click.native="activeTool = 'move'"
-                                  v-if='config.tools.move.include'>
+                                  v-if='config.steps[config.activeStep].tools.move'>
                         </app-move>
 
                         <app-node :paperScope="paperScope"
                                   :osdViewer="osdViewer"
                                   :active="(this.activeTool === 'node')"
                                   @click.native="activeTool = 'node'"
-                                  v-if='config.tools.node.include'>
+                                  v-if='config.steps[config.activeStep].tools.node'>
                         </app-node>
 
                     </v-list>
