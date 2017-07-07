@@ -63,9 +63,6 @@ export default {
 
             // Check if use selected something
             if(hitResult) {
-
-                console.log('The hitResult is: ' + hitResult);
-
                 // Depending on item state and click location set tool status
                 if (!hitResult.item.selected){
                     hitResult.item.selected = true;

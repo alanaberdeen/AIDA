@@ -124,8 +124,6 @@ export default {
         // Listen for an event indicating the selection has changed and
         // update the component data appropriately.
         eventBus.$on('selectionChanged', (selection) => {
-            console.log('The selection has been changed: ');
-
             // If
             if (selection.length >= 1){
                 vm.numItems = 0;
@@ -204,13 +202,6 @@ export default {
                         }
                 };
             }
-
-
-
-
-            console.log('Fill color: ' + vm.groupFillColor);
-
-
         })
     }
 }

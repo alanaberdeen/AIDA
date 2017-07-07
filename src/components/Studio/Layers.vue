@@ -136,7 +136,6 @@ export default {
         exportJSON (layer) {
             layer.activate();
             console.log(this.paperScope.project.activeLayer.exportJSON())
-
         }
     }
 }

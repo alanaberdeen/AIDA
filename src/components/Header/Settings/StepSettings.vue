@@ -109,11 +109,6 @@ export default {
         return {
             title: ''
         }
-    },
-
-    created() {
-
-        console.log(this.config.steps[this.step].tools.pan);
     }
 }
 </script>
