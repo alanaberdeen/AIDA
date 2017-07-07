@@ -17,6 +17,7 @@
 
                         <app-circle :paperScope="paperScope"
                                     :active="(this.activeTool === 'circle')"
+                                    :osdViewer="osdViewer"
                                     @click.native="activeTool = 'circle'"
                                     v-if='config.tools.circle.include'>
                         </app-circle>
