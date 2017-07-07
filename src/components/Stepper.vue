@@ -2,11 +2,15 @@
     <div class='pointers-please stepper'>
         <v-stepper non-linear>
             <v-stepper-header>
-                <v-stepper-step step="1" editable @click.native="activeStep = 0"> </v-stepper-step>
-                <v-divider></v-divider>
-                <v-stepper-step step="2" editable @click.native="activeStep = 1"> </v-stepper-step>
-                <v-divider></v-divider>
-                <v-stepper-step step="3" editable @click.native="activeStep = 2"> </v-stepper-step>
+                <div v-for="(stepItem, stepIndex) in config.steps" :key='stepIndex'>
+                    <v-stepper-step
+                                    :step=stepItem.id
+                                    editable
+                                    @click.native="activeStep = stepIndex"
+                                    >
+                    </v-stepper-step>
+                    <v-divider></v-divider>
+                </div>
             </v-stepper-header>
         </v-stepper>
 

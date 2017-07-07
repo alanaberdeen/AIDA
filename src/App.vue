@@ -88,19 +88,23 @@ export default {
                     }
                 },
                 steps: [
-                    {   tools: [],
+                    {   id: 1,
+                        tools: [],
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
                     },
-                    {   tools: [],
+                    {   id: 2,
+                        tools: [],
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 2: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
                     },
-                    {   tools: [],
+                    {   id: 3,
+                        tools: [],
                         regionOfIntereset: '',
                         instruction: ''
                     },
-                    {   tools: [],
+                    {   id: 4,
+                        tools: [],
                         regionOfIntereset: '',
                         instruction: ''
                     }
