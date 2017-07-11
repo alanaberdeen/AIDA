@@ -55,12 +55,12 @@ export default {
                     pan: {
                         include: true,
                         name: 'Pan and Zoom',
-                        caption: 'Pan and zoom the image and annotations'
+                        caption: 'Pan and zoom'
                     },
                     circle: {
                         include: true,
                         name: 'Circle',
-                        caption: 'Plot filled circles',
+                        caption: 'Plot circles',
                     },
                     rectangle: {
                         include: true,
@@ -70,7 +70,7 @@ export default {
                     pen: {
                         include: true,
                         name: 'Pen',
-                        caption: 'Draw smooth paths by dropping nodes'
+                        caption: 'Draw smooth paths by plotting node points'
                     },
                     pencil: {
                         include: true,
@@ -85,7 +85,7 @@ export default {
                     node: {
                         include: true,
                         name: 'Node',
-                        caption: 'Manipulate path node and handles'
+                        caption: 'Manipulate path nodes and handles'
                     }
                 },
                 steps: [
