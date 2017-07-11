@@ -15,7 +15,7 @@
                             <v-list-tile-content>
 
                                 <v-list-tile-title class='channel-name'>
-                                    Ch. {{channel.id + 1}}
+                                    {{config.images[channelIndex].name}}
                                 </v-list-tile-title>
 
                             </v-list-tile-content>
@@ -59,7 +59,7 @@
 import paper from 'paper'
 
 export default {
-    props: ['paperScope', 'osdViewer'],
+    props: ['paperScope', 'osdViewer', 'config'],
     data(){
         return {
             channels: [],

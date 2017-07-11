@@ -8,7 +8,8 @@
 
             <v-list-item>
                 <app-channels   :paperScope='paperScope'
-                                :osdViewer='osdViewer'>
+                                :osdViewer='osdViewer'
+                                :config='config'>
                 </app-channels>
             </v-list-item>
 
@@ -30,7 +31,7 @@ import channels from './Channels.vue'
 import properties from './Properties.vue'
 
 export default {
-    props: ['paperScope', 'osdViewer'],
+    props: ['paperScope', 'osdViewer', 'config'],
 
     components: {
         'app-layers': layers,

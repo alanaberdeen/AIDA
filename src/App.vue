@@ -1,7 +1,9 @@
 <template>
         <v-app top-toolbar pointer-events='none'>
             <header>
-                <app-toolbar :config='config' id='toolbar'>
+                <app-toolbar    :config='config'
+                                :osdViewer='osdViewer'
+                                id='toolbar'>
                 </app-toolbar>
             </header>
 
@@ -19,7 +21,8 @@
                     </v-flex>
                     <v-flex xs2>
                         <app-right-panel    :paperScope='paperScope'
-                                            :osdViewer='osdViewer'>
+                                            :osdViewer='osdViewer'
+                                            :config='config'>
                         </app-right-panel>
                     </v-flex>
                 </v-layout>
@@ -114,10 +117,29 @@ export default {
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 5:'
                     }
-                ]
-
-
+                ],
+                images: []
             }
+        }
+    },
+
+    methods: {
+        addImage(name, url) {
+            var newid = this.config.images.length + 1;
+
+            this.config.images.push({
+                id: newid,
+                name: name,
+                url: url
+            })
+
+            this.osdViewer.addTiledImage({
+                tileSource: url,
+                x: 0,
+                y: 0,
+                opacity: 0.5
+            });
+
         }
     },
 
@@ -137,26 +159,9 @@ export default {
         // These will be the different channels.
         // TODO: make this reactive to the number of channels in the image source.
         // at the moment it is merely hardcoded.
-        this.osdViewer.addTiledImage({
-            tileSource: "../static/dzi_images/CD3DZ/CD3DZ.dzi",
-            x: 0,
-            y: 0,
-            opacity: 0.5
-        });
-
-        this.osdViewer.addTiledImage({
-            tileSource: "../static/dzi_images/HEDZ/HEDZ.dzi",
-            x: 0,
-            y: 0,
-            opacity: 0.5
-        });
-
-        this.osdViewer.addTiledImage({
-            tileSource: "../static/dzi_images/CD20DZ/CD20DZ.dzi",
-            x: 0,
-            y: 0,
-            opacity: 0.5
-        });
+        vm.addImage('CD3DZ', '../static/dzi_images/CD3DZ/CD3DZ.dzi');
+        vm.addImage('HEDZ', '../static/dzi_images/HEDZ/HEDZ.dzi');
+        vm.addImage('CD20DZ', '../static/dzi_images/CD20DZ/CD20DZ.dzi');
 
         // Create the PaperJS instance.
         // Save it to the VueModel

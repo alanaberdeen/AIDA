@@ -3,7 +3,8 @@
         <v-toolbar-logo class='white--text'>AIDA</v-toolbar-logo>
         <v-toolbar-items>
             <v-toolbar-item>
-                <app-settings :config='config'></app-settings>
+                <app-settings   :config='config'
+                                :osdViewer='osdViewer'></app-settings>
             </v-toolbar-item>
         </v-toolbar-items>
     </v-toolbar>
@@ -15,7 +16,7 @@
 import Settings from './Settings/Settings.vue'
 
 export default {
-    props: ['config'],
+    props: ['config', 'osdViewer'],
 
     components: {
         'app-settings': Settings

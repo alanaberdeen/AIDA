@@ -140,9 +140,9 @@ export default {
     font-size: 16px;
 }
 
-[data-tooltip] {
+/*[data-tooltip] {
     transition-delay: 1s;
-}
+}*/
 
 
 

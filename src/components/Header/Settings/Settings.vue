@@ -37,7 +37,9 @@
                                 <v-list-item>
                                     <v-list-tile>
                                         <v-list-tile-content>
-                                            <v-list-tile-title> + add </v-list-tile-title>
+                                            <v-list-tile-title>
+                                                <v-icon> add_circle_outline </v-icon>
+                                            </v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                 </v-list-item>
@@ -45,18 +47,39 @@
 
                             </v-list-group>
 
-                            <v-list-item>
+                            <v-list-group v-model="images">
                                 <v-list-tile slot="item"
-                                             @click.native="active = 'Images'; steps=false"
-                                             :class="{ 'option-active': (active === 'Images') }">
+                                             @click.native="active = ''; steps=false">
                                     <v-list-tile-content>
                                         <v-list-tile-title> Images </v-list-tile-title>
                                     </v-list-tile-content>
+                                    <v-list-tile-action>
+                                        <v-icon>keyboard_arrow_down</v-icon>
+                                    </v-list-tile-action>
                                 </v-list-tile>
-                            </v-list-item>
 
+                                <v-list-item v-for="(image,index) in config.images" :key="index">
+                                    <v-list-tile @click.native="activeImage = index; active = ''"
+                                                 :class="{ 'option-active': (activeImage === index) }">
+                                        <v-list-tile-content>
+                                            <v-list-tile-title> {{image.name}} </v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list-item>
+
+                                <v-list-item>
+                                    <v-list-tile @click.native="activeImage = 'add'; active = 'addImage'"
+                                                 :class="{ 'option-active': (activeImage === 'add') }">
+                                        <v-list-tile-content>
+                                            <v-list-tile-title>
+                                                <v-icon> add_circle_outline </v-icon>
+                                            </v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list-item>
+
+                            </v-list-group>
                         </v-list>
-
                     </v-flex>
 
                     <v-flex xs9>
@@ -68,6 +91,12 @@
                                                    :config='config'
                                                    :step='config.activeStep'>
                                 </app-step-settings>
+
+                                <!-- Show image settings -->
+                                <app-add-image  v-if="images && active === 'addImage'"
+                                                :config='config'
+                                                :osdViewer='osdViewer'>
+                                </app-add-image>
                             </v-card-text>
 
                         </v-card-row>
@@ -90,24 +119,28 @@
 <script>
 
 // Import child components
-import ToolSettings from './ToolSettings.vue'
-import StepSettings from './StepSettings.vue'
+import ToolSettings from './ToolSettings.vue';
+import StepSettings from './StepSettings.vue';
+import AddImage from './AddImage.vue';
 
 export default {
-    props: ['config'],
+    props: ['config', 'osdViewer'],
 
     data () {
         return {
             dialog: false,
             active: 'Task',
             steps: false,
+            images: false,
+            activeImage: 0,
             activeStep: 0
         }
     },
 
     components: {
         'app-tool-settings': ToolSettings,
-        'app-step-settings': StepSettings
+        'app-step-settings': StepSettings,
+        'app-add-image': AddImage
     }
 }
 
