@@ -17,6 +17,7 @@ export default {
         return {
             toolPen: null,
             hitOptions: null,
+            strokeWidth: null,
             path: null
         }
     },
@@ -30,7 +31,10 @@ export default {
 
             // Set tool hitOptions
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 500/viewportZoom;
+            var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
+            this.strokeWidth = size/(viewportZoom*500);
+
+            var hitTolerance = this.strokeWidth*5;
             this.hitOptions = {
                 segments: true,
                 tolerance: hitTolerance
@@ -41,7 +45,7 @@ export default {
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
             var myPath = new paper.Path();
             myPath.strokeColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 1});
-            myPath.strokeWidth = 400/viewportZoom;
+            myPath.strokeWidth = this.strokeWidth;
             myPath.selected = true;
 
             return myPath
@@ -99,19 +103,20 @@ export default {
 
             // If hovering over first/last segment then remove the selected
             // highlighting to indicate path will be finsihed.
-            if (hitResult &&
-                    (hitResult.segment == hitResult.item.firstSegment ||
-                     hitResult.segment == hitResult.item.lastSegment)){
-
-                if (vm.path && vm.path.data.active){
-                    vm.path.selected = false;
+            if (hitResult) {
+                if( hitResult.segment == hitResult.item.firstSegment ){
+                    vm.path.closed = true;
+                } else if (hitResult.segment == hitResult.item.firstSegment ||
+                           hitResult.segment == hitResult.item.lastSegment){
+                               vm.path.selected = false;
                 }
-
             } else {
                 if (vm.path && vm.path.data.active){
                     vm.path.selected = true;
+                    vm.path.closed = false;
                 }
             }
+
         }
 
         this.toolPen = new paper.Tool();

@@ -31,6 +31,8 @@ export default {
 
             // Set the default radius relative to zoom level.
             this.viewportZoom = this.osdViewer.viewport.getZoom(true);
+            var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
+            this.strokeWidth = size/(this.viewportZoom*500);
         },
 
         //helper function - calculate distance between 2 points:
@@ -57,9 +59,6 @@ export default {
 
         // Set the required zoom dependent variables
         function toolDown(event) {
-
-            // Set the strokewidth relative to zoom level.
-            vm.strokeWidth = 400/vm.viewportZoom;
 
             //get the first point
 	        firstPoint = event.point;

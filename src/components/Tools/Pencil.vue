@@ -22,6 +22,7 @@ export default {
         return {
             toolPencil: null,
             hitOptions: null,
+            strokeWidth: null,
             path: null
         }
     },
@@ -34,8 +35,10 @@ export default {
             this.toolPencil.activate();
 
             // Set tool hitOptions
-            var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 3000/viewportZoom;
+            var viewportZoom = this.osdViewer.viewport.getZoom(true);var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
+            this.strokeWidth = size/(viewportZoom*500);
+
+            var hitTolerance = this.strokeWidth*5;
             this.hitOptions = {
                 segments: true,
                 tolerance: hitTolerance
@@ -46,12 +49,12 @@ export default {
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
             var myPath = new paper.Path();
             myPath.strokeColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 1});
-            myPath.strokeWidth = 400/viewportZoom;
+            myPath.strokeWidth = this.strokeWidth;
             myPath.selected = true;
 
             // The distance the mouse has to be dragged before an event is fired
             // is dependent on the current zoom level
-            this.toolPencil.minDistance = 4000/viewportZoom;
+            this.toolPencil.minDistance = this.strokeWidth*5;
 
             return myPath
         }

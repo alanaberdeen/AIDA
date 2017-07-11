@@ -34,9 +34,13 @@ export default {
             }
             this.toolCircle.activate();
 
-            // Set the default radius relative to zoom level.
+            // Set the default radius relative to image size and zoom level.
+            // TODO: inefficiencies in this. Each time we are getting the
+            // content size repeatedly.
             this.viewportZoom = this.osdViewer.viewport.getZoom(true);
-            this.radius = 3000/this.viewportZoom;
+            var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
+            this.radius = size/(this.viewportZoom*100);
+            this.strokeWidth = size/(this.viewportZoom*500);
         },
 
         //helper function - calculate distance between 2 points:
@@ -59,15 +63,12 @@ export default {
         var secondPoint;
         var radius = 2000;
 
-        // Set the required zoom dependent variables 
+        // Set the required zoom dependent variables
         function toolDown(event) {
-
-            // Set the strokewidth relative to zoom level.
-            vm.strokeWidth = 400/vm.viewportZoom;
 
             // The distance the mouse has to be dragged before an event is fired
             // is dependent on the current zoom level
-            vm.toolCircle.minDistance = 4000/vm.viewportZoom;
+            vm.toolCircle.minDistance = vm.radius * 1.5;
 
             //get the first point
 	        firstPoint = event.point;

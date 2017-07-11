@@ -137,7 +137,7 @@ export default {
                 tileSource: url,
                 x: 0,
                 y: 0,
-                opacity: 0.5
+                opacity: 0.7
             });
 
         }
@@ -159,9 +159,10 @@ export default {
         // These will be the different channels.
         // TODO: make this reactive to the number of channels in the image source.
         // at the moment it is merely hardcoded.
-        vm.addImage('CD3DZ', '../static/dzi_images/CD3DZ/CD3DZ.dzi');
-        vm.addImage('HEDZ', '../static/dzi_images/HEDZ/HEDZ.dzi');
-        vm.addImage('CD20DZ', '../static/dzi_images/CD20DZ/CD20DZ.dzi');
+        // vm.addImage('CD3DZ', '../static/dzi_images/CD3DZ/CD3DZ.dzi');
+        // vm.addImage('HEDZ', '../static/dzi_images/HEDZ/HEDZ.dzi');
+        // vm.addImage('CD20DZ', '../static/dzi_images/CD20DZ/CD20DZ.dzi');
+        vm.addImage('Highsmith', 'http://openseadragon.github.io/example-images/highsmith/highsmith.dzi');
 
         // Create the PaperJS instance.
         // Save it to the VueModel
@@ -186,11 +187,13 @@ export default {
             // Update paths to have strokeWidth reactive to zoom level
             // This might be computationally-expensive but will try for now.
             // Loop through each item in the project checking if it's a path
-            // item and resizing the strokeWidth to be relative to the zoom level.
+            // item and resizing the strokeWidth to be relative to the zoom
+            // level and item size.
+            var size = vm.osdViewer.world.getItemAt(0).getContentSize().x;
             vm.paperScope.project.layers.forEach((layer) => {
                 layer.children.forEach((child) => {
                     if(child.className === 'Path') {
-                        child.strokeWidth = 500/viewportZoom
+                        child.strokeWidth = size/(viewportZoom*500);
                     }
                 })
             })

@@ -21,7 +21,8 @@ export default {
     data() {
         return {
             toolMove: null,
-            selectOptions: null
+            selectOptions: null,
+            strokeWidth: null
         }
     },
 
@@ -35,7 +36,10 @@ export default {
             // Set the hitTolerance for user clicks to be depenent on current
             // viewport parameters
             var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 500/viewportZoom;
+            var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
+            this.strokeWidth = size/(viewportZoom*500);
+
+            var hitTolerance = this.strokeWidth*3;
             this.selectOptions = {
                 segments: true,
                 stroke: true,
@@ -167,7 +171,7 @@ export default {
                 selectionRect.strokeColor = '#4D88D4';
                 selectionRect.fillColor = '#A3C5E8';
                 selectionRect.opacity = 0.4;
-                selectionRect.strokeWidth = vm.selectOptions.tolerance;
+                selectionRect.strokeWidth = vm.strokeWidth;
 
                 // For each item in the project check if they are inside the
                 // box and select them if so.
@@ -270,6 +274,8 @@ export default {
                     document.getElementById('paper-canvas').style.cursor = "nwse-resize";
                 } else if (hitResult.name === 'bottom-left' || hitResult.name === 'top-right'){
                     document.getElementById('paper-canvas').style.cursor = "nesw-resize";
+                } else if(hitResult.type === 'fill'){
+                    document.getElementById('paper-canvas').style.cursor = "auto";
                 }
             } else {
                 document.getElementById('paper-canvas').style.cursor = "auto";
