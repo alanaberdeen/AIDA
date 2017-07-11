@@ -162,7 +162,7 @@ export default {
         // vm.addImage('CD3DZ', '../static/dzi_images/CD3DZ/CD3DZ.dzi');
         // vm.addImage('HEDZ', '../static/dzi_images/HEDZ/HEDZ.dzi');
         // vm.addImage('CD20DZ', '../static/dzi_images/CD20DZ/CD20DZ.dzi');
-        vm.addImage('Highsmith', 'http://openseadragon.github.io/example-images/highsmith/highsmith.dzi');
+        vm.addImage('Highsmith', 'https://openseadragon.github.io/example-images/highsmith/highsmith.dzi');
 
         // Create the PaperJS instance.
         // Save it to the VueModel
