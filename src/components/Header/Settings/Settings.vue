@@ -79,6 +79,31 @@
                                 </v-list-item>
 
                             </v-list-group>
+
+                            <v-list-group v-model="annotations">
+                                <v-list-tile slot="item"
+                                             @click.native="active = ''; steps=false">
+                                    <v-list-tile-content>
+                                        <v-list-tile-title> Annotations </v-list-tile-title>
+                                    </v-list-tile-content>
+                                    <v-list-tile-action>
+                                        <v-icon>keyboard_arrow_down</v-icon>
+                                    </v-list-tile-action>
+                                </v-list-tile>
+
+                                <v-list-item>
+                                    <v-list-tile @click.native="activeAnnotation = 'add'; active = 'addAnnotation'"
+                                                 :class="{ 'option-active': (activeAnnotation === 'add') }">
+                                        <v-list-tile-content>
+                                            <v-list-tile-title>
+                                                <v-icon> add_circle_outline </v-icon>
+                                            </v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list-item>
+
+                            </v-list-group>
+
                         </v-list>
                     </v-flex>
 
@@ -97,6 +122,13 @@
                                                 :config='config'
                                                 :osdViewer='osdViewer'>
                                 </app-add-image>
+
+                                <!-- Show annotation settings -->
+                                <app-add-annotation  v-if="active === 'addAnnotation'"
+                                                :config='config'
+                                                :osdViewer='osdViewer'
+                                                :paperScope='paperScope'>
+                                </app-add-annotation>
                             </v-card-text>
 
                         </v-card-row>
@@ -122,9 +154,10 @@
 import ToolSettings from './ToolSettings.vue';
 import StepSettings from './StepSettings.vue';
 import AddImage from './AddImage.vue';
+import AddAnnotation from './AddAnnotation.vue'
 
 export default {
-    props: ['config', 'osdViewer'],
+    props: ['config', 'osdViewer', 'paperScope'],
 
     data () {
         return {
@@ -132,6 +165,8 @@ export default {
             active: 'Task',
             steps: false,
             images: false,
+            annotations: false,
+            activeAnnotation: 0,
             activeImage: 0,
             activeStep: 0
         }
@@ -140,7 +175,8 @@ export default {
     components: {
         'app-tool-settings': ToolSettings,
         'app-step-settings': StepSettings,
-        'app-add-image': AddImage
+        'app-add-image': AddImage,
+        'app-add-annotation': AddAnnotation
     }
 }
 

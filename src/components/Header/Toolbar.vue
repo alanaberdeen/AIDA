@@ -4,7 +4,8 @@
         <v-toolbar-items>
             <v-toolbar-item>
                 <app-settings   :config='config'
-                                :osdViewer='osdViewer'></app-settings>
+                                :osdViewer='osdViewer'
+                                :paperScope='paperScope'></app-settings>
             </v-toolbar-item>
         </v-toolbar-items>
     </v-toolbar>
@@ -16,7 +17,7 @@
 import Settings from './Settings/Settings.vue'
 
 export default {
-    props: ['config', 'osdViewer'],
+    props: ['config', 'osdViewer', 'paperScope'],
 
     components: {
         'app-settings': Settings
