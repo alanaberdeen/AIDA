@@ -70,6 +70,7 @@ export default {
 
             // Get details of the element the user has clicked on.
             hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
+            console.log(hitResult);
 
             // Check which path items are in the project at this moment.
             // This is useful for group selection.
@@ -265,18 +266,24 @@ export default {
 
         }
 
-        // Feedforward tool options
+        // Change tool icon based on context in order to Feedforward to the
+        // user the action that could be taken.
         function toolMove(e) {
             hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
 
-            if (hitResult) {
-                if (hitResult.name === 'bottom-right' || hitResult.name === 'top-left') {
+            // If there are items selected and the cursor is within the bounds
+            // of the selection then indicate items can be moved.
+            if (selectedGroup && selectedGroup.bounds.contains(e.point) && !e.modifiers.shift) {
+                document.getElementById('paper-canvas').style.cursor = "move";
+
+            // Else if cursor is at the corners of the boundary box indicate
+            // that the items can be scaled.
+            } else if (hitResult && (hitResult.name === 'bottom-right' || hitResult.name === 'top-left')) {
                     document.getElementById('paper-canvas').style.cursor = "nwse-resize";
-                } else if (hitResult.name === 'bottom-left' || hitResult.name === 'top-right'){
+            } else if (hitResult && (hitResult.name === 'bottom-left' || hitResult.name === 'top-right')){
                     document.getElementById('paper-canvas').style.cursor = "nesw-resize";
-                } else if(hitResult.type === 'fill'){
-                    document.getElementById('paper-canvas').style.cursor = "auto";
-                }
+
+            // Else default to the automatic cursor config.
             } else {
                 document.getElementById('paper-canvas').style.cursor = "auto";
             }
