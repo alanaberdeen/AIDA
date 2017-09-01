@@ -107,6 +107,16 @@ export default {
                         tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 3:'
+                    },
+                    {   id: 4,
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
+                        regionOfIntereset: '',
+                        instruction: 'Instructions for Step 4:'
+                    },
+                    {   id: 5,
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
+                        regionOfIntereset: '',
+                        instruction: 'Instructions for Step 5:'
                     }
                 ],
                 images: []
@@ -193,7 +203,7 @@ export default {
         // Import JSON.
         // If required, load the interface with a set of annotations by defualt.
         // paperJS annoations should be described by JSON object as a string parameter.
-        vm.paperScope.project.importJSON('["Layer",{"name":"Circles","applyMatrix":true,"children":[["Path",{"applyMatrix":true,"segments":[[[2321.59715,3366.53675],[0,585.63994],[0,-585.63994]],[[3381.99206,2306.14185],[-585.63994,0],[585.63994,0]],[[4442.38697,3366.53675],[0,-585.63994],[0,585.63994]],[[3381.99206,4426.93166],[585.63994,0],[-585.63994,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":22.49365}],["Path",{"applyMatrix":true,"segments":[[[754.39936,5834.87327],[0,585.63994],[0,-585.63994]],[[1814.79427,4774.47837],[-585.63994,0],[585.63994,0]],[[2875.18918,5834.87327],[0,-585.63994],[0,585.63994]],[[1814.79427,6895.26818],[585.63994,0],[-585.63994,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":22.49365}],["Path",{"applyMatrix":true,"segments":[[[3222.73588,6481.34236],[0,585.63994],[0,-585.63994]],[[4283.13079,5420.94745],[-585.63994,0],[585.63994,0]],[[5343.5257,6481.34236],[0,-585.63994],[0,585.63994]],[[4283.13079,7541.73727],[585.63994,0],[-585.63994,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":22.49365}]]}]')
+        vm.paperScope.project.importJSON('["Layer",{"name”:”Default”,”applyMatrix":true,"selected":true,"children":[["Path",{"applyMatrix":true,"segments":[[[2321.59715,3366.53675],[0,585.63994],[0,-585.63994]],[[3381.99206,2306.14185],[-585.63994,0],[585.63994,0]],[[4442.38697,3366.53675],[0,-585.63994],[0,585.63994]],[[3381.99206,4426.93166],[585.63994,0],[-585.63994,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":27.50432}],["Path",{"applyMatrix":true,"segments":[[[754.39936,5834.87327],[0,585.63994],[0,-585.63994]],[[1814.79427,4774.47837],[-585.63994,0],[585.63994,0]],[[2875.18918,5834.87327],[0,-585.63994],[0,585.63994]],[[1814.79427,6895.26818],[585.63994,0],[-585.63994,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":27.50432}],["Path",{"applyMatrix":true,"segments":[[[3222.73588,6481.34236],[0,585.63994],[0,-585.63994]],[[4283.13079,5420.94745],[-585.63994,0],[585.63994,0]],[[5343.5257,6481.34236],[0,-585.63994],[0,585.63994]],[[4283.13079,7541.73727],[585.63994,0],[-585.63994,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":27.50432}]]}]')
     },
 
     components: {
