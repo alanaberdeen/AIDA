@@ -70,6 +70,7 @@ export default {
 
             // Get details of the element the user has clicked on.
             hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
+            console.log(hitResult);
 
             // Check which path items are in the project at this moment.
             // This is useful for group selection.

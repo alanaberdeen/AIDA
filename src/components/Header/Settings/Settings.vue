@@ -18,7 +18,7 @@
                                 <v-list-tile slot="item"
                                              @click.native="active = ''">
                                     <v-list-tile-content>
-                                        <v-list-tile-title> Task </v-list-tile-title>
+                                        <v-list-tile-title> Steps </v-list-tile-title>
                                     </v-list-tile-content>
                                     <v-list-tile-action>
                                         <v-icon>keyboard_arrow_down</v-icon>
@@ -29,7 +29,7 @@
                                     <v-list-tile @click.native="config.activeStep = index"
                                                  :class="{ 'option-active': (config.activeStep === index) }">
                                         <v-list-tile-content>
-                                            <v-list-tile-title> Step {{index + 1}} </v-list-tile-title>
+                                            <v-list-tile-title> {{index + 1}} </v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                 </v-list-item>

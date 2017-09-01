@@ -69,12 +69,7 @@ export default {
     },
 
     created() {
-
-        // If there are no layers imported, then the default layer will not
-        // have a name. So best set it here and avoid confusion.
-        if (!this.paperScope.project.activeLayer.name){
-            this.paperScope.project.activeLayer.name = 'Layer 1'
-        }
+        this.paperScope.project.activeLayer.name = 'Layer 1'
     },
 
     methods: {
