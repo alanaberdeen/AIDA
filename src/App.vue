@@ -3,29 +3,32 @@
             <header>
                 <app-toolbar    :config='config'
                                 :osdViewer='osdViewer'
-                                :paperScope='paperScope'
-                                id='toolbar'>
+                                :paperScope='paperScope'>
                 </app-toolbar>
             </header>
 
             <v-container fluid id='content-container'>
                 <v-layout>
+
                     <v-flex xs1>
                         <app-tools  :paperScope='paperScope'
                                     :osdViewer='osdViewer'
                                     :config='config'>
                         </app-tools>
                     </v-flex>
+
                     <v-flex xs9 class='center-col'>
                         <app-stepper :config='config'>
                         </app-stepper>
                     </v-flex>
+
                     <v-flex xs2>
                         <app-right-panel    :paperScope='paperScope'
                                             :osdViewer='osdViewer'
                                             :config='config'>
                         </app-right-panel>
                     </v-flex>
+
                 </v-layout>
             </v-container>
 
@@ -228,13 +231,5 @@ export default {
     .center-col {
         padding-left: 0px;
         padding-right: 0px;
-    }
-
-    #toolbar {
-        height: 100%;
-    }
-
-    header {
-        height: 7%;
     }
 </style>

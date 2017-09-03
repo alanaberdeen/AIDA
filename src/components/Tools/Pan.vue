@@ -1,16 +1,16 @@
 <template lang="html">
-    <v-list-item>
-        <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
-            <i :class="{
-                    'fa': true,
-                    'fa-lock': !this.active,
-                    'faIcons': !this.active,
-                    'faIconsActive': this.active,
-                    'fa-unlock': this.active
-                    }">
-            </i>
-        </v-btn>
-    </v-list-item>
+
+    <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+        <i :class="{
+                'fa': true,
+                'fa-lock': !this.active,
+                'faIcons': !this.active,
+                'faIconsActive': this.active,
+                'fa-unlock': this.active
+                }">
+        </i>
+    </v-btn>
+
 </template>
 
 <script>

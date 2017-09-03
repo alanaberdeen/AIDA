@@ -1,11 +1,11 @@
 <template lang="html">
-    <v-list-item>
-        <v-btn @click.native="initialiseTool" block class="tool elevation-1">
-            <v-icon :class="{'blue--text darken-2--text': this.active}">
-                    timeline
-            </v-icon>
-        </v-btn>
-    </v-list-item>
+
+    <v-btn @click.native="initialiseTool" block class="tool elevation-1">
+        <v-icon :class="{'blue--text darken-2--text': this.active}">
+                timeline
+        </v-icon>
+    </v-btn>
+
 </template>
 
 <script>

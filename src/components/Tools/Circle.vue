@@ -1,15 +1,15 @@
 <template lang="html">
-    <v-list-item>
-        <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
-            <i :class="{
-                    'fa': true,
-                    'fa-circle': true,
-                    'faIcons': !this.active,
-                    'faIconsActive': this.active
-                    }">
-            </i>
-        </v-btn>
-    </v-list-item>
+
+    <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+        <i :class="{
+                'fa': true,
+                'fa-circle': true,
+                'faIcons': !this.active,
+                'faIconsActive': this.active
+                }">
+        </i>
+    </v-btn>
+
 </template>
 
 <script>

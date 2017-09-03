@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="pointers-please channel-panel elevation-1" ondragstart="return false;" ondrop="return false;">
+    <div class="pointers-please channel-panel elevation-1">
         <v-card class='panel'>
 
             <v-toolbar class='toolbar elevation-1'>
@@ -23,22 +23,22 @@
                             <v-list-tile-action>
                                 <v-btn @click.native="toggleVisibility(channelIndex)" icon ripple class='button'>
 
-                                    <v-icon class='icon--dark'>
-                                        <span v-if="isVisible(channelIndex)">
+                                    <!-- <v-icon class='icon--dark'>
+                                        <span v-if="true">
                                             visibility
                                         </span>
 
                                         <span v-else>
                                             visibility_off
                                         </span>
-                                    </v-icon>
+                                    </v-icon> -->
 
                                 </v-btn>
                             </v-list-tile-action>
                             <v-divider></v-divider>
                         </v-list-tile>
 
-                        <v-list-item>
+                        <v-list-tile>
                             <v-list-tile >
                                 <v-list-tile-content>
                                     <v-slider   v-model="channel.opacity"
@@ -46,7 +46,7 @@
                                     </v-slider>
                                 </v-list-tile-content>
                             </v-list-tile>
-                        </v-list-item>
+                        </v-list-tile>
 
                 </v-list-group>
 
@@ -111,12 +111,14 @@ export default {
 
         // Check if channel is visibile
         isVisible(channelIndex) {
-            var channel = this.osdViewer.world.getItemAt(channelIndex);
-            if (channel.getOpacity() > 0){
-                return true
-            } else {
-                return false
-            }
+            // var channel = this.osdViewer.world.getItemAt(channelIndex);
+            // if (channel.getOpacity() > 0){
+            //     return true
+            // } else {
+            //     return false
+            // }
+
+            return true
         },
 
         getOpacity(channelIndex) {

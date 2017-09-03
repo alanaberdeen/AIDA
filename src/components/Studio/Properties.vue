@@ -9,7 +9,7 @@
             </v-toolbar>
 
             <v-list dense>
-                <v-list-item >
+                <v-list-tile >
 
                         <v-list-tile class='tile'>
                             <v-list-tile-content>
@@ -28,9 +28,9 @@
                             <v-divider></v-divider>
                         </v-list-tile>
 
-                </v-list-item>
+                </v-list-tile>
 
-                <v-list-item >
+                <v-list-tile >
 
                         <v-list-tile class='tile'>
                             <v-list-tile-content>
@@ -52,9 +52,9 @@
                             <v-divider></v-divider>
                         </v-list-tile>
 
-                </v-list-item>
+                </v-list-tile>
 
-                <v-list-item >
+                <v-list-tile >
 
                         <v-list-tile class='tile'>
                             <v-list-tile-content>
@@ -76,7 +76,7 @@
                             <v-divider></v-divider>
                         </v-list-tile>
 
-                </v-list-item>
+                </v-list-tile>
 
             </v-list>
         </v-card>

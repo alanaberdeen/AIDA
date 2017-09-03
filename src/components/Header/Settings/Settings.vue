@@ -1,5 +1,4 @@
 <template>
-    <v-layout row justify-center>
         <v-dialog v-model="dialog" scrollable>
 
             <!-- Button toggles the activated status of dialog -->
@@ -25,25 +24,22 @@
                                     </v-list-tile-action>
                                 </v-list-tile>
 
-                                <v-list-item v-for="(step,index) in config.steps" :key="index">
-                                    <v-list-tile @click.native="config.activeStep = index"
-                                                 :class="{ 'option-active': (config.activeStep === index) }">
-                                        <v-list-tile-content>
-                                            <v-list-tile-title> Step {{index + 1}} </v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                </v-list-item>
+                                <v-list-tile v-for="(step,index) in config.steps" :key="index"
+                                             @click.native="config.activeStep = index"
+                                             :class="{ 'option-active': (config.activeStep === index) }">
 
-                                <v-list-item>
-                                    <v-list-tile>
-                                        <v-list-tile-content>
-                                            <v-list-tile-title>
-                                                <v-icon> add_circle_outline </v-icon>
-                                            </v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                </v-list-item>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title> Step {{index + 1}} </v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
 
+                                <v-list-tile>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>
+                                            <v-icon> add_circle_outline </v-icon>
+                                        </v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
 
                             </v-list-group>
 
@@ -58,25 +54,24 @@
                                     </v-list-tile-action>
                                 </v-list-tile>
 
-                                <v-list-item v-for="(image,index) in config.images" :key="index">
-                                    <v-list-tile @click.native="activeImage = index; active = ''"
-                                                 :class="{ 'option-active': (activeImage === index) }">
-                                        <v-list-tile-content>
-                                            <v-list-tile-title> {{image.name}} </v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                </v-list-item>
+                                <v-list-tile v-for="(image,index) in config.images" :key="index"
+                                             @click.native="activeImage = index; active = ''"
+                                             :class="{ 'option-active': (activeImage === index) }">
 
-                                <v-list-item>
-                                    <v-list-tile @click.native="activeImage = 'add'; active = 'addImage'"
-                                                 :class="{ 'option-active': (activeImage === 'add') }">
-                                        <v-list-tile-content>
-                                            <v-list-tile-title>
-                                                <v-icon> add_circle_outline </v-icon>
-                                            </v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                </v-list-item>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title> {{image.name}} </v-list-tile-title>
+                                    </v-list-tile-content>
+
+                                </v-list-tile>
+
+                                <v-list-tile @click.native="activeImage = 'add'; active = 'addImage'"
+                                             :class="{ 'option-active': (activeImage === 'add') }">
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>
+                                            <v-icon> add_circle_outline </v-icon>
+                                        </v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
 
                             </v-list-group>
 
@@ -91,16 +86,14 @@
                                     </v-list-tile-action>
                                 </v-list-tile>
 
-                                <v-list-item>
-                                    <v-list-tile @click.native="activeAnnotation = 'add'; active = 'addAnnotation'"
-                                                 :class="{ 'option-active': (activeAnnotation === 'add') }">
-                                        <v-list-tile-content>
-                                            <v-list-tile-title>
-                                                <v-icon> add_circle_outline </v-icon>
-                                            </v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                </v-list-item>
+                                <v-list-tile @click.native="activeAnnotation = 'add'; active = 'addAnnotation'"
+                                             :class="{ 'option-active': (activeAnnotation === 'add') }">
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>
+                                            <v-icon> add_circle_outline </v-icon>
+                                        </v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
 
                             </v-list-group>
 
@@ -108,44 +101,46 @@
                     </v-flex>
 
                     <v-flex xs9>
-                        <v-card-row height="400px">
+                        <v-layout height="400px">
+                            <v-flex>
 
-                            <v-card-text>
-                                <!-- Show task settings -->
-                                <app-step-settings v-if="steps"
-                                                   :config='config'
-                                                   :step='config.activeStep'>
-                                </app-step-settings>
+                                <v-card-text>
+                                    <!-- Show task settings -->
+                                    <app-step-settings v-if="steps"
+                                                       :config='config'
+                                                       :step='config.activeStep'>
+                                    </app-step-settings>
 
-                                <!-- Show image settings -->
-                                <app-add-image  v-if="images && active === 'addImage'"
-                                                :config='config'
-                                                :osdViewer='osdViewer'>
-                                </app-add-image>
+                                    <!-- Show image settings -->
+                                    <app-add-image  v-if="images && active === 'addImage'"
+                                                    :config='config'
+                                                    :osdViewer='osdViewer'>
+                                    </app-add-image>
 
-                                <!-- Show annotation settings -->
-                                <app-add-annotation  v-if="active === 'addAnnotation'"
-                                                :config='config'
-                                                :osdViewer='osdViewer'
-                                                :paperScope='paperScope'>
-                                </app-add-annotation>
-                            </v-card-text>
+                                    <!-- Show annotation settings -->
+                                    <app-add-annotation  v-if="active === 'addAnnotation'"
+                                                    :config='config'
+                                                    :osdViewer='osdViewer'
+                                                    :paperScope='paperScope'>
+                                    </app-add-annotation>
+                                </v-card-text>
 
-                        </v-card-row>
+                            </v-flex>
+
+                        </v-layout>
                     </v-flex>
 
                 </v-layout>
                 <v-divider></v-divider>
 
-                <v-card-row actions>
+                <v-layout actions>
                     <v-btn class="blue--text darken-1" flat @click.native="dialog = false">
                         Close
                     </v-btn>
-                </v-card-row>
+                </v-layout>
 
             </v-card>
         </v-dialog>
-    </v-layout>
 </template>
 
 <script>

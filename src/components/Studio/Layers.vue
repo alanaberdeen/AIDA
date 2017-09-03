@@ -12,7 +12,7 @@
             </v-toolbar>
 
             <v-list dense>
-                <v-list-item v-for="layer in paperScope.project.layers" :key="layer.id">
+                <v-list-tile v-for="layer in paperScope.project.layers" :key="layer.id">
                     <span @click="selectLayer(layer)" @click.shift="addToSelection(layer)">
 
                         <v-list-tile class='tile'>
@@ -50,7 +50,7 @@
 
                         </v-list-tile>
                     </span>
-                </v-list-item>
+                </v-list-tile>
             </v-list>
         </v-card>
     </div>

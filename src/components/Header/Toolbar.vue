@@ -1,13 +1,13 @@
 <template lang="html">
-    <v-toolbar class="pointers-please">
-        <v-toolbar-logo class='white--text'>AIDA</v-toolbar-logo>
-        <v-toolbar-items>
-            <v-toolbar-item>
-                <app-settings   :config='config'
-                                :osdViewer='osdViewer'
-                                :paperScope='paperScope'></app-settings>
-            </v-toolbar-item>
-        </v-toolbar-items>
+    <v-toolbar dark dense class="primary pointers-please">
+        <v-toolbar-title class='white--text'>AIDA</v-toolbar-title>
+        <v-spacer></v-spacer>
+
+        <app-settings   :config='config'
+                        :osdViewer='osdViewer'
+                        :paperScope='paperScope'>
+        </app-settings>
+
     </v-toolbar>
 </template>
 

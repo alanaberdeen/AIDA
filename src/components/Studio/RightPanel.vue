@@ -1,24 +1,24 @@
 <template lang="html">
     <div class='pointers-please right-panel elevation-2'>
         <v-list>
-            <v-list-item>
+            <v-list-tile>
                 <app-layers :paperScope='paperScope'>
                 </app-layers>
-            </v-list-item>
+            </v-list-tile>
 
-            <v-list-item>
+            <v-list-tile>
                 <app-channels   :paperScope='paperScope'
                                 :osdViewer='osdViewer'
                                 :config='config'>
                 </app-channels>
-            </v-list-item>
+            </v-list-tile>
 
-            <v-list-item>
+            <v-list-tile>
                 <app-properties   :paperScope='paperScope'
                                   :osdViewer='osdViewer'
                                  >
                 </app-properties>
-            </v-list-item>
+            </v-list-tile>
         </v-list>
     </div>
 
