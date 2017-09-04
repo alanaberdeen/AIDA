@@ -1,6 +1,6 @@
 <template lang="html">
 
-    <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+    <v-btn @click.native="initialiseTool" flat block>
         <i :class="{
                 'fa': true,
                 'fa-location-arrow': true,

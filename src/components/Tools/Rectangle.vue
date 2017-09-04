@@ -1,6 +1,6 @@
 <template lang="html">
 
-    <v-btn @click.native="initialiseTool" block class='tool elevation-1'>
+    <v-btn @click.native="initialiseTool" flat block>
         <v-icon :class="{'blue--text darken-2--text': this.active}">
                 crop_landscape
         </v-icon>
