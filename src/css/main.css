@@ -6,9 +6,10 @@
 
 #canvas {
     position: absolute;
-    margin: 155px auto 0px 8.3%;
-    width: 75%;
-    height: 75%;
+    margin: 0px 179px 0px 60px;
+    width: -webkit-fill-available;
+    top: 155px;
+    bottom: 7px;
     background-color: #FAFAFA;
 }
 
@@ -36,7 +37,6 @@
 
 #app-container {
   width: 100%;
-  min-height: 100%;
   position: absolute;
   z-index: 5;
   top: 0px;

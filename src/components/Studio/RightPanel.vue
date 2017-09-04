@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class='pointers-please right-panel elevation-2'>
+    <div class='pointers-please studioPanel elevation-2'>
         <v-list>
             <v-list-tile>
                 <app-layers :paperScope='paperScope'>
@@ -43,11 +43,9 @@ export default {
 
 <style lang="css" scoped>
 
-.right-panel{
-    margin-top: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: #EEEEEE;
+.studioPanel{
+    height: calc(100vh - 48px);
 }
+
 
 </style>

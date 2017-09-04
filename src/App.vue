@@ -1,28 +1,29 @@
 <template>
-        <v-app top-toolbar pointer-events='none'>
-            <header>
-                <app-toolbar    :config='config'
-                                :osdViewer='osdViewer'
-                                :paperScope='paperScope'>
-                </app-toolbar>
-            </header>
+    <v-app toolbar pointer-events='none'>
+        <header>
+            <app-toolbar    :config='config'
+                            :osdViewer='osdViewer'
+                            :paperScope='paperScope'>
+            </app-toolbar>
+        </header>
 
-            <v-container fluid id='content-container'>
-                <v-layout>
+        <main>
+            <v-container fluid class='content-container'>
+                <v-layout class='content-container'>
 
-                    <v-flex xs1>
+                    <v-flex id="leftPanel">
                         <app-tools  :paperScope='paperScope'
                                     :osdViewer='osdViewer'
                                     :config='config'>
                         </app-tools>
                     </v-flex>
 
-                    <v-flex xs9 class='center-col'>
+                    <v-flex id='center-col'>
                         <app-stepper :config='config'>
                         </app-stepper>
                     </v-flex>
 
-                    <v-flex xs2>
+                    <v-flex id='rightPanel'>
                         <app-right-panel    :paperScope='paperScope'
                                             :osdViewer='osdViewer'
                                             :config='config'>
@@ -31,9 +32,10 @@
 
                 </v-layout>
             </v-container>
+        </main>
 
-            <!-- <app-footer></app-footer> -->
-        </v-app>
+        <!-- <app-footer></app-footer> -->
+    </v-app>
 </template>
 
 <script>
@@ -223,13 +225,22 @@ export default {
         flex-direction: column;
     }
 
-    #content-container {
+    .content-container {
         flex: 1 0 auto;
         padding: 0px;
+        min-height: 100%;
+        height: 100%;
     }
 
-    .center-col {
-        padding-left: 0px;
-        padding-right: 0px;
+    #center-col {
+        padding: 7px;
+    }
+
+    #leftPanel{
+        flex: 0 1 auto;
+    }
+
+    #rightPanel{
+        flex: 0 1 auto;
     }
 </style>

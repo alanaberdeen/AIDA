@@ -1,8 +1,9 @@
 <template lang="html">
-    <div class="pointers-please elevation-2">
+    <div class="pointers-please toolsPanel elevation-2">
 
         <v-layout>
-            <v-list dense>
+            <v-list dense id="toolList">
+
                 <v-list-tile>
                     <app-pan :paperScope="paperScope"
                              :osdViewer="osdViewer"
@@ -11,12 +12,6 @@
                              v-if='config.steps[config.activeStep].tools.pan'>
                     </app-pan>
                 </v-list-tile>
-
-            </v-list>
-        </v-layout>
-
-        <v-layout>
-            <v-list dense>
 
                 <v-list-tile>
                     <app-circle :paperScope="paperScope"
@@ -118,6 +113,15 @@ export default {
 
 .btn {
     min-width: 0px;
+}
+
+.toolsPanel {
+    height: calc(100vh - 48px);
+    background: #EEEEEE;
+}
+
+#toolList {
+    background: #EEEEEE;
 }
 
 </style>
