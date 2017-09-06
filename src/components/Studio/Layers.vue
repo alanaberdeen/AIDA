@@ -8,7 +8,7 @@
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon @click.native="newLayer">
-                    <v-icon>
+                    <v-icon id="iconButton">
                         tab
                     </v-icon>
                 </v-btn>
