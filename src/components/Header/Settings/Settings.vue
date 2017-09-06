@@ -1,56 +1,75 @@
-<template>
-        <v-dialog v-model="dialog" scrollable>
+<template lang="html">
+        <v-dialog scrollable v-model="dialog" width="75%" class="pointers-please">
 
-            <!-- Button toggles the activated status of dialog -->
-            <v-btn slot="activator" icon class="white--text">
-                <v-icon>settings</v-icon>
-            </v-btn>
+            <v-icon slot="activator">
+                settings
+            </v-icon>
 
             <v-card>
+
                 <v-card-title>Settings</v-card-title>
                 <v-divider></v-divider>
-                <v-layout>
-                    <v-flex xs3 class='tabs' style='padding-right: 0px;'>
 
-                        <v-list>
-                            <v-list-group v-model="steps">
+                <v-layout>
+                    <v-flex xs3 id="tabs-column">
+                        <v-list id="settings-list" dense>
+
+                            <v-list-group v-model="steps" no-action>
+
                                 <v-list-tile slot="item"
                                              @click.native="active = ''">
+
                                     <v-list-tile-content>
-                                        <v-list-tile-title> Task </v-list-tile-title>
+                                        <v-list-tile-title class="tile-title">
+                                            Task
+                                        </v-list-tile-title>
                                     </v-list-tile-content>
-                                    <v-list-tile-action>
+
+                                    <v-list-tile-action class="action">
                                         <v-icon>keyboard_arrow_down</v-icon>
                                     </v-list-tile-action>
+
                                 </v-list-tile>
 
                                 <v-list-tile v-for="(step,index) in config.steps" :key="index"
                                              @click.native="config.activeStep = index"
-                                             :class="{ 'option-active': (config.activeStep === index) }">
+                                             :class="{ 'option-active': (config.activeStep === index) }"
+                                             @click="">
 
                                     <v-list-tile-content>
-                                        <v-list-tile-title> Step {{index + 1}} </v-list-tile-title>
+                                        <v-list-tile-title class="tile-title">
+                                            Step {{index + 1}}
+                                        </v-list-tile-title>
                                     </v-list-tile-content>
+
                                 </v-list-tile>
 
                                 <v-list-tile>
                                     <v-list-tile-content>
-                                        <v-list-tile-title>
-                                            <v-icon> add_circle_outline </v-icon>
+                                        <v-list-tile-title class="tile-title">
+                                            <v-icon class="add_icon">
+                                                add_circle_outline
+                                            </v-icon>
                                         </v-list-tile-title>
                                     </v-list-tile-content>
                                 </v-list-tile>
 
                             </v-list-group>
 
-                            <v-list-group v-model="images">
+                            <v-list-group v-model="images" no-action>
                                 <v-list-tile slot="item"
                                              @click.native="active = ''; steps=false">
+
                                     <v-list-tile-content>
-                                        <v-list-tile-title> Images </v-list-tile-title>
+                                        <v-list-tile-title class="tile-title">
+                                            Images
+                                        </v-list-tile-title>
                                     </v-list-tile-content>
-                                    <v-list-tile-action>
-                                        <v-icon>keyboard_arrow_down</v-icon>
+
+                                    <v-list-tile-action class="action">
+                                        <v-icon>
+                                            keyboard_arrow_down
+                                        </v-icon>
                                     </v-list-tile-action>
                                 </v-list-tile>
 
@@ -59,7 +78,9 @@
                                              :class="{ 'option-active': (activeImage === index) }">
 
                                     <v-list-tile-content>
-                                        <v-list-tile-title> {{image.name}} </v-list-tile-title>
+                                        <v-list-tile-title class="tile-title">
+                                            {{image.name}}
+                                        </v-list-tile-title>
                                     </v-list-tile-content>
 
                                 </v-list-tile>
@@ -67,21 +88,26 @@
                                 <v-list-tile @click.native="activeImage = 'add'; active = 'addImage'"
                                              :class="{ 'option-active': (activeImage === 'add') }">
                                     <v-list-tile-content>
-                                        <v-list-tile-title>
-                                            <v-icon> add_circle_outline </v-icon>
+                                        <v-list-tile-title class="tile-title">
+                                            <v-icon class="add_icon">
+                                                add_circle_outline
+                                            </v-icon>
                                         </v-list-tile-title>
                                     </v-list-tile-content>
                                 </v-list-tile>
 
                             </v-list-group>
 
-                            <v-list-group v-model="annotations">
+                            <v-list-group v-model="annotations" no-action>
                                 <v-list-tile slot="item"
                                              @click.native="active = ''; steps=false">
                                     <v-list-tile-content>
-                                        <v-list-tile-title> Annotations </v-list-tile-title>
+                                        <v-list-tile-title class="tile-title">
+                                            Annotations
+                                        </v-list-tile-title>
                                     </v-list-tile-content>
-                                    <v-list-tile-action>
+
+                                    <v-list-tile-action class="action">
                                         <v-icon>keyboard_arrow_down</v-icon>
                                     </v-list-tile-action>
                                 </v-list-tile>
@@ -89,8 +115,10 @@
                                 <v-list-tile @click.native="activeAnnotation = 'add'; active = 'addAnnotation'"
                                              :class="{ 'option-active': (activeAnnotation === 'add') }">
                                     <v-list-tile-content>
-                                        <v-list-tile-title>
-                                            <v-icon> add_circle_outline </v-icon>
+                                        <v-list-tile-title class="tile-title">
+                                            <v-icon class="add_icon">
+                                                add_circle_outline
+                                            </v-icon>
                                         </v-list-tile-title>
                                     </v-list-tile-content>
                                 </v-list-tile>
@@ -101,7 +129,7 @@
                     </v-flex>
 
                     <v-flex xs9>
-                        <v-layout height="400px">
+                        <v-layout>
                             <v-flex>
 
                                 <v-card-text>
@@ -179,46 +207,28 @@ export default {
 
 <style lang="css" scoped>
 
-.dialog {
-    min-width: 75%;
-}
-
-.card-title {
-    padding-left: 36px;
-}
-
-.tabs {
+#tabs-column{
     border-right: 1px solid rgba(0,0,0,0.12);
 }
 
-.options {
+#settings-list {
     padding: 0px;
 }
 
-.option {
-    padding-left: 8px;
+.tile-title {
+    font-size: 13px;
+    padding-left: 16px;
+}
+
+.action {
+    padding-right: 4px;
 }
 
 .option-active {
     background-color: rgba(0,0,0,0.07);
-    font-weight: bold;
 }
 
-.settings {
-    min-height: 400px;
-    max-height: 400px;
-    padding-top: 30px;
-}
-
-.list__tile__title {
-    font-size: 14px;
-}
-
-.list__tile__sub-title {
-    font-size: 12px;
-}
-
-.material-icons {
+.add_icon{
     font-size: 20px;
 }
 
