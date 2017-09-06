@@ -39,7 +39,7 @@ export default {
 <style lang="css" scoped>
 
 .studioPanel{
-    height: calc(100vh - 48px);
+    height: calc(100vh - 55px);
     width: 175px;
 }
 

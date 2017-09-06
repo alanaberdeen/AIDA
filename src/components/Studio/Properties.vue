@@ -35,15 +35,16 @@
                     </v-list-tile-content>
 
                     <v-list-tile-action>
-                        <v-btn icon class='action'>
+                        <v-btn icon class='action pointers-no'>
                             <colour-picker  :paperScope='paperScope'
                                             :color="groupFillColor"
-                                            :type='"fill"'>
+                                            :type='"fill"'
+                                            class="pointers-please">
                             </colour-picker>
                         </v-btn>
                     </v-list-tile-action>
 
-                </v-list-tile >
+                </v-list-tile>
 
                 <v-list-tile id="tile">
 
@@ -54,10 +55,11 @@
                     </v-list-tile-content>
 
                     <v-list-tile-action>
-                        <v-btn icon class='action'>
+                        <v-btn icon class='action pointers-no'>
                             <colour-picker  :paperScope='paperScope'
                                             :color="groupStrokeColor"
-                                            :type='"stroke"'>
+                                            :type='"stroke"'
+                                            class="pointers-please">
                             </colour-picker>
                         </v-btn>
                     </v-list-tile-action>
@@ -72,7 +74,7 @@
 <script>
 import paper from 'paper';
 import { eventBus } from '../../main';
-import ColorPicker from './ColorPicker.vue'
+import ColorPicker from './ColorPicker.vue';
 
 export default {
     props: ['paperScope', 'osdViewer'],

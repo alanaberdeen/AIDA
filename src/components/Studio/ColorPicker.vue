@@ -1,19 +1,16 @@
 <template lang="html">
-    <v-layout row justify-center>
-        <v-dialog v-model="dialog" width=225>
+    <v-dialog v-model="dialog" width="225px">
 
-            <a slot="activator">
-                <div slot="activator" class="color-tile" :style="{'background-color': color.style}">
-                </div>
-            </a>
+        <a slot="activator">
+            <div class="color-tile" :style="{'background-color': color.style}">
+            </div>
+        </a>
 
-            <v-card>
-                <colour-picker v-model="colorPick"></colour-picker>
-            </v-card>
+        <v-card>
+            <colour-picker v-model="colorPick" id="picker"></colour-picker>
+        </v-card>
 
-        </v-dialog>
-    </v-layout>
-
+    </v-dialog>
 </template>
 
 <script>
@@ -84,18 +81,6 @@ export default {
     height: 20px;
     margin: auto;
     border: 1px solid #616161;
-}
-
-.dialog {
-    min-width: 0%;
-}
-
-.vue-color__chrome{
-    margin: 0px;
-}
-
-.color-dialog{
-    min-width: 0;
 }
 
 </style>
