@@ -1,55 +1,56 @@
 <template lang="html">
-    <div class="pointers-please layer-panel elevation-1" ondragstart="return false;" ondrop="return false;">
-        <v-card class='panel'>
+    <div class="elevation-1">
+        <v-card class="panel">
 
-            <v-toolbar class='toolbar elevation-1'>
+            <v-toolbar dense id="toolbar">
                 <v-toolbar-title id='title'>
                     Layers
                 </v-toolbar-title>
-                <v-btn @click.native="newLayer" icon ripple class='button'>
-                    <v-icon class='icon'>tab</v-icon>
+                <v-spacer></v-spacer>
+                <v-btn icon @click.native="newLayer">
+                    <v-icon>
+                        tab
+                    </v-icon>
                 </v-btn>
             </v-toolbar>
 
-            <v-list dense>
-                <v-list-tile v-for="layer in paperScope.project.layers" :key="layer.id">
-                    <span @click="selectLayer(layer)" @click.shift="addToSelection(layer)">
+            <v-list dense id="list">
+                <v-list-tile    v-for="layer in paperScope.project.layers" :key="layer.id"
+                                @click.native="selectLayer(layer)"
+                                @click.shift.native="addToSelection(layer)"
+                                @dblclick.native="editLayerName(layer)"
+                                id="tile">
 
-                        <v-list-tile class='tile'>
-                            <v-list-tile-content>
+                    <v-list-tile-content id="content">
 
-                                <v-list-tile-title
-                                    @dblclick="editLayerName(layer)"
-                                    :class="{   editing: (layer.id == editedLayer),
-                                                'layer-name': true,
-                                                faIcons: !(layer == paperScope.project.activeLayer),
-                                                faIconsActive: (layer == paperScope.project.activeLayer)}">
-                                    {{ layer.name }}
-                                </v-list-tile-title>
+                        <v-list-tile-title
+                            id="name"
+                            v-if="editingLayer != layer.id"
+                            :class="[(layer == paperScope.project.activeLayer) ? 'faIconsActive' : 'faIcons']">
+                            {{ layer.name }}
+                        </v-list-tile-title>
 
-                                <v-text-field
-                                    class="editContent"
-                                    :class="{editing: layer.id != editedLayer}"
-                                    name="input-1-3"
-                                    single-line
-                                    v-model="layer.name"
-                                    @blur="doneEdit(layer)"
-                                    @keyup.enter.native="doneEdit(layer)"
-                                    @keyup.esc.native="cancelEdit(layer)">
-                                ></v-text-field>
+                        <v-text-field
+                            id="nameEdit"
+                            v-if="editingLayer == layer.id"
+                            autofocus
+                            single-line
+                            v-model="layer.name"
+                            @blur="finishedEdit(layer)"
+                            @keyup.enter.native="finishedEdit(layer)"
+                            @keyup.esc.native="cancelEdit(layer)">
+                        ></v-text-field>
 
-                            </v-list-tile-content>
+                    </v-list-tile-content>
 
-                            <v-list-tile-action>
-                                <v-btn @click.native="exportJSON(layer)" icon ripple class='button'>
-                                    <v-icon class="icon--dark">
-                                        save
-                                    </v-icon>
-                                </v-btn>
-                            </v-list-tile-action>
+                    <v-list-tile-action>
+                        <v-btn icon @click.native="exportJSON(layer)" id='action'>
+                            <v-icon id="iconButton">
+                                save
+                            </v-icon>
+                        </v-btn>
+                    </v-list-tile-action>
 
-                        </v-list-tile>
-                    </span>
                 </v-list-tile>
             </v-list>
         </v-card>
@@ -59,11 +60,17 @@
 <script>
 import paper from 'paper'
 
+//TODO: fix addToSelection with the shift clicking of layers.
+//TODO: figure out why the feedfoward highlighting for mouse clicks doesn't
+//      want to work here.
+//TODO: when editing layer name, and textinput is visible match the font-size
+//      and style to the normal layer name.
+
 export default {
     props: ['paperScope'],
     data(){
         return {
-            editedLayer: null,
+            editingLayer: null,
             beforeEditCache: null,
         }
     },
@@ -82,17 +89,17 @@ export default {
         // Begin editing
         editLayerName (layer) {
             this.beforeEditCache = layer.name
-            this.editedLayer = layer.id
+            this.editingLayer = layer.id
         },
 
         // Housekeeping once finsihed editing layer
-        doneEdit (layer) {
-            if (!this.editedLayer) {
+        finishedEdit (layer) {
+            if (!this.editingLayer) {
                 return
             }
 
             // Reset currently editing data
-            this.editedLayer = null
+            this.editingLayer = null
 
             // If no layer name then set to untitled else trim
             if (layer.name == undefined) {
@@ -104,7 +111,7 @@ export default {
 
         // Housekeeping on canceling edit
         cancelEdit (layer) {
-            this.editedLayer = null
+            this.editingLayer = null
             layer.name = this.beforeEditCache
         },
 
@@ -147,49 +154,50 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.layer-panel {
-    margin-top: 20px;
-}
-
-.editing {
-    display: none;
-}
-
-.toolbar {
-    background-color: #E0E0E0;
-    height: 36px;
-
-}
-
 #title {
     font-size: 14px;
-    margin-left: 10px;
-}
-
-.icon {
-    font-size: 16px;
-    color: #616161;
-}
-
-.button{
-    margin-right: 5px;
-}
-
-.tile {
-    padding: 0px 0px 0px 10px;
-    height: 30px;
-}
-
-.layer-name {
-    font-size: 12px;
+    font-weight: 400;
 }
 
 .panel {
+    margin-top: 7px;
     background-color: #EEEEEE;
 }
 
-.active {
-    color: #1E88E5;
+#toolbar {
+    background-color: #E0E0E0;
+}
+
+#name {
+    font-size: 13px;
+    height: 30px;
+}
+
+#content {
+    margin-left: 16px;
+}
+
+#action {
+    margin-right: 8px;
+    height: 30px;
+    margin-bottom: 0px;
+}
+
+#nameEdit {
+    font-size: 13px;
+    height: 20px;
+}
+
+#list {
+    background-color: #EEEEEE;
+}
+
+#iconButton {
+    font-size: 18px;
+}
+
+#tile{
+    height: 30px;
 }
 
 </style>

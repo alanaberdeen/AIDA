@@ -1,51 +1,47 @@
 <template lang="html">
-    <div class="pointers-please channel-panel elevation-1">
-        <v-card class='panel'>
+    <div class="elevation-1">
+        <v-card class="panel">
 
-            <v-toolbar class='toolbar elevation-1'>
+            <v-toolbar dense id="toolbar">
                 <v-toolbar-title id='title'>
                     Channels
                 </v-toolbar-title>
+                <v-spacer></v-spacer>
             </v-toolbar>
 
-            <v-list dense>
-                <v-list-group v-for="(channel, channelIndex) in channels" :key="channelIndex">
+            <v-list dense id="list">
+                <v-list-group no-action	v-for="(channel, channelIndex) in channels" :key="channelIndex">
 
-                        <v-list-tile slot="item" class='tile'>
-                            <v-list-tile-content>
+                        <v-list-tile slot="item" id="tile">
+                            <v-list-tile-content id="content">
 
-                                <v-list-tile-title class='channel-name'>
+                                <v-list-tile-title id="name">
                                     {{config.images[channelIndex].name}}
                                 </v-list-tile-title>
 
                             </v-list-tile-content>
 
                             <v-list-tile-action>
-                                <v-btn @click.native="toggleVisibility(channelIndex)" icon ripple class='button'>
+                                <v-btn icon @click.native="toggleVisibility(channelIndex)" id='action'>
 
-                                    <!-- <v-icon class='icon--dark'>
-                                        <span v-if="true">
-                                            visibility
-                                        </span>
+                                    <v-icon v-if="isVisible(channelIndex)" id="iconButton">
+                                        visibility
+                                    </v-icon>
 
-                                        <span v-else>
-                                            visibility_off
-                                        </span>
-                                    </v-icon> -->
+                                    <v-icon v-else id="iconButton">
+                                        visibility_off
+                                    </v-icon>
 
                                 </v-btn>
                             </v-list-tile-action>
-                            <v-divider></v-divider>
                         </v-list-tile>
 
-                        <v-list-tile>
-                            <v-list-tile >
+                        <v-list-tile id="list">
                                 <v-list-tile-content>
                                     <v-slider   v-model="channel.opacity"
                                                 @input="onInput(channelIndex, channel.opacity)">
                                     </v-slider>
                                 </v-list-tile-content>
-                            </v-list-tile>
                         </v-list-tile>
 
                 </v-list-group>
@@ -75,7 +71,8 @@ export default {
         this.osdViewer.world.addHandler('add-item', function() {
             vm.channels.push({
                 id: vm.channels.length,
-                opacity: (vm.getOpacity(vm.channels.length)*100)
+                opacity: (vm.getOpacity(vm.channels.length)*100),
+                slider: false
             })
         });
 
@@ -97,7 +94,9 @@ export default {
 
     methods: {
 
-        // Set the opactiy of the specified channel index to 0
+        // Set the opactiy of the specified channel index to 0 or 0.5
+        // TODO: give this a 'memory' so turning it back on resets the value
+        // to what it was before it was turned off.
         toggleVisibility(channelIndex){
             var channel = this.osdViewer.world.getItemAt(channelIndex);
             if (channel.getOpacity() === 0){
@@ -111,12 +110,12 @@ export default {
 
         // Check if channel is visibile
         isVisible(channelIndex) {
-            // var channel = this.osdViewer.world.getItemAt(channelIndex);
-            // if (channel.getOpacity() > 0){
-            //     return true
-            // } else {
-            //     return false
-            // }
+            var channel = this.osdViewer.world.getItemAt(channelIndex);
+            if (channel.getOpacity() > 0){
+                return true
+            } else {
+                return false
+            }
 
             return true
         },
@@ -135,61 +134,49 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.channel-panel {
-    margin-top: 20px;
-}
-
-.editing {
-    display: none;
-}
-
-.toolbar {
-    background-color: #E0E0E0;
-    height: 36px;
-
-}
-
 #title {
     font-size: 14px;
-    margin-left: 10px;
-}
-
-.icon {
-    font-size: 16px;
-    color: #616161;
-}
-
-.button{
-    margin-right: 5px;
-}
-
-.tile {
-    padding: 0px 0px 0px 10px;
-    height: 30px;
-}
-
-.channel-name {
-    font-size: 12px;
+    font-weight: 400;
 }
 
 .panel {
+    margin-top: 20px;
     background-color: #EEEEEE;
 }
 
-.active {
-    color: #1E88E5;
+#toolbar {
+    background-color: #E0E0E0;
 }
 
-.input-group__details{
-    min-height: 0;
+#name {
+    font-size: 13px;
+    height: 30px;
 }
 
-.opacity-label {
-    width: 20px;
+#content {
+    margin-left: 16px;
 }
 
-.list--group .list__tile {
-    padding-left: 10px;
+#action {
+    margin-right: 8px;
+    height: 30px;
+    margin-bottom: 0px;
+}
+
+.input-group {
+    padding: 7px 20px 7px 10px;
+}
+
+#list {
+    background-color: #EEEEEE;
+}
+
+#tile{
+    height: 30px;
+}
+
+#iconButton {
+    font-size: 18px;
 }
 
 </style>

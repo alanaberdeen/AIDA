@@ -10,7 +10,7 @@
             <v-card>
                 <colour-picker v-model="colorPick"></colour-picker>
             </v-card>
-            
+
         </v-dialog>
     </v-layout>
 

@@ -1,80 +1,66 @@
 <template lang="html">
-    <div class="pointers-please channel-panel elevation-1" ondragstart="return false;" ondrop="return false;">
-        <v-card class='panel'>
+    <div class="elevation-1">
+        <v-card class="panel">
 
-            <v-toolbar class='toolbar elevation-1'>
+            <v-toolbar dense id="toolbar">
                 <v-toolbar-title id='title'>
                     Properties
                 </v-toolbar-title>
+                <v-spacer></v-spacer>
             </v-toolbar>
 
-            <v-list dense>
-                <v-list-tile >
+            <v-list dense id="list">
+                <v-list-tile  id="tile">
 
-                        <v-list-tile class='tile'>
-                            <v-list-tile-content>
+                    <v-list-tile-content class="content">
+                        <v-list-tile-title class="name">
+                            No. selected items:
+                        </v-list-tile-title>
+                    </v-list-tile-content>
 
-                                <v-list-tile-title class='channel-name'>
-                                    No. items selected :
-                                </v-list-tile-title>
-
-                            </v-list-tile-content>
-
-                            <v-list-tile-action>
-                                <div class='action'>
-                                    {{ numItems }}
-                                </div>
-                            </v-list-tile-action>
-                            <v-divider></v-divider>
-                        </v-list-tile>
+                    <v-list-tile-action>
+                        <span class='number'>
+                            {{ numItems }}
+                        </span>
+                    </v-list-tile-action>
 
                 </v-list-tile>
 
-                <v-list-tile >
+                <v-list-tile id="tile">
 
-                        <v-list-tile class='tile'>
-                            <v-list-tile-content>
+                    <v-list-tile-content class="content">
+                        <v-list-tile-title class="name">
+                            Fill colour:
+                        </v-list-tile-title>
+                    </v-list-tile-content>
 
-                                <v-list-tile-title class='channel-name'>
-                                    Fill colour:
-                                </v-list-tile-title>
+                    <v-list-tile-action>
+                        <v-btn icon class='action'>
+                            <colour-picker  :paperScope='paperScope'
+                                            :color="groupFillColor"
+                                            :type='"fill"'>
+                            </colour-picker>
+                        </v-btn>
+                    </v-list-tile-action>
 
-                            </v-list-tile-content>
+                </v-list-tile >
 
-                            <v-list-tile-action>
-                                <div class='action'>
-                                    <colour-picker  :paperScope='paperScope'
-                                                    :color="groupFillColor"
-                                                    :type='"fill"'>
-                                    </colour-picker>
-                                </div>
-                            </v-list-tile-action>
-                            <v-divider></v-divider>
-                        </v-list-tile>
+                <v-list-tile id="tile">
 
-                </v-list-tile>
+                    <v-list-tile-content class="content">
+                        <v-list-tile-title class="name">
+                            Stroke colour:
+                        </v-list-tile-title>
+                    </v-list-tile-content>
 
-                <v-list-tile >
-
-                        <v-list-tile class='tile'>
-                            <v-list-tile-content>
-
-                                <v-list-tile-title class='channel-name'>
-                                    Stroke colour:
-                                </v-list-tile-title>
-
-                            </v-list-tile-content>
-
-                            <v-list-tile-action>
-                                <div class='action'>
-                                    <colour-picker  :paperScope='paperScope'
-                                                    :color="groupStrokeColor"
-                                                    :type='"stroke"'>
-                                    </colour-picker>
-                                </div>
-                            </v-list-tile-action>
-                            <v-divider></v-divider>
-                        </v-list-tile>
+                    <v-list-tile-action>
+                        <v-btn icon class='action'>
+                            <colour-picker  :paperScope='paperScope'
+                                            :color="groupStrokeColor"
+                                            :type='"stroke"'>
+                            </colour-picker>
+                        </v-btn>
+                    </v-list-tile-action>
 
                 </v-list-tile>
 
@@ -208,69 +194,52 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.channel-panel {
-    margin-top: 20px;
-}
-
-.editing {
-    display: none;
-}
-
-.toolbar {
-    background-color: #E0E0E0;
-    height: 36px;
-
-}
-
 #title {
     font-size: 14px;
-    margin-left: 10px;
-}
-
-.icon {
-    font-size: 16px;
-    color: #616161;
-}
-
-.button{
-    margin-right: 5px;
-}
-
-.tile {
-    padding: 0px 0px 0px 10px;
-    height: 30px;
-}
-
-.channel-name {
-    font-size: 12px;
+    font-weight: 400;
 }
 
 .panel {
+    margin-top: 20px;
     background-color: #EEEEEE;
 }
 
-.active {
-    color: #1E88E5;
+#toolbar {
+    background-color: #E0E0E0;
 }
 
-.input-group__details{
-    min-height: 0;
+.name {
+    font-size: 13px;
+    height: 30px;
 }
 
-.opacity-label {
-    width: 20px;
+.content {
+    margin-left: 16px;
 }
 
-.list--group .list__tile {
-    padding-left: 10px;
+.action {
+    margin-right: 8px;
+    height: 30px;
+    margin-bottom: 0px;
 }
 
-.action{
-    margin-right: 5px;
-    width: 36px;
+.input-group {
+    padding: 7px 20px 7px 10px;
+}
+
+.number {
     text-align: center;
+    margin-right: 8px;
+    width: 36px;
+    margin-bottom: 5px;
 }
 
+#list {
+    background-color: #EEEEEE;
+}
 
+#tile{
+    height: 30px;
+}
 
 </style>

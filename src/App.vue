@@ -24,10 +24,10 @@
                     </v-flex>
 
                     <v-flex id='rightPanel'>
-                        <app-right-panel    :paperScope='paperScope'
+                        <app-studio    :paperScope='paperScope'
                                             :osdViewer='osdViewer'
                                             :config='config'>
-                        </app-right-panel>
+                        </app-studio>
                     </v-flex>
 
                 </v-layout>
@@ -47,7 +47,7 @@ import openseadragon from 'openseadragon'
 import Tools from './components/Tools/Tools.vue'
 import ImageLoader from './components/ImageLoader.vue'
 import Toolbar from './components/Header/Toolbar.vue'
-import RightPanel from './components/Studio/RightPanel.vue'
+import Studio from './components/Studio/Studio.vue'
 import Footer from './components/Footer.vue'
 import Stepper from './components/Stepper.vue'
 
@@ -206,7 +206,7 @@ export default {
         'app-image-loader': ImageLoader,
         'app-toolbar': Toolbar,
         'app-footer': Footer,
-        'app-right-panel': RightPanel,
+        'app-studio': Studio,
         'app-stepper': Stepper
     }
 }
