@@ -1,22 +1,28 @@
 <template lang="html">
-
     <v-btn @click.native="initialiseTool" flat block>
         <v-icon :class="{'grey--text text--darken-2': !this.active,
                          'blue--text text--darken-1': this.active}">
-                crop_landscape
+                filter_9_plus
         </v-icon>
     </v-btn>
-
 </template>
 
 <script>
+// This is the start of a persistent count object.
+// The idea is that you draw a rectangle on the page that has a tab attached
+// that specifies the number of items within this rectangle. This tab
+// should update automatically as more items are added. Might have
+// to use the eventBus instance to trigger an update when items are to the
+// paperScope in general and then do a recount. Can't seem to find an event,
+// like item-added-event in the paperScope view object that I could attach a
+// handler to.
 import paper from 'paper';
 
 export default {
     props: ['paperScope', 'active', 'osdViewer'],
     data() {
         return {
-            toolRect: null,
+            toolCount: null,
             strokeWidth: 400,
             viewportZoom: this.osdViewer.viewport.getZoom(true)
         }
@@ -27,7 +33,7 @@ export default {
             if (this.paperScope.view.element.classList.contains('pointers-no')){
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
-            this.toolRect.activate();
+            this.toolCount.activate();
 
             // Set the default size relative to zoom level.
             this.viewportZoom = this.osdViewer.viewport.getZoom(true);
@@ -87,15 +93,14 @@ export default {
         	secondPoint = event.point;
 
         	var myRect = new paper.Path.Rectangle(firstPoint, secondPoint);
-            myRect.strokeColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 1});
+            myRect.strokeColor = new paper.Color({hue: 46, saturation: 1.0, lightness: 0.65, alpha: 1});
             myRect.strokeWidth = vm.strokeWidth;
-            myRect.fillColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 0.4});
         }
 
-        this.toolRect = new paper.Tool();
-        this.toolRect.onMouseDown = toolDown;
-        this.toolRect.onMouseDrag = toolDrag;
-        this.toolRect.onMouseUp = toolUp;
+        this.toolCount = new paper.Tool();
+        this.toolCount.onMouseDown = toolDown;
+        this.toolCount.onMouseDrag = toolDrag;
+        this.toolCount.onMouseUp = toolUp;
     }
 
 }

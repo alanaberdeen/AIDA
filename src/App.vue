@@ -95,21 +95,26 @@ export default {
                         include: true,
                         name: 'Node',
                         caption: 'Manipulate path nodes and handles'
+                    },
+                    count: {
+                        include: true,
+                        name: 'Count',
+                        caption: 'Count items within a rectangle'
                     }
                 },
                 steps: [
                     {   id: 1,
-                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true, 'count': true},
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
                     },
                     {   id: 2,
-                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true, 'count': true},
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 2: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
                     },
                     {   id: 3,
-                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true},
+                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true, 'count': true},
                         regionOfIntereset: '',
                         instruction: 'Instructions for Step 3:'
                     }

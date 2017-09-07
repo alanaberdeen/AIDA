@@ -2,11 +2,11 @@
 
     <v-btn @click.native="initialiseTool" flat block>
         <v-icon v-if="this.active"
-                class="blue--text darken-2--text">
+                class="blue--text text--darken-1">
                 lock_open
         </v-icon>
 
-        <v-icon v-else class='faIcons'>
+        <v-icon v-else class='grey--text text--darken-2'>
             lock_outline
         </v-icon>
     </v-btn>

@@ -1,7 +1,8 @@
 <template lang="html">
 
     <v-btn @click.native="initialiseTool" flat block>
-        <v-icon :class="{'blue--text darken-2--text': this.active}">
+        <v-icon :class="{'grey--text text--darken-2': !this.active,
+                         'blue--text text--darken-1': this.active}">
                 timeline
         </v-icon>
     </v-btn>

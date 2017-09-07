@@ -67,22 +67,32 @@
                     </app-node>
                 </v-list-tile>
 
+                <v-list-tile>
+                    <app-count :paperScope="paperScope"
+                               :osdViewer="osdViewer"
+                               :active="(this.activeTool === 'count')"
+                               @click.native="activeTool = 'count'"
+                               v-if='config.steps[config.activeStep].tools.count'>
+                    </app-count>
+                </v-list-tile>
+
             </v-list>
         </v-layout>
     </div>
 </template>
 
 <script>
-import paper from 'paper'
+import paper from 'paper';
 
 // Import child components
-import toolCircle from './Circle.vue'
-import toolRectangle from './Rectangle.vue'
-import toolPen from './Pen.vue'
-import toolPencil from './Pencil.vue'
-import toolMove from './Move.vue'
-import toolPan from './Pan.vue'
-import toolNode from './Node.vue'
+import toolCircle from './Circle.vue';
+import toolRectangle from './Rectangle.vue';
+import toolPen from './Pen.vue';
+import toolPencil from './Pencil.vue';
+import toolMove from './Move.vue';
+import toolPan from './Pan.vue';
+import toolNode from './Node.vue';
+import toolCount from './Count.vue';
 
 export default {
     props: ['paperScope', 'osdViewer', 'config'],
@@ -100,7 +110,8 @@ export default {
         'app-move': toolMove,
         'app-pan': toolPan,
         'app-node': toolNode,
-        'app-pencil': toolPencil
+        'app-pencil': toolPencil,
+        'app-count': toolCount
     }
 }
 </script>

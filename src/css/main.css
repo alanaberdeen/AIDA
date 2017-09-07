@@ -28,10 +28,13 @@
 }
 
 .faIcons {
+    /*  'grey darken-2' in the material color palette */
     color: #616161;
+
 }
 
 .faIconsActive {
+    /*  'blue darken-1' in the material color palette */
     color: #1E88E5;
 }
 
