@@ -2,16 +2,13 @@
     <div>
         <h6 class='step-id'> Step {{step + 1}} </h6>
 
-        <v-text-field
-            class="instruction-input"
-            label="Instruction"
-            v-model="config.steps[step].instruction"
-            counter
-            multi-line
-            max="200"
-            rows="3"
-            required
-        ></v-text-field>
+        <!-- Getting errors on the text entry here because Vue hasn't been
+             updated. Annoying as things seem to break when I do that. -->
+        <!-- <v-text-field
+              name="input-1"
+              label="Label Text"
+              id="testing"
+            ></v-text-field> -->
 
         <div>
             <p class='label'> Tools required: </p>

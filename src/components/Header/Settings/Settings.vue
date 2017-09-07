@@ -7,7 +7,9 @@
 
             <v-card>
 
-                <v-card-title>Settings</v-card-title>
+                <v-card-title>
+                    Settings
+                </v-card-title>
                 <v-divider></v-divider>
 
                 <v-layout>
@@ -16,8 +18,7 @@
 
                             <v-list-group v-model="steps" no-action>
 
-                                <v-list-tile slot="item"
-                                             @click.native="active = ''">
+                                <v-list-tile slot="item">
 
                                     <v-list-tile-content>
                                         <v-list-tile-title class="tile-title">
@@ -26,15 +27,17 @@
                                     </v-list-tile-content>
 
                                     <v-list-tile-action class="action">
-                                        <v-icon>keyboard_arrow_down</v-icon>
+                                        <v-icon>
+                                            keyboard_arrow_down
+                                        </v-icon>
                                     </v-list-tile-action>
 
                                 </v-list-tile>
 
                                 <v-list-tile v-for="(step,index) in config.steps" :key="index"
-                                             @click.native="config.activeStep = index"
-                                             :class="{ 'option-active': (config.activeStep === index) }"
-                                             @click="">
+                                             @click.native="config.activeStep = index; active=''"
+                                             :class="{'option-active': (config.activeStep === index)}"
+                                             >
 
                                     <v-list-tile-content>
                                         <v-list-tile-title class="tile-title">
@@ -46,7 +49,8 @@
 
                                 <v-list-tile>
                                     <v-list-tile-content>
-                                        <v-list-tile-title class="tile-title">
+                                        <v-list-tile-title class="tile-title"
+                                                           @click.native="active='addStep'">
                                             <v-icon class="add_icon">
                                                 add_circle_outline
                                             </v-icon>
@@ -57,9 +61,7 @@
                             </v-list-group>
 
                             <v-list-group v-model="images" no-action>
-                                <v-list-tile slot="item"
-                                             @click.native="active = ''; steps=false">
-
+                                <v-list-tile slot="item">
                                     <v-list-tile-content>
                                         <v-list-tile-title class="tile-title">
                                             Images
@@ -74,8 +76,8 @@
                                 </v-list-tile>
 
                                 <v-list-tile v-for="(image,index) in config.images" :key="index"
-                                             @click.native="activeImage = index; active = ''"
-                                             :class="{ 'option-active': (activeImage === index) }">
+                                             @click.native="activeImage = index; active=''"
+                                             :class="{'option-active': (activeImage === index)}">
 
                                     <v-list-tile-content>
                                         <v-list-tile-title class="tile-title">
@@ -85,7 +87,7 @@
 
                                 </v-list-tile>
 
-                                <v-list-tile @click.native="activeImage = 'add'; active = 'addImage'"
+                                <v-list-tile @click.native="activeImage = 'add'; active='addImage'"
                                              :class="{ 'option-active': (activeImage === 'add') }">
                                     <v-list-tile-content>
                                         <v-list-tile-title class="tile-title">
@@ -99,10 +101,10 @@
                             </v-list-group>
 
                             <v-list-group v-model="annotations" no-action>
-                                <v-list-tile slot="item"
-                                             @click.native="active = ''; steps=false">
+                                <v-list-tile slot="item">
                                     <v-list-tile-content>
-                                        <v-list-tile-title class="tile-title">
+                                        <v-list-tile-title class="tile-title"
+                                                           @click.native="active=''">
                                             Annotations
                                         </v-list-tile-title>
                                     </v-list-tile-content>
@@ -112,7 +114,7 @@
                                     </v-list-tile-action>
                                 </v-list-tile>
 
-                                <v-list-tile @click.native="activeAnnotation = 'add'; active = 'addAnnotation'"
+                                <v-list-tile @click.native="activeAnnotation = 'add'; active='addAnnotation'"
                                              :class="{ 'option-active': (activeAnnotation === 'add') }">
                                     <v-list-tile-content>
                                         <v-list-tile-title class="tile-title">
@@ -146,7 +148,7 @@
                                     </app-add-image>
 
                                     <!-- Show annotation settings -->
-                                    <app-add-annotation  v-if="active === 'addAnnotation'"
+                                    <app-add-annotation  v-if="annotations && active === 'addAnnotation'"
                                                     :config='config'
                                                     :osdViewer='osdViewer'
                                                     :paperScope='paperScope'>
@@ -162,7 +164,8 @@
                 <v-divider></v-divider>
 
                 <v-layout actions>
-                    <v-btn class="blue--text darken-1" flat @click.native="dialog = false">
+                    <v-btn  flat class="blue--text darken-1"
+                            @click.native="dialog = false">
                         Close
                     </v-btn>
                 </v-layout>
