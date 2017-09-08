@@ -117,7 +117,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 
 .step-id{
     padding-bottom: 20px;
