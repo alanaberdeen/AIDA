@@ -36,8 +36,8 @@
                             </v-list-tile-action>
                         </v-list-tile>
 
-                        <v-list-tile id="list">
-                                <v-list-tile-content>
+                        <v-list-tile class="slider-tile">
+                                <v-list-tile-content id="slider-content">
                                     <v-slider   v-model="channel.opacity"
                                                 @input="onInput(channelIndex, channel.opacity)">
                                     </v-slider>
@@ -168,6 +168,14 @@ export default {
 }
 
 #list {
+    background-color: #EEEEEE;
+}
+
+.slider-tile {
+    background-color: #EEEEEE;
+}
+
+#slider-content {
     background-color: #EEEEEE;
 }
 
