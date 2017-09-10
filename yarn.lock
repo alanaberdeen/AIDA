@@ -3049,9 +3049,9 @@ opener@^1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/opener/-/opener-1.4.3.tgz#5c6da2c5d7e5831e8ffa3964950f8d6674ac90b8"
 
-openseadragon@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-2.2.1.tgz#5f8ef0fdb7e0aa79e0fb0d927701466cf816bb2f"
+openseadragon@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-2.3.0.tgz#899fe3de543ff51d7e16dbbb83fffa0720a3b211"
 
 opn@^5.1.0:
   version "5.1.0"

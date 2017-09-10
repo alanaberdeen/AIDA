@@ -40,18 +40,18 @@
 
 <script>
 // Import JS libraries
-import paper from 'paper'
-import openseadragon from 'openseadragon'
+import paper from 'paper';
+import openseadragon from 'openseadragon';
 
 // Import child components
-import Tools from './components/Tools/Tools.vue'
-import ImageLoader from './components/ImageLoader.vue'
-import Toolbar from './components/Header/Toolbar.vue'
-import Studio from './components/Studio/Studio.vue'
-import Footer from './components/Footer.vue'
-import Stepper from './components/Stepper.vue'
+import Tools from './components/Tools/Tools.vue';
+import ImageLoader from './components/ImageLoader.vue';
+import Toolbar from './components/Header/Toolbar.vue';
+import Studio from './components/Studio/Studio.vue';
+import Footer from './components/Footer.vue';
+import Stepper from './components/Stepper.vue';
 
-import { eventBus } from './main'
+import { eventBus } from './main';
 
 export default {
     data() {
@@ -150,7 +150,7 @@ export default {
 
         // Create the OpenSeadragon instance viewer.
         // Save it to the VueModel
-        this.osdViewer = OpenSeadragon({
+        this.osdViewer = new openseadragon.Viewer({
             id: "osd-canvas",
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
             showNavigationControl: false
