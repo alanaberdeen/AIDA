@@ -87,22 +87,18 @@ export default {
             var trackingPath = new paper.Path.Line(firstPoint, secondPoint);
             trackingPath.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
             trackingPath.strokeWidth = vm.strokeWidth;
-
-            //create a circle positioned at point where mousedown was, with radius
-            //the distance between mousedown/mouseup
-        	var trackingCircle = new paper.Path.Circle(firstPoint, vm.radius);
-            trackingCircle.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
-            trackingCircle.strokeWidth = vm.strokeWidth;
-
-        	//remove tracking circle/line and display another one while dragging
-        	trackingPath.add(event.point);
-
+            trackingPath.add(event.point);
             trackingPath.removeOn({
                 drag:true,
                 down: true,
                 up:true
             });
 
+            //create a circle positioned at point where mousedown was, with radius
+            //the distance between mousedown/mouseup
+        	var trackingCircle = new paper.Path.Circle(firstPoint, vm.radius);
+            trackingCircle.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
+            trackingCircle.strokeWidth = vm.strokeWidth;
             trackingCircle.removeOn({
                 drag: true,
                 down: true,
@@ -120,6 +116,14 @@ export default {
             myCircle.strokeColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 1});
             myCircle.strokeWidth = vm.strokeWidth;
             myCircle.fillColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 0.4});
+
+            // Custom attribute: includes item in counting tools.
+            myCircle.data.countable = true;
+
+            // As the number of circle markers in the project has changed,
+            // Emit an event that will check to see if we are counting these
+            // in a particular area and update that value if so.
+            eventBus.$emit('updateMarkerCount');
         }
 
         this.toolCircle = new paper.Tool();

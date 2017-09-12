@@ -71,12 +71,6 @@ export default {
             // Get details of the element the user has clicked on.
             hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
 
-            // Check which path items are in the project at this moment.
-            // This is useful for group selection.
-            projectPathItems = vm.paperScope.project.getItems({
-                className: 'Path'
-            })
-
             // If user clicked inside a bounds selection rectangle
             if (selectedGroup && selectedGroup.bounds.contains(e.point) && !e.modifiers.shift){
                 if(hitResult && hitResult.type === 'bounds'){
@@ -86,6 +80,12 @@ export default {
                     return
                 }
             }
+
+            // Check which path items are in the project at this moment.
+            // This is useful for group selection.
+            projectPathItems = vm.paperScope.project.getItems({
+                className: 'Path'
+            })
 
             // Remove bounds rectangle of previous selection as will always
             // be updated.
@@ -109,9 +109,23 @@ export default {
                 }
 
                 selectedGroup = new paper.Group([hitResult.item]);
+
+                // Check any of the items need to be selected with linked
+                // items. For example in the case of the
+                // counting rectanlge tool need to select the number, tag
+                // and rectangle path.
+                for (var child in selectedGroup.children){
+                    if (selectedGroup.children[child].data.selectWith){
+                        for (var item in selectedGroup.children[child].data.selectWith){
+                            selectedGroup.addChild(selectedGroup.children[child].data.selectWith[item]);
+                        }
+                    }
+                }
+
                 selectedGroup.selected = true;
                 selectedGroup.bounds.selected = true;
 
+                // Set tool status to move as item can be immediately moved.
                 toolStatus = 'move';
 
             // If user has clicked bounds then assume transforming.
@@ -249,8 +263,22 @@ export default {
 
                 // Select the items in the group
                 if (selectedGroup && selectedGroup.hasChildren()){
+
+                    // Check any of the items need to be selected with linked
+                    // items. For example in the case of the
+                    // counting rectanlge tool need to select the number, tag
+                    // and rectangle path.
+                    for (var child in selectedGroup.children){
+                        if (selectedGroup.children[child].data.selectWith){
+                            for (var item in selectedGroup.children[child].data.selectWith){
+                                selectedGroup.addChild(selectedGroup.children[child].data.selectWith[item]);
+                            }
+                        }
+                    }
+
                     selectedGroup.selected = true;
                     selectedGroup.bounds.selected = true;
+
                 }
             }
 
@@ -262,6 +290,11 @@ export default {
             // Emit selection event to the eventBus so that the properties
             // panel can be updated.
             eventBus.$emit('selectionChanged', vm.paperScope.project.selectedItems);
+
+            // As the number of circle markers in the project may have
+            // changed, emit an event that will check to see if we are
+            // counting these in a particular area and update that value.
+            eventBus.$emit('updateMarkerCount');
 
         }
 
@@ -306,6 +339,11 @@ export default {
                 // Emit selection event to the eventBus so that the properties
                 // panel can be updated.
                 eventBus.$emit('selectionChanged', vm.paperScope.project.selectedItems);
+
+                // As the number of circle markers in the project may have
+                // changed, emit an event that will check to see if we are
+                // counting these in a particular area and update that value.
+                eventBus.$emit('updateMarkerCount');
             }
         }
 

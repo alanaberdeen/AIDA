@@ -8,15 +8,8 @@
 </template>
 
 <script>
-// This is the start of a persistent count object.
-// The idea is that you draw a rectangle on the page that has a tab attached
-// that specifies the number of items within this rectangle. This tab
-// should update automatically as more items are added. Might have
-// to use the eventBus instance to trigger an update when items are to the
-// paperScope in general and then do a recount. Can't seem to find an event,
-// like item-added-event in the paperScope view object that I could attach a
-// handler to.
 import paper from 'paper';
+import { eventBus } from '../../main';
 
 export default {
     props: ['paperScope', 'active', 'osdViewer'],
@@ -24,21 +17,28 @@ export default {
         return {
             toolCount: null,
             strokeWidth: 400,
-            viewportZoom: this.osdViewer.viewport.getZoom(true)
+            viewportZoom: this.osdViewer.viewport.getZoom(true),
         }
     },
 
     methods: {
         initialiseTool() {
+
+            // Manage browser pointers for interactivity
             if (this.paperScope.view.element.classList.contains('pointers-no')){
                 this.paperScope.view.element.classList.remove('pointers-no')
             }
+
+            // Activate paperJS tool
             this.toolCount.activate();
 
             // Set the default size relative to zoom level.
             this.viewportZoom = this.osdViewer.viewport.getZoom(true);
             var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
             this.strokeWidth = size/(this.viewportZoom*500);
+
+            // Deselect any current selections to avoid confusion.
+            this.paperScope.project.deselectAll();
         },
 
         //helper function - calculate distance between 2 points:
@@ -59,42 +59,110 @@ export default {
 
         var firstPoint;
         var secondPoint;
+        var projectPathItems = null;
 
-        // Deselect any current selection
-        this.paperScope.project.deselectAll();
+        // Listen for an event indicating the marker counts should be updated.
+        eventBus.$on('updateMarkerCount', () => {
+
+            // Find counters in the project at this moment.
+            var counters = vm.paperScope.project.getItems({
+                data: {
+                    type: 'counter'
+                }
+            });
+
+            // Check which marker circles are inside the counting rectangle
+            // at this moment.
+            var markerItems = vm.paperScope.project.getItems({
+                className: 'Path',
+                data: {
+                    countable: true
+                }
+            });
+
+
+            for (var counter in counters){
+
+                var totalMarkers = 0;
+
+                // Log the bounds to see if it moves on move
+                console.log(counters[counter].data.rect.bounds);
+
+                // If marker is inside the area for counting then increment
+                // the total count.
+                for (var marker in markerItems){
+                    if (markerItems[marker].isInside(counters[counter].data.rect.bounds)){
+                        totalMarkers += 1;
+                    }
+                }
+
+                // Update text to represent the number of markers inside
+                // the associated rectangle.
+                counters[counter].content = totalMarkers;
+            }
+        })
 
         // Get the first point
         function toolDown(event) {
 	        firstPoint = event.point;
+
+            // Check which path items are in the project at this moment.
+            projectPathItems = vm.paperScope.project.getItems({
+                className: 'Path'
+            })
         }
 
         // On drag draw feedforward shadow rectangle in realtime.
         function toolDrag(event) {
 
         	secondPoint = event.point;
-        	vm.radius = vm.calculateDistance(firstPoint,secondPoint)
 
+            // Draw rectangle.
         	var trackingRect = new paper.Path.Rectangle(firstPoint, secondPoint);
-            trackingRect.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
-            trackingRect.strokeWidth = vm.strokeWidth;
-
-        	// Constantly update tracking rect by removing it and
-            // drawing another.
-            trackingRect.removeOn({
-                drag: true,
-                down: true,
-                up:true
-            });
+                trackingRect.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
+                trackingRect.strokeWidth = vm.strokeWidth;
+                trackingRect.removeOn({
+                    drag: true,
+                    down: true,
+                    up:true
+                });
         }
 
         // Finalise rectangle properties and draw.
         function toolUp(event) {
 
+            // secondPoint for specifiying rectangle dimensions
         	secondPoint = event.point;
 
-        	var myRect = new paper.Path.Rectangle(firstPoint, secondPoint);
-            myRect.strokeColor = new paper.Color({hue: 46, saturation: 1.0, lightness: 0.65, alpha: 1});
-            myRect.strokeWidth = vm.strokeWidth;
+            // Draw rectangle
+        	var countRect = new paper.Path.Rectangle(firstPoint, secondPoint);
+            countRect.strokeColor = new paper.Color({hue: 46, saturation: 1.0, lightness: 0.65, alpha: 1});
+            countRect.strokeWidth = vm.strokeWidth;
+
+            // Draw text for number of items within rectangle
+            var countText = new paper.PointText(countRect.bounds.topLeft);
+                countText.translate(vm.strokeWidth*3, -vm.strokeWidth*2);
+                countText.fillColor = 'black';
+                countText.fontSize = vm.strokeWidth*12 + 'px';
+                countText.data.rect = countRect;    // Keep a record of associated rectangle within which the items are counted.
+                countText.data.type = 'counter';
+
+            // Emit event that will check and update the number of markers in
+            // each counter rectangle.
+            eventBus.$emit('updateMarkerCount');
+
+            // Draw text tag, background coloured area to make sure the text
+            // is visually distinct.
+            var textTagTopRight = countText.handleBounds.topRight.add(vm.strokeWidth*4, 0);
+            var textTag = new paper.Path.Rectangle(countRect.strokeBounds.topLeft, textTagTopRight);
+                textTag.fillColor = countRect.strokeColor;
+                textTag.moveBelow(countText);
+
+            // Add data to ensure all of these items can only be selected together.
+            countRect.data.selectWith = [textTag, countText];
+            countText.data.selectWith = [countRect, textTag, countText];
+            textTag.data.selectWith = [countText, countRect];
+
         }
 
         this.toolCount = new paper.Tool();
