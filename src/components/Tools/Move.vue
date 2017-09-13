@@ -70,6 +70,7 @@ export default {
 
             // Get details of the element the user has clicked on.
             hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
+            console.log(hitResult);
 
             // If user clicked inside a bounds selection rectangle
             if (selectedGroup && selectedGroup.bounds.contains(e.point) && !e.modifiers.shift){

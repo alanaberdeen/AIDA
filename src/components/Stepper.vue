@@ -23,10 +23,11 @@
 </template>
 
 <script>
+import openseadragon from 'openseadragon';
 
 export default {
 
-    props: ['config'],
+    props: ['config', 'osdViewer'],
 
     computed: {
         activeStep() {
@@ -37,6 +38,31 @@ export default {
     methods: {
         setActive(stepIndex){
             this.config.activeStep = stepIndex;
+
+            // If this step has an associated region of interest then pan and
+            // zoom the viewport to this setup.
+            if (this.config.steps[stepIndex].regionOfIntereset){
+
+                // var region = new openseadragon.Rect(
+                //     this.config.steps[stepIndex].regionOfIntereset.x,
+                //     this.config.steps[stepIndex].regionOfIntereset.y,
+                //     this.config.steps[stepIndex].regionOfIntereset.width,
+                //     this.config.steps[stepIndex].regionOfIntereset.height
+                // );
+
+                // Temp demonstration rectangle. Need to figure out the
+                // coordinate change.
+                var region = new openseadragon.Rect(
+                    0,
+                    0,
+                    0.3,
+                    0.3
+                );
+
+                this.osdViewer.viewport.fitBounds(region);
+            } else {
+                this.osdViewer.viewport.goHome();
+            }
         }
     }
 }
@@ -63,7 +89,5 @@ export default {
 .stepper__step {
     padding: 10px 24px;
 }
-
-
 
 </style>

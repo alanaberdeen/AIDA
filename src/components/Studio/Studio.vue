@@ -4,7 +4,6 @@
         <app-layers :paperScope='paperScope'>
         </app-layers>
 
-
         <app-channels   :paperScope='paperScope'
                         :osdViewer='osdViewer'
                         :config='config'>

@@ -17,11 +17,8 @@
 // TODO: Add a keyboard short cut that can be held down to activate
 // pan and zoom controls.
 
-// TODO: There is a difference in color for both active and in-active states
-// for the Font Awesome Icons and the material icons. It's annoying.
-
-import paper from 'paper'
-import openseadragon from 'openseadragon'
+import paper from 'paper';
+import openseadragon from 'openseadragon';
 
 export default {
     props: ['paperScope', 'osdViewer', 'active'],
