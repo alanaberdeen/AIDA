@@ -9,12 +9,12 @@
         <app-save   :paperScope='paperScope'>
         </app-save>
 
-        <v-btn icon class="pointers-no">
+        <!-- <v-btn icon class="pointers-no">
             <app-settings   :config='config'
                             :osdViewer='osdViewer'
                             :paperScope='paperScope'>
             </app-settings>
-        </v-btn>
+        </v-btn> -->
 
         <v-btn icon class="pointers-no">
             <app-account>
