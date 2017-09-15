@@ -8,6 +8,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+// Vuex central application state store paradigm. 
+import { store } from './store/store';
+
 // CSS material design framework.
 import Vuetify from 'vuetify';
 Vue.use(Vuetify);
@@ -15,7 +18,7 @@ Vue.use(Vuetify);
 // Application child component
 import App from './App';
 
-// Development
+// Development settings
 Vue.config.productionTip = false;
 
 // Event bus to handle child-child communication
@@ -25,5 +28,6 @@ export const eventBus = new Vue();
 new Vue({
   el: '#app',
   template: '<App/>',
+  store,
   components: { App }
 });

@@ -34,6 +34,10 @@ export default {
             }
             this.toolCircle.activate();
 
+            // Testing purposes 
+            console.log("this is coming from the store!");
+            console.log(this.$store.state.image.number);
+
             // Set the default radius relative to image size and zoom level.
             // TODO: inefficiencies in this. Each time we are getting the
             // content size repeatedly.

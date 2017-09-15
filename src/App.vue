@@ -1,9 +1,7 @@
 <template>
     <v-app toolbar pointer-events='none'>
         <header>
-            <app-toolbar    :config='config'
-                            :osdViewer='osdViewer'
-                            :paperScope='paperScope'>
+            <app-toolbar>
             </app-toolbar>
         </header>
 
@@ -12,36 +10,34 @@
                 <v-layout row wrap>
 
                     <v-flex d-flex id="left-panel">
-                        <app-tools  :paperScope='paperScope'
+                       <!--  <app-tools  :paperScope='paperScope'
                                     :osdViewer='osdViewer'
                                     :config='config'>
-                        </app-tools>
+                        </app-tools> -->
+                        <div id='placer'>
+                        </div>
                     </v-flex>
 
                     <v-flex d-flex>
-
                         <div id="centre-container">
-                            <div id='stepper'>
+                            <!-- <div id='stepper'>
                                 <app-stepper    :config='config'
                                                 :osdViewer='osdViewer'>
                                 </app-stepper>
-                            </div>
+                            </div> -->
 
                             <div id='canvas-container'>
                                 <app-canvas>
                                 </app-canvas>
                             </div>
                         </div>
-
-
-
                     </v-flex>
 
                     <v-flex d-flex id='right-panel'>
-                        <app-studio     :paperScope='paperScope'
+                        <!-- <app-studio     :paperScope='paperScope'
                                         :osdViewer='osdViewer'
                                         :config='config'>
-                        </app-studio>
+                        </app-studio> -->
                     </v-flex>
 
                 </v-layout>
@@ -72,167 +68,8 @@ export default {
     data() {
         return {
             paperScope: null,
-            osdViewer: null,
-            config: {
-                activeStep: 0,
-                tools: {
-                    pan: {
-                        include: true,
-                        name: 'Pan and Zoom',
-                        caption: 'Pan and zoom'
-                    },
-                    circle: {
-                        include: true,
-                        name: 'Circle',
-                        caption: 'Plot circles',
-                    },
-                    rectangle: {
-                        include: true,
-                        name: 'Rectangle',
-                        caption: 'Draw rectangles'
-                    },
-                    pen: {
-                        include: true,
-                        name: 'Pen',
-                        caption: 'Draw smooth paths by plotting node points'
-                    },
-                    pencil: {
-                        include: true,
-                        name: 'Pencil',
-                        caption: 'Draw smooth paths by dragging the mouse'
-                    },
-                    move: {
-                        include: true,
-                        name: 'Move',
-                        caption: 'Move and scale annotation items'
-                    },
-                    node: {
-                        include: true,
-                        name: 'Node',
-                        caption: 'Manipulate path nodes and handles'
-                    },
-                    count: {
-                        include: true,
-                        name: 'Count',
-                        caption: 'Count items within a rectangle'
-                    }
-                },
-                steps: [
-                    {   id: 1,
-                        tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true, 'count': true},
-                        regionOfIntereset: false,
-                        instruction: 'Instructions for Step 1: Use the circle tool to mark the lymphocytes within the region of interest.'
-                    },
-                    {   id: 2,
-                        tools: {'pan': true, 'circle': false, 'rectangle': false, 'pen': false, 'pencil': true, 'move': true, 'node': true, 'count': false},
-                        regionOfIntereset: true,
-                        instruction: 'Instructions for Step 2: Use the contour tool to mark the non-tumor region.'
-                    },
-                    {   id: 3,
-                        tools: {'pan': true, 'circle': false, 'rectangle': false, 'pen': false, 'pencil': true, 'move': true, 'node': true, 'count': false},
-                        regionOfIntereset: false,
-                        instruction: 'Instructions for Step 3: Use the contour tool to mark the center of the tumor.'
-                    },
-                    {   id: 4,
-                        tools: {'pan': true, 'circle': false, 'rectangle': false, 'pen': false, 'pencil': true, 'move': true, 'node': true, 'count': false},
-                        regionOfIntereset: false,
-                        instruction: 'Instructions for Step 4: Use the contour tool to mark the invasive margin.'
-                    },
-                    {   id: 5,
-                        tools: {'pan': true, 'circle': false, 'rectangle': false, 'pen': false, 'pencil': true, 'move': true, 'node': true, 'count': false},
-                        regionOfIntereset: false,
-                        instruction: 'Instructions for Step 5: Use the contour tool to mark the area around the glands.'
-                    }
-                ],
-                images: []
-            }
+            osdViewer: null,         
         }
-    },
-
-    methods: {
-        addImage(name, url) {
-            var newid = this.config.images.length + 1;
-
-            this.config.images.push({
-                id: newid,
-                name: name,
-                url: url
-            })
-
-            this.osdViewer.addTiledImage({
-                tileSource: url,
-                x: 0,
-                y: 0,
-                opacity: 0.7
-            });
-
-        }
-    },
-
-    mounted() {
-        // Ensure the following doesn't run until the entire view, including the
-        // child components, have been rendered.
-        this.$nextTick(function () {
-            var vm = this;
-
-            // Create the OpenSeadragon instance viewer.
-            // Save it to the VueModel
-            this.osdViewer = new openseadragon.Viewer({
-                id: "osd-canvas",
-                prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-                showNavigationControl: false
-            });
-
-            // Add image tile sources to the viewer.
-            // These will be the different channels.
-            // TODO: make this reactive to the number of channels in the image source.
-            // at the moment it is merely hardcoded.
-            // vm.addImage('CD3DZ', '../static/dzi_images/CD3DZ/CD3DZ.dzi');
-            // vm.addImage('HEDZ', '../static/dzi_images/HEDZ/HEDZ.dzi');
-            // vm.addImage('CD20DZ', '../static/dzi_images/CD20DZ/CD20DZ.dzi');
-            vm.addImage('Highsmith', 'https://openseadragon.github.io/example-images/highsmith/highsmith.dzi');
-
-            // Create the PaperJS instance.
-            // Save it to the VueModel
-            this.paperScope = paper.setup(document.getElementById('paper-canvas'))
-
-            // Add a handler fucntion that will run when osd-viewport is updated.
-            // This will synchronously update the paperJS viewport.
-            this.osdViewer.addHandler('update-viewport', function() {
-
-                // Handle resize events
-                var containerWidth = document.getElementById('canvas').clientWidth;
-                var containerHeight = document.getElementById('canvas').clientHeight;
-                vm.paperScope.view.viewSize = new paper.Size(containerWidth, containerHeight);
-
-                // Handle changes in zoom level
-                var viewportZoom = vm.osdViewer.viewport.getZoom(true);
-                var image1 = vm.osdViewer.world.getItemAt(0);
-                vm.paperScope.view.zoom = image1.viewportToImageZoom(viewportZoom);
-                var center = image1.viewportToImageCoordinates(vm.osdViewer.viewport.getCenter(true));
-                vm.paperScope.view.center = new paper.Point(center.x, center.y);
-
-                // Update paths to have strokeWidth reactive to zoom level
-                // This might be computationally-expensive but will try for now.
-                // Loop through each item in the project checking if it's a path
-                // item and resizing the strokeWidth to be relative to the zoom
-                // level and item size.
-                var size = vm.osdViewer.world.getItemAt(0).getContentSize().x;
-                vm.paperScope.project.layers.forEach((layer) => {
-                    layer.children.forEach((child) => {
-                        if(child.className === 'Path') {
-                            child.strokeWidth = size/(viewportZoom*500);
-                        }
-                    })
-                })
-            });
-
-            // Import JSON.
-            // If required, load the interface with a set of annotations by defualt.
-            // paperJS annoations should be described by JSON object as a string parameter.
-            vm.paperScope.project.importJSON('["Layer",{"name":"Circles","applyMatrix":true,"children":[["Group",{"applyMatrix":true}],["Group",{"applyMatrix":true}],["Path",{"applyMatrix":true,"data":{"countable":true},"segments":[[[2833.81806,3521.67343],[0,314.028],[0,-314.028]],[[3402.41605,2953.07544],[-314.028,0],[314.028,0]],[[3971.01404,3521.67343],[0,-314.028],[0,314.028]],[[3402.41605,4090.27142],[314.028,0],[-314.028,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":21.53835}],["Path",{"applyMatrix":true,"data":{"countable":true},"segments":[[[3449.21215,4848.68081],[0,472.14183],[0,-472.14183]],[[4304.10055,3993.79241],[-472.14183,0],[472.14183,0]],[[5158.98896,4848.68081],[0,-472.14183],[0,472.14183]],[[4304.10055,5703.56922],[472.14183,0],[-472.14183,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":21.53835}],["Path",{"applyMatrix":true,"data":{"countable":true},"segments":[[[1031.26573,5393.0941],[0,454.51656],[0,-454.51656]],[[1854.24077,4570.11906],[-454.51656,0],[454.51656,0]],[[2677.21582,5393.0941],[0,-454.51656],[0,454.51656]],[[1854.24077,6216.06914],[454.51656,0],[-454.51656,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":21.53835}]]}]')
-
-        })
     },
 
     components: {
@@ -254,33 +91,38 @@ export default {
 
 <style media="screen" scoped>
 
-    #content-container{
+    #content-container {
         padding: 0px;
     }
 
-    #centre-container{
+    #centre-container {
         display: flex;
         flex-direction: column;
         padding: 0px 5px;
     }
 
-    #stepper{
+    #stepper {
         flex-shrink: 0;
         padding: 5px 0px;
     }
 
-    #canvas-container{
+    #canvas-container {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         padding-bottom: 5px;
     }
 
-    #left-panel{
+    #left-panel {
         flex: 0 1 auto;
     }
 
-    #right-panel{
+    #right-panel {
         flex: 0 1 auto;
+    }
+
+    #placer {
+        height: 100vh;
+        background-color: blue;
     }
 </style>

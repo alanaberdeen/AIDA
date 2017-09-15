@@ -8,7 +8,53 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+import {mapGetters} from 'vuex';
+
 export default {
+
+    methods: {
+        ...mapActions([
+            'initialiseViewer', 
+            'initialiseAnnotation',
+            'addImages',
+            'synchroniseAnnotationAndImage',
+            'loadAnnotation'
+        ]),
+        ...mapGetters([
+            'getImages',
+            'getPaperScope',
+            'getAnnotation'
+        ])
+    },
+
+    mounted() {
+        
+        // Create the OpenSeadragon instance viewer.
+        this.initialiseViewer({
+            id: 'osd-canvas',
+            prefixUrl: 'https://openseadragon.github.io/openseadragon/images/',
+            showNavigationControl: false
+        });
+
+        // Add the images specied in the config state to the viewer. 
+        // this.addImages(this.getImages);
+        this.addImages(this.getImages());
+
+        // Create the PaperJS instance targetting the canvas DOM element.
+        this.initialiseAnnotation({
+            canvas: document.getElementById('paper-canvas')
+        });
+
+        // Ensure the size of the PaperJS annotation view and the OpenSeaDragon
+        // viewer are always synchronised. 
+        this.synchroniseAnnotationAndImage({
+            paperScope: this.getPaperScope()
+        });
+
+        // Import any annotation data set in the config object. 
+        this.loadAnnotation(this.getAnnotation());       
+    }
 }
 </script>
 
@@ -27,8 +73,6 @@ export default {
 
 #paper-canvas {
     position: absolute;
-    opacity: 0.7;
-    filter: alpha(opacity=70);
     width: 100%;
     height: 100%;
 }
