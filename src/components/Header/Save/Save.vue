@@ -7,16 +7,16 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+import {mapGetters} from 'vuex';
+
 export default {
-    props: ['paperScope'],
 
     methods: {
-
-        // Save the project as a JSON object to the console
-        exportJSON () {
-            console.log(this.paperScope.project.exportJSON())
-        }
-    }
+        ...mapActions([
+            'exportJSON'
+        ])
+    },
 }
 </script>
 

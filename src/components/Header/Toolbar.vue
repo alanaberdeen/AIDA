@@ -1,25 +1,25 @@
 <template lang="html">
     <v-toolbar dark dense class="primary pointers-please">
-        <v-toolbar-title class='white--text'>AIDA</v-toolbar-title>
+        <v-toolbar-title class='white--text'>
+                    <a href="https://imageannotation.nds.ox.ac.uk:8443/AIDA/">
+                        AIDA
+                    </a>
+        </v-toolbar-title>
         <v-spacer></v-spacer>
 
-       <!--  <app-home>
-        </app-home>
+        <app-save></app-save>
 
-        <app-save   :paperScope='paperScope'>
-        </app-save>
-
-        <v-btn icon class="pointers-no">
+        <!-- <v-btn icon class="pointers-no">
             <app-settings   :config='config'
                             :osdViewer='osdViewer'
                             :paperScope='paperScope'>
             </app-settings>
-        </v-btn>
+        </v-btn> -->
 
         <v-btn icon class="pointers-no">
             <app-account>
             </app-account>
-        </v-btn> -->
+        </v-btn>
 
     </v-toolbar>
 </template>
@@ -32,10 +32,7 @@ import Account from './Account/Account.vue';
 import Home from './Home/Home.vue';
 import Save from './Save/Save.vue';
 
-
 export default {
-    props: ['config', 'osdViewer', 'paperScope'],
-
     components: {
         'app-settings': Settings,
         'app-account': Account,
@@ -47,4 +44,8 @@ export default {
 </script>
 
 <style lang="css">
+a {
+  color: inherit;              
+  text-decoration: inherit;     
+}
 </style>

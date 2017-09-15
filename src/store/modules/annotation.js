@@ -21,6 +21,10 @@ const actions = {
 
 	loadAnnotation: ({commit}, payload) => {
 		commit('loadAnnotation', payload);
+	},
+
+	exportJSON: ({commit}, payload) => {
+		commit('exportJSON', payload);
 	}
 };
 
@@ -34,6 +38,12 @@ const mutations = {
 	// Loads a PaperJS project JSON string into the current PaperScope 
 	loadAnnotation: (state, payload) => {
 		state.paperScope.project.importJSON(payload)
+	},
+
+	// Export a PaperJS project JSON string representing current state to the 
+	// console. 
+	exportJSON: (state, payload) => {
+		console.log(state.paperScope.project.exportJSON())
 	}
 };
 
