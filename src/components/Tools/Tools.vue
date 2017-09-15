@@ -1,83 +1,82 @@
 <template lang="html">
     <div class="pointers-please toolsPanel elevation-2">
 
-        <v-layout>
-            <v-list dense id="toolList">
+        <v-list dense id="toolList">
 
-                <v-list-tile>
-                    <app-pan :paperScope="paperScope"
-                             :osdViewer="osdViewer"
-                             :active="(this.activeTool === 'pan')"
-                             @click.native="activeTool = 'pan'"
-                             v-if='config.steps[config.activeStep].tools.pan'>
-                    </app-pan>
-                </v-list-tile>
+            <v-list-tile>
+                <app-pan :paperScope="paperScope"
+                         :osdViewer="osdViewer"
+                         :active="(this.activeTool === 'pan')"
+                         @click.native="activeTool = 'pan'"
+                         v-if='config.steps[config.activeStep].tools.pan'>
+                </app-pan>
+            </v-list-tile>
 
-                <v-list-tile>
-                    <app-circle :paperScope="paperScope"
-                                :active="(this.activeTool === 'circle')"
+            <v-list-tile>
+                <app-circle :paperScope="paperScope"
+                            :active="(this.activeTool === 'circle')"
+                            :osdViewer="osdViewer"
+                            @click.native="activeTool = 'circle'"
+                            v-if='config.steps[config.activeStep].tools.circle'>
+                </app-circle>
+            </v-list-tile>
+
+            <v-list-tile>
+                <app-rectangle  :paperScope="paperScope"
+                                :active="(this.activeTool === 'rectangle')"
                                 :osdViewer="osdViewer"
-                                @click.native="activeTool = 'circle'"
-                                v-if='config.steps[config.activeStep].tools.circle'>
-                    </app-circle>
-                </v-list-tile>
+                                @click.native="activeTool = 'rectangle'"
+                                v-if='config.steps[config.activeStep].tools.rectangle'>
+                </app-rectangle>
+            </v-list-tile>
 
-                <v-list-tile>
-                    <app-rectangle  :paperScope="paperScope"
-                                    :active="(this.activeTool === 'rectangle')"
-                                    :osdViewer="osdViewer"
-                                    @click.native="activeTool = 'rectangle'"
-                                    v-if='config.steps[config.activeStep].tools.rectangle'>
-                    </app-rectangle>
-                </v-list-tile>
+            <v-list-tile>
+                <app-pen    :paperScope="paperScope"
+                            :osdViewer="osdViewer"
+                            :active="(this.activeTool === 'pen')"
+                            @click.native="activeTool = 'pen'"
+                            v-if='config.steps[config.activeStep].tools.pen'>
+                </app-pen>
+            </v-list-tile>
 
-                <v-list-tile>
-                    <app-pen    :paperScope="paperScope"
-                                :osdViewer="osdViewer"
-                                :active="(this.activeTool === 'pen')"
-                                @click.native="activeTool = 'pen'"
-                                v-if='config.steps[config.activeStep].tools.pen'>
-                    </app-pen>
-                </v-list-tile>
+            <v-list-tile>
+                <app-pencil :paperScope="paperScope"
+                          :osdViewer="osdViewer"
+                          :active="(this.activeTool === 'pencil')"
+                          @click.native="activeTool = 'pencil'"
+                          v-if='config.steps[config.activeStep].tools.pencil'>
+                </app-pencil>
+            </v-list-tile>
 
-                <v-list-tile>
-                    <app-pencil :paperScope="paperScope"
-                              :osdViewer="osdViewer"
-                              :active="(this.activeTool === 'pencil')"
-                              @click.native="activeTool = 'pencil'"
-                              v-if='config.steps[config.activeStep].tools.pencil'>
-                    </app-pencil>
-                </v-list-tile>
+            <v-list-tile>
+                <app-move :paperScope="paperScope"
+                          :osdViewer="osdViewer"
+                          :active="(this.activeTool === 'move')"
+                          @click.native="activeTool = 'move'"
+                          v-if='config.steps[config.activeStep].tools.move'>
+                </app-move>
+            </v-list-tile>
 
-                <v-list-tile>
-                    <app-move :paperScope="paperScope"
-                              :osdViewer="osdViewer"
-                              :active="(this.activeTool === 'move')"
-                              @click.native="activeTool = 'move'"
-                              v-if='config.steps[config.activeStep].tools.move'>
-                    </app-move>
-                </v-list-tile>
+            <v-list-tile>
+                <app-node :paperScope="paperScope"
+                          :osdViewer="osdViewer"
+                          :active="(this.activeTool === 'node')"
+                          @click.native="activeTool = 'node'"
+                          v-if='config.steps[config.activeStep].tools.node'>
+                </app-node>
+            </v-list-tile>
 
-                <v-list-tile>
-                    <app-node :paperScope="paperScope"
-                              :osdViewer="osdViewer"
-                              :active="(this.activeTool === 'node')"
-                              @click.native="activeTool = 'node'"
-                              v-if='config.steps[config.activeStep].tools.node'>
-                    </app-node>
-                </v-list-tile>
+            <v-list-tile>
+                <app-count :paperScope="paperScope"
+                           :osdViewer="osdViewer"
+                           :active="(this.activeTool === 'count')"
+                           @click.native="activeTool = 'count'"
+                           v-if='config.steps[config.activeStep].tools.count'>
+                </app-count>
+            </v-list-tile>
 
-                <v-list-tile>
-                    <app-count :paperScope="paperScope"
-                               :osdViewer="osdViewer"
-                               :active="(this.activeTool === 'count')"
-                               @click.native="activeTool = 'count'"
-                               v-if='config.steps[config.activeStep].tools.count'>
-                    </app-count>
-                </v-list-tile>
+        </v-list>
 
-            </v-list>
-        </v-layout>
     </div>
 </template>
 

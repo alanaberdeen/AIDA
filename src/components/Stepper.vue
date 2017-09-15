@@ -72,7 +72,6 @@ export default {
 
 .stepper{
     background-color: #E0E0E0;
-
 }
 
 .hint-card {
