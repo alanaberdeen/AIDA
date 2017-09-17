@@ -29,14 +29,12 @@
 // Import child components
 import Settings from './Settings/Settings.vue';
 import Account from './Account/Account.vue';
-import Home from './Home/Home.vue';
 import Save from './Save/Save.vue';
 
 export default {
     components: {
         'app-settings': Settings,
         'app-account': Account,
-        'app-home': Home,
         'app-save': Save
     }
 }

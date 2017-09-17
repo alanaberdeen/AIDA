@@ -10,12 +10,7 @@
                 <v-layout row wrap>
 
                     <v-flex d-flex id="left-panel">
-                       <!--  <app-tools  :paperScope='paperScope'
-                                    :osdViewer='osdViewer'
-                                    :config='config'>
-                        </app-tools> -->
-                        <div id='placer'>
-                        </div>
+                        <app-tools></app-tools>
                     </v-flex>
 
                     <v-flex d-flex>
@@ -65,13 +60,6 @@ import Canvas from './components/Canvas.vue';
 import { eventBus } from './main';
 
 export default {
-    data() {
-        return {
-            paperScope: null,
-            osdViewer: null,         
-        }
-    },
-
     components: {
         'app-tools': Tools,
         'app-image-loader': ImageLoader,

@@ -4,23 +4,19 @@
         <v-list dense id="toolList">
 
             <v-list-tile>
-                <app-pan :paperScope="paperScope"
-                         :osdViewer="osdViewer"
-                         :active="(this.activeTool === 'pan')"
+                <app-pan :active="(this.activeTool === 'pan')"
                          @click.native="activeTool = 'pan'"
-                         v-if='config.steps[config.activeStep].tools.pan'>
+                         v-if="(this.getStepTools().includes('pan'))">
                 </app-pan>
             </v-list-tile>
 
             <v-list-tile>
-                <app-circle :paperScope="paperScope"
-                            :active="(this.activeTool === 'circle')"
-                            :osdViewer="osdViewer"
+                <app-circle :active="(this.activeTool === 'circle')"
                             @click.native="activeTool = 'circle'"
-                            v-if='config.steps[config.activeStep].tools.circle'>
+                            v-if="(this.getStepTools().includes('circle'))">
                 </app-circle>
             </v-list-tile>
-
+<!-- 
             <v-list-tile>
                 <app-rectangle  :paperScope="paperScope"
                                 :active="(this.activeTool === 'rectangle')"
@@ -73,7 +69,7 @@
                            @click.native="activeTool = 'count'"
                            v-if='config.steps[config.activeStep].tools.count'>
                 </app-count>
-            </v-list-tile>
+            </v-list-tile> -->
 
         </v-list>
 
@@ -81,7 +77,9 @@
 </template>
 
 <script>
-import paper from 'paper';
+import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+
 
 // Import child components
 import toolCircle from './Circle.vue';
@@ -94,12 +92,24 @@ import toolNode from './Node.vue';
 import toolCount from './Count.vue';
 
 export default {
-    props: ['paperScope', 'osdViewer', 'config'],
 
     data() {
-        return{
+        return {
             activeTool: 'pan'
         }
+    },
+
+    computed: {
+        ...mapState({
+            activeStep: state => state.config.activeStep
+        })
+    },
+
+    methods: {
+        ...mapGetters([
+            'getStepTools',
+            'getActiveStep'
+        ])
     },
 
     components: {

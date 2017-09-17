@@ -16,12 +16,8 @@
 <script>
 // TODO: Add a keyboard short cut that can be held down to activate
 // pan and zoom controls.
-
-import paper from 'paper';
-import openseadragon from 'openseadragon';
-
 export default {
-    props: ['paperScope', 'osdViewer', 'active'],
+    props: ['active'],
     data() {
         return {
             toolPan: null,
@@ -31,11 +27,11 @@ export default {
     methods: {
         initialiseTool() {
             // Relinquish control of PaperJS interface
-            this.paperScope.view.element.setAttribute("class", "pointers-no");
+            document.getElementById('paper-canvas').setAttribute("class", "pointers-no");
         }
     },
 
-    created() {
+    mounted() {
         this.initialiseTool();
     }
 }

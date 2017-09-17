@@ -25,6 +25,10 @@ const actions = {
 
 	exportJSON: ({commit}, payload) => {
 		commit('exportJSON', payload);
+	},
+
+	prepareCanvas: ({commit}, payload) => {
+		commit('prepareCanvas', payload);
 	}
 };
 
@@ -44,6 +48,14 @@ const mutations = {
 	// console. 
 	exportJSON: (state, payload) => {
 		console.log(state.paperScope.project.exportJSON())
+	},
+
+	// Prepare the canvas for adding annotations. 
+	prepareCanvas: (state, payload) => {
+		// Remove the class that interupts the pointer interaction. 
+		if (state.paperScope.view.element.classList.contains('pointers-no')){
+                state.paperScope.view.element.classList.remove('pointers-no');
+            }
 	}
 };
 

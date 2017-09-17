@@ -13,84 +13,94 @@
 </template>
 
 <script>
-import paper from 'paper'
-import { eventBus } from '../../main'
+import paper from 'paper';
+import { eventBus } from '../../main';
+
+import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
-    props: ['paperScope', 'active', 'osdViewer'],
+    props: ['active'],
     data() {
         return {
             toolCircle: null,
-            strokeWidth: 400,
-            radius: 2000,
-            viewportZoom: this.osdViewer.viewport.getZoom(true)
+            strokeWidth: 400, // Default value, will be updated relative to view 
+            radius: 2000
         }
     },
 
+    computed: {
+        ...mapState({
+            paperScope: state => state.annotation.paperScope,
+            viewportZoom: state => state.image.viewer.viewport.getZoom(true),
+            imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+        })
+    },
+
     methods: {
+        ...mapActions([
+            'prepareCanvas',
+            'addTool'
+        ]),
+
         initialiseTool() {
-            if (this.paperScope.view.element.classList.contains('pointers-no')){
-                this.paperScope.view.element.classList.remove('pointers-no')
-            }
+            // Prepare PaperJS canvas for interaction.
+            this.prepareCanvas();
+
+            // Activate the paperJS tool. 
             this.toolCircle.activate();
 
-            // Testing purposes 
-            console.log("this is coming from the store!");
-            console.log(this.$store.state.image.number);
-
             // Set the default radius relative to image size and zoom level.
-            // TODO: inefficiencies in this. Each time we are getting the
-            // content size repeatedly.
-            this.viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
-            this.radius = size/(this.viewportZoom*100);
-            this.strokeWidth = size/(this.viewportZoom*500);
+            this.radius = this.imageWidth/(this.viewportZoom*100);
+            this.strokeWidth = this.imageWidth/(this.viewportZoom*500);
         },
 
-        //helper function - calculate distance between 2 points:
-        //see: http://www.mathwarehouse.com/algebra/distance_formula/index.php
-        calculateDistance(firstPoint,secondPoint){
-            var x1 = firstPoint.x;
-            var y1 = firstPoint.y;
-            var x2 = secondPoint.x;
-            var y2 = secondPoint.y;
+        // Helper function - calculate distance between 2 points:
+        // see: http://www.mathwarehouse.com/algebra/distance_formula/index.php
+        calculateDistance(firstPoint, secondPoint){
+            let x1 = firstPoint.x;
+            let y1 = firstPoint.y;
+            let x2 = secondPoint.x;
+            let y2 = secondPoint.y;
 
-            var distance = Math.sqrt((Math.pow((x2-x1), 2))+(Math.pow((y2-y1), 2)));
+            let distance = Math.sqrt((Math.pow((x2-x1), 2))+(Math.pow((y2-y1), 2)));
             return distance;
         }
     },
 
     created() {
-        var vm = this;
+        
+        // Event points, not sure if really needed. 
+        let firstPoint;
+        let secondPoint;
 
-        var firstPoint;
-        var secondPoint;
-        var radius = 2000;
-
-        // Set the required zoom dependent variables
-        function toolDown(event) {
+        const toolDown = (event) => {
 
             // The distance the mouse has to be dragged before an event is fired
-            // is dependent on the current zoom level
-            vm.toolCircle.minDistance = vm.radius * 1.5;
+            // is dependent on the default radius which is set by the 
+            // current zoom level. 
+            this.toolCircle.minDistance = this.radius * 1.5;
 
-            //get the first point
+            // get the first point
 	        firstPoint = event.point;
         }
 
-        function toolDrag(event) {
+        const toolDrag = (event) => {
 
             // If user dragged fire enough to fire this event assume they are
             // adjusting the default size of the circle.
             // Reset the distance before further events fired.
-            vm.toolCircle.minDistance = 0;
+            this.toolCircle.minDistance = 0;
 
+            // Set the second point and adjust the circle radius. 
         	secondPoint = event.point;
-        	vm.radius = vm.calculateDistance(firstPoint,secondPoint)
+        	this.radius = this.calculateDistance(firstPoint,secondPoint);
 
-            var trackingPath = new paper.Path.Line(firstPoint, secondPoint);
+            // Draw the tracking path 
+            let trackingPath = new paper.Path.Line(firstPoint, secondPoint);
             trackingPath.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
-            trackingPath.strokeWidth = vm.strokeWidth;
+            trackingPath.strokeWidth = this.strokeWidth;
             trackingPath.add(event.point);
             trackingPath.removeOn({
                 drag:true,
@@ -98,11 +108,11 @@ export default {
                 up:true
             });
 
-            //create a circle positioned at point where mousedown was, with radius
-            //the distance between mousedown/mouseup
-        	var trackingCircle = new paper.Path.Circle(firstPoint, vm.radius);
+            // Create a circle positioned at point where mousedown was, with radius
+            // the distance between mousedown/mouseup
+        	let trackingCircle = new paper.Path.Circle(firstPoint, this.radius);
             trackingCircle.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
-            trackingCircle.strokeWidth = vm.strokeWidth;
+            trackingCircle.strokeWidth = this.strokeWidth;
             trackingCircle.removeOn({
                 drag: true,
                 down: true,
@@ -110,26 +120,28 @@ export default {
             });
         }
 
-        function toolUp(event) {
-            //get the point on mouse up and calculate the distance with 1st point
-        	secondPoint = event.point;
+        const toolUp = (event) => {
 
-        	//create a circle positioned at point where mousedown was, with radius
-        	//the distance between mousedown/mouseup
-        	var myCircle = new paper.Path.Circle(firstPoint, vm.radius);
-            myCircle.strokeColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 1});
-            myCircle.strokeWidth = vm.strokeWidth;
-            myCircle.fillColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 0.4});
+            // Create a circle marker positioned on the point where mousedown was, 
+            // with either the default radius or the new radius as set by the 
+            // distance between the point of mouseDown and mouseUp. 
+            let newCircle = new paper.Path.Circle(firstPoint, this.radius);
+                newCircle.strokeColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 1});
+                newCircle.strokeWidth = this.strokeWidth;
+                newCircle.fillColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 0.4});
 
-            // Custom attribute: includes item in counting tools.
-            myCircle.data.countable = true;
+                // Custom attribute: includes item in counting tools.
+                newCircle.data.countable = true;
 
-            // As the number of circle markers in the project has changed,
-            // Emit an event that will check to see if we are counting these
-            // in a particular area and update that value if so.
-            eventBus.$emit('updateMarkerCount');
+                // As the number of circle markers in the project has changed,
+                // Emit an event that will check to see if we are counting these
+                // in a particular area and update that value if so.
+                eventBus.$emit('updateMarkerCount');
         }
 
+        // Add the defined functions to the tool object.  
+        // UNSATISFACTORY: mutating PaperJS project state directly without 
+        // dispatching view action.
         this.toolCircle = new paper.Tool();
         this.toolCircle.onMouseDown = toolDown;
         this.toolCircle.onMouseDrag = toolDrag;

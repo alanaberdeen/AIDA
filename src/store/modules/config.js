@@ -49,27 +49,27 @@ const state = {
         },
         steps: [
             {   id: 1,
-                tools: {'pan': true, 'circle': true, 'rectangle': true, 'pen': true, 'pencil': true, 'move': true, 'node': true, 'count': true},
+                tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 regionOfIntereset: false,
                 instruction: 'Instructions for Step 1: Use the circle tool to mark the lymphocytes within the region of interest.'
             },
             {   id: 2,
-                tools: {'pan': true, 'circle': false, 'rectangle': false, 'pen': false, 'pencil': true, 'move': true, 'node': true, 'count': false},
+                tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 regionOfIntereset: true,
                 instruction: 'Instructions for Step 2: Use the contour tool to mark the non-tumor region.'
             },
             {   id: 3,
-                tools: {'pan': true, 'circle': false, 'rectangle': false, 'pen': false, 'pencil': true, 'move': true, 'node': true, 'count': false},
+                tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 regionOfIntereset: false,
                 instruction: 'Instructions for Step 3: Use the contour tool to mark the center of the tumor.'
             },
             {   id: 4,
-                tools: {'pan': true, 'circle': false, 'rectangle': false, 'pen': false, 'pencil': true, 'move': true, 'node': true, 'count': false},
+                tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 regionOfIntereset: false,
                 instruction: 'Instructions for Step 4: Use the contour tool to mark the invasive margin.'
             },
             {   id: 5,
-                tools: {'pan': true, 'circle': false, 'rectangle': false, 'pen': false, 'pencil': true, 'move': true, 'node': true, 'count': false},
+                tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 regionOfIntereset: false,
                 instruction: 'Instructions for Step 5: Use the contour tool to mark the area around the glands.'
             }
@@ -92,6 +92,19 @@ const getters = {
 	// saved to the configuration obejct. 
 	getAnnotation: state => {
 		return state.annotation
+	},
+
+	getActiveStep: state => {
+		return state.activeStep
+	},
+
+	checkIncludeTool: state => (tool) => {
+		return tool
+	},
+
+	// Get an array specifiying the tools included in the current step. 
+	getStepTools: state => {
+		return state.steps[state.activeStep].tools
 	}
 };
 
