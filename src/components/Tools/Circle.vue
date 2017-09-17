@@ -17,7 +17,6 @@ import paper from 'paper';
 import { eventBus } from '../../main';
 
 import { mapActions } from 'vuex';
-import { mapGetters } from 'vuex';
 import { mapState } from 'vuex';
 
 export default {
@@ -40,8 +39,7 @@ export default {
 
     methods: {
         ...mapActions([
-            'prepareCanvas',
-            'addTool'
+            'prepareCanvas'
         ]),
 
         initialiseTool() {
@@ -57,7 +55,6 @@ export default {
         },
 
         // Helper function - calculate distance between 2 points:
-        // see: http://www.mathwarehouse.com/algebra/distance_formula/index.php
         calculateDistance(firstPoint, secondPoint){
             let x1 = firstPoint.x;
             let y1 = firstPoint.y;
@@ -70,10 +67,6 @@ export default {
     },
 
     created() {
-        
-        // Event points, not sure if really needed. 
-        let firstPoint;
-        let secondPoint;
 
         const toolDown = (event) => {
 
@@ -81,10 +74,7 @@ export default {
             // is dependent on the default radius which is set by the 
             // current zoom level. 
             this.toolCircle.minDistance = this.radius * 1.5;
-
-            // get the first point
-	        firstPoint = event.point;
-        }
+        };
 
         const toolDrag = (event) => {
 
@@ -93,12 +83,11 @@ export default {
             // Reset the distance before further events fired.
             this.toolCircle.minDistance = 0;
 
-            // Set the second point and adjust the circle radius. 
-        	secondPoint = event.point;
-        	this.radius = this.calculateDistance(firstPoint,secondPoint);
+            // Adjust circle radius. 
+        	this.radius = this.calculateDistance(event.downPoint, event.point);
 
             // Draw the tracking path 
-            let trackingPath = new paper.Path.Line(firstPoint, secondPoint);
+            let trackingPath = new paper.Path.Line(event.downPoint, event.point);
             trackingPath.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
             trackingPath.strokeWidth = this.strokeWidth;
             trackingPath.add(event.point);
@@ -110,7 +99,7 @@ export default {
 
             // Create a circle positioned at point where mousedown was, with radius
             // the distance between mousedown/mouseup
-        	let trackingCircle = new paper.Path.Circle(firstPoint, this.radius);
+        	let trackingCircle = new paper.Path.Circle(event.downPoint, this.radius);
             trackingCircle.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
             trackingCircle.strokeWidth = this.strokeWidth;
             trackingCircle.removeOn({
@@ -118,14 +107,14 @@ export default {
                 down: true,
                 up:true
             });
-        }
+        };
 
         const toolUp = (event) => {
 
             // Create a circle marker positioned on the point where mousedown was, 
             // with either the default radius or the new radius as set by the 
             // distance between the point of mouseDown and mouseUp. 
-            let newCircle = new paper.Path.Circle(firstPoint, this.radius);
+            let newCircle = new paper.Path.Circle(event.downPoint, this.radius);
                 newCircle.strokeColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 1});
                 newCircle.strokeWidth = this.strokeWidth;
                 newCircle.fillColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 0.4});
@@ -137,7 +126,7 @@ export default {
                 // Emit an event that will check to see if we are counting these
                 // in a particular area and update that value if so.
                 eventBus.$emit('updateMarkerCount');
-        }
+        };
 
         // Add the defined functions to the tool object.  
         // UNSATISFACTORY: mutating PaperJS project state directly without 

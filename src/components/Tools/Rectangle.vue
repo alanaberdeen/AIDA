@@ -12,92 +12,90 @@
 <script>
 import paper from 'paper';
 
+import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
+
 export default {
-    props: ['paperScope', 'active', 'osdViewer'],
+    props: ['active'],
     data() {
         return {
             toolRect: null,
-            strokeWidth: 400,
-            viewportZoom: this.osdViewer.viewport.getZoom(true)
+            strokeWidth: 400, // Default value, will be updated relative to view 
+            diagonal: 2000
         }
     },
 
+    computed: {
+        ...mapState({
+            paperScope: state => state.annotation.paperScope,
+            viewportZoom: state => state.image.viewer.viewport.getZoom(true),
+            imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+        })
+    },
+
     methods: {
+        ...mapActions([
+            'prepareCanvas'
+        ]),
+
         initialiseTool() {
-            if (this.paperScope.view.element.classList.contains('pointers-no')){
-                this.paperScope.view.element.classList.remove('pointers-no')
-            }
+
+            console.log("alright Clive!")
+            // Prepare PaperJS canvas for interaction.
+            this.prepareCanvas();
+
+            // Activate the paperJS tool. 
             this.toolRect.activate();
 
-            // Set the default size relative to zoom level.
-            this.viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
-            this.strokeWidth = size/(this.viewportZoom*500);
+            // Set the default diagonal length relative to image size and zoom.
+            this.diagonal = this.imageWidth/(this.viewportZoom*100);
+            this.strokeWidth = this.imageWidth/(this.viewportZoom*500);
         },
 
-        //helper function - calculate distance between 2 points:
-        //see: http://www.mathwarehouse.com/algebra/distance_formula/index.php
-        calculateDistance(firstPoint,secondPoint){
-            var x1 = firstPoint.x;
-            var y1 = firstPoint.y;
-            var x2 = secondPoint.x;
-            var y2 = secondPoint.y;
+        // Helper function - calculate distance between 2 points:
+        calculateDistance(firstPoint, secondPoint){
+            let x1 = firstPoint.x;
+            let y1 = firstPoint.y;
+            let x2 = secondPoint.x;
+            let y2 = secondPoint.y;
 
-            var distance = Math.sqrt((Math.pow((x2-x1), 2))+(Math.pow((y2-y1), 2)));
+            let distance = Math.sqrt((Math.pow((x2-x1), 2))+(Math.pow((y2-y1), 2)));
             return distance;
         }
     },
 
     created() {
-        var vm = this;
-
-        var firstPoint;
-        var secondPoint;
-
-        // Deselect any current selection
-        this.paperScope.project.deselectAll();
-
-        // Get the first point
-        function toolDown(event) {
-	        firstPoint = event.point;
-        }
 
         // On drag draw feedforward shadow rectangle in realtime.
-        function toolDrag(event) {
+        const toolDrag = (event) => {
 
-        	secondPoint = event.point;
-        	vm.radius = vm.calculateDistance(firstPoint,secondPoint)
+        	this.diagonal = this.calculateDistance(event.downPoint, event.point)
 
-        	var trackingRect = new paper.Path.Rectangle(firstPoint, secondPoint);
-            trackingRect.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
-            trackingRect.strokeWidth = vm.strokeWidth;
+        	let trackingRect = new paper.Path.Rectangle(event.downPoint, event.point);
+                trackingRect.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
+                trackingRect.strokeWidth = this.strokeWidth;
 
-        	// Constantly update tracking rect by removing it and
-            // drawing another.
+        	// Constantly update tracking rect by removing it and re-drawing.
             trackingRect.removeOn({
                 drag: true,
                 down: true,
                 up:true
             });
-        }
+        };
 
         // Finalise rectangle properties and draw.
-        function toolUp(event) {
+        const toolUp = (event) => {
 
-        	secondPoint = event.point;
-
-        	var myRect = new paper.Path.Rectangle(firstPoint, secondPoint);
-            myRect.strokeColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 1});
-            myRect.strokeWidth = vm.strokeWidth;
-            myRect.fillColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 0.4});
-        }
+        	let newRect = new paper.Path.Rectangle(event.downPoint, event.point);
+            newRect.strokeColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 1});
+            newRect.fillColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 0.4});
+            newRect.strokeWidth = this.strokeWidth;
+        };
 
         this.toolRect = new paper.Tool();
-        this.toolRect.onMouseDown = toolDown;
         this.toolRect.onMouseDrag = toolDrag;
         this.toolRect.onMouseUp = toolUp;
     }
-
 }
 </script>
 

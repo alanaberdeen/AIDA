@@ -16,24 +16,22 @@
                             v-if="(this.getStepTools().includes('circle'))">
                 </app-circle>
             </v-list-tile>
-<!-- 
+
             <v-list-tile>
-                <app-rectangle  :paperScope="paperScope"
-                                :active="(this.activeTool === 'rectangle')"
-                                :osdViewer="osdViewer"
+                <app-rectangle  :active="(this.activeTool === 'rectangle')"
                                 @click.native="activeTool = 'rectangle'"
-                                v-if='config.steps[config.activeStep].tools.rectangle'>
+                                v-if="(this.getStepTools().includes('circle'))">
                 </app-rectangle>
             </v-list-tile>
 
             <v-list-tile>
-                <app-pen    :paperScope="paperScope"
-                            :osdViewer="osdViewer"
-                            :active="(this.activeTool === 'pen')"
-                            @click.native="activeTool = 'pen'"
-                            v-if='config.steps[config.activeStep].tools.pen'>
+                <app-pen  :active="(this.activeTool === 'pen')"
+                          @click.native="activeTool = 'pen'"
+                          v-if="(this.getStepTools().includes('circle'))">
                 </app-pen>
             </v-list-tile>
+
+            <!--
 
             <v-list-tile>
                 <app-pencil :paperScope="paperScope"
