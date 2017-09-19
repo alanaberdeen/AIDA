@@ -10,120 +10,126 @@
 </template>
 
 <script>
-import paper from 'paper'
+import paper from 'paper';
+
+import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
-    props: ['paperScope', 'active', 'osdViewer'],
+    props: ['active'],
+
     data() {
         return {
             toolPen: null,
+            strokeWidth: 400, // Default value, will be updated relative to view 
             hitOptions: null,
-            strokeWidth: null,
             path: null
         }
     },
 
+    computed: {
+        ...mapState({
+            paperScope: state => state.annotation.paperScope,
+            viewportZoom: state => state.image.viewer.viewport.getZoom(true),
+            imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+        })
+    },
+
     methods: {
+        ...mapActions([
+            'prepareCanvas'
+        ]),
+
         initialiseTool() {
-            if (this.paperScope.view.element.classList.contains('pointers-no')){
-                this.paperScope.view.element.classList.remove('pointers-no')
-            }
+
+            // Prepare PaperJS canvas for interaction.
+            this.prepareCanvas();
+
+            // Activate the paperJS tool.
             this.toolPen.activate();
 
-            // Set tool hitOptions
-            var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
-            this.strokeWidth = size/(viewportZoom*500);
-
-            var hitTolerance = this.strokeWidth*5;
+            // Set tool stroke width and hitOptions settings. 
+            this.strokeWidth = this.imageWidth/(this.viewportZoom*500);
             this.hitOptions = {
                 segments: true,
-                tolerance: hitTolerance
-            }
+                tolerance: this.strokeWidth*5
+            };
         },
 
         newPath() {
-            var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var myPath = new paper.Path();
-            myPath.strokeColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 1});
-            myPath.strokeWidth = this.strokeWidth;
-            myPath.selected = true;
+            let newPath = new paper.Path();
+            newPath.strokeColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 1});
+            newPath.strokeWidth = this.strokeWidth;
+            newPath.selected = true;
 
-            return myPath
+            return newPath
         }
     },
 
     created() {
-        var vm = this;
 
-        function toolDown(e) {
+        const toolDown = (event) => {
 
             // If there is no current active path then create one.
-            if(!vm.path || !vm.path.data.active){
-                vm.path = vm.newPath()
-                vm.path.data.active = true;
+            if (!this.path || !this.path.data.active){
+                this.path = this.newPath()
+                this.path.data.active = true;
             }
 
-            var hitResult = vm.path.hitTest(e.point, vm.hitOptions);
+            let hitResult = this.path.hitTest(event.point, this.hitOptions);
 
-            // If option key is held down then close the path
-            if(e.modifiers.option) {
-                vm.path.closed = true;
-                vm.path.smooth();
-                vm.path.selected = false;
-                vm.path.data.active = false;
+            // If option key is held down then close the path.
+            if (event.modifiers.option) {
+                this.path.closed = true;
+                this.path.smooth();
+                this.path.selected = false;
+                this.path.data.active = false;
 
             // If first segment clicked, close path.
-            } else if (hitResult && hitResult.segment == vm.path.firstSegment){
-                vm.path.closed = true;
-                vm.path.fillColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 0.4});
-                vm.path.smooth();
-                vm.path.selected = false;
-                vm.path.data.active = false;
+            } else if (hitResult && hitResult.segment == this.path.firstSegment){
+                this.path.closed = true;
+                this.path.fillColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 0.4});
+                this.path.smooth();
+                this.path.selected = false;
+                this.path.data.active = false;
 
-            // If last segment clicked close path
-            } else if (hitResult && hitResult.segment == vm.path.lastSegment) {
-                vm.path.selected = false;
-                vm.path.data.active = false;
+            // If last segment clicked close path.
+            } else if (hitResult && hitResult.segment == this.path.lastSegment) {
+                this.path.selected = false;
+                this.path.data.active = false;
 
-            // Else ad new point
+            // Else add new point
             } else {
-                vm.path.add(e.point)
-                vm.path.smooth();
+                this.path.add(event.point)
+                this.path.smooth();
             }
-        }
-
-        // ToolDrag for drawing
-        function toolDrag(e){
-
-        }
+        };
 
         // Feedfoward information on mouseMove
-        function toolMove(e) {
-            var hitResult = vm.paperScope.project.hitTest(e.point, vm.hitOptions);
+        const toolMove = (event) => {
+            let hitResult = this.paperScope.project.hitTest(event.point, this.hitOptions);
 
             // If hovering over first/last segment then remove the selected
             // highlighting to indicate path will be finsihed.
             if (hitResult) {
-                if( hitResult.segment == hitResult.item.firstSegment ){
-                    vm.path.closed = true;
+                if (hitResult.segment == hitResult.item.firstSegment){
+                    this.path.closed = true;
+                    this.path.selected = false;
                 } else if (hitResult.segment == hitResult.item.firstSegment ||
                            hitResult.segment == hitResult.item.lastSegment){
-                               vm.path.selected = false;
+                    this.path.selected = false;
                 }
             } else {
-                if (vm.path && vm.path.data.active){
-                    vm.path.selected = true;
-                    vm.path.closed = false;
+                if (this.path && this.path.data.active){
+                    this.path.selected = true;
+                    this.path.closed = false;
                 }
             }
-
-        }
+        };
 
         this.toolPen = new paper.Tool();
         this.toolPen.onMouseDown = toolDown;
         this.toolPen.onMouseMove = toolMove;
-
     }
 }
 

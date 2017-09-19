@@ -31,16 +31,14 @@
                 </app-pen>
             </v-list-tile>
 
-            <!--
-
             <v-list-tile>
-                <app-pencil :paperScope="paperScope"
-                          :osdViewer="osdViewer"
-                          :active="(this.activeTool === 'pencil')"
-                          @click.native="activeTool = 'pencil'"
-                          v-if='config.steps[config.activeStep].tools.pencil'>
+                <app-pencil :active="(this.activeTool === 'pencil')"
+                            @click.native="activeTool = 'pencil'"
+                            v-if="(this.getStepTools().includes('circle'))">
                 </app-pencil>
             </v-list-tile>
+
+            <!--
 
             <v-list-tile>
                 <app-move :paperScope="paperScope"

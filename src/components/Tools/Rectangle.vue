@@ -17,6 +17,7 @@ import { mapState } from 'vuex';
 
 export default {
     props: ['active'],
+
     data() {
         return {
             toolRect: null,
@@ -40,7 +41,6 @@ export default {
 
         initialiseTool() {
 
-            console.log("alright Clive!")
             // Prepare PaperJS canvas for interaction.
             this.prepareCanvas();
 

@@ -10,6 +10,14 @@ const state = {
 
 const getters = {
 
+	// getViewportZoom: state => {
+	// 	return state.viewer.viewport.getZoom(true)
+	// },
+
+	getImageWidth: state => {
+		return state.viewer.world.getItemAt(0).getContentSize.x
+	}
+
 };
 
 const actions = {
