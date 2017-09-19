@@ -15,11 +15,15 @@
 <script>
 import paper from 'paper'
 
-//TODO: make this work with standard shapes such as circle adjustment. Think
+import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
+
+// TODO: make this work with standard shapes such as circle adjustment. Think
 // at the moment it is selected bounds.
 
 export default {
-    props: ['paperScope', 'osdViewer', 'active'],
+    props: ['active'],
+
     data() {
         return {
             toolNode: null,
@@ -27,21 +31,32 @@ export default {
         }
     },
 
+    computed: {
+        ...mapState({
+            paperScope: state => state.annotation.paperScope,
+            viewportZoom: state => state.image.viewer.viewport.getZoom(true),
+            imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+        })
+    },
+
     methods: {
+        ...mapActions([
+            'prepareCanvas'
+        ]),
+
         initialiseTool() {
-            if (this.paperScope.view.element.classList.contains('pointers-no')){
-                this.paperScope.view.element.classList.remove('pointers-no')
-            }
+
+            // Prepare PaperJS canvas for interaction.
+            this.prepareCanvas();
+
+            // Activate the paperJS tool. 
             this.toolNode.activate();
 
-            // Set the hitTolerance for user clicks to be depenent on current
-            // viewport parameters
-            var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var hitTolerance = 500/viewportZoom;
+            // Selection options
+            let hitTolerance = this.imageWidth / (this.viewportZoom*100);
             this.hitOptions = {
                 segments: true,
                 stroke: true,
-                bounds: true,
                 handles: true,
                 fill: true,
                 tolerance: hitTolerance
@@ -51,79 +66,71 @@ export default {
 
     created() {
 
-        var vm = this;
-        var hitResult = null;
-        var status = null;
+        // Result of user click interaction on PaperJS instancevent. 
+        let hitResult = null;
 
-        // On mouseDown functionality
-        function mouseDown(e) {
+        // Current tool status.
+        let toolStatus = null;
 
-            // Save hitResult
-            hitResult = paper.project.hitTest(e.point, vm.hitOptions)
+        const toolDown = (event) => {
+
+            // Get details of the element the user has clicked on.
+            hitResult = this.paperScope.project.hitTest(event.point, this.hitOptions);
 
             // Check if use selected something
-            if(hitResult) {
-                // Depending on item state and click location set tool status
+            if (hitResult) {
+
+                // If item not currrently selected then select. 
                 if (!hitResult.item.selected){
                     hitResult.item.selected = true;
-                    status = 'selecting';
+                    toolStatus = 'selecting';
 
-                } else if (hitResult.type === 'fill'        ||
-                           hitResult.type === 'stroke') {
+                // If user selects stroke then add node 
+                } else if (hitResult.type === 'stroke') {
+                    toolStatus = 'adding-node';
 
-                    status = 'adding-node';
-
+                // If user selecteds a segment. 
                 } else if (hitResult.type === 'segment'){
+                    // Select only that segment and associate handles. 
+                    this.paperScope.project.deselectAll();
+                    hitResult.item.selected = true;
+                    hitResult.segment.selected = true; 
+                    hitResult.segment.handleIn.selected = true;
+                    hitResult.segment.handleOut.selected = true;
 
-                    // Select this segment and negihbouring handles.
-                    // Deselect all else.
-                    hitResult.item.segments.forEach((segment) => {
-                        if (segment === hitResult.segment){
-                            segment.selected = true;
-                        } else if (segment === hitResult.segment.next) {
-                            segment.handleIn.selected = true;
-                        } else if (segment === hitResult.segment.previous) {
-                            segment.handleOut.selected = true;
-                        } else {
-                            segment.selected = false;
-                        }
-                    })
-
-                    status = 'adjusting-segment';
+                    toolStatus = 'adjusting-segment';
 
                 } else if ( hitResult.type === 'handle-out'   ||
                             hitResult.type === 'handle-in') {
-
-                    status = 'adjusting-handle';
-
+                    toolStatus = 'adjusting-handle';
                 }
+
             } else {
-                vm.paperScope.project.deselectAll();
+                this.paperScope.project.deselectAll();
             }
-        }
+        };
 
         // On mouseDrag functionality
-        function mouseDrag(e) {
+        const toolDrag = (event) => {
 
-            if (hitResult && (status == 'adjusting-segment')) {
-                hitResult.segment.point = hitResult.segment.point.add(e.delta);
+            if (hitResult && (toolStatus == 'adjusting-segment')) {
+                hitResult.segment.point = hitResult.segment.point.add(event.delta);
 
             } else if ( hitResult &&
                         (hitResult.type == 'handle-out') &&
-                        (status == 'adjusting-handle')) {
-                hitResult.segment.handleOut = hitResult.segment.handleOut.add(e.delta);
+                        (toolStatus == 'adjusting-handle')) {
+                hitResult.segment.handleOut = hitResult.segment.handleOut.add(event.delta);
 
             } else if ( hitResult &&
                         (hitResult.type == 'handle-in') &&
-                        (status == 'adjusting-handle')) {
-                hitResult.segment.handleIn = hitResult.segment.handleIn.add(e.delta);
+                        (toolStatus == 'adjusting-handle')) {
+                hitResult.segment.handleIn = hitResult.segment.handleIn.add(event.delta);
             }
-        }
-
+        };
 
         this.toolNode = new paper.Tool();
-        this.toolNode.onMouseDown = mouseDown;
-        this.toolNode.onMouseDrag = mouseDrag;
+        this.toolNode.onMouseDown = toolDown;
+        this.toolNode.onMouseDrag = toolDrag;
     }
 }
 </script>

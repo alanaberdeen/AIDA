@@ -45,24 +45,19 @@
                 </app-move>
             </v-list-tile>
 
-  <!--
             <v-list-tile>
-                <app-node :paperScope="paperScope"
-                          :osdViewer="osdViewer"
-                          :active="(this.activeTool === 'node')"
+                <app-node :active="(this.activeTool === 'node')"
                           @click.native="activeTool = 'node'"
-                          v-if='config.steps[config.activeStep].tools.node'>
+                          v-if="(this.getStepTools().includes('node'))">
                 </app-node>
             </v-list-tile>
 
             <v-list-tile>
-                <app-count :paperScope="paperScope"
-                           :osdViewer="osdViewer"
-                           :active="(this.activeTool === 'count')"
+                <app-count :active="(this.activeTool === 'count')"
                            @click.native="activeTool = 'count'"
-                           v-if='config.steps[config.activeStep].tools.count'>
+                           v-if="(this.getStepTools().includes('count'))">
                 </app-count>
-            </v-list-tile> -->
+            </v-list-tile> 
 
         </v-list>
 
@@ -72,7 +67,6 @@
 <script>
 import { mapState } from 'vuex';
 import { mapGetters } from 'vuex';
-
 
 // Import child components
 import toolCircle from './Circle.vue';
