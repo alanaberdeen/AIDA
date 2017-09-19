@@ -16,8 +16,12 @@
 import paper from 'paper';
 import { eventBus } from '../../main';
 
+import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
+
 export default {
-    props: ['paperScope', 'osdViewer', 'active'],
+    props: ['active'],
+
     data() {
         return {
             toolMove: null,
@@ -26,20 +30,32 @@ export default {
         }
     },
 
+    computed: {
+        ...mapState({
+            paperScope: state => state.annotation.paperScope,
+            viewportZoom: state => state.image.viewer.viewport.getZoom(true),
+            imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+        })
+    },
+
     methods: {
+        ...mapActions([
+            'prepareCanvas'
+        ]),
+
         initialiseTool() {
-            if (this.paperScope.view.element.classList.contains('pointers-no')){
-                this.paperScope.view.element.classList.remove('pointers-no')
-            }
+
+            // Prepare PaperJS canvas for interaction.
+            this.prepareCanvas();
+
+            // Activate the paperJS tool.
             this.toolMove.activate();
 
-            // Set the hitTolerance for user clicks to be depenent on current
-            // viewport parameters
-            var viewportZoom = this.osdViewer.viewport.getZoom(true);
-            var size = this.osdViewer.world.getItemAt(0).getContentSize().x;
-            this.strokeWidth = size/(viewportZoom*500);
+            // Set tool stroke width and hitTolerance settings. 
+            this.strokeWidth = this.imageWidth / (this.viewportZoom * 500);
+            let hitTolerance = this.strokeWidth * 3;
 
-            var hitTolerance = this.strokeWidth*3;
+            // Selection options
             this.selectOptions = {
                 segments: true,
                 stroke: true,
@@ -48,289 +64,217 @@ export default {
                 fill: true,
                 tolerance: hitTolerance
             };
-
-
         }
     },
 
     created() {
-        var vm = this;
-        var hitResult = null;
 
-        var selectedGroup = null;
-        var toBeSelected = [];
-        var selectionRect = new paper.Path.Rectangle([0,0], 0);
-        selectionRect.remove();
+        // Result of user click interaction on PaperJS instance. 
+        let hitResult = null;
 
-        var toolStatus = '';
-        var projectPathItems = null;
+        // Array of items that will be selected and the selected group  
+        let toBeSelected = [];
+        let selectedGroup = null;
+        
+        // Current tool status. 
+        let toolStatus = '';
 
-        // Based on the mouseEvent set the appropriate tool toolStatus.
-        function toolDown(e) {
+        const toolDown = (event) => {
 
             // Get details of the element the user has clicked on.
-            hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
-            console.log(hitResult);
-
-            // If user clicked inside a bounds selection rectangle
-            if (selectedGroup && selectedGroup.bounds.contains(e.point) && !e.modifiers.shift){
-                if(hitResult && hitResult.type === 'bounds'){
-                    // Do nothing if they selected the boundary itself.
-                } else {
-                    toolStatus = 'move';
-                    return
-                }
-            }
-
-            // Check which path items are in the project at this moment.
-            // This is useful for group selection.
-            projectPathItems = vm.paperScope.project.getItems({
-                className: 'Path'
-            })
-
-            // Remove bounds rectangle of previous selection as will always
-            // be updated.
-            if (selectedGroup) {
-                selectedGroup.bounds.selected = false;
-            }
+            hitResult = this.paperScope.project.hitTest(event.point, this.selectOptions);
 
             // If no modiefiers and item has been selected then create the
-            // selection group and select the bounding rectangle.
+            // selection group (of one element) to be selected. 
             if (hitResult                       &&
-                !e.modifiers.shift              &&
                 hitResult.type !== 'bounds'     &&
                 (   hitResult.type === 'fill'   ||
                     hitResult.type === 'stroke' ||
                     hitResult.type === 'segment'
                 )){
 
-                // If preivous selection then unselect it
-                if (selectedGroup) {
-                    selectedGroup.selected = false;
+                if (selectedGroup && selectedGroup.hitTest(event.point, this.selectOptions)) {
+                    // If clicking an already selected item then make no change. 
+                }
+                else if (event.modifiers.shift){
+                    toBeSelected.push(hitResult.item);
+                }
+                else {
+                    toBeSelected = [hitResult.item];      
                 }
 
-                selectedGroup = new paper.Group([hitResult.item]);
-
-                // Check any of the items need to be selected with linked
-                // items. For example in the case of the
-                // counting rectanlge tool need to select the number, tag
-                // and rectangle path.
-                for (var child in selectedGroup.children){
-                    if (selectedGroup.children[child].data.selectWith){
-                        for (var item in selectedGroup.children[child].data.selectWith){
-                            selectedGroup.addChild(selectedGroup.children[child].data.selectWith[item]);
-                        }
-                    }
-                }
-
-                selectedGroup.selected = true;
-                selectedGroup.bounds.selected = true;
-
-                // Set tool status to move as item can be immediately moved.
                 toolStatus = 'move';
-
+            
             // If user has clicked bounds then assume transforming.
             } else if (hitResult && hitResult.type === 'bounds'){
                 toolStatus = 'transform';
 
-                if (selectedGroup){
-                    selectedGroup.selected = true;
-                    selectedGroup.bounds.selected = true;
-                }
-
-
-            // If shift modifer is pressed then assume adding element(s).
-            } else if (e.modifiers.shift){
-
-                if (hitResult &&
-                    (   hitResult.type === 'fill'   ||
-                        hitResult.type === 'stroke' ||
-                        hitResult.type === 'segment'
-                    )){
-                        if(!selectedGroup){
-                            selectedGroup = new paper.Group([hitResult.item]);
-                        } else {
-                            selectedGroup.addChild(hitResult.item);
-                        }
-                    }
-
-                // Select the items in the group
-                if (selectedGroup){
-                    selectedGroup.selected = true;
-                    selectedGroup.bounds.selected = true;
-                }
-
-                toolStatus = 'select';
             } else {
-                vm.paperScope.project.deselectAll();
-                selectedGroup = null;
+                toBeSelected = [];
                 toolStatus = 'select';
             }
-        }
 
-        // Functionality for user dragging the tool.
+            // Clean current selection
+            this.paperScope.project.deselectAll();
+            if (selectedGroup){
+                selectedGroup.selected = false;
+                selectedGroup.bounds.selected = false;
+                selectedGroup = null; 
+            }
+
+            // If there are items to be selected then setup selection. 
+            if (toBeSelected.length > 0){
+                // Check any of the items need to be selected with linked
+                // items. For example in the case of the
+                // counting rectanlge tool need to select the number, tag
+                // and rectangle path.
+                for (let item in toBeSelected){
+                    if (toBeSelected[item].data.selectWith){
+                        for (let item in toBeSelected[item].data.selectWith){
+                            toBeSelected.push(toBeSelected[item].data.selectWith[item]);
+                        }
+                    }
+                }
+
+                selectedGroup = new paper.Group(toBeSelected);
+                selectedGroup.selected = true;
+                selectedGroup.bounds.selected = true;
+            };
+        };
+
+        // Functionality for user dragging select/move tool.
         // Specified action should have been set on the mouseDown event.
-        function toolDrag(e) {
+        const toolDrag = (event) => {
 
             // Draggable selection box.
             if (toolStatus === 'select'){
 
-                // Repeatedly draw the box as specified.
-                var width = e.point.x - e.downPoint.x;
-                var height = e.point.y - e.downPoint.y;
-
-                selectionRect.remove();
-
-                // Rebuild as defined by new config
-                selectionRect = new paper.Path.Rectangle(e.downPoint.x, e.downPoint.y, width, height);
+                let selectionRect = new paper.Shape.Rectangle(event.downPoint, event.point);
                 selectionRect.strokeColor = '#4D88D4';
-                selectionRect.fillColor = '#A3C5E8';
-                selectionRect.opacity = 0.4;
-                selectionRect.strokeWidth = vm.strokeWidth;
+                selectionRect.fillColor = '#A3C5E8'
+                selectionRect.opacity = 0.3;
+                selectionRect.strokeWidth = this.strokeWidth;
 
-                // For each item in the project check if they are inside the
-                // box and select them if so.
-                for (var path in projectPathItems) {
-                    if (projectPathItems.hasOwnProperty(path)) {
-                        if (projectPathItems[path].isInside(selectionRect.bounds)){
-                            projectPathItems[path].selected = true;
+                // Constantly update tracking rect by removing it and re-drawing.
+                selectionRect.removeOn({
+                    drag: true,
+                    down: true,
+                    up:   true
+                });
 
-                            // Add to array of items to be selected
-                            toBeSelected.push(projectPathItems[path]);
-                        } else {
-                            projectPathItems[path].selected = false;
+                // Get items inside the selection rectangle. 
+                toBeSelected = this.paperScope.project.getItems({
+                    class:  "Path", 
+                    inside: selectionRect.bounds
+                });
 
-                            // Remove from array of items to be selected
-                            var index = toBeSelected.indexOf(projectPathItems[path]);
-                            if (index > -1) {
-                                toBeSelected.splice(index, 1);
-                            }
+                 // Clean current selection
+                this.paperScope.project.deselectAll();
+                if (selectedGroup){
+                    selectedGroup.selected = false;
+                    selectedGroup.bounds.selected = false;
+                    selectedGroup = null; 
+                }
+
+                if (toBeSelected.length > 0){
+                // Check any of the items need to be selected with linked
+                // items. For example in the case of the
+                // counting rectanlge tool need to select the number, tag
+                // and rectangle path.
+                for (let item in toBeSelected){
+                    if (toBeSelected[item].data.selectWith){
+                        for (let item in toBeSelected[item].data.selectWith){
+                            toBeSelected.push(toBeSelected[item].data.selectWith[item]);
                         }
                     }
                 }
 
+                selectedGroup = new paper.Group(toBeSelected);
+                selectedGroup.selected = true;
+            };
+
             } else if (toolStatus === 'move'){
-                selectedGroup.position = selectedGroup.position.add(e.delta);
+                selectedGroup.position = selectedGroup.position.add(event.delta);
 
             } else if (toolStatus === 'transform'){
-                var newWidth = null;
-                var newHeight = null;
-                var transfromCenter = null;
+                let newWidth = null;
+                let newHeight = null;
+                let transfromCenter = null;
 
                 // Set tranformation parameters for each scaling option.
                 if (hitResult && hitResult.name === 'top-left'){
-                    newWidth = e.point.x - selectedGroup.bounds.topRight.x;
-                    newHeight = e.point.y - selectedGroup.bounds.bottomLeft.y;
+                    newWidth = event.point.x - selectedGroup.bounds.topRight.x;
+                    newHeight = event.point.y - selectedGroup.bounds.bottomLeft.y;
                     transfromCenter = selectedGroup.bounds.bottomRight;
                 } else if (hitResult && hitResult.name === 'top-right') {
-                    newWidth = e.point.x - selectedGroup.bounds.topLeft.x;
-                    newHeight = e.point.y - selectedGroup.bounds.bottomRight.y;
+                    newWidth = event.point.x - selectedGroup.bounds.topLeft.x;
+                    newHeight = event.point.y - selectedGroup.bounds.bottomRight.y;
                     transfromCenter = selectedGroup.bounds.bottomLeft;
                 } else if (hitResult && hitResult.name === 'bottom-right') {
-                    newWidth = e.point.x - selectedGroup.bounds.bottomLeft.x;
-                    newHeight = e.point.y - selectedGroup.bounds.topRight.y;
+                    newWidth = event.point.x - selectedGroup.bounds.bottomLeft.x;
+                    newHeight = event.point.y - selectedGroup.bounds.topRight.y;
                     transfromCenter = selectedGroup.bounds.topLeft;
                 } else if (hitResult && hitResult.name === 'bottom-left') {
-                    newWidth = e.point.x - selectedGroup.bounds.bottomRight.x;
-                    newHeight = e.point.y - selectedGroup.bounds.topLeft.y;
+                    newWidth = event.point.x - selectedGroup.bounds.bottomRight.x;
+                    newHeight = event.point.y - selectedGroup.bounds.topLeft.y;
                     transfromCenter = selectedGroup.bounds.topRight;
                 }
 
-            // Set scale factors.
-            var horizScaleFactor = Math.abs(newWidth/selectedGroup.bounds.width);
-            var vertScaleFactor = Math.abs(newHeight/selectedGroup.bounds.height);
+                // Set scale factors.
+                let horizScaleFactor = Math.abs(newWidth/selectedGroup.bounds.width);
+                let vertScaleFactor = Math.abs(newHeight/selectedGroup.bounds.height);
 
-            // Scale group
-            selectedGroup.scale(horizScaleFactor, vertScaleFactor, transfromCenter)
-
+                // Scale group
+                selectedGroup.scale(horizScaleFactor, vertScaleFactor, transfromCenter);
             }
-        }
+        };
 
-        // Check for multiple selections and adjust if so.
-        function toolUp(e) {
+        // Select the group and provide housekeeping/emit events. 
+        const toolUp = (event) => {
 
-            if (toolStatus === 'select') {
-                if (e.modifiers.shift){
-                    if(!selectedGroup){
-                        selectedGroup = new paper.Group(toBeSelected);
-                    } else {
-                        selectedGroup.addChildren(toBeSelected);
-                    }
-                } else {
-                    // Deselect all current selection
-                    vm.paperScope.project.deselectAll();
-                    selectedGroup = new paper.Group(toBeSelected);
-                }
-
-                // Select the items in the group
-                if (selectedGroup && selectedGroup.hasChildren()){
-
-                    // Check any of the items need to be selected with linked
-                    // items. For example in the case of the
-                    // counting rectanlge tool need to select the number, tag
-                    // and rectangle path.
-                    for (var child in selectedGroup.children){
-                        if (selectedGroup.children[child].data.selectWith){
-                            for (var item in selectedGroup.children[child].data.selectWith){
-                                selectedGroup.addChild(selectedGroup.children[child].data.selectWith[item]);
-                            }
-                        }
-                    }
-
-                    selectedGroup.selected = true;
-                    selectedGroup.bounds.selected = true;
-
-                }
-            }
-
+            if (selectedGroup) { selectedGroup.bounds.selected = true; }
+            
             // Housekeeping
             toolStatus = '';
-            selectionRect.remove();
-            toBeSelected = [];
 
             // Emit selection event to the eventBus so that the properties
             // panel can be updated.
-            eventBus.$emit('selectionChanged', vm.paperScope.project.selectedItems);
+            eventBus.$emit('selectionChanged', this.paperScope.project.selectedItems);
 
             // As the number of circle markers in the project may have
             // changed, emit an event that will check to see if we are
             // counting these in a particular area and update that value.
             eventBus.$emit('updateMarkerCount');
-
-        }
+        };
 
         // Change tool icon based on context in order to Feedforward to the
-        // user the action that could be taken.
-        function toolMove(e) {
-            hitResult = vm.paperScope.project.hitTest(e.point, vm.selectOptions);
+        // user the action that could be taken. 
+        // I imagine this is a relatively expensive operation?
+        const toolMove = (event) => {
 
-            // If there are items selected and the cursor is within the bounds
-            // of the selection then indicate items can be moved.
-            if (selectedGroup && selectedGroup.bounds.contains(e.point) && !e.modifiers.shift) {
-                document.getElementById('paper-canvas').style.cursor = "move";
-
-            // Else if cursor is at the corners of the boundary box indicate
-            // that the items can be scaled.
-            } else if (hitResult && (hitResult.name === 'bottom-right' || hitResult.name === 'top-left')) {
-                    document.getElementById('paper-canvas').style.cursor = "nwse-resize";
-            } else if (hitResult && (hitResult.name === 'bottom-left' || hitResult.name === 'top-right')){
-                    document.getElementById('paper-canvas').style.cursor = "nesw-resize";
-
-            // Else default to the automatic cursor config.
+            if (selectedGroup && selectedGroup.hitTest(event.point, this.selectOptions)) {
+                let hit = selectedGroup.hitTest(event.point, this.selectOptions);
+                if (hit.name === 'bottom-right' || hit.name === 'top-left') {
+                    this.paperScope.view.element.style.cursor = 'nwse-resize';
+                } else if (hit.name === 'bottom-left' || hit.name === 'top-right') {
+                    this.paperScope.view.element.style.cursor = 'nesw-resize';
+                } else if (hit.type === 'fill') {
+                    this.paperScope.view.element.style.cursor = 'move';
+                }
             } else {
-                document.getElementById('paper-canvas').style.cursor = "auto";
+                    this.paperScope.view.element.style.cursor = 'auto';
             }
-        }
+        };
 
         // handlers for keyEvents.
-        function toolKeyUp (e) {
+        const toolKeyUp = (event) => {
 
             // Remove items
-            if (e.key == 'backspace'){
+            if (event.key == 'backspace'){
                 // Check for current selection
-                if (vm.paperScope.project.selectedItems) {
+                if (this.paperScope.project.selectedItems) {
                     // For each item selected remove if item is not a layer
-                    vm.paperScope.project.selectedItems.forEach(function(item){
+                    this.paperScope.project.selectedItems.forEach((item) => {
                         if (item.className != 'Layer'){
                             item.remove();
                         }
@@ -339,14 +283,14 @@ export default {
 
                 // Emit selection event to the eventBus so that the properties
                 // panel can be updated.
-                eventBus.$emit('selectionChanged', vm.paperScope.project.selectedItems);
+                eventBus.$emit('selectionChanged', this.paperScope.project.selectedItems);
 
                 // As the number of circle markers in the project may have
                 // changed, emit an event that will check to see if we are
                 // counting these in a particular area and update that value.
                 eventBus.$emit('updateMarkerCount');
             }
-        }
+        };
 
         // Assign tool to paper instance.
         this.toolMove = new paper.Tool();
@@ -355,7 +299,6 @@ export default {
         this.toolMove.onMouseUp = toolUp;
         this.toolMove.onMouseMove = toolMove;
         this.toolMove.onKeyUp = toolKeyUp;
-
     }
 }
 

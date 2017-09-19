@@ -38,17 +38,14 @@
                 </app-pencil>
             </v-list-tile>
 
-            <!--
-
             <v-list-tile>
-                <app-move :paperScope="paperScope"
-                          :osdViewer="osdViewer"
-                          :active="(this.activeTool === 'move')"
+                <app-move :active="(this.activeTool === 'move')"
                           @click.native="activeTool = 'move'"
-                          v-if='config.steps[config.activeStep].tools.move'>
+                          v-if="(this.getStepTools().includes('move'))">
                 </app-move>
             </v-list-tile>
 
+  <!--
             <v-list-tile>
                 <app-node :paperScope="paperScope"
                           :osdViewer="osdViewer"

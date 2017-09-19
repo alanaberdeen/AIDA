@@ -22,7 +22,6 @@ export default {
         return {
             toolRect: null,
             strokeWidth: 400, // Default value, will be updated relative to view 
-            diagonal: 2000
         }
     },
 
@@ -47,20 +46,8 @@ export default {
             // Activate the paperJS tool. 
             this.toolRect.activate();
 
-            // Set the default diagonal length relative to image size and zoom.
-            this.diagonal = this.imageWidth/(this.viewportZoom*100);
+            // Set the default strokewidth relative to image size and zoom.
             this.strokeWidth = this.imageWidth/(this.viewportZoom*500);
-        },
-
-        // Helper function - calculate distance between 2 points:
-        calculateDistance(firstPoint, secondPoint){
-            let x1 = firstPoint.x;
-            let y1 = firstPoint.y;
-            let x2 = secondPoint.x;
-            let y2 = secondPoint.y;
-
-            let distance = Math.sqrt((Math.pow((x2-x1), 2))+(Math.pow((y2-y1), 2)));
-            return distance;
         }
     },
 
@@ -69,8 +56,6 @@ export default {
         // On drag draw feedforward shadow rectangle in realtime.
         const toolDrag = (event) => {
 
-        	this.diagonal = this.calculateDistance(event.downPoint, event.point)
-
         	let trackingRect = new paper.Path.Rectangle(event.downPoint, event.point);
                 trackingRect.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
                 trackingRect.strokeWidth = this.strokeWidth;
@@ -78,7 +63,6 @@ export default {
         	// Constantly update tracking rect by removing it and re-drawing.
             trackingRect.removeOn({
                 drag: true,
-                down: true,
                 up:true
             });
         };
