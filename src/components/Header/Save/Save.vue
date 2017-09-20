@@ -1,5 +1,5 @@
 <template lang="html">
-    <v-btn icon @click.native="exportJSON">
+    <v-btn icon @click.native="exportJSON()">
         <v-icon>
             save
         </v-icon>
@@ -8,7 +8,6 @@
 
 <script>
 import {mapActions} from 'vuex';
-import {mapGetters} from 'vuex';
 
 export default {
 

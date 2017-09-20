@@ -21,6 +21,7 @@ import { mapState } from 'vuex';
 
 export default {
     props: ['active'],
+    
     data() {
         return {
             toolCircle: null,

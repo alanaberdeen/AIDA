@@ -15,31 +15,29 @@
             </v-toolbar>
 
             <v-list dense id="list">
-                <v-list-tile    v-for="layer in paperScope.project.layers" :key="layer.id"
-                                @click.native="selectLayer(layer)"
-                                @click.shift.native="addToSelection(layer)"
+                 <v-list-tile   v-for="layer in layers" :key="layer.id"
+                                @click.native="activateLayer(layer)"
                                 @dblclick.native="editLayerName(layer)"
-                                id="tile">
+                                id="tile"> 
 
-                    <v-list-tile-content id="content">
+                   <v-list-tile-content id="content"> 
 
                         <v-list-tile-title
                             id="name"
-                            v-if="editingLayer != layer.id"
-                            :class="[(layer == paperScope.project.activeLayer) ? 'faIconsActive' : 'faIcons']">
+                            v-if="editingLayer !== layer.id"
+                            :class="[(layer == activeLayer) ? 'faIconsActive' : 'faIcons']">
                             {{ layer.name }}
                         </v-list-tile-title>
 
-                        <v-text-field
+                        <input 
                             id="nameEdit"
                             v-if="editingLayer == layer.id"
-                            autofocus
-                            single-line
                             v-model="layer.name"
+                            autofocus
                             @blur="finishedEdit(layer)"
-                            @keyup.enter.native="finishedEdit(layer)"
-                            @keyup.esc.native="cancelEdit(layer)">
-                        ></v-text-field>
+                            @keyup.enter="finishedEdit(layer)"
+                            @keyup.esc="cancelEdit(layer)"
+                        >
 
                     </v-list-tile-content>
 
@@ -58,16 +56,18 @@
 </template>
 
 <script>
-import paper from 'paper'
+import paper from 'paper';
 
-//TODO: fix addToSelection with the shift clicking of layers.
+import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
+
 //TODO: figure out why the feedfoward highlighting for mouse clicks doesn't
 //      want to work here.
 //TODO: when editing layer name, and textinput is visible match the font-size
 //      and style to the normal layer name.
 
 export default {
-    props: ['paperScope'],
+
     data(){
         return {
             editingLayer: null,
@@ -75,16 +75,28 @@ export default {
         }
     },
 
-    created() {
+    computed: {
+        ...mapState({
+            activeLayer: state => state.annotation.paperScope.project.activeLayer,
+            layers: state => state.annotation.paperScope.project.layers
+        })
+    },
+
+    mounted() { 
 
         // If there are no layers imported, then the default layer will not
         // have a name. So best set it here and avoid confusion.
-        if (!this.paperScope.project.activeLayer.name){
-            this.paperScope.project.activeLayer.name = 'Layer 1'
+        if (!this.activeLayer.name){
+            this.activeLayer.name = 'Layer 1'
         }
     },
 
     methods: {
+        ...mapActions([
+            'newLayer',
+            'activateLayer',
+            'exportJSON'
+        ]),
 
         // Begin editing
         editLayerName (layer) {
@@ -103,7 +115,7 @@ export default {
 
             // If no layer name then set to untitled else trim
             if (layer.name == undefined) {
-                layer.name = "Untitled Layer"
+                layer.name = "Untitled"
             } else {
                 layer.name = layer.name.trim()
             }
@@ -114,46 +126,11 @@ export default {
             this.editingLayer = null
             layer.name = this.beforeEditCache
         },
-
-        // Add a new layer with a default name
-        newLayer () {
-            var layerIndex = this.paperScope.project.layers.length + 1;
-
-            var layer = new paper.Layer({
-                name: 'Layer ' + layerIndex,
-                position: this.paperScope.view.center
-            })
-            this.selectLayer(layer)
-        },
-
-        // De-select all layers and select this one
-        selectLayer (layer) {
-            // Deselect all layers
-            this.paperScope.project.layers.forEach((l) => {
-                l.selected = false
-            })
-            // Select the given layer
-            layer.selected = true;
-            layer.activate();
-        },
-
-        // This doesn't work at the moment, well it might but currently
-        // using the activaLayer selection to exportJSON and highlight the
-        // selected items as full layers so it's not effective as such
-        addToSelection (layer) {
-            layer.selected = true;
-        },
-
-        // Save the selected layers as a JSON object to the console
-        exportJSON (layer) {
-            layer.activate();
-            console.log(this.paperScope.project.activeLayer.exportJSON())
-        }
     }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="css" scoped>   
 #title {
     font-size: 14px;
     font-weight: 400;
@@ -186,6 +163,8 @@ export default {
 #nameEdit {
     font-size: 13px;
     height: 20px;
+    width: 100px;
+    padding-bottom: 5px;
 }
 
 #list {

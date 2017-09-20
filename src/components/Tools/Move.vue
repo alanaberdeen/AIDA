@@ -130,8 +130,8 @@ export default {
                 // and rectangle path.
                 for (let item in toBeSelected){
                     if (toBeSelected[item].data.selectWith){
-                        for (let item in toBeSelected[item].data.selectWith){
-                            toBeSelected.push(toBeSelected[item].data.selectWith[item]);
+                        for (let extraItem in toBeSelected[item].data.selectWith){
+                            toBeSelected.push(toBeSelected[item].data.selectWith[extraItem]);
                         }
                     }
                 }
@@ -177,21 +177,21 @@ export default {
                 }
 
                 if (toBeSelected.length > 0){
-                // Check any of the items need to be selected with linked
-                // items. For example in the case of the
-                // counting rectanlge tool need to select the number, tag
-                // and rectangle path.
-                for (let item in toBeSelected){
-                    if (toBeSelected[item].data.selectWith){
-                        for (let item in toBeSelected[item].data.selectWith){
-                            toBeSelected.push(toBeSelected[item].data.selectWith[item]);
+                    // Check any of the items need to be selected with linked
+                    // items. For example in the case of the
+                    // counting rectanlge tool need to select the number, tag
+                    // and rectangle path.
+                    for (let item in toBeSelected){
+                        if (toBeSelected[item].data.selectWith){
+                            for (let extraItem in toBeSelected[item].data.selectWith){
+                                toBeSelected.push(toBeSelected[item].data.selectWith[extraItem]);
+                            }
                         }
                     }
-                }
 
-                selectedGroup = new paper.Group(toBeSelected);
-                selectedGroup.selected = true;
-            };
+                    selectedGroup = new paper.Group(toBeSelected);
+                    selectedGroup.selected = true;
+                };
 
             } else if (toolStatus === 'move'){
                 selectedGroup.position = selectedGroup.position.add(event.delta);

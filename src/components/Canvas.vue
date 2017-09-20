@@ -28,8 +28,8 @@ export default {
         ])
     },
 
-    mounted() {
-        
+    mounted() { 
+
         // Create the OpenSeadragon instance viewer.
         this.initialiseViewer({
             id: 'osd-canvas',

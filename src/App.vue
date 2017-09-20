@@ -29,10 +29,8 @@
                     </v-flex>
 
                     <v-flex d-flex id='right-panel'>
-                        <!-- <app-studio     :paperScope='paperScope'
-                                        :osdViewer='osdViewer'
-                                        :config='config'>
-                        </app-studio> -->
+                        <app-studio>
+                        </app-studio>
                     </v-flex>
 
                 </v-layout>
