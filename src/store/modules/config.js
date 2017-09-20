@@ -4,7 +4,7 @@
 // the annotations or the default image and annotation content.  
 
 const state = {
-        activeStep: 0,
+        activeStep: 1,
         tools: {
             pan: {
                 include: true,
@@ -104,21 +104,28 @@ const getters = {
 
 	// Get an array specifiying the tools included in the current step. 
 	getStepTools: state => {
-		return state.steps[state.activeStep].tools
+		return state.steps[state.activeStep - 1].tools
 	}
 };
 
 const actions = {
 	addImage: ({commit}, payload) => {
 		commit('addImage', payload);
+	},
+
+	setActiveStep: ({commit}, payload) => {
+		commit('setActiveStep', payload);
 	}
 };
 
 const mutations = {
 	addImage: (state, payload) => {
 		state.images.push()
-	}
+	},
 
+	setActiveStep: (state, payload) => {
+		state.activeStep = payload;
+	}
 };
 
 // Export all of the relevent logic so that it can be combined with the complete

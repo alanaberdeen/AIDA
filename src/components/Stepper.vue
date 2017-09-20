@@ -2,11 +2,10 @@
     <div class='pointers-please stepper'>
         <v-stepper non-linear>
             <v-stepper-header>
-                <div v-for="(stepItem, stepIndex) in config.steps" :key='stepIndex'>
-                    <v-stepper-step
-                                    :step=stepItem.id
+                <div v-for="step in steps" :key='step.id'>
+                    <v-stepper-step :step = step.id
                                     editable
-                                    @click.native="setActive(stepIndex)"
+                                    @click.native="setActiveStep(step.id)"
                                     >
                     </v-stepper-step>
                     <v-divider></v-divider>
@@ -16,54 +15,29 @@
 
         <div class='hint-card'>
             <p class="hint">
-                {{ config.steps[config.activeStep].instruction }}
+                {{ steps[(activeStep - 1)].instruction }}
             </p>
         </div>
     </div>
 </template>
 
 <script>
-import openseadragon from 'openseadragon';
+import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
 
-    props: ['config', 'osdViewer'],
-
     computed: {
-        activeStep() {
-            return this.config.activeStep
-        }
+        ...mapState({
+            activeStep: state => state.config.activeStep,
+            steps: state => state.config.steps
+        })
     },
 
     methods: {
-        setActive(stepIndex){
-            this.config.activeStep = stepIndex;
-
-            // If this step has an associated region of interest then pan and
-            // zoom the viewport to this setup.
-            if (this.config.steps[stepIndex].regionOfIntereset){
-
-                // var region = new openseadragon.Rect(
-                //     this.config.steps[stepIndex].regionOfIntereset.x,
-                //     this.config.steps[stepIndex].regionOfIntereset.y,
-                //     this.config.steps[stepIndex].regionOfIntereset.width,
-                //     this.config.steps[stepIndex].regionOfIntereset.height
-                // );
-
-                // Temp demonstration rectangle. Need to figure out the
-                // coordinate change.
-                var region = new openseadragon.Rect(
-                    0,
-                    0,
-                    0.3,
-                    0.3
-                );
-
-                this.osdViewer.viewport.fitBounds(region);
-            } else {
-                this.osdViewer.viewport.goHome();
-            }
-        }
+        ...mapActions([
+            'setActiveStep'
+        ])
     }
 }
 </script>

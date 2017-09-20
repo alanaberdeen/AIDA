@@ -36,8 +36,7 @@
 
                     <v-list-tile-action>
                         <v-btn icon class='action pointers-no'>
-                            <colour-picker  :paperScope='paperScope'
-                                            :color="groupFillColor"
+                            <colour-picker  :color="groupFillColor"
                                             :type='"fill"'
                                             class="pointers-please">
                             </colour-picker>
@@ -56,8 +55,7 @@
 
                     <v-list-tile-action>
                         <v-btn icon class='action pointers-no'>
-                            <colour-picker  :paperScope='paperScope'
-                                            :color="groupStrokeColor"
+                            <colour-picker  :color="groupStrokeColor"
                                             :type='"stroke"'
                                             class="pointers-please">
                             </colour-picker>
@@ -72,12 +70,10 @@
 </template>
 
 <script>
-import paper from 'paper';
 import { eventBus } from '../../main';
 import ColorPicker from './ColorPicker.vue';
 
 export default {
-    props: ['paperScope', 'osdViewer'],
     data(){
         return {
             numItems: 0,
@@ -107,14 +103,12 @@ export default {
     },
 
     created() {
-        var vm = this;
-
         // Listen for an event indicating the selection has changed and
         // update the component data appropriately.
         eventBus.$on('selectionChanged', (selection) => {
             // If
             if (selection.length >= 1){
-                vm.numItems = 0;
+                this.numItems = 0;
                 selection.forEach((item) => {
                     if (item.className === 'Group'){
                         if (item.fillColor) {
@@ -123,16 +117,16 @@ export default {
                             var light = (item.fillColor.lightness*100) + '%';
                             var alpha = item.fillColor.alpha;
 
-                            vm.groupFillColor.style = 'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')';
-                            vm.groupFillColor.obj = {
+                            this.groupFillColor.style = 'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')';
+                            this.groupFillColor.obj = {
                                 h: hue,
                                 s: sat,
                                 l: light,
                                 a: alpha
                             }
                         } else {
-                            vm.groupFillColor.style = 'transparent';
-                            vm.groupFillColor.obj = {
+                            this.groupFillColor.style = 'transparent';
+                            this.groupFillColor.obj = {
                                 h: 0,
                                 s: 0,
                                 l: 0,
@@ -146,16 +140,16 @@ export default {
                             var light = (item.strokeColor.lightness*100) + '%';
                             var alpha = item.strokeColor.alpha;
 
-                            vm.groupStrokeColor.style = 'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')';
-                            vm.groupStrokeColor.obj = {
+                            this.groupStrokeColor.style = 'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')';
+                            this.groupStrokeColor.obj = {
                                 h: hue,
                                 s: sat,
                                 l: light,
                                 a: alpha
                             }
                         } else {
-                            vm.groupStrokeColor.style = 'transparent';
-                            vm.groupStrokeColor.obj = {
+                            this.groupStrokeColor.style = 'transparent';
+                            this.groupStrokeColor.obj = {
                                 h: 0,
                                 s: 0,
                                 l: 0,
@@ -165,14 +159,14 @@ export default {
 
 
                     } else {
-                        vm.numItems++
+                        this.numItems++
                     }
                 })
 
             } else {
                 // Reset property data
-                vm.numItems = 0;
-                vm.groupFillColor = {
+                this.numItems = 0;
+                this.groupFillColor = {
                     style: 'transparent',
                     obj: {  h: 0,
                             s: 0,
@@ -180,8 +174,8 @@ export default {
                             a: 0
                         }
                 };
-                vm.groupStrokeWidth = '';
-                vm.groupStrokeColor = {
+                this.groupStrokeWidth = '';
+                this.groupStrokeColor = {
                     style: 'transparent',
                     obj: {  h: 0,
                             s: 0,

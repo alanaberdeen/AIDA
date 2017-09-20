@@ -17,16 +17,23 @@
 import { Chrome } from 'vue-color'
 import paper from 'paper'
 import { eventBus } from '../../main';
+import { mapState } from 'vuex';
 
 export default {
 
-    props: ['paperScope', 'color', 'type'],
+    props: ['color', 'type'],
 
     data(){
         return{
             dialog: false,
             colorPick: this.color.obj
         }
+    },
+
+    computed: {
+        ...mapState({
+            paperScope: state => state.annotation.paperScope
+        })
     },
 
     watch: {
@@ -38,7 +45,7 @@ export default {
 
             } else if (newValue === false){
                 if (this.paperScope.project.selectedItems.length > 1){
-                    var group = this.paperScope.project.getItem({
+                    let group = this.paperScope.project.getItem({
                                     selected: true,
                                     className: 'Group'
                                 });
@@ -62,9 +69,7 @@ export default {
 
                 }
             }
-
         }
-
     },
 
     components: {

@@ -7,19 +7,19 @@
 
         <main>
             <v-container fluid id='content-container'>
-                <v-layout row wrap>
+                <v-layout row>
 
                     <v-flex d-flex id="left-panel">
-                        <app-tools></app-tools>
+                        <app-tools>
+                        </app-tools>
                     </v-flex>
 
                     <v-flex d-flex>
                         <div id="centre-container">
-                            <!-- <div id='stepper'>
-                                <app-stepper    :config='config'
-                                                :osdViewer='osdViewer'>
+                            <div id='stepper'>
+                                <app-stepper>
                                 </app-stepper>
-                            </div> -->
+                            </div>
 
                             <div id='canvas-container'>
                                 <app-canvas>
@@ -42,10 +42,6 @@
 </template>
 
 <script>
-// Import JS libraries
-import paper from 'paper';
-import openseadragon from 'openseadragon';
-
 // Import child components
 import Tools from './components/Tools/Tools.vue';
 import ImageLoader from './components/ImageLoader.vue';
@@ -88,7 +84,7 @@ export default {
     }
 
     #stepper {
-        flex-shrink: 0;
+        flex-shrink: 1;
         padding: 5px 0px;
     }
 

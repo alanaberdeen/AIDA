@@ -6,10 +6,9 @@
 
         <app-channels>
         </app-channels>
-  <!--       
-        <app-properties   :paperScope='paperScope'
-                          :osdViewer='osdViewer'>
-        </app-properties> -->
+       
+        <app-properties>
+        </app-properties>
 
     </div>
 
@@ -35,7 +34,6 @@ export default {
 .studioPanel{
     height: calc(100vh - 48px);
     background: #EEEEEE;
-    width: 175px;
 }
 
 </style>
