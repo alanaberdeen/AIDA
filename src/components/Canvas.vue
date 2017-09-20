@@ -22,7 +22,7 @@ export default {
             'loadAnnotation'
         ]),
         ...mapGetters([
-            'getImages',
+            'getConfigChannels',
             'getPaperScope',
             'getAnnotation'
         ])
@@ -39,7 +39,7 @@ export default {
 
         // Add the images specied in the config state to the viewer. 
         // this.addImages(this.getImages);
-        this.addImages(this.getImages());
+        this.addImages(this.getConfigChannels());
 
         // Create the PaperJS instance targetting the canvas DOM element.
         this.initialiseAnnotation({

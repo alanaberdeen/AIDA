@@ -5,19 +5,34 @@ import openseadragon from 'openseadragon';
 import paper from 'paper';
 
 const state = {
-	viewer: {}
+	viewer: null
 };
 
 const getters = {
 
-	// getViewportZoom: state => {
-	// 	return state.viewer.viewport.getZoom(true)
-	// },
-
 	getImageWidth: state => {
 		return state.viewer.world.getItemAt(0).getContentSize.x
-	}
+	},
 
+	getChannels: (state, getters, rootState) => {
+		let channels = []; 
+
+		if (state.viewer) {
+			let numChannels = state.viewer.world.getItemCount();
+
+			for (let i = 0; i < numChannels; i++){
+				channels.push({
+					channel: state.viewer.world.getItemAt(i),
+					id: i,
+					opacity: state.viewer.world.getItemAt(i).getOpacity()*100,
+					name: rootState.config.channels[i].name,
+					visible: (state.viewer.world.getItemAt(i).getOpacity() > 0),
+					opacityCache: 0
+				})
+			}
+		}
+		return channels
+	}
 };
 
 const actions = {
@@ -31,6 +46,14 @@ const actions = {
 
 	synchroniseAnnotationAndImage: ({commit}, payload) => {
 		commit('synchroniseAnnotationAndImage', payload)
+	}, 
+
+	toggleChannelVisibility: ({commit}, payload) => {
+		commit('toggleChannelVisibility', payload)
+	},
+
+	setChannelVisibility: ({commit}, payload) => {
+		commit('setChannelVisibility', payload)
 	}
 };
 
@@ -100,8 +123,24 @@ const mutations = {
             });
 
 		}
-	}
+	},
 
+	// Toggle the visibility of a channel.
+	// TODO: build in some kind of cache of opacity so that when it is toggled 
+	// from not-visible to visible it can easily return to the state it was. 
+	toggleChannelVisibility: (state, payload) => {
+		// Payload should be a Channel object as defined by getChannels().	
+		if (payload.opacity > 0) {
+			payload.channel.setOpacity(0);
+		} else {
+			payload.channel.setOpacity(0.7);
+		}
+	},
+
+	// Set visibility of a channel 
+	setChannelVisibility: (state, payload) => {
+		payload.channel.setOpacity(payload.opacity/100)
+	}
 };
 
 // Export all of the relevent logic so that it can be combined with the complete

@@ -10,21 +10,21 @@
             </v-toolbar>
 
             <v-list dense id="list">
-                <v-list-group no-action	v-for="(channel, channelIndex) in channels" :key="channelIndex">
+                <v-list-group no-action	v-for="(channel, channelIndex) in getChannels" :key="channelIndex">
 
                         <v-list-tile slot="item" id="tile">
                             <v-list-tile-content id="content">
 
                                 <v-list-tile-title id="name">
-                                    {{config.images[channelIndex].name}}
+                                    {{ channel.name }}
                                 </v-list-tile-title>
 
                             </v-list-tile-content>
 
                             <v-list-tile-action>
-                                <v-btn icon @click.native="toggleVisibility(channelIndex)" id='action'>
+                                <v-btn icon @click.native="toggleChannelVisibility(channel)" id='action'>
 
-                                    <v-icon v-if="isVisible(channelIndex)" id="iconButton">
+                                    <v-icon v-if="channel.visible" id="iconButton">
                                         visibility
                                     </v-icon>
 
@@ -39,7 +39,7 @@
                         <v-list-tile class="slider-tile">
                                 <v-list-tile-content id="slider-content">
                                     <v-slider   v-model="channel.opacity"
-                                                @input="onInput(channelIndex, channel.opacity)">
+                                                @input="setChannelVisibility(channel)">
                                     </v-slider>
                                 </v-list-tile-content>
                         </v-list-tile>
@@ -52,83 +52,27 @@
 </template>
 
 <script>
-import paper from 'paper'
+import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
-    props: ['paperScope', 'osdViewer', 'config'],
-    data(){
-        return {
-            channels: [],
-            value1: 0
-        }
-    },
 
-    created() {
-        var vm = this;
+    computed: {
+        ...mapState({
+            viewer: state => state.image.viewer
+        }),
 
-        // Add event handler for when items are added/removed from osd world
-        // this will update the total number of channels.
-        this.osdViewer.world.addHandler('add-item', function() {
-            vm.channels.push({
-                id: vm.channels.length,
-                opacity: (vm.getOpacity(vm.channels.length)*100),
-                slider: false
-            })
-        });
-
-
-        // As, at this moment not sure which channel may have been removed
-        // reconstruct the array. Probably slightly wasteful way of doing it.
-        this.osdViewer.world.addHandler('remove-item', function() {
-            vm.channels = []
-            var numChannels = vm.osdViewer.world.getItemCount();
-
-            for (i=0; i < numChannels; i++){
-                vm.channels.push({
-                    id: vm.channels.length,
-                    opacity: (vm.getOpacity(vm.channels.length)*100)
-                })
-            }
-        });
+        ...mapGetters([
+            'getChannels'
+        ])
     },
 
     methods: {
-
-        // Set the opactiy of the specified channel index to 0 or 0.5
-        // TODO: give this a 'memory' so turning it back on resets the value
-        // to what it was before it was turned off.
-        toggleVisibility(channelIndex){
-            var channel = this.osdViewer.world.getItemAt(channelIndex);
-            if (channel.getOpacity() === 0){
-                channel.setOpacity(0.5);
-                this.channels[channelIndex].opacity = 50;
-            } else {
-                channel.setOpacity(0);
-                this.channels[channelIndex].opacity = 0;
-            }
-        },
-
-        // Check if channel is visibile
-        isVisible(channelIndex) {
-            var channel = this.osdViewer.world.getItemAt(channelIndex);
-            if (channel.getOpacity() > 0){
-                return true
-            } else {
-                return false
-            }
-
-            return true
-        },
-
-        getOpacity(channelIndex) {
-            var channel = this.osdViewer.world.getItemAt(channelIndex);
-            return channel.getOpacity();
-        },
-
-        onInput(channelIndex, channelOpacity){
-            var channel = this.osdViewer.world.getItemAt(channelIndex);
-            channel.setOpacity((channelOpacity/100));
-        }
+        ...mapActions([
+            'toggleChannelVisibility',
+            'setChannelVisibility'
+        ])
     }
 }
 </script>

@@ -74,7 +74,7 @@ const state = {
                 instruction: 'Instructions for Step 5: Use the contour tool to mark the area around the glands.'
             }
         ],
-        images: [{
+        channels: [{
             name: 'Highsmith',
             url: 'https://openseadragon.github.io/example-images/highsmith/highsmith.dzi'
         }],
@@ -84,8 +84,8 @@ const state = {
 const getters = {
 
 	// Get an array of images in the configuration. 
-	getImages: state => {
-		return state.images
+	getConfigChannels: state => {
+		return state.channels
 	},
 
 	// Get a string representing the PaperJS project annotations that has been 
