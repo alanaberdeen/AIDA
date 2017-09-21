@@ -1,11 +1,11 @@
 <template>
     <div class='pointers-please stepper'>
-        <v-stepper non-linear>
+        <v-stepper non-linear :value.sync="activeStep">
             <v-stepper-header>
                 <div v-for="step in steps" :key='step.id'>
                     <v-stepper-step :step = step.id
                                     editable
-                                    @click.native="setActiveStep(step.id)"
+                                    @click.native="setActiveStepAndLayer(step.id)"
                                     >
                     </v-stepper-step>
                     <v-divider></v-divider>
@@ -36,7 +36,8 @@ export default {
 
     methods: {
         ...mapActions([
-            'setActiveStep'
+            'setActiveStep',
+            'setActiveStepAndLayer'
         ])
     }
 }

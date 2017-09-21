@@ -13,9 +13,9 @@ const state = {
 
 const getters = {
 
-	// Return the currently active paperScope instance. 
-	getPaperScope: state => {
-		return state.paperScope
+	// Get a JSON object describing the current state of the PaperJS project. 
+	getAnnotationProjectJSON: state => {
+		return state.paperScope.project.exportJSON();
 	}
 };
 
@@ -28,8 +28,8 @@ const actions = {
 		commit('loadAnnotation', payload);
 	},
 
-	exportJSON: ({commit}, payload) => {
-		commit('exportJSON', payload);
+	exportLayerJSON: ({commit}, layer) => {
+		commit('exportLayerJSON', layer);
 	},
 
 	prepareCanvas: ({commit}, payload) => {
@@ -49,7 +49,7 @@ const mutations = {
 
 	// Setup the PaperJs instance on the canvas DOM element. 
 	initialiseAnnotation: (state, payload) => {
-		state.paperScope = paper.setup(payload.canvas);
+		state.paperScope = paper.setup(document.getElementById('paper-canvas'));
 	},
 
 	// Loads a PaperJS project JSON string into the current PaperScope 
@@ -59,12 +59,8 @@ const mutations = {
 
 	// Export a PaperJS JSON string representing current state to the console.
 	// If no payload param then default to exporting the whole PaperJS project. 
-	exportJSON: (state, payload) => {
-		if (payload) {
-			console.log(payload.exportJSON())
-		} else {
-			console.log(state.paperScope.project.exportJSON())
-		}
+	exportLayerJSON: (state, layer) => {	
+			console.log(layer.exportJSON())
 	},
 
 	// Prepare the canvas for adding annotations. 
@@ -93,8 +89,9 @@ const mutations = {
 	},
 
 	// Select a specified layer 
-	activateLayer: (state, payload) => {
-        Vue.set(state.paperScope.project, 'activeLayer', payload);
+	activateLayer: (state, id) => {
+		let layer = state.paperScope.project.layers[id-1];
+        Vue.set(state.paperScope.project, 'activeLayer', layer);
 	}
 };
 

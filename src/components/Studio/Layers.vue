@@ -15,8 +15,8 @@
             </v-toolbar>
 
             <v-list dense id="list">
-                 <v-list-tile   v-for="layer in layers" :key="layer.id"
-                                @click.native="activateLayer(layer)"
+                 <v-list-tile   v-for="(layer, id) in layers" :key="id"
+                                @click.native="setActiveStepAndLayer(id+1)"
                                 @dblclick.native="editLayerName(layer)"
                                 id="tile"> 
 
@@ -24,14 +24,14 @@
 
                         <v-list-tile-title
                             id="name"
-                            v-if="editingLayer !== layer.id"
+                            v-if="editingLayer !== id"
                             :class="[(layer == activeLayer) ? 'faIconsActive' : 'faIcons']">
                             {{ layer.name }}
                         </v-list-tile-title>
 
                         <input 
                             id="nameEdit"
-                            v-if="editingLayer == layer.id"
+                            v-if="editingLayer == id"
                             v-model="layer.name"
                             autofocus
                             @blur="finishedEdit(layer)"
@@ -42,7 +42,7 @@
                     </v-list-tile-content>
 
                     <v-list-tile-action>
-                        <v-btn icon @click.native="exportJSON(layer)" id='action'>
+                        <v-btn icon @click.native="exportLayerJSON(layer)" id='action'>
                             <v-icon id="iconButton">
                                 save
                             </v-icon>
@@ -95,13 +95,14 @@ export default {
         ...mapActions([
             'newLayer',
             'activateLayer',
-            'exportJSON'
+            'exportLayerJSON',
+            'setActiveStepAndLayer'
         ]),
 
         // Begin editing
         editLayerName (layer) {
             this.beforeEditCache = layer.name
-            this.editingLayer = layer.id
+            this.editingLayer = id
         },
 
         // Housekeeping once finsihed editing layer

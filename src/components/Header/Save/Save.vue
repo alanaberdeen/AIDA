@@ -1,5 +1,5 @@
 <template lang="html">
-    <v-btn icon @click.native="exportJSON()">
+    <v-btn icon @click.native="saveConfig()">
         <v-icon>
             save
         </v-icon>
@@ -13,7 +13,7 @@ export default {
 
     methods: {
         ...mapActions([
-            'exportJSON'
+            'saveConfig'
         ])
     },
 }

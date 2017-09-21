@@ -5,105 +5,82 @@
 
 const state = {
         activeStep: 1,
-        tools: {
-            pan: {
-                include: true,
-                name: 'Pan and Zoom',
-                caption: 'Pan and zoom'
-            },
-            circle: {
-                include: true,
-                name: 'Circle',
-                caption: 'Plot circles',
-            },
-            rectangle: {
-                include: true,
-                name: 'Rectangle',
-                caption: 'Draw rectangles'
-            },
-            pen: {
-                include: true,
-                name: 'Pen',
-                caption: 'Draw smooth paths by plotting node points'
-            },
-            pencil: {
-                include: true,
-                name: 'Pencil',
-                caption: 'Draw smooth paths by dragging the mouse'
-            },
-            move: {
-                include: true,
-                name: 'Move',
-                caption: 'Move and scale annotation items'
-            },
-            node: {
-                include: true,
-                name: 'Node',
-                caption: 'Manipulate path nodes and handles'
-            },
-            count: {
-                include: true,
-                name: 'Count',
-                caption: 'Count items within a rectangle'
-            }
-        },
         steps: [
             {   id: 1,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
-                regionOfIntereset: false,
+                ROI: false,
                 instruction: 'Instructions for Step 1: Use the circle tool to mark the lymphocytes within the region of interest.'
             },
             {   id: 2,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
-                regionOfIntereset: true,
-                instruction: 'Instructions for Step 2: Use the contour tool to mark the non-tumor region.'
+                ROI: true,
+                instruction: 'Instructions for Step 2: Use the pencil tool to mark the non-tumour region.'
             },
             {   id: 3,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
-                regionOfIntereset: false,
-                instruction: 'Instructions for Step 3: Use the contour tool to mark the center of the tumor.'
+                ROI: false,
+                instruction: 'Instructions for Step 3: Use the pencil tool to mark the central region of the tumour.'
             },
             {   id: 4,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
-                regionOfIntereset: false,
-                instruction: 'Instructions for Step 4: Use the contour tool to mark the invasive margin.'
+                ROI: false,
+                instruction: 'Instructions for Step 4: Use the pencil tool to mark the invasive margin.'
             },
             {   id: 5,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
-                regionOfIntereset: false,
-                instruction: 'Instructions for Step 5: Use the contour tool to mark the area around the glands.'
+                ROI: false,
+                instruction: 'Instructions for Step 5: Use the pencil tool to mark the area around the glands.'
             }
         ],
+        tools: {
+            pan: {
+                name: 'Pan and Zoom',
+                caption: 'Pan and zoom'
+            },
+            circle: {
+                name: 'Circle',
+                caption: 'Plot circlular markers',
+            },
+            rectangle: {
+                name: 'Rectangle',
+                caption: 'Draw rectangles'
+            },
+            pen: {
+                name: 'Pen',
+                caption: 'Draw smooth paths by plotting node points'
+            },
+            pencil: {
+                name: 'Pencil',
+                caption: 'Draw smooth paths by dragging the mouse'
+            },
+            move: {
+                name: 'Move',
+                caption: 'Move and scale items'
+            },
+            node: {
+                name: 'Node',
+                caption: 'Manipulate path nodes and handles'
+            },
+            count: {
+                name: 'Count',
+                caption: 'Count items within a specified rectangle'
+            }
+        },  
         channels: [{
             name: 'Highsmith',
             url: 'https://openseadragon.github.io/example-images/highsmith/highsmith.dzi'
         }],
-        annotation: '["Layer",{"name":"Circles","applyMatrix":true,"children":[["Group",{"applyMatrix":true}],["Group",{"applyMatrix":true}],["Path",{"applyMatrix":true,"data":{"countable":true},"segments":[[[2833.81806,3521.67343],[0,314.028],[0,-314.028]],[[3402.41605,2953.07544],[-314.028,0],[314.028,0]],[[3971.01404,3521.67343],[0,-314.028],[0,314.028]],[[3402.41605,4090.27142],[314.028,0],[-314.028,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":21.53835}],["Path",{"applyMatrix":true,"data":{"countable":true},"segments":[[[3449.21215,4848.68081],[0,472.14183],[0,-472.14183]],[[4304.10055,3993.79241],[-472.14183,0],[472.14183,0]],[[5158.98896,4848.68081],[0,-472.14183],[0,472.14183]],[[4304.10055,5703.56922],[472.14183,0],[-472.14183,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":21.53835}],["Path",{"applyMatrix":true,"data":{"countable":true},"segments":[[[1031.26573,5393.0941],[0,454.51656],[0,-454.51656]],[[1854.24077,4570.11906],[-454.51656,0],[454.51656,0]],[[2677.21582,5393.0941],[0,-454.51656],[0,454.51656]],[[1854.24077,6216.06914],[454.51656,0],[-454.51656,0]]],"closed":true,"fillColor":["hsl",170,0.7,0.5,0.4],"strokeColor":["hsl",170,0.7,0.5,1],"strokeWidth":21.53835}]]}]'
+        annotation: `[["Layer",{"name":"Lymphocytes","applyMatrix":true}], 
+                     ["Layer",{"name":"Non-tumour region","applyMatrix":true}], 
+                     ["Layer",{"name":"Tumour centre","applyMatrix":true}], 
+                     ["Layer",{"name":"Invasive margin","applyMatrix":true}], 
+                     ["Layer",{"name":"Glands","applyMatrix":true}]]`
 };
 
 const getters = {
 
-	// Get an array of images in the configuration. 
-	getConfigChannels: state => {
-		return state.channels
-	},
-
-	// Get a string representing the PaperJS project annotations that has been 
-	// saved to the configuration obejct. 
-	getAnnotation: state => {
-		return state.annotation
-	},
-
-	getActiveStep: state => {
-		return state.activeStep
-	},
-
-	checkIncludeTool: state => (tool) => {
-		return tool
-	},
-
 	// Get an array specifiying the tools included in the current step. 
-	getStepTools: state => {
+	getConfigStepTools: state => {
 		return state.steps[state.activeStep - 1].tools
 	}
 };
@@ -113,19 +90,36 @@ const actions = {
 		commit('addImage', payload);
 	},
 
-	setActiveStep: ({commit}, payload) => {
-		commit('setActiveStep', payload);
-	}
+    // Action dispatches events to set both the active step and the active layer
+    // ensuring that they are in sync. 
+    setActiveStepAndLayer: ({dispatch}, step) => {
+        dispatch('activateLayer', step);
+        dispatch('setActiveStep', step);
+    },
+
+	setActiveStep: ({commit}, step) => {
+		commit('setActiveStep', step);
+	},
+
+    saveConfig: ({dispatch, commit, rootState, rootGetters}) => {
+        let newAnnotations = rootGetters.getAnnotationProjectJSON;
+        commit('saveConfig', newAnnotations);
+    }
 };
 
 const mutations = {
 	addImage: (state, payload) => {
-		state.images.push()
+		state.channels.push()
 	},
 
-	setActiveStep: (state, payload) => {
-		state.activeStep = payload;
-	}
+	setActiveStep: (state, step) => {
+		state.activeStep = step;
+	},
+
+    saveConfig: (state, newAnnotations) => {
+        state.annotation = newAnnotations;
+        console.log(state);
+    }
 };
 
 // Export all of the relevent logic so that it can be combined with the complete

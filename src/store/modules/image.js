@@ -44,8 +44,8 @@ const actions = {
 		commit('addImages', payload)
 	},
 
-	synchroniseAnnotationAndImage: ({commit}, payload) => {
-		commit('synchroniseAnnotationAndImage', payload)
+	synchroniseAnnotationAndImage: ({state, commit, rootState}) => {
+		commit('synchroniseAnnotationAndImage', rootState.annotation.paperScope)
 	}, 
 
 	toggleChannelVisibility: ({commit}, payload) => {
@@ -62,15 +62,14 @@ const mutations = {
 	// Initialise the openseadragon Viewer class. 
 	initialiseViewer: (state, payload) => {
 		state.viewer = new openseadragon.Viewer({
-            id: payload.id,
-            prefixUrl: payload.prefixUrl,
-            showNavigationControl: payload.showNavigationControl
+            id: 'osd-canvas',
+            showNavigationControl: false
         });
     },	
 
     // Add a handler function that will run when osd-viewport is updated.
     // This will synchronously update the paperJS viewport.
-    synchroniseAnnotationAndImage: (state, payload) => {
+    synchroniseAnnotationAndImage: (state, paperScope) => {
         
         state.viewer.addHandler('update-viewport', function() {
 
@@ -87,21 +86,21 @@ const mutations = {
             // option. 
 
             // Ensure the same size
-            payload.paperScope.view.viewSize = new paper.Size(canvasWidth, canvasHeight);
+            paperScope.view.viewSize = new paper.Size(canvasWidth, canvasHeight);
 
             // Handle changes in zoom level
             let viewportZoom = state.viewer.viewport.getZoom(true);
             let image1 = state.viewer.world.getItemAt(0);
-            payload.paperScope.view.zoom = image1.viewportToImageZoom(viewportZoom);
+            paperScope.view.zoom = image1.viewportToImageZoom(viewportZoom);
 
             // Ensure the same center point
             let center = image1.viewportToImageCoordinates(state.viewer.viewport.getCenter(true));
-            payload.paperScope.view.center = new paper.Point(center.x, center.y);
+            paperScope.view.center = new paper.Point(center.x, center.y);
 
             // Update paths to have strokeWidth reactive to zoom level.
             // This might be computationally-expensive but will try for now.
             var size = image1.getContentSize().x;
-            payload.paperScope.project.layers.forEach((layer) => {
+            paperScope.project.layers.forEach((layer) => {
                 layer.children.forEach((child) => {
                     if(child.className === 'Path') {
                         child.strokeWidth = size/(viewportZoom*500);

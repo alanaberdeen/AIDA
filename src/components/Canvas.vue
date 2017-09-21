@@ -9,9 +9,16 @@
 
 <script>
 import {mapActions} from 'vuex';
-import {mapGetters} from 'vuex';
+import {mapState} from 'vuex';
 
 export default {
+
+    computed: {
+        ...mapState({
+            channels: state => state.config.channels,
+            annotation: state => state.config.annotation
+        })
+    },
 
     methods: {
         ...mapActions([
@@ -20,40 +27,27 @@ export default {
             'addImages',
             'synchroniseAnnotationAndImage',
             'loadAnnotation'
-        ]),
-        ...mapGetters([
-            'getConfigChannels',
-            'getPaperScope',
-            'getAnnotation'
         ])
     },
 
     mounted() { 
 
         // Create the OpenSeadragon instance viewer.
-        this.initialiseViewer({
-            id: 'osd-canvas',
-            prefixUrl: 'https://openseadragon.github.io/openseadragon/images/',
-            showNavigationControl: false
-        });
+        this.initialiseViewer();
 
         // Add the images specied in the config state to the viewer. 
         // this.addImages(this.getImages);
-        this.addImages(this.getConfigChannels());
+        this.addImages(this.channels);
 
         // Create the PaperJS instance targetting the canvas DOM element.
-        this.initialiseAnnotation({
-            canvas: document.getElementById('paper-canvas')
-        });
+        this.initialiseAnnotation();
 
         // Ensure the size of the PaperJS annotation view and the OpenSeaDragon
         // viewer are always synchronised. 
-        this.synchroniseAnnotationAndImage({
-            paperScope: this.getPaperScope()
-        });
+        this.synchroniseAnnotationAndImage();
 
         // Import any annotation data set in the config object. 
-        this.loadAnnotation(this.getAnnotation());       
+        this.loadAnnotation(this.annotation);       
     }
 }
 </script>
