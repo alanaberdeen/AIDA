@@ -91,8 +91,11 @@ const actions = {
     // May perform asynchronous tasks here (like pulling from REST API) before
     // committing the state mutation which must run synchronously.
     loadConfig: ({commit}, payload) => {
-        // let newConfig = ** pull from api** 
-        // .then('loadConfig', newConfig);
+
+        // let newConfig = ****** pull from API ***** 
+        // .then(() => {
+        //  commit('loadConfig', newConfig);
+        // )}
     },
 
 	addImage: ({commit}, payload) => {
@@ -110,9 +113,22 @@ const actions = {
 		commit('setActiveStep', step);
 	},
 
-    saveConfig: ({dispatch, commit, rootState, rootGetters}) => {
+    // Save the current configuration to the server. 
+    saveConfig: ({dispatch, commit}) => {
+
+        // Update the config and then save to RestAPI 
+        dispatch('updateConfig').then(() => {
+
+            // Here is where we would push to REST API 
+            // ****** Save to API *****
+            console.log("saved the new configuration");
+            console.log(state);
+        })
+    },
+
+    updateConfig: ({dispatch, commit, rootState, rootGetters}) => {
         let newAnnotations = rootGetters.getAnnotationProjectJSON;
-        commit('saveConfig', newAnnotations);
+        commit('updateConfig', newAnnotations);
     }
 };
 
@@ -125,9 +141,8 @@ const mutations = {
 		state.activeStep = step;
 	},
 
-    saveConfig: (state, newAnnotations) => {
+    updateConfig: (state, newAnnotations) => {
         state.annotation = newAnnotations;
-        console.log(state);
     },
 
     loadConfig: (state, newConfig) => {

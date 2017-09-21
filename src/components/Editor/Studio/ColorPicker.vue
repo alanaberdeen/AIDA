@@ -16,7 +16,7 @@
 <script>
 import { Chrome } from 'vue-color'
 import paper from 'paper'
-import { eventBus } from '../../main';
+import { eventBus } from '../../../main';
 import { mapState } from 'vuex';
 
 export default {

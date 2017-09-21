@@ -43,13 +43,13 @@
 
 <script>
 // Import child components
-import Tools from './components/Tools/Tools.vue';
-import ImageLoader from './components/ImageLoader.vue';
+import Tools from './components/Editor/Tools/Tools.vue';
+import ImageLoader from './components/Editor/ImageLoader.vue';
 import Toolbar from './components/Header/Toolbar.vue';
-import Studio from './components/Studio/Studio.vue';
+import Studio from './components/Editor/Studio/Studio.vue';
 import Footer from './components/Footer.vue';
-import Stepper from './components/Stepper.vue';
-import Canvas from './components/Canvas.vue';
+import Stepper from './components/Editor/Stepper.vue';
+import Canvas from './components/Editor/Canvas.vue';
 
 import { eventBus } from './main';
 

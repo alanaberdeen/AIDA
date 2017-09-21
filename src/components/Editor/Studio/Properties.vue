@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { eventBus } from '../../main';
+import { eventBus } from '../../../main';
 import ColorPicker from './ColorPicker.vue';
 
 export default {

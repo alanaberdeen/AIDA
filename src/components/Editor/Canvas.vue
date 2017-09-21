@@ -26,7 +26,8 @@ export default {
             'initialiseAnnotation',
             'addImages',
             'synchroniseAnnotationAndImage',
-            'loadAnnotation'
+            'loadAnnotation',
+            'loadConfig'
         ])
     },
 
@@ -35,12 +36,15 @@ export default {
         // Create the OpenSeadragon instance viewer.
         this.initialiseViewer();
 
+        // Create the PaperJS instance targetting the canvas DOM element.
+        this.initialiseAnnotation();
+
+        // Load configuration from the API 
+        // this.loadConfig();
+
         // Add the images specied in the config state to the viewer. 
         // this.addImages(this.getImages);
         this.addImages(this.channels);
-
-        // Create the PaperJS instance targetting the canvas DOM element.
-        this.initialiseAnnotation();
 
         // Ensure the size of the PaperJS annotation view and the OpenSeaDragon
         // viewer are always synchronised. 

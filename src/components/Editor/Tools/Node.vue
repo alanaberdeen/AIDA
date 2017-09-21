@@ -18,9 +18,6 @@ import paper from 'paper'
 import { mapActions } from 'vuex';
 import { mapState } from 'vuex';
 
-// TODO: make this work with standard shapes such as circle adjustment. Think
-// at the moment it is selected bounds.
-
 export default {
     props: ['active'],
 
