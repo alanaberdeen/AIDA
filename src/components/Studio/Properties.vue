@@ -207,6 +207,7 @@ export default {
 .name {
     font-size: 13px;
     height: 30px;
+    color: #616161;
 }
 
 .content {

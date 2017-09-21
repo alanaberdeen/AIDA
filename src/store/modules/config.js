@@ -86,6 +86,15 @@ const getters = {
 };
 
 const actions = {
+
+    // Load a configuration into the tool. 
+    // May perform asynchronous tasks here (like pulling from REST API) before
+    // committing the state mutation which must run synchronously.
+    loadConfig: ({commit}, payload) => {
+        // let newConfig = ** pull from api** 
+        // .then('loadConfig', newConfig);
+    },
+
 	addImage: ({commit}, payload) => {
 		commit('addImage', payload);
 	},
@@ -119,6 +128,10 @@ const mutations = {
     saveConfig: (state, newAnnotations) => {
         state.annotation = newAnnotations;
         console.log(state);
+    },
+
+    loadConfig: (state, newConfig) => {
+        state.config = newConfig;
     }
 };
 
