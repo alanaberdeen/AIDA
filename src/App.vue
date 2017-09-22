@@ -15,8 +15,8 @@
 
 <script>
 // Import child components
-import Editor from './components/Editor/Editor.vue';
-import Toolbar from './components/Header/Toolbar.vue';
+import Editor from './components/editor/Editor.vue';
+import Toolbar from './components/header/Toolbar.vue';
 import Footer from './components/Footer.vue';
 
 import { eventBus } from './main';

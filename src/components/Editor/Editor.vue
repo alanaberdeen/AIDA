@@ -32,8 +32,8 @@
 
 <script>
 // Import child components
-import Tools from './Tools/Tools.vue';
-import Studio from './Studio/Studio.vue';
+import Tools from './tools/Tools.vue';
+import Studio from './studio/Studio.vue';
 import Stepper from './Stepper.vue';
 import Canvas from './Canvas.vue';
 

@@ -27,9 +27,9 @@
 <script>
 
 // Import child components
-import Settings from './Settings/Settings.vue';
-import Account from './Account/Account.vue';
-import Save from './Save/Save.vue';
+import Settings from './settings/Settings.vue';
+import Account from './account/Account.vue';
+import Save from './save/Save.vue';
 
 export default {
     components: {
@@ -43,7 +43,7 @@ export default {
 
 <style lang="css">
 a {
-  color: inherit;              
-  text-decoration: inherit;     
+  color: inherit;
+  text-decoration: inherit;
 }
 </style>
