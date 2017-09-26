@@ -1,6 +1,6 @@
 <template>
     <v-container grid-list-xl id='home'>
-        <v-layout row wrap >
+        <v-layout row wrap id='hero'>
             <v-flex xs12 text-xs-center>
                 <v-layout row wrap align-center justify-center>
                     <v-flex xs12 id='title-container'>
@@ -12,7 +12,7 @@
                     </v-flex>
 
                     <v-flex xs8 sm4 md3 lg2 text-xs-center id='button-container'>
-                        <v-btn dark primary block to='/editor'>
+                        <v-btn dark primary block to='/editor/example'>
                             <v-icon>web</v-icon>
                             <span class='button-text'>
                                 Example
@@ -41,6 +41,16 @@
                 </v-layout>
             </v-flex>
         </v-layout>
+
+        <v-layout row>
+            <v-flex xs12 text-xs-center>
+                <!-- <v-card height='200px'>
+
+                </v-card> -->
+
+            </v-flex>
+        </v-layout>
+
     </v-container>
 
 </template>
@@ -52,9 +62,12 @@
 <style scoped>
 
 #home {
-
+    padding-top: 48px;
 }
 
+#hero {
+    padding-bottom: 50px;
+}
 #title {
     margin-bottom: 0px;
     color: #1976d2;

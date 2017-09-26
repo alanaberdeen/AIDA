@@ -12,6 +12,7 @@ import ApiDocs from './components/docs/pages/Api.md'
 export const routes = [
     { path: '', component: Landing},
     { path: '/editor', component: Editor },
+    { path: '/editor/example', component: Editor},
     { path: '/docs', component: Docs, children: [
         { path: '', component: IntroDocs },
         { path: 'editor', component: EditorDocs },
