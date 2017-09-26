@@ -1,5 +1,5 @@
-// This file handles the management of the state for the image viewer. 
-// The image viewer is controled via the OpenSeadragon js lib. 
+// This file handles the management of the state for the image viewer.
+// The image viewer is controled via the OpenSeadragon js lib.
 
 import openseadragon from 'openseadragon';
 import paper from 'paper';
@@ -15,7 +15,7 @@ const getters = {
 	},
 
 	getChannels: (state, getters, rootState) => {
-		let channels = []; 
+		let channels = [];
 
 		if (state.viewer) {
 			let numChannels = state.viewer.world.getItemCount();
@@ -46,7 +46,7 @@ const actions = {
 
 	synchroniseAnnotationAndImage: ({state, commit, rootState}) => {
 		commit('synchroniseAnnotationAndImage', rootState.annotation.paperScope)
-	}, 
+	},
 
 	toggleChannelVisibility: ({commit}, payload) => {
 		commit('toggleChannelVisibility', payload)
@@ -59,33 +59,38 @@ const actions = {
 
 const mutations = {
 
-	// Initialise the openseadragon Viewer class. 
+	// Initialise the openseadragon Viewer class.
 	initialiseViewer: (state, payload) => {
 		state.viewer = new openseadragon.Viewer({
             id: 'osd-canvas',
             showNavigationControl: false
         });
-    },	
+    },
 
     // Add a handler function that will run when osd-viewport is updated.
     // This will synchronously update the paperJS viewport.
+    // This is an expensive operation as it ensures all parameteres are in sync
+    // on every viewport update. For example, zoom may not have changed but it
+    // would still fire this event and update the zoom. However, seperating into
+    // the individual parts led to a far less smooth experience. Leave it here
+    // for now at least.
     synchroniseAnnotationAndImage: (state, paperScope) => {
-        
+
         state.viewer.addHandler('update-viewport', function() {
 
-            // Check the current size of the Canvas container DOM element 
-            // and set the paperJS view to match this. 
-            let canvasWidth = document.getElementById('canvas').clientWidth;
-            let canvasHeight = document.getElementById('canvas').clientHeight;
+            console.log('updating viewport synchronously')
+
+            // Check the current size of the Canvas container DOM element
+            // and set the paperJS view to match this.
+            let canvasWidth = state.viewer.canvas.clientWidth;
+            let canvasHeight = state.viewer.canvas.clientHeight;
 
             // Update the size of the Paper view
-            // UNSATISFACTORY: unable to dispatch an action to commit a mutation 
-            // as is the patern of Vuex because already in a mutation callback. 
-            // But as the PaperScope annotation and OpenSeaDragon viewer 
-            // instances are seperated into modules can't currently  see another 
-            // option. 
-
-            // Ensure the same size
+            // UNSATISFACTORY: unable to dispatch an action to commit a mutation
+            // as is the patern of Vuex because already in a mutation callback.
+            // But as the PaperScope annotation and OpenSeaDragon viewer
+            // instances are seperated into modules can't currently  see another
+            // option.
             paperScope.view.viewSize = new paper.Size(canvasWidth, canvasHeight);
 
             // Handle changes in zoom level
@@ -125,10 +130,10 @@ const mutations = {
 	},
 
 	// Toggle the visibility of a channel.
-	// TODO: build in some kind of cache of opacity so that when it is toggled 
-	// from not-visible to visible it can easily return to the state it was. 
+	// TODO: build in some kind of cache of opacity so that when it is toggled
+	// from not-visible to visible it can easily return to the state it was.
 	toggleChannelVisibility: (state, payload) => {
-		// Payload should be a Channel object as defined by getChannels().	
+		// Payload should be a Channel object as defined by getChannels().
 		if (payload.opacity > 0) {
 			payload.channel.setOpacity(0);
 		} else {
@@ -136,14 +141,14 @@ const mutations = {
 		}
 	},
 
-	// Set visibility of a channel 
+	// Set visibility of a channel
 	setChannelVisibility: (state, payload) => {
 		payload.channel.setOpacity(payload.opacity/100)
 	}
 };
 
 // Export all of the relevent logic so that it can be combined with the complete
-// store and all other module logic. 
+// store and all other module logic.
 export default {
 	state,
 	getters,

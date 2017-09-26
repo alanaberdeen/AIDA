@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="pointers-please toolsPanel elevation-2">
+    <div class="pointers-please elevation-2" id="toolsPanel">
 
         <v-list dense id="toolList">
 
@@ -11,7 +11,7 @@
             </v-list-tile>
 
             <v-divider></v-divider>
-            
+
             <v-list-tile>
                 <app-move :active="(this.activeTool === 'move')"
                           @click.native="activeTool = 'move'"
@@ -63,7 +63,7 @@
                            @click.native="activeTool = 'count'"
                            v-if="(this.getConfigStepTools().includes('count'))">
                 </app-count>
-            </v-list-tile> 
+            </v-list-tile>
 
             <v-divider></v-divider>
 
@@ -129,7 +129,7 @@ export default {
     min-width: 0px;
 }
 
-.toolsPanel {
+#toolsPanel {
     height: calc(100vh - 48px);
     background: #EEEEEE;
 }

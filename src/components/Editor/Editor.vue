@@ -1,33 +1,40 @@
 <template>
-    <v-container fluid id='content-container'>
-        <v-layout row>
+    <div>
+        <header>
+                <app-toolbar>
+                </app-toolbar>
+        </header>
 
-            <v-flex d-flex id="left-panel">
-                <app-tools>
-                </app-tools>
-            </v-flex>
+        <v-container fluid id='content-container'>
+            <v-layout row>
 
-            <v-flex d-flex>
-                <div id="centre-container">
-                    <div id='stepper'>
-                        <app-stepper>
-                        </app-stepper>
+                <v-flex d-flex id="left-panel">
+                    <app-tools>
+                    </app-tools>
+                </v-flex>
+
+                <v-flex d-flex>
+                    <div id="centre-container">
+                        <div id='stepper'>
+                            <app-stepper>
+                            </app-stepper>
+                        </div>
+
+                        <div id='canvas-container'>
+                            <app-canvas>
+                            </app-canvas>
+                        </div>
                     </div>
+                </v-flex>
 
-                    <div id='canvas-container'>
-                        <app-canvas>
-                        </app-canvas>
-                    </div>
-                </div>
-            </v-flex>
+                <v-flex d-flex id='right-panel'>
+                    <app-studio>
+                    </app-studio>
+                </v-flex>
 
-            <v-flex d-flex id='right-panel'>
-                <app-studio>
-                </app-studio>
-            </v-flex>
-
-        </v-layout>
-    </v-container>
+            </v-layout>
+        </v-container>
+    </div>
 </template>
 
 <script>
@@ -36,13 +43,15 @@ import Tools from './tools/Tools.vue';
 import Studio from './studio/Studio.vue';
 import Stepper from './Stepper.vue';
 import Canvas from './Canvas.vue';
+import Toolbar from '../header/Toolbar.vue'
 
 export default {
     components: {
         'app-tools': Tools,
         'app-studio': Studio,
         'app-stepper': Stepper,
-        'app-canvas': Canvas
+        'app-canvas': Canvas,
+        'app-toolbar': Toolbar
     }
 }
 
@@ -52,12 +61,14 @@ export default {
 
     #content-container {
         padding: 0px;
+        padding-top: 48px;
     }
 
     #centre-container {
         display: flex;
         flex-direction: column;
         padding: 0px 5px;
+        overflow-y: auto;
     }
 
     #stepper {

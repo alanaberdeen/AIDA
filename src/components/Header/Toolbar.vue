@@ -1,13 +1,29 @@
 <template lang="html">
-    <v-toolbar dark dense class="primary pointers-please">
+    <v-toolbar :fixed="true" dark dense class="primary pointers-please">
+
+        <!-- Home -->
         <v-toolbar-title class='white--text'>
-                    <a href="https://imageannotation.nds.ox.ac.uk:8443/AIDA/">
-                        AIDA
-                    </a>
+            <router-link to='/'>
+                AIDA
+            </router-link>
         </v-toolbar-title>
+
         <v-spacer></v-spacer>
 
+        <!-- Save -->
         <app-save></app-save>
+
+        <!-- Dashboard -->
+        <v-btn icon href='https://imageannotation.nds.ox.ac.uk:8443/AIDA/'>
+            <v-icon> apps</v-icon>
+        </v-btn>
+
+        <!-- Docs -->
+        <router-link to='/docs'>
+            <v-btn icon >
+                <v-icon> fa-book </v-icon>
+            </v-btn>
+        </router-link>
 
         <!-- <v-btn icon class="pointers-no">
             <app-settings   :config='config'
@@ -16,6 +32,7 @@
             </app-settings>
         </v-btn> -->
 
+        <!-- Account -->
         <v-btn icon class="pointers-no">
             <app-account>
             </app-account>

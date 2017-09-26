@@ -6,9 +6,14 @@ import Vue from 'vue';
 
 // Routing
 import VueRouter from 'vue-router';
+import { routes } from './routes';
 Vue.use(VueRouter);
+const router = new VueRouter({
+    routes,
+    mode: 'history'
+});
 
-// Vuex central application state store paradigm. 
+// Vuex central application state store paradigm.
 import { store } from './store/store';
 
 // CSS material design framework.
@@ -29,5 +34,6 @@ new Vue({
   el: '#app',
   template: '<App/>',
   store,
+  router,
   components: { App }
 });

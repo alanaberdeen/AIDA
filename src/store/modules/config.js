@@ -1,7 +1,7 @@
-// This file handles the management of the state for the annotation tool. 
-// This specifies the layout of the annotation interface. This may include 
-// the required steps and instructions, the tools necessary to complete 
-// the annotations or the default image and annotation content.  
+// This file handles the management of the state for the annotation tool.
+// This specifies the layout of the annotation interface. This may include
+// the required steps and instructions, the tools necessary to complete
+// the annotations or the default image and annotation content.
 
 const state = {
         activeStep: 1,
@@ -13,7 +13,7 @@ const state = {
             },
             {   id: 2,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
-                ROI: true,
+                ROI: false,
                 instruction: 'Instructions for Step 2: Use the pencil tool to mark the non-tumour region.'
             },
             {   id: 3,
@@ -65,21 +65,21 @@ const state = {
                 name: 'Count',
                 caption: 'Count items within a specified rectangle'
             }
-        },  
+        },
         channels: [{
             name: 'Highsmith',
             url: 'https://openseadragon.github.io/example-images/highsmith/highsmith.dzi'
         }],
-        annotation: `[["Layer",{"name":"Lymphocytes","applyMatrix":true}], 
-                     ["Layer",{"name":"Non-tumour region","applyMatrix":true}], 
-                     ["Layer",{"name":"Tumour centre","applyMatrix":true}], 
-                     ["Layer",{"name":"Invasive margin","applyMatrix":true}], 
+        annotation: `[["Layer",{"name":"Lymphocytes","applyMatrix":true}],
+                     ["Layer",{"name":"Non-tumour region","applyMatrix":true}],
+                     ["Layer",{"name":"Tumour centre","applyMatrix":true}],
+                     ["Layer",{"name":"Invasive margin","applyMatrix":true}],
                      ["Layer",{"name":"Glands","applyMatrix":true}]]`
 };
 
 const getters = {
 
-	// Get an array specifiying the tools included in the current step. 
+	// Get an array specifiying the tools included in the current step.
 	getConfigStepTools: state => {
 		return state.steps[state.activeStep - 1].tools
 	}
@@ -87,12 +87,12 @@ const getters = {
 
 const actions = {
 
-    // Load a configuration into the tool. 
+    // Load a configuration into the tool.
     // May perform asynchronous tasks here (like pulling from REST API) before
     // committing the state mutation which must run synchronously.
     loadConfig: ({commit}, payload) => {
 
-        // let newConfig = ****** pull from API ***** 
+        // let newConfig = ****** pull from API *****
         // .then(() => {
         //  commit('loadConfig', newConfig);
         // )}
@@ -103,7 +103,7 @@ const actions = {
 	},
 
     // Action dispatches events to set both the active step and the active layer
-    // ensuring that they are in sync. 
+    // ensuring that they are in sync.
     setActiveStepAndLayer: ({dispatch}, step) => {
         dispatch('activateLayer', step);
         dispatch('setActiveStep', step);
@@ -113,13 +113,13 @@ const actions = {
 		commit('setActiveStep', step);
 	},
 
-    // Save the current configuration to the server. 
+    // Save the current configuration to the server.
     saveConfig: ({dispatch, commit}) => {
 
-        // Update the config and then save to RestAPI 
+        // Update the config and then save to RestAPI
         dispatch('updateConfig').then(() => {
 
-            // Here is where we would push to REST API 
+            // Here is where we would push to REST API
             // ****** Save to API *****
             console.log("saved the new configuration");
             console.log(state);
@@ -151,7 +151,7 @@ const mutations = {
 };
 
 // Export all of the relevent logic so that it can be combined with the complete
-// store and all other module logic. 
+// store and all other module logic.
 export default {
 	state,
 	getters,
