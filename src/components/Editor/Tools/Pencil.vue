@@ -1,14 +1,15 @@
 <template lang="html">
-
-    <v-btn @click.native="initialiseTool" flat block>
-        <i  :class="{
-                'fa': true,
-                'fa-pencil': true,
-                'faIcons': !this.active,
-                'faIconsActive': this.active
-            }">
-       </i>
-    </v-btn>
+    <v-list-tile id='tool-tile'>
+        <v-btn @click.native="initialiseTool" flat block id='tool'>
+            <i  :class="{
+                    'fa': true,
+                    'fa-pencil': true,
+                    'faIcons': !this.active,
+                    'faIconsActive': this.active
+                }">
+           </i>
+        </v-btn>
+    </v-list-tile>
 
 </template>
 
@@ -24,7 +25,7 @@ export default {
     data() {
         return {
             toolPencil: null,
-            strokeWidth: 400, // Default value, will be updated relative to view 
+            strokeWidth: 400, // Default value, will be updated relative to view
             hitOptions: null,
             path: null
         }
@@ -52,7 +53,7 @@ export default {
             // Activate the paperJS tool.
             this.toolPencil.activate();
 
-            // Set tool stroke width and hitOptions settings. 
+            // Set tool stroke width and hitOptions settings.
             this.strokeWidth = this.imageWidth/(this.viewportZoom*500);
             this.hitOptions = {
                 segments: true,
@@ -107,7 +108,7 @@ export default {
             // drawing.
         	this.path.simplify();
 
-            // Ensure this path is no longer the active path to be edited. 
+            // Ensure this path is no longer the active path to be edited.
             this.path.data.active = false;
         };
 
@@ -120,4 +121,11 @@ export default {
 </script>
 
 <style lang="css">
+#tool {
+    min-width: 0px;
+}
+
+#tool-tile {
+    padding: 0px;
+}
 </style>

@@ -1,14 +1,15 @@
 <template lang="html">
-
-    <v-btn @click.native="initialiseTool" flat block>
-        <i :class="{
-                'fa': true,
-                'fa-circle': true,
-                'faIcons': !this.active,
-                'faIconsActive': this.active
-                }">
-        </i>
-    </v-btn>
+    <v-list-tile id='tool-tile'>
+        <v-btn @click.native="initialiseTool" flat block id='tool'>
+            <i :class="{
+                    'fa': true,
+                    'fa-circle': true,
+                    'faIcons': !this.active,
+                    'faIconsActive': this.active
+                    }">
+            </i>
+        </v-btn>
+    </v-list-tile>
 
 </template>
 
@@ -21,11 +22,11 @@ import { mapState } from 'vuex';
 
 export default {
     props: ['active'],
-    
+
     data() {
         return {
             toolCircle: null,
-            strokeWidth: 400, // Default value, will be updated relative to view 
+            strokeWidth: 400, // Default value, will be updated relative to view
             radius: 2000
         }
     },
@@ -47,7 +48,7 @@ export default {
             // Prepare PaperJS canvas for interaction.
             this.prepareCanvas();
 
-            // Activate the paperJS tool. 
+            // Activate the paperJS tool.
             this.toolCircle.activate();
 
             // Set the default radius relative to image size and zoom level.
@@ -72,8 +73,8 @@ export default {
         const toolDown = (event) => {
 
             // The distance the mouse has to be dragged before an event is fired
-            // is dependent on the default radius which is set by the 
-            // current zoom level. 
+            // is dependent on the default radius which is set by the
+            // current zoom level.
             this.toolCircle.minDistance = this.radius * 1.5;
         };
 
@@ -84,10 +85,10 @@ export default {
             // Reset the distance before further events fired.
             this.toolCircle.minDistance = 0;
 
-            // Adjust circle radius. 
+            // Adjust circle radius.
         	this.radius = this.calculateDistance(event.downPoint, event.point);
 
-            // Draw the tracking path 
+            // Draw the tracking path
             let trackingPath = new paper.Path.Line(event.downPoint, event.point);
             trackingPath.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1});
             trackingPath.strokeWidth = this.strokeWidth;
@@ -112,9 +113,9 @@ export default {
 
         const toolUp = (event) => {
 
-            // Create a circle marker positioned on the point where mousedown was, 
-            // with either the default radius or the new radius as set by the 
-            // distance between the point of mouseDown and mouseUp. 
+            // Create a circle marker positioned on the point where mousedown was,
+            // with either the default radius or the new radius as set by the
+            // distance between the point of mouseDown and mouseUp.
             let newCircle = new paper.Path.Circle(event.downPoint, this.radius);
                 newCircle.strokeColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 1});
                 newCircle.strokeWidth = this.strokeWidth;
@@ -129,8 +130,8 @@ export default {
                 eventBus.$emit('updateMarkerCount');
         };
 
-        // Add the defined functions to the tool object.  
-        // UNSATISFACTORY: mutating PaperJS project state directly without 
+        // Add the defined functions to the tool object.
+        // UNSATISFACTORY: mutating PaperJS project state directly without
         // dispatching view action.
         this.toolCircle = new paper.Tool();
         this.toolCircle.onMouseDown = toolDown;
@@ -140,7 +141,14 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 
+#tool {
+    min-width: 0px;
+}
+
+#tool-tile {
+    padding: 0px;
+}
 
 </style>

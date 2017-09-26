@@ -1,15 +1,16 @@
 <template lang="html">
+    <v-list-tile id='tool-tile'>
+        <v-btn @click.native="initialiseTool" flat block id='tool'>
+            <v-icon v-if="this.active"
+                    class="blue--text text--darken-1">
+                    lock_open
+            </v-icon>
 
-    <v-btn @click.native="initialiseTool" flat block>
-        <v-icon v-if="this.active"
-                class="blue--text text--darken-1">
-                lock_open
-        </v-icon>
-
-        <v-icon v-else class='grey--text text--darken-2'>
-            lock_outline
-        </v-icon>
-    </v-btn>
+            <v-icon v-else class='grey--text text--darken-2'>
+                lock_outline
+            </v-icon>
+        </v-btn>
+    </v-list-tile>
 
 </template>
 
@@ -38,4 +39,13 @@ export default {
 </script>
 
 <style lang="css">
+
+#tool {
+    min-width: 0px;
+}
+
+#tool-tile {
+    padding: 0px;
+    min-width: 0px;
+}
 </style>

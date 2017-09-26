@@ -78,8 +78,6 @@ const mutations = {
 
         state.viewer.addHandler('update-viewport', function() {
 
-            console.log('updating viewport synchronously')
-
             // Check the current size of the Canvas container DOM element
             // and set the paperJS view to match this.
             let canvasWidth = state.viewer.canvas.clientWidth;

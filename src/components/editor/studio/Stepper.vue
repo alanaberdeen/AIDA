@@ -1,9 +1,10 @@
 <template>
-    <div class='pointers-please stepper'>
-        <v-stepper non-linear :value.sync="activeStep">
+    <div class='pointers-please'>
+        <v-stepper non-linear :value.sync="activeStep" id='stepper'>
             <v-stepper-header>
                 <div v-for="step in steps" :key='step.id'>
                     <v-stepper-step :step = step.id
+                                    id='stepper-step'
                                     editable
                                     @click.native="setActiveStepAndLayer(step.id)"
                                     >
@@ -13,8 +14,8 @@
             </v-stepper-header>
         </v-stepper>
 
-        <div class='hint-card'>
-            <p class="hint">
+        <div id='hint-card'>
+            <p id="hint">
                 {{ steps[(activeStep - 1)].instruction }}
             </p>
         </div>
@@ -45,22 +46,22 @@ export default {
 
 <style lang="css" scoped>
 
-.stepper{
+#stepper{
     background-color: #E0E0E0;
 }
 
-.hint-card {
+#hint-card {
     background-color: #EEEEEE;
 }
 
-.hint {
+#hint {
     font-size: 12px;
     color: #616161;
     padding: 5px 24px;
     margin: 0px;
 }
 
-.stepper__step {
+#stepper-step {
     padding: 10px 24px;
 }
 

@@ -3,67 +3,51 @@
 
         <v-list dense id="toolList">
 
-            <v-list-tile>
-                <app-pan :active="(this.activeTool === 'pan')"
-                         @click.native="activeTool = 'pan'"
-                         v-if="(this.getConfigStepTools().includes('pan'))">
-                </app-pan>
-            </v-list-tile>
+            <app-pan :active="(this.activeTool === 'pan')"
+                     @click.native="activeTool = 'pan'"
+                     v-if="(this.getConfigStepTools().includes('pan'))">
+            </app-pan>
 
             <v-divider></v-divider>
 
-            <v-list-tile>
-                <app-move :active="(this.activeTool === 'move')"
-                          @click.native="activeTool = 'move'"
-                          v-if="(this.getConfigStepTools().includes('move'))">
-                </app-move>
-            </v-list-tile>
+            <app-move :active="(this.activeTool === 'move')"
+                      @click.native="activeTool = 'move'"
+                      v-if="(this.getConfigStepTools().includes('move'))">
+            </app-move>
 
-            <v-list-tile>
-                <app-node :active="(this.activeTool === 'node')"
-                          @click.native="activeTool = 'node'"
-                          v-if="(this.getConfigStepTools().includes('node'))">
-                </app-node>
-            </v-list-tile>
+            <app-node :active="(this.activeTool === 'node')"
+                      @click.native="activeTool = 'node'"
+                      v-if="(this.getConfigStepTools().includes('node'))">
+            </app-node>
 
             <v-divider></v-divider>
 
-            <v-list-tile>
-                <app-circle :active="(this.activeTool === 'circle')"
-                            @click.native="activeTool = 'circle'"
+            <app-circle :active="(this.activeTool === 'circle')"
+                        @click.native="activeTool = 'circle'"
+                        v-if="(this.getConfigStepTools().includes('circle'))">
+            </app-circle>
+
+            <app-rectangle  :active="(this.activeTool === 'rectangle')"
+                            @click.native="activeTool = 'rectangle'"
                             v-if="(this.getConfigStepTools().includes('circle'))">
-                </app-circle>
-            </v-list-tile>
+            </app-rectangle>
 
-            <v-list-tile>
-                <app-rectangle  :active="(this.activeTool === 'rectangle')"
-                                @click.native="activeTool = 'rectangle'"
-                                v-if="(this.getConfigStepTools().includes('circle'))">
-                </app-rectangle>
-            </v-list-tile>
+            <app-pen  :active="(this.activeTool === 'pen')"
+                      @click.native="activeTool = 'pen'"
+                      v-if="(this.getConfigStepTools().includes('circle'))">
+            </app-pen>
 
-            <v-list-tile>
-                <app-pen  :active="(this.activeTool === 'pen')"
-                          @click.native="activeTool = 'pen'"
-                          v-if="(this.getConfigStepTools().includes('circle'))">
-                </app-pen>
-            </v-list-tile>
-
-            <v-list-tile>
-                <app-pencil :active="(this.activeTool === 'pencil')"
-                            @click.native="activeTool = 'pencil'"
-                            v-if="(this.getConfigStepTools().includes('circle'))">
-                </app-pencil>
-            </v-list-tile>
+            <app-pencil :active="(this.activeTool === 'pencil')"
+                        @click.native="activeTool = 'pencil'"
+                        v-if="(this.getConfigStepTools().includes('circle'))">
+            </app-pencil>
 
             <v-divider></v-divider>
 
-            <v-list-tile>
-                <app-count :active="(this.activeTool === 'count')"
-                           @click.native="activeTool = 'count'"
-                           v-if="(this.getConfigStepTools().includes('count'))">
-                </app-count>
-            </v-list-tile>
+            <app-count :active="(this.activeTool === 'count')"
+                       @click.native="activeTool = 'count'"
+                       v-if="(this.getConfigStepTools().includes('count'))">
+            </app-count>
 
             <v-divider></v-divider>
 
@@ -119,15 +103,7 @@ export default {
 }
 </script>
 
-<style lang="css">
-
-.list__tile {
-    padding: 0px;
-}
-
-.btn {
-    min-width: 0px;
-}
+<style lang="css" scoped>
 
 #toolsPanel {
     height: calc(100vh - 48px);
@@ -137,7 +113,5 @@ export default {
 #toolList {
     background: #EEEEEE;
 }
-
-
 
 </style>

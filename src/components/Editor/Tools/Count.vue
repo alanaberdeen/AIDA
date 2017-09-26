@@ -1,10 +1,12 @@
 <template lang="html">
-    <v-btn @click.native="initialiseTool" flat block>
-        <v-icon :class="{'grey--text text--darken-2': !this.active,
-                         'blue--text text--darken-1': this.active}">
-                filter_9_plus
-        </v-icon>
-    </v-btn>
+    <v-list-tile id='tool-tile'>
+        <v-btn @click.native="initialiseTool" flat block id='tool'>
+            <v-icon :class="{'grey--text text--darken-2': !this.active,
+                             'blue--text text--darken-1': this.active}">
+                    filter_9_plus
+            </v-icon>
+        </v-btn>
+    </v-list-tile>
 </template>
 
 <script>
@@ -42,7 +44,7 @@ export default {
             // Prepare PaperJS canvas for interaction.
             this.prepareCanvas();
 
-            // Activate the paperJS tool. 
+            // Activate the paperJS tool.
             this.toolCount.activate();
 
             // Set the default strokewidth relative to image size and zoom.
@@ -148,4 +150,12 @@ export default {
 </script>
 
 <style lang="css">
+
+#tool {
+    min-width: 0px;
+}
+
+#tool-tile {
+    padding: 0px;
+}
 </style>

@@ -1,14 +1,15 @@
 <template lang="html">
-
-    <v-btn @click.native="initialiseTool" flat block>
-        <i :class="{
-                'fa': true,
-                'fa-mouse-pointer': true,
-                'faIcons': !this.active,
-                'faIconsActive': this.active
-            }">
-        </i>
-    </v-btn>
+    <v-list-tile id='tool-tile'>
+        <v-btn @click.native="initialiseTool" flat block id='tool'>
+            <i :class="{
+                    'fa': true,
+                    'fa-mouse-pointer': true,
+                    'faIcons': !this.active,
+                    'faIconsActive': this.active
+                }">
+            </i>
+        </v-btn>
+    </v-list-tile>
 
 </template>
 
@@ -51,7 +52,7 @@ export default {
             // Activate the paperJS tool.
             this.toolMove.activate();
 
-            // Set tool stroke width and hitTolerance settings. 
+            // Set tool stroke width and hitTolerance settings.
             this.strokeWidth = this.imageWidth / (this.viewportZoom * 500);
             let hitTolerance = this.strokeWidth * 3;
 
@@ -69,14 +70,14 @@ export default {
 
     created() {
 
-        // Result of user click interaction on PaperJS instance. 
+        // Result of user click interaction on PaperJS instance.
         let hitResult = null;
 
-        // Array of items that will be selected and the selected group  
+        // Array of items that will be selected and the selected group
         let toBeSelected = [];
         let selectedGroup = null;
-        
-        // Current tool status. 
+
+        // Current tool status.
         let toolStatus = '';
 
         const toolDown = (event) => {
@@ -85,7 +86,7 @@ export default {
             hitResult = this.paperScope.project.hitTest(event.point, this.selectOptions);
 
             // If no modiefiers and item has been selected then create the
-            // selection group (of one element) to be selected. 
+            // selection group (of one element) to be selected.
             if (hitResult                       &&
                 hitResult.type !== 'bounds'     &&
                 (   hitResult.type === 'fill'   ||
@@ -94,17 +95,17 @@ export default {
                 )){
 
                 if (selectedGroup && selectedGroup.hitTest(event.point, this.selectOptions)) {
-                    // If clicking an already selected item then make no change. 
+                    // If clicking an already selected item then make no change.
                 }
                 else if (event.modifiers.shift){
                     toBeSelected.push(hitResult.item);
                 }
                 else {
-                    toBeSelected = [hitResult.item];      
+                    toBeSelected = [hitResult.item];
                 }
 
                 toolStatus = 'move';
-            
+
             // If user has clicked bounds then assume transforming.
             } else if (hitResult && hitResult.type === 'bounds'){
                 toolStatus = 'transform';
@@ -119,10 +120,10 @@ export default {
             if (selectedGroup){
                 selectedGroup.selected = false;
                 selectedGroup.bounds.selected = false;
-                selectedGroup = null; 
+                selectedGroup = null;
             }
 
-            // If there are items to be selected then setup selection. 
+            // If there are items to be selected then setup selection.
             if (toBeSelected.length > 0){
                 // Check any of the items need to be selected with linked
                 // items. For example in the case of the
@@ -162,9 +163,9 @@ export default {
                     up:   true
                 });
 
-                // Get items inside the selection rectangle. 
+                // Get items inside the selection rectangle.
                 toBeSelected = this.paperScope.project.getItems({
-                    class:  "Path", 
+                    class:  "Path",
                     inside: selectionRect.bounds
                 });
 
@@ -173,7 +174,7 @@ export default {
                 if (selectedGroup){
                     selectedGroup.selected = false;
                     selectedGroup.bounds.selected = false;
-                    selectedGroup = null; 
+                    selectedGroup = null;
                 }
 
                 if (toBeSelected.length > 0){
@@ -229,11 +230,11 @@ export default {
             }
         };
 
-        // Select the group and provide housekeeping/emit events. 
+        // Select the group and provide housekeeping/emit events.
         const toolUp = (event) => {
 
             if (selectedGroup) { selectedGroup.bounds.selected = true; }
-            
+
             // Housekeeping
             toolStatus = '';
 
@@ -248,7 +249,7 @@ export default {
         };
 
         // Change tool icon based on context in order to Feedforward to the
-        // user the action that could be taken. 
+        // user the action that could be taken.
         // I imagine this is a relatively expensive operation?
         const toolMove = (event) => {
 
@@ -305,4 +306,12 @@ export default {
 </script>
 
 <style lang="css">
+
+#tool {
+    min-width: 0px;
+}
+
+#tool-tile {
+    padding: 0px;
+}
 </style>

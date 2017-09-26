@@ -1,14 +1,15 @@
 <template lang="html">
-
-    <v-btn @click.native="initialiseTool" flat block>
-        <i :class="{
-                'fa': true,
-                'fa-location-arrow': true,
-                'faIcons': !this.active,
-                'faIconsActive': this.active
-                }">
-        </i>
-    </v-btn>
+    <v-list-tile id='tool-tile'>
+        <v-btn @click.native="initialiseTool" flat block id='tool'>
+            <i :class="{
+                    'fa': true,
+                    'fa-location-arrow': true,
+                    'faIcons': !this.active,
+                    'faIconsActive': this.active
+                    }">
+            </i>
+        </v-btn>
+    </v-list-tile>
 
 </template>
 
@@ -46,7 +47,7 @@ export default {
             // Prepare PaperJS canvas for interaction.
             this.prepareCanvas();
 
-            // Activate the paperJS tool. 
+            // Activate the paperJS tool.
             this.toolNode.activate();
 
             // Selection options
@@ -63,7 +64,7 @@ export default {
 
     created() {
 
-        // Result of user click interaction on PaperJS instancevent. 
+        // Result of user click interaction on PaperJS instancevent.
         let hitResult = null;
 
         // Current tool status.
@@ -77,21 +78,21 @@ export default {
             // Check if use selected something
             if (hitResult) {
 
-                // If item not currrently selected then select. 
+                // If item not currrently selected then select.
                 if (!hitResult.item.selected){
                     hitResult.item.selected = true;
                     toolStatus = 'selecting';
 
-                // If user selects stroke then add node 
+                // If user selects stroke then add node
                 } else if (hitResult.type === 'stroke') {
                     toolStatus = 'adding-node';
 
-                // If user selecteds a segment. 
+                // If user selecteds a segment.
                 } else if (hitResult.type === 'segment'){
-                    // Select only that segment and associate handles. 
+                    // Select only that segment and associate handles.
                     this.paperScope.project.deselectAll();
                     hitResult.item.selected = true;
-                    hitResult.segment.selected = true; 
+                    hitResult.segment.selected = true;
                     hitResult.segment.handleIn.selected = true;
                     hitResult.segment.handleOut.selected = true;
 
@@ -133,4 +134,12 @@ export default {
 </script>
 
 <style lang="css">
+
+#tool {
+    min-width: 0px;
+}
+
+#tool-tile {
+    padding: 0px;
+}
 </style>

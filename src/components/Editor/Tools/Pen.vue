@@ -1,11 +1,12 @@
 <template lang="html">
-
-    <v-btn @click.native="initialiseTool" flat block>
-        <v-icon :class="{'grey--text text--darken-2': !this.active,
-                         'blue--text text--darken-1': this.active}">
-                timeline
-        </v-icon>
-    </v-btn>
+    <v-list-tile id='tool-tile'>
+        <v-btn @click.native="initialiseTool" flat block id='tool'>
+            <v-icon :class="{'grey--text text--darken-2': !this.active,
+                             'blue--text text--darken-1': this.active}">
+                    timeline
+            </v-icon>
+        </v-btn>
+    </v-list-tile>
 
 </template>
 
@@ -21,7 +22,7 @@ export default {
     data() {
         return {
             toolPen: null,
-            strokeWidth: 400, // Default value, will be updated relative to view 
+            strokeWidth: 400, // Default value, will be updated relative to view
             hitOptions: null,
             path: null
         }
@@ -48,7 +49,7 @@ export default {
             // Activate the paperJS tool.
             this.toolPen.activate();
 
-            // Set tool stroke width and hitOptions settings. 
+            // Set tool stroke width and hitOptions settings.
             this.strokeWidth = this.imageWidth/(this.viewportZoom*500);
             this.hitOptions = {
                 segments: true,
@@ -136,4 +137,12 @@ export default {
 </script>
 
 <style lang="css">
+
+#tool {
+    min-width: 0px;
+}
+
+#tool-tile {
+    padding: 0px;
+}
 </style>
