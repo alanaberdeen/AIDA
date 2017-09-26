@@ -11,7 +11,7 @@
                         <h2 id="subtitle"> Annotate Image Data by Assignment </h2>
                     </v-flex>
 
-                    <v-flex xs8 sm4 md2 text-xs-center>
+                    <v-flex xs8 sm4 md3 lg2 text-xs-center id='button-container'>
                         <v-btn dark primary block to='/editor'>
                             <v-icon>web</v-icon>
                             <span class='button-text'>
@@ -20,7 +20,7 @@
                         </v-btn>
                     </v-flex>
 
-                    <v-flex xs8 sm4 md2 text-xs-center>
+                    <v-flex xs8 sm4 md3 lg2 text-xs-center id='button-container'>
                         <v-btn light block href='https://github.com/alanaberdeen/AIDA'>
                             <v-icon>fa-github</v-icon>
                             <span class='button-text'>
@@ -29,7 +29,7 @@
                         </v-btn>
                     </v-flex>
 
-                    <v-flex xs8 sm4 md2 text-xs-center>
+                    <v-flex xs8 sm4 md3 lg2 text-xs-center id='button-container'>
                         <v-btn light block to='/docs'>
                             <v-icon>fa-book</v-icon>
                             <span class='button-text'>
@@ -77,6 +77,10 @@
 
 #subtitle-container{
     padding-top: 0px;
+}
+
+#button-container {
+    padding: 5px 10px;
 }
 
 </style>
