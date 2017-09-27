@@ -11,7 +11,9 @@ const state = {
 const getters = {
 
 	getImageWidth: state => {
-		return state.viewer.world.getItemAt(0).getContentSize.x
+        if(state.viewer) {
+            return state.viewer.world.getItemAt(0).getContentSize.x
+        }
 	},
 
 	getChannels: (state, getters, rootState) => {

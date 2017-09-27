@@ -1,9 +1,10 @@
 <template lang="html">
     <v-toolbar :fixed="true" dark dense class="primary pointers-please">
 
-        <!-- Spacer for where v-toolbar-side-icon may be in other views -->
-        <div id='toolbar-side-icon-spacer'>
-        </div>
+        <!-- Control for navigation drawer -->
+        <v-toolbar-side-icon @click.stop="$emit('toggleNav')">
+
+        </v-toolbar-side-icon>
 
         <!-- Home -->
         <router-link to='/'>
@@ -28,13 +29,6 @@
                 <v-icon> fa-book </v-icon>
             </v-btn>
         </router-link>
-
-        <!-- <v-btn icon class="pointers-no">
-            <app-settings   :config='config'
-                            :osdViewer='osdViewer'
-                            :paperScope='paperScope'>
-            </app-settings>
-        </v-btn> -->
 
         <!-- Account -->
         <v-btn icon class="pointers-no">
@@ -63,9 +57,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
-#toolbar-side-icon-spacer{
-    height: 36px;
-    width: 36px;
-}
 </style>

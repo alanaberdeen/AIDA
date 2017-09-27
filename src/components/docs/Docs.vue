@@ -1,19 +1,19 @@
 <!-- This file handles rendering the documentation for AIDA. The documentaion is
      written in Markdown and compiled via vue-markdown-loader into Vue
      components. -->
-
 <template>
     <div>
-        <header>
-                <app-toolbar>
-                </app-toolbar>
-        </header>
+     <header>
+        <app-toolbar @toggleNav="drawer = !drawer">
+        </app-toolbar>
+    </header>
 
-        <v-container fluid id='docs-container'>
+    <main>
+       <v-container fluid id='docs-container' v-resize="onResize">
             <v-layout row>
 
                 <!-- Documentation navigation -->
-                <v-flex id="nav-col">
+                <v-flex id="nav-col" v-show="(drawer)">
 
                     <h6 id="guide"> Guide </h6>
 
@@ -35,24 +35,27 @@
 
                 </v-flex>
 
-                <v-flex id="doc-content" v-scroll="{
-                                                  target: '#docs-container'
-                                                }">
+                <v-flex id="doc-content">
+
                     <!-- Pass in the relevent part of the documentation -->
                     <router-view></router-view>
+
                 </v-flex>
 
             </v-layout>
         </v-container>
-    </div>
+    </main>
+</div>
 </template>
 
 <script>
-import Toolbar from '../header/Toolbar.vue';
+import Toolbar from '../header/DocsToolbar.vue';
 
 export default {
     data () {
       return {
+
+        drawer: true,
 
         // The navigation, and contents, for the documentation.
         items: [
@@ -92,6 +95,20 @@ export default {
           }
         ]
       }
+    },
+
+    mounted() {
+      this.onResize()
+    },
+
+    methods: {
+        onResize() {
+            if (window.innerWidth < 600){
+                this.drawer = false;
+            } else {
+                this.drawer = true;
+            }
+        }
     },
 
     components: {
