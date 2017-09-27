@@ -1,6 +1,6 @@
 <template>
-    <v-container grid-list-xl id='home'>
-        <v-layout row wrap id='hero'>
+    <v-container id='home'>
+        <v-layout row id='hero'>
             <v-flex xs12 text-xs-center>
                 <v-layout row wrap align-center justify-center>
                     <v-flex xs12 id='title-container'>

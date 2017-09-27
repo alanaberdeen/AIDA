@@ -2,11 +2,11 @@
     <v-toolbar :fixed="true" dark dense class="primary pointers-please">
 
         <!-- Home -->
-        <v-toolbar-title class='white--text'>
-            <router-link to='/'>
+        <router-link to='/'>
+            <v-toolbar-title class="white--text">
                 AIDA
-            </router-link>
-        </v-toolbar-title>
+            </v-toolbar-title>
+        </router-link>
 
         <v-spacer></v-spacer>
 
@@ -58,9 +58,5 @@ export default {
 
 </script>
 
-<style lang="css">
-a {
-  color: inherit;
-  text-decoration: inherit;
-}
+<style lang="css" scoped>
 </style>

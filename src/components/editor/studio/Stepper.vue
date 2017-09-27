@@ -14,7 +14,7 @@
             </v-stepper-header>
         </v-stepper>
 
-        <div id='hint-card'>
+        <div id='hint-card' class='elevation-1'>
             <p id="hint">
                 {{ steps[(activeStep - 1)].instruction }}
             </p>
