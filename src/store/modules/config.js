@@ -74,7 +74,10 @@ const state = {
                      ["Layer",{"name":"Non-tumour region","applyMatrix":true}],
                      ["Layer",{"name":"Tumour centre","applyMatrix":true}],
                      ["Layer",{"name":"Invasive margin","applyMatrix":true}],
-                     ["Layer",{"name":"Glands","applyMatrix":true}]]`
+                     ["Layer",{"name":"Glands","applyMatrix":true}]]`,
+        savedLayer: []
+
+
 };
 
 const getters = {
@@ -90,11 +93,11 @@ const actions = {
     // Load a configuration into the tool.
     // May perform asynchronous tasks here (like pulling from REST API) before
     // committing the state mutation which must run synchronously.
-    loadConfig: ({commit}, payload) => {
+    loadConfig: ({commit}, newConfig) => {
 
-        // let newConfig = ****** pull from API *****
+        // let newConfig = // Get from api
         // .then(() => {
-        //  commit('loadConfig', newConfig);
+        //     commit('loadConfig', newConfig);
         // )}
     },
 

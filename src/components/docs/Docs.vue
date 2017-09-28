@@ -173,10 +173,15 @@ export default {
         border-bottom: 1px solid #ddd;
     }
 
+    h5 {
+        font-size: 16px;
+        color: #1976D2;
+        margin: 30px 0px 0px 0px;
+    }
+
+
     p {
         line-height: 1.6em;
-        margin: 1.2em 0 -1.2em;
-        padding-bottom: 1.2em;
     }
 
     tbody tr:nth-child(odd) {
@@ -186,10 +191,6 @@ export default {
     table {
         margin-top: 20px;
         margin-bottom: 20px;
-    }
-
-    th {
-        padding: 5px;
     }
 
     td {
