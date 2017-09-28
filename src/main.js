@@ -10,7 +10,8 @@ import { routes } from './routes';
 Vue.use(VueRouter);
 const router = new VueRouter({
     routes,
-    base: '/AIDA/'
+    base: '/AIDA/',
+    mode: 'history'
 });
 
 // Vuex central application state store paradigm.

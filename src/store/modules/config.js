@@ -76,8 +76,6 @@ const state = {
                      ["Layer",{"name":"Invasive margin","applyMatrix":true}],
                      ["Layer",{"name":"Glands","applyMatrix":true}]]`,
         savedLayer: []
-
-
 };
 
 const getters = {
