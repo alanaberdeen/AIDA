@@ -75,7 +75,7 @@ export default {
             // The distance the mouse has to be dragged before an event is fired
             // is dependent on the default radius which is set by the
             // current zoom level.
-            this.toolCircle.minDistance = this.radius * 1.5;
+            this.toolCircle.minDistance = this.strokeWidth * 4;
         };
 
         const toolDrag = (event) => {
