@@ -120,7 +120,7 @@ export default {
 
 <!-- Un-scoped the following styles so that they can easily target the
      markdown content that will be added by Vue-router. -->
-<style>
+<style scoped>
     #docs-container {
         padding: 0px;
         padding-top: 48px;
@@ -155,45 +155,5 @@ export default {
 
     #nav-item {
         padding: 0px 16px;
-    }
-
-    /* The following styles will be applied to the markdown content that is
-       compiled by vue-loader-markdown and injected into the page via
-       vue-loader
-    */
-     h2 {
-        font-size: 2em;
-        margin: 0 0 1em;
-    }
-
-    h4 {
-        font-size: 20px;
-        margin: 45px 0 0.8em;
-        padding-bottom: 0.3em;
-        border-bottom: 1px solid #ddd;
-    }
-
-    h5 {
-        font-size: 16px;
-        color: #1976D2;
-        margin: 30px 0px 0px 0px;
-    }
-
-
-    p {
-        line-height: 1.6em;
-    }
-
-    tbody tr:nth-child(odd) {
-        background-color: rgba(0,0,0,0.05);
-    }
-
-    table {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    td {
-        padding: 5px;
     }
 </style>

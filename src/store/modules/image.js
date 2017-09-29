@@ -1,6 +1,5 @@
 // This file handles the management of the state for the image viewer.
 // The image viewer is controled via the OpenSeadragon js lib.
-
 import openseadragon from 'openseadragon';
 import paper from 'paper';
 
@@ -42,8 +41,8 @@ const actions = {
 		commit('initialiseViewer', payload);
 	},
 
-	addImages: ({commit}, payload) => {
-		commit('addImages', payload)
+	addImages: ({commit}, channels) => {
+		commit('addImages', channels)
 	},
 
 	synchroniseAnnotationAndImage: ({state, commit, rootState}) => {
@@ -116,16 +115,19 @@ const mutations = {
 	},
 
 	// Add images to the openseadragon Viewer
-	addImages: (state, payload) => {
+	addImages: (state, channels) => {
 
-		for (let image in payload){
+		for (let image in channels){
+
+            // If pulling from secure data scource then need to set the correct
+            // params: ajaxWithCredentials, loadTilesWithAjax, ajaxHeaders.
+            // see: https://openseadragon.github.io/docs/OpenSeadragon.Viewer.html#addTiledImage
             state.viewer.addTiledImage({
-                tileSource: payload[image].url,
+                tileSource: channels[image].url,
                 x: 0,
                 y: 0,
                 opacity: 0.7
             });
-
 		}
 	},
 

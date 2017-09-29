@@ -2,6 +2,7 @@
 // This specifies the layout of the annotation interface. This may include
 // the required steps and instructions, the tools necessary to complete
 // the annotations or the default image and annotation content.
+import axios from 'axios';
 
 const state = {
         activeStep: 1,
@@ -93,10 +94,13 @@ const actions = {
     // committing the state mutation which must run synchronously.
     loadConfig: ({commit}, newConfig) => {
 
-        // let newConfig = // Get from api
-        // .then(() => {
-        //     commit('loadConfig', newConfig);
-        // )}
+        axios.get('/AIDA/annotation/getAnnotation')
+            .then(function (response) {
+                commit('loadConfig', response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     },
 
 	addImage: ({commit}, payload) => {

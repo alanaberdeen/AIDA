@@ -22,7 +22,7 @@ export default {
 
     methods: {
         ...mapActions([
-            'initialiseViewer', 
+            'initialiseViewer',
             'initialiseAnnotation',
             'addImages',
             'synchroniseAnnotationAndImage',
@@ -31,7 +31,7 @@ export default {
         ])
     },
 
-    mounted() { 
+    mounted() {
 
         // Create the OpenSeadragon instance viewer.
         this.initialiseViewer();
@@ -39,19 +39,19 @@ export default {
         // Create the PaperJS instance targetting the canvas DOM element.
         this.initialiseAnnotation();
 
-        // Load configuration from the API 
+        // Load configuration from the API
         // this.loadConfig();
 
-        // Add the images specied in the config state to the viewer. 
+        // Add the images specied in the config state to the viewer.
         // this.addImages(this.getImages);
         this.addImages(this.channels);
 
         // Ensure the size of the PaperJS annotation view and the OpenSeaDragon
-        // viewer are always synchronised. 
+        // viewer are always synchronised.
         this.synchroniseAnnotationAndImage();
 
-        // Import any annotation data set in the config object. 
-        this.loadAnnotation(this.annotation);       
+        // Import any annotation data set in the config object.
+        this.loadAnnotation(this.annotation);
     }
 }
 </script>
