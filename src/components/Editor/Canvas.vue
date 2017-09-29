@@ -40,7 +40,7 @@ export default {
         this.initialiseAnnotation();
 
         // Load configuration from the API
-        // this.loadConfig();
+        this.loadConfig();
 
         // Add the images specied in the config state to the viewer.
         // this.addImages(this.getImages);
