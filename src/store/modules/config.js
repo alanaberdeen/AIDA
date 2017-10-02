@@ -95,12 +95,13 @@ const actions = {
     // committing the state mutation which must run synchronously.
     loadConfig: ({state, rootState, commit}, newConfig) => {
 
-        axios.get('/AIDA/annotation/getAnnotation')
+        axios.get('https://aida-testing.firebaseio.com/.json?auth=RBv1awd0slaBsN33eLcmhPLXzoak38ctwZ1aAKZT')
             .then(function (response) {
-                commit('loadConfig', {
-                    rootState: rootState,
-                    newConfig: response.data
-                });
+                console.log(response)
+                // commit('loadConfig', {
+                //     rootState: rootState,
+                //     newConfig: response.data
+                // });
             })
             .catch(function (error) {
                 console.log(error);
@@ -123,15 +124,19 @@ const actions = {
 	},
 
     // Save the current configuration to the server.
-    saveConfig: ({dispatch, commit}) => {
+    saveConfig: ({dispatch, commit, state}) => {
 
         // Update the config and then save to RestAPI
         dispatch('updateConfig').then(() => {
 
             // Here is where we would push to REST API
             // ****** Save to API *****
-            console.log("saved the new configuration");
-            console.log(state);
+            axios.post('https://aida-testing.firebaseio.com/.json?auth=RBv1awd0slaBsN33eLcmhPLXzoak38ctwZ1aAKZT', {
+                data: state
+            })
+            .then(function (response) {
+                console.log(response)
+            })
         })
     },
 
