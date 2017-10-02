@@ -95,17 +95,15 @@ const actions = {
     // committing the state mutation which must run synchronously.
     loadConfig: ({state, rootState, commit, dispatch}, newConfig) => {
 
-        axios.get('https://aida-testing.firebaseio.com/.json?auth=RBv1awd0slaBsN33eLcmhPLXzoak38ctwZ1aAKZT')
+        axios.get('https://aida-testing.firebaseio.com/.json')
             // Update the config.js state
             .then(function (response) {
                 commit('loadConfig', {
                     rootState: rootState,
-                    newConfig: response.data // Javascript object in the same format as the default seen above.
+                    newConfig: response.data.config // Javascript object in the same format as the default seen above.
                 })
-            })
-            // Update the PaperJS project representation
-            .then(function () {
-                dispatch('loadProject', response.data.annotation, {root: true})
+                // Update the PaperJS project representation
+                dispatch('loadProject', response.data.config.annotation, {root: true})
             })
             .catch(function (error) {
                 console.log(error);
@@ -131,19 +129,17 @@ const actions = {
     saveConfig: ({dispatch, commit, state}) => {
 
         // Update the config and then save to RestAPI
-        dispatch('updateConfig').then(() => {
+        dispatch('updateConfig', state).then(() => {
 
             // Here is where we would push to REST API
             // ****** Save to API *****
-            axios.post('https://aida-testing.firebaseio.com/.json?auth=RBv1awd0slaBsN33eLcmhPLXzoak38ctwZ1aAKZT', {
-                data: state
+            axios.put('https://aida-testing.firebaseio.com/.json', {
+                config: state
             })
             .then(function (response) {
                 console.log(response)
             })
         })
-
-        console.log(state)
     },
 
     updateConfig: ({dispatch, commit, rootState, rootGetters}) => {
