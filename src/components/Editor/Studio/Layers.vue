@@ -18,9 +18,9 @@
                  <v-list-tile   v-for="(layer, id) in layers" :key="id"
                                 @click.native="setActiveStepAndLayer(id+1)"
                                 @dblclick.native="editLayerName(layer)"
-                                id="tile"> 
+                                id="tile">
 
-                   <v-list-tile-content id="content"> 
+                   <v-list-tile-content id="content">
 
                         <v-list-tile-title
                             id="name"
@@ -29,7 +29,7 @@
                             {{ layer.name }}
                         </v-list-tile-title>
 
-                        <input 
+                        <input
                             id="nameEdit"
                             v-if="editingLayer == id"
                             v-model="layer.name"
@@ -82,7 +82,7 @@ export default {
         })
     },
 
-    mounted() { 
+    mounted() {
 
         // If there are no layers imported, then the default layer will not
         // have a name. So best set it here and avoid confusion.
@@ -102,7 +102,7 @@ export default {
         // Begin editing
         editLayerName (layer) {
             this.beforeEditCache = layer.name
-            this.editingLayer = id
+            this.editingLayer = layer.id
         },
 
         // Housekeeping once finsihed editing layer
@@ -131,7 +131,7 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>   
+<style lang="css" scoped>
 #title {
     font-size: 14px;
     font-weight: 400;
