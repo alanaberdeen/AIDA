@@ -93,15 +93,19 @@ const actions = {
     // Load a configuration into the tool.
     // May perform asynchronous tasks here (like pulling from REST API) before
     // committing the state mutation which must run synchronously.
-    loadConfig: ({state, rootState, commit}, newConfig) => {
+    loadConfig: ({state, rootState, commit, dispatch}, newConfig) => {
 
         axios.get('https://aida-testing.firebaseio.com/.json?auth=RBv1awd0slaBsN33eLcmhPLXzoak38ctwZ1aAKZT')
+            // Update the config.js state
             .then(function (response) {
-                console.log(response)
-                // commit('loadConfig', {
-                //     rootState: rootState,
-                //     newConfig: response.data
-                // });
+                commit('loadConfig', {
+                    rootState: rootState,
+                    newConfig: response.data // Javascript object in the same format as the default seen above.
+                })
+            })
+            // Update the PaperJS project representation
+            .then(function () {
+                dispatch('loadProject', response.data.annotation, {root: true})
             })
             .catch(function (error) {
                 console.log(error);
@@ -138,6 +142,8 @@ const actions = {
                 console.log(response)
             })
         })
+
+        console.log(state)
     },
 
     updateConfig: ({dispatch, commit, rootState, rootGetters}) => {
@@ -160,9 +166,7 @@ const mutations = {
     },
 
     loadConfig: (state, payload) => {
-        console.log("loading config")
         Vue.set(payload.rootState, 'config', payload.newConfig);
-        console.log(state)
     }
 };
 

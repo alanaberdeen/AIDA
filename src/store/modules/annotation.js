@@ -32,6 +32,10 @@ const actions = {
 		commit('loadAnnotation', payload);
 	},
 
+	loadProject: ({commit}, payload) => {
+		commit('loadProject', payload)
+	},
+
 	exportLayerJSON: ({commit}, layer) => {
 		commit('exportLayerJSON', layer);
 	},
@@ -61,6 +65,20 @@ const mutations = {
 		state.paperScope.project.importJSON(payload)
 	},
 
+	// Load a new PaperJS JSON string representing new project data into the
+	// paperJS instance
+	loadProject: (state, payload) => {
+		state.paperScope.project.clear()
+		state.paperScope.project.importJSON(payload);
+
+		// The way that PaperJS adds a new layer to the paperScope instance
+        // slips by the VueJS Change Detection. This is a known issue when
+        // mutating objects/arrays in certain ways. Therefore, must explicitly
+        // Vue tell Vue to set the property and watch for it's changes.
+        // See: https://vuejs.org/v2/guide/reactivity.html
+		Vue.set(state.paperScope.project, 'layers', state.paperScope.project.layers);
+	},
+
 	// Export a PaperJS JSON string representing current state to the console.
 	// If no payload param then default to exporting the whole PaperJS project.
 	exportLayerJSON: (state, layer) => {
@@ -83,11 +101,6 @@ const mutations = {
             position: state.paperScope.view.center
         });
 
-        // The way that PaperJS adds a new layer to the paperScope instance
-        // slips by the VueJS Change Detection. This is a known issue when
-        // mutating objects/arrays in certain ways. Therefore, must explicitly
-        // Vue tell Vue to set the property and watch for it's changes.
-        // See: https://vuejs.org/v2/guide/reactivity.html
         Vue.set(state.paperScope.project, 'layers', state.paperScope.project.layers);
         Vue.set(state.paperScope.project, 'activeLayer', newLayer);
 	},
