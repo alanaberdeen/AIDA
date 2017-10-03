@@ -69,8 +69,8 @@ const state = {
             }
         },
         channels: [{
-            name: 'Highsmith',
-            url: 'https://openseadragon.github.io/example-images/highsmith/highsmith.dzi'
+            name: 'Duomo',
+            url: "https://openseadragon.github.io/example-images/duomo/duomo.dzi"
         }],
         annotation: `[["Layer",{"name":"Lymphocytes","applyMatrix":true}],
                      ["Layer",{"name":"Non-tumour region","applyMatrix":true}],
@@ -103,7 +103,9 @@ const actions = {
                     newConfig: response.data.config // Javascript object in the same format as the default seen above.
                 })
                 // Update the PaperJS project representation
-                dispatch('loadProject', response.data.config.annotation, {root: true})
+                dispatch('loadProject', response.data.config.annotation, {root: true});
+                // Update the OpenSeaDragon image channels
+                dispatch('addImages', response.data.config.channels, {root: true});
             })
             .catch(function (error) {
                 console.log(error);

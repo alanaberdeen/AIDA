@@ -42,16 +42,9 @@ export default {
         // Load configuration from the API
         this.loadConfig();
 
-        // Add the images specied in the config state to the viewer.
-        // this.addImages(this.getImages);
-        this.addImages(this.channels);
-
         // Ensure the size of the PaperJS annotation view and the OpenSeaDragon
         // viewer are always synchronised.
         this.synchroniseAnnotationAndImage();
-
-        // Import any annotation data set in the config object.
-        this.loadAnnotation(this.annotation);
     }
 }
 </script>
