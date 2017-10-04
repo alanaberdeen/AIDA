@@ -117,10 +117,7 @@ const mutations = {
 	// Add images to the openseadragon Viewer
 	addImages: (state, channels) => {
 
-
 		for (let image in channels){
-
-            console.log(channels[image].url)
 
             // If pulling from secure data scource then need to set the correct
             // params: ajaxWithCredentials, loadTilesWithAjax, ajaxHeaders.
