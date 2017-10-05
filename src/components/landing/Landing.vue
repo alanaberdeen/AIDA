@@ -42,10 +42,10 @@
             </v-flex>
         </v-layout>
 
-        <v-layout row>
-            <v-flex xs12>
-                <v-card id='info-card'>
-                    <div id='info'>
+        <v-layout row align-center justify-center>
+            <v-flex xs12 lg8 >
+                <v-card class='info-card'>
+                    <div class='info-content'>
                         <h4>
                             The Basic Idea
                         </h4>
@@ -71,7 +71,11 @@
                             programatically via a <router-link to='/docs/api'>
                             documented API. </router-link>
                         </p>
+                    </div>
+                </v-card>
 
+                <v-card class='info-card'>
+                    <div class='info-content'>
                         <h4>
                             How has it been implemented?
                         </h4>
@@ -89,6 +93,42 @@
                             to a database via a web API. Login enables specific
                             configuration of the tool for different trials
                             and tasks.
+                        </p>
+                    </div>
+                </v-card>
+
+                <v-card class='info-card'>
+                    <div class='info-content'>
+                        <h4>
+                            What's planned?
+                        </h4>
+
+                        <p>
+                            The software is published as Open Source under the permissive <a href='https://github.com/alanaberdeen/AIDA/blob/master/LICENSE'> MIT license </a> and can be
+                            modified by anyone.
+                            The <router-link to='/docs/api'> API </router-link>
+                            will also be public.
+
+                            The next stage of development will be to integrate
+                            intelligent tools that leverage the power of machine
+                            learning techniques. We hope to enhance the ability
+                            of the user to quickly and accuratley mark up images
+                            with using predicitive technqiues.
+                        </p>
+                    </div>
+                </v-card>
+
+                <v-card class='info-card'>
+                    <div class='info-content'>
+                        <h4>
+                            About
+                        </h4>
+
+                        <p>
+                            This is a project of Jens Rittscher, Nasullah Khalid
+                            Alham and Alan Aberdeen at the University of Oxford,
+                            specifically the <a href='http://www.ludwig.ox.ac.uk/jens-rittscher-group-page'> Quantitative Biological
+                            Imaging Group </a>. The project was funded by...
                         </p>
                     </div>
                 </v-card>
@@ -142,11 +182,18 @@
     padding: 5px 10px;
 }
 
-#info-card {
+.info-card {
     color: #757575;
+    margin-bottom: 20px;
 }
 
-#info {
+.info-content {
     padding: 7px;
 }
+
+h4 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
 </style>
