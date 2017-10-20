@@ -233,7 +233,9 @@ export default {
         // Select the group and provide housekeeping/emit events.
         const toolUp = (event) => {
 
-            if (selectedGroup) { selectedGroup.bounds.selected = true; }
+            if (selectedGroup) {
+                selectedGroup.bounds.selected = true;
+            }
 
             // Housekeeping
             toolStatus = '';
