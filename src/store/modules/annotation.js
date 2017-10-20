@@ -48,8 +48,8 @@ const actions = {
 		commit('newLayer', payload);
 	},
 
-	activateLayer: ({commit}, payload) => {
-		commit('activateLayer', payload);
+	setActiveLayer: ({commit}, layerID) => {
+		commit('setActiveLayer', layerID);
 	}
 };
 
@@ -82,7 +82,9 @@ const mutations = {
 	// Export a PaperJS JSON string representing current state to the console.
 	// If no payload param then default to exporting the whole PaperJS project.
 	exportLayerJSON: (state, layer) => {
-			console.log(layer.exportJSON())
+		console.log('Layer to be exported: ')
+		console.log(layer.name)
+		console.log(layer.exportJSON())
 	},
 
 	// Prepare the canvas for adding annotations.
@@ -105,9 +107,10 @@ const mutations = {
         Vue.set(state.paperScope.project, 'activeLayer', newLayer);
 	},
 
-	// Select a specified layer
-	activateLayer: (state, id) => {
+	// Set specified layer to be active
+	setActiveLayer: (state, id) => {
 		let layer = state.paperScope.project.layers[id-1];
+		layer.activate()
         Vue.set(state.paperScope.project, 'activeLayer', layer);
 	}
 };

@@ -119,7 +119,7 @@ const actions = {
     // Action dispatches events to set both the active step and the active layer
     // ensuring that they are in sync.
     setActiveStepAndLayer: ({dispatch}, step) => {
-        dispatch('activateLayer', step);
+        dispatch('setActiveLayer', step);
         dispatch('setActiveStep', step);
     },
 

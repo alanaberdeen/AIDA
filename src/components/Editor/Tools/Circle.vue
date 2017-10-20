@@ -72,6 +72,9 @@ export default {
 
         const toolDown = (event) => {
 
+            console.log('The current active layer is: ')
+            console.log(this.paperScope.project.activeLayer.name)
+
             // The distance the mouse has to be dragged before an event is fired
             // is dependent on the default radius which is set by the
             // current zoom level.
