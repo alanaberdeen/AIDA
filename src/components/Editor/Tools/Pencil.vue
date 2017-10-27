@@ -88,6 +88,18 @@ export default {
 
         const toolDrag = (event) => {
         	this.path.add(event.point);
+
+            // If the user if sufficiently clost to the intial point that the
+            // draw area will be closed upon releasing the mouse then indicate
+            // this by drawing the filled colour.
+            let hitResult = this.path.hitTest(event.point, this.hitOptions);
+                if (hitResult && hitResult.segment === this.path.firstSegment){
+                    this.path.closed = true;
+                    this.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0.3})
+                } else {
+                    this.path.closed = false;
+                    this.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0})
+                }
         };
 
         const toolUp = (event) => {
@@ -97,7 +109,7 @@ export default {
             let hitResult = this.path.hitTest(event.point, this.hitOptions);
             if (hitResult && hitResult.segment === this.path.firstSegment){
                 this.path.closed = true;
-                this.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0.4})
+                this.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0.5})
             };
 
             // Deselect path.
@@ -116,7 +128,8 @@ export default {
         this.toolPencil.onMouseDown = toolDown;
         this.toolPencil.onMouseDrag = toolDrag;
         this.toolPencil.onMouseUp = toolUp;
-    }
+    },
+
 }
 </script>
 
