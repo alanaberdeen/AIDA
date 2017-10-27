@@ -59,6 +59,12 @@
 
             <v-divider></v-divider>
 
+            <app-delete :active="(this.activeTool === 'delete')"
+                        @click.native="activeTool = 'delete'"
+                        v-if="(this.getConfigStepTools().includes('delete'))"
+                        v-tooltip:right="{ html: this.tools.count.caption }">
+            </app-delete>
+
         </v-list>
 
     </div>
@@ -77,6 +83,7 @@ import toolMove from './Move.vue';
 import toolPan from './Pan.vue';
 import toolNode from './Node.vue';
 import toolCount from './Count.vue';
+import toolDelete from './Delete.vue';
 
 export default {
 
@@ -107,7 +114,8 @@ export default {
         'app-pan': toolPan,
         'app-node': toolNode,
         'app-pencil': toolPencil,
-        'app-count': toolCount
+        'app-count': toolCount,
+        'app-delete': toolDelete
     }
 }
 </script>
