@@ -272,8 +272,10 @@ export default {
         // handlers for keyEvents.
         const toolKeyUp = (event) => {
 
+            console.log(event.key)
+
             // Remove items
-            if (event.key == 'backspace'){
+            if (event.key == 'backspace' || event.key == 'delete'){
                 // Check for current selection
                 if (this.paperScope.project.selectedItems) {
                     // For each item selected remove if item is not a layer
