@@ -19,6 +19,7 @@ import { eventBus } from '../../../main';
 
 import { mapActions } from 'vuex';
 import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     props: ['active'],
@@ -35,13 +36,18 @@ export default {
         ...mapState({
             paperScope: state => state.annotation.paperScope,
             viewportZoom: state => state.image.viewer.viewport.getZoom(true),
-            imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+            imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x,
+            activeStep: state => state.config.activeStep
         })
     },
 
     methods: {
         ...mapActions([
             'prepareCanvas'
+        ]),
+
+        ...mapGetters([
+            'getDefaultColor',
         ]),
 
         initialiseTool() {
@@ -71,9 +77,6 @@ export default {
     created() {
 
         const toolDown = (event) => {
-
-            console.log('The current active layer is: ')
-            console.log(this.paperScope.project.activeLayer.name)
 
             // The distance the mouse has to be dragged before an event is fired
             // is dependent on the default radius which is set by the
@@ -120,9 +123,9 @@ export default {
             // with either the default radius or the new radius as set by the
             // distance between the point of mouseDown and mouseUp.
             let newCircle = new paper.Path.Circle(event.downPoint, this.radius);
-                newCircle.strokeColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 1});
+                newCircle.strokeColor = new paper.Color(this.getDefaultColor().stroke);
                 newCircle.strokeWidth = this.strokeWidth;
-                newCircle.fillColor = new paper.Color({hue: 170, saturation: 0.7, lightness: 0.5, alpha: 0.4});
+                newCircle.fillColor = new paper.Color(this.getDefaultColor().fill);
 
                 // Custom attribute: includes item in counting tools.
                 newCircle.data.countable = true;

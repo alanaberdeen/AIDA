@@ -74,7 +74,7 @@ const mutations = {
 		// The way that PaperJS adds a new layer to the paperScope instance
         // slips by the VueJS Change Detection. This is a known issue when
         // mutating objects/arrays in certain ways. Therefore, must explicitly
-        // Vue tell Vue to set the property and watch for it's changes.
+        // tell Vue to set the property and watch for it's changes.
         // See: https://vuejs.org/v2/guide/reactivity.html
 		Vue.set(state.paperScope.project, 'layers', state.paperScope.project.layers);
 	},

@@ -11,26 +11,41 @@ const state = {
             {   id: 1,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 ROI: false,
+                color: {    stroke: {hue: 170, saturation: 0.7, lightness: 0.5, alpha: 1},
+                            fill: {hue: 170, saturation: 0.7, lightness: 0.5, alpha: 0.4}
+                        },
                 instruction: 'Instructions for Step 1: Use the circle tool to mark the lymphocytes within the region of interest.'
             },
             {   id: 2,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 ROI: false,
+                color: {    stroke: {hue: 350, saturation: 0.7, lightness: 0.5, alpha: 1},
+                            fill: {hue: 350, saturation: 0.7, lightness: 0.5, alpha: 0.4}
+                        },
                 instruction: 'Instructions for Step 2: Use the pencil tool to mark the non-tumour region.'
             },
             {   id: 3,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 ROI: false,
+                color: {    stroke: {hue: 20, saturation: 0.7, lightness: 0.5, alpha: 1},
+                            fill: {hue: 20, saturation: 0.7, lightness: 0.5, alpha: 0.4}
+                        },
                 instruction: 'Instructions for Step 3: Use the pencil tool to mark the central region of the tumour.'
             },
             {   id: 4,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 ROI: false,
+                color: {    stroke: {hue: 200, saturation: 0.7, lightness: 0.5, alpha: 1},
+                            fill: {hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0.4}
+                        },
                 instruction: 'Instructions for Step 4: Use the pencil tool to mark the invasive margin.'
             },
             {   id: 5,
                 tools: ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count'],
                 ROI: false,
+                color: {    stroke: {hue: 240, saturation: 0.7, lightness: 0.5, alpha: 1},
+                            fill: {hue: 240, saturation: 0.7, lightness: 0.5, alpha: 0.4}
+                        },
                 instruction: 'Instructions for Step 5: Use the pencil tool to mark the area around the glands.'
             }
         ],
@@ -85,7 +100,13 @@ const getters = {
 	// Get an array specifiying the tools included in the current step.
 	getConfigStepTools: state => {
 		return state.steps[state.activeStep - 1].tools
-	}
+	},
+
+    // Get an object that specifies the default color for annotatations in this
+    // step.
+    getDefaultColor: state => {
+        return state.steps[state.activeStep - 1].color
+    }
 };
 
 const actions = {
@@ -108,7 +129,16 @@ const actions = {
                 dispatch('addImages', response.data.config.channels, {root: true});
             })
             .catch(function (error) {
+                console.log('Could not read data from external source.')
+                console.log('Returned the following error: ')
                 console.log(error);
+
+                console.log('Using defualt values.')
+
+                // Update the PaperJS project representation
+                dispatch('loadProject', state.annotation, {root: true});
+                // Update the OpenSeaDragon image channels
+                dispatch('addImages', state.channels, {root: true});
         });
     },
 

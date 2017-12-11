@@ -15,6 +15,8 @@ import paper from 'paper';
 
 import { mapActions } from 'vuex';
 import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+
 
 export default {
     props: ['active'],
@@ -41,6 +43,10 @@ export default {
             'prepareCanvas'
         ]),
 
+        ...mapGetters([
+            'getDefaultColor',
+        ]),
+
         initialiseTool() {
 
             // Prepare PaperJS canvas for interaction.
@@ -59,7 +65,7 @@ export default {
 
         newPath() {
             let newPath = new paper.Path();
-            newPath.strokeColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 1});
+            newPath.strokeColor = new paper.Color(this.getDefaultColor().stroke);
             newPath.strokeWidth = this.strokeWidth;
             newPath.selected = true;
 
@@ -89,7 +95,7 @@ export default {
             // If first segment clicked, close path.
             } else if (hitResult && hitResult.segment == this.path.firstSegment){
                 this.path.closed = true;
-                this.path.fillColor = new paper.Color({hue: 20, saturation: 0.7, lightness: 0.5, alpha: 0.4});
+                this.path.fillColor = new paper.Color(this.getDefaultColor().fill);
                 this.path.smooth();
                 this.path.selected = false;
                 this.path.data.active = false;

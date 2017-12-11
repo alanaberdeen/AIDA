@@ -15,6 +15,8 @@ import paper from 'paper';
 
 import { mapActions } from 'vuex';
 import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+
 
 export default {
     props: ['active'],
@@ -37,6 +39,10 @@ export default {
     methods: {
         ...mapActions([
             'prepareCanvas'
+        ]),
+
+        ...mapGetters([
+            'getDefaultColor',
         ]),
 
         initialiseTool() {
@@ -72,8 +78,8 @@ export default {
         const toolUp = (event) => {
 
         	let newRect = new paper.Path.Rectangle(event.downPoint, event.point);
-            newRect.strokeColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 1});
-            newRect.fillColor = new paper.Color({hue: 350, saturation: 0.7, lightness: 0.5, alpha: 0.4});
+            newRect.strokeColor = new paper.Color(this.getDefaultColor().stroke);
+            newRect.fillColor = new paper.Color(this.getDefaultColor().fill);
             newRect.strokeWidth = this.strokeWidth;
         };
 

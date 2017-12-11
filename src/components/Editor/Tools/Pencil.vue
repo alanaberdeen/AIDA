@@ -18,6 +18,8 @@ import paper from 'paper';
 
 import { mapActions } from 'vuex';
 import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
+
 
 export default {
     props: ['active'],
@@ -45,6 +47,10 @@ export default {
             'prepareCanvas'
         ]),
 
+        ...mapGetters([
+            'getDefaultColor',
+        ]),
+
         initialiseTool() {
 
             // Prepare PaperJS canvas for interaction.
@@ -67,7 +73,7 @@ export default {
 
         newPath() {
             let newPath = new paper.Path();
-            newPath.strokeColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 1});
+            newPath.strokeColor = new paper.Color(this.getDefaultColor().stroke);
             newPath.strokeWidth = this.strokeWidth;
             newPath.selected = true;
 
@@ -95,7 +101,7 @@ export default {
             let hitResult = this.path.hitTest(event.point, this.hitOptions);
                 if (hitResult && hitResult.segment === this.path.firstSegment){
                     this.path.closed = true;
-                    this.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0.3})
+                    this.path.fillColor = new paper.Color(this.getDefaultColor().fill)
                 } else {
                     this.path.closed = false;
                     this.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0})
@@ -109,7 +115,7 @@ export default {
             let hitResult = this.path.hitTest(event.point, this.hitOptions);
             if (hitResult && hitResult.segment === this.path.firstSegment){
                 this.path.closed = true;
-                this.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0.5})
+                this.path.fillColor = new paper.Color(this.getDefaultColor().fill)
             };
 
             // Deselect path.
