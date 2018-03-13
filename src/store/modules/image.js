@@ -2,6 +2,7 @@
 // The image viewer is controled via the OpenSeadragon js lib.
 import openseadragon from 'openseadragon';
 import paper from 'paper';
+import { Dropbox } from 'dropbox';
 
 const state = {
 	viewer: null
@@ -88,7 +89,7 @@ const mutations = {
             // UNSATISFACTORY: unable to dispatch an action to commit a mutation
             // as is the patern of Vuex because already in a mutation callback.
             // But as the PaperScope annotation and OpenSeaDragon viewer
-            // instances are seperated into modules can't currently  see another
+            // instances are seperated into modules can't currently see another
             // option.
             paperScope.view.viewSize = new paper.Size(canvasWidth, canvasHeight);
 
@@ -96,6 +97,9 @@ const mutations = {
             let viewportZoom = state.viewer.viewport.getZoom(true);
             let image1 = state.viewer.world.getItemAt(0);
             paperScope.view.zoom = image1.viewportToImageZoom(viewportZoom);
+
+            // Log zoom level for testing
+            console.log('Zoom Level is: ' + paperScope.view.zoom)
 
             // Ensure the same center point
             let center = image1.viewportToImageCoordinates(state.viewer.viewport.getCenter(true));
@@ -116,6 +120,18 @@ const mutations = {
 
 	// Add images to the openseadragon Viewer
 	addImages: (state, channels) => {
+
+        // Testing out the Dropbox API
+        const dbx = new Dropbox({accessToken: 'xlqjSKteomMAAAAAAAEUginZtBdltTnoyDVkMf0mEApiCNnd_NLIDcHX9F4AMrm-'});
+
+        // Test activation
+        dbx.filesListFolder({path: ''})
+            .then(function(response) {
+                console.log(response.entries);
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
 
 		for (let image in channels){
 

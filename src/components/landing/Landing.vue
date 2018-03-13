@@ -12,7 +12,7 @@
                     </v-flex>
 
                     <v-flex xs8 sm4 md3 lg2 text-xs-center id='button-container'>
-                        <v-btn dark primary block to='/editor/example'>
+                        <v-btn dark primary block to='/example'>
                             <v-icon>web</v-icon>
                             <span class='button-text'>
                                 Example
@@ -125,10 +125,13 @@
                         </h4>
 
                         <p>
-                            This is a project of Jens Rittscher, Nasullah Khalid
-                            Alham and Alan Aberdeen at the University of Oxford,
-                            specifically the <a href='http://www.ludwig.ox.ac.uk/jens-rittscher-group-page'> Quantitative Biological
-                            Imaging Group </a>. The project was funded by...
+                            This is a project of Alan Aberdeen, Jens Rittscher,
+                            and Nasullah Khalid at the University of Oxford,
+                            specifically the
+                            <a href='http://www.ludwig.ox.ac.uk/jens-rittscher-group-page'>
+                            Quantitative Biological Imaging Group
+                        </a>.
+
                         </p>
                     </div>
                 </v-card>

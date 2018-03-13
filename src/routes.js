@@ -11,9 +11,8 @@ import TestDocs from './components/docs/pages/Test.vue';
 
 
 export const routes = [
-    { path: '/home', component: Landing},
-    { path: '', component: Editor },
-    { path: '/editor/example', component: Editor},
+    { path: '', component: Landing },
+    { path: '/example', component: Editor},
     { path: '/docs', component: Docs, children: [
         { path: '', component: TestDocs },
         { path: 'editor', component: EditorDocs },
