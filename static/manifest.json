@@ -1,0 +1,6 @@
+{
+  "name": "aida2",
+  "short_name": "aida2",
+  "start_url": "/index.html",
+  "display": "standalone",
+}

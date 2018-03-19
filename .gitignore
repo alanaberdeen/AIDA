@@ -1,8 +1,13 @@
 .DS_Store
 node_modules/
-dist/
+/dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-static/dzi_images/
 
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
