@@ -1,16 +1,13 @@
 <template lang="html">
-    <div class='pointers-please studioPanel elevation-2'>
+  <div class="pointers-please studioPanel elevation-2">
 
-        <app-layers>
-        </app-layers>
+    <app-layers/>
 
-        <app-channels>
-        </app-channels>
-       
-        <app-properties>
-        </app-properties>
+    <app-channels/>
 
-    </div>
+    <app-properties/>
+
+  </div>
 
 </template>
 
@@ -21,19 +18,17 @@ import channels from './Channels.vue'
 import properties from './Properties.vue'
 
 export default {
-    components: {
-        'app-layers': layers,
-        'app-channels': channels,
-        'app-properties': properties
-    }
+  components: {
+    'app-layers': layers,
+    'app-channels': channels,
+    'app-properties': properties
+  }
 }
 </script>
-
-<style lang="css" scoped>
+<style lang='css' scoped>
 
 .studioPanel{
-    height: calc(100vh - 48px);
-    background: #EEEEEE;
+  height: calc(100vh - 48px);
+  background: #EEEEEE;
 }
-
 </style>

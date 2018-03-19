@@ -1,40 +1,61 @@
-/*jshint esversion: 6 */
-/* eslint-disable no-new */
-
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue';
+import Vue from 'vue'
+import App from './App'
+import router from './router'
+import store from './store'
 
-// Routing
-import VueRouter from 'vue-router';
-import { routes } from './routes';
-Vue.use(VueRouter);
-const router = new VueRouter({
-    routes,
-    base: '/AIDA/'
-});
+import {
+  Vuetify,
+  VApp,
+  VNavigationDrawer,
+  VFooter,
+  VList,
+  VBtn,
+  VIcon,
+  VGrid,
+  VToolbar,
+  transitions,
+  Vcard,
+  VMenu,
+  VDivider,
+  VStepper,
+  VSlider,
+  VDialog
+} from 'vuetify'
+import '../node_modules/vuetify/src/stylus/app.styl'
+import './css/main.css'
 
-// Vuex central application state store paradigm.
-import { store } from './store/store';
+Vue.use(Vuetify, {
+  components: {
+    VApp,
+    VNavigationDrawer,
+    VFooter,
+    VList,
+    VBtn,
+    VIcon,
+    VGrid,
+    VToolbar,
+    transitions,
+    Vcard,
+    VMenu,
+    VDivider,
+    VStepper,
+    VSlider,
+    VDialog
+  }
+})
 
-// CSS material design framework.
-import Vuetify from 'vuetify';
-Vue.use(Vuetify);
-
-// Application child component
-import App from './App';
-
-// Development settings
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 // Event bus to handle child-child communication
-export const eventBus = new Vue();
+export const eventBus = new Vue()
 
-
+/* eslint-disable no-new */
 new Vue({
   el: '#app',
-  template: '<App/>',
-  store,
   router,
-  components: { App }
-});
+  store,
+  components: { App },
+  template: '<App/>'
+})

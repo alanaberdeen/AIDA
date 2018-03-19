@@ -1,127 +1,131 @@
 <template lang="html">
-    <div>
-        <h6 class='step-id'> Add a new image </h6>
+  <div>
+    <h6 class="step-id">
+      Add a new image
+    </h6>
 
-        <v-text-field
-              label="Name"
-              v-model="imageName"
-              required
-        ></v-text-field>
+    <v-text-field
+      v-model="imageName"
+      label="Name"
+      required
+    />
 
-        <v-text-field
-              label="Tile Source URL"
-              v-model="imagePath"
-              required
-        ></v-text-field>
+    <v-text-field
+      v-model="imagePath"
+      label="Tile Source URL"
+      required
+    />
 
-        <v-btn  outline class="indigo--text add-button"
-                @click.native="addImage()">
-                Add
-        </v-btn>
+    <v-btn
+      outline
+      class="indigo--text add-button"
+      @click.native="addImage()">
+      Add
+    </v-btn>
 
-        <v-alert
-          success
-          :value="successToggle"
-          transition="scale-transition"
-        >
-          Image successfully added.
-        </v-alert>
+    <v-alert
+      :value="successToggle"
+      success
+      transition="scale-transition"
+    >
+      Image successfully added.
+    </v-alert>
 
-        <v-alert
-          error
-          :value="errorToggle"
-          transition="scale-transition"
-        >
-          Error: {{ errorMessage }}
-        </v-alert>
+    <v-alert
+      :value="errorToggle"
+      error
+      transition="scale-transition"
+    >
+      Error: {{ errorMessage }}
+    </v-alert>
 
-    </div>
-
+  </div>
 </template>
 
 <script>
 
 export default {
-    props: ['config', 'osdViewer'],
+  props: {
+    config: {
+      type: Object,
+      default: function () { return {} }
+    },
+    osdViewer: {
+      type: Object,
+      default: function () { return {} }
+    }
+  },
 
-    data() {
-        return {
-            imageName: '',
-            imagePath: '',
-            errorToggle: false,
-            errorMessage: '',
-            successToggle: false
-        }
+  data () {
+    return {
+      imageName: '',
+      imagePath: '',
+      errorToggle: false,
+      errorMessage: '',
+      successToggle: false
+    }
+  },
+
+  methods: {
+
+    addImage () {
+      this.osdViewer.addTiledImage({
+        tileSource: this.imagePath,
+        x: 0,
+        y: 0,
+        opacity: 0.5,
+        success: this.success,
+        error: this.error
+      })
     },
 
-    methods: {
+    // On failure to add image, render error message
+    error (event) {
+      let vm = this
 
-        addImage() {
-            this.osdViewer.addTiledImage({
-                tileSource: this.imagePath,
-                x: 0,
-                y: 0,
-                opacity: 0.5,
-                success: this.success,
-                error: this.error
-            });
+      console.log(event.message)
+      this.errorMessage = event.message
 
+      // Display success message for two seconds
+      this.errorToggle = true
+      setTimeout(function () {
+        vm.errorToggle = false
+      }, 3000)
+    },
 
+    // On successfully adding image
+    success () {
+      let vm = this
 
-        },
+      // Add new image details to config object.
+      let newid = this.config.images.length + 1
+      this.config.images.push({
+        id: newid,
+        name: this.imageName,
+        url: this.imagePath
+      })
 
-        // On failure to add image, render error message
-        error(event){
-            var vm = this;
+      // Display success message for two seconds
+      this.successToggle = true
+      setTimeout(function () {
+        vm.successToggle = false
+      }, 3000)
 
-            console.log(event.message);
-            this.errorMessage = event.message;
-
-            // Display success message for two seconds
-            this.errorToggle = true;
-            setTimeout(function(){
-                vm.errorToggle = false
-            }, 3000)
-
-        },
-
-        // On successfully adding image
-        success() {
-            var vm = this;
-
-            // Add new image details to config object.
-            var newid = this.config.images.length + 1;
-            this.config.images.push({
-                id: newid,
-                name: this.imageName,
-                url: this.imagePath
-            })
-
-            // Display success message for two seconds
-            this.successToggle = true;
-            setTimeout(function(){
-                vm.successToggle = false
-            }, 3000)
-
-            // Reset input variables
-            this.imageName = '';
-            this.imagePath = '';
-        }
+      // Reset input variables
+      this.imageName = ''
+      this.imagePath = ''
     }
-
+  }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang='css' scoped>
 
 .add-button{
-    margin-left: 0px;
+  margin-left: 0px;
 }
 
 .alert {
-    height: 35px;
+  height: 35px;
 }
-
-
-
 </style>
