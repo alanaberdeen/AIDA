@@ -12,7 +12,6 @@ const state = {
 }
 
 const getters = {
-
   // Get a JSON object describing the current state of the PaperJS project.
   // Using a hack to get past the fact it might not initially be defined with
   // the if check for paperscope version.
@@ -24,37 +23,36 @@ const getters = {
 }
 
 const actions = {
-  initialiseAnnotation: ({commit}, payload) => {
+  initialiseAnnotation: ({ commit }, payload) => {
     commit('initialiseAnnotation', payload)
   },
 
-  loadAnnotation: ({commit}, payload) => {
+  loadAnnotation: ({ commit }, payload) => {
     commit('loadAnnotation', payload)
   },
 
-  loadProject: ({commit}, payload) => {
+  loadProject: ({ commit }, payload) => {
     commit('loadProject', payload)
   },
 
-  exportLayerJSON: ({commit}, layer) => {
+  exportLayerJSON: ({ commit }, layer) => {
     commit('exportLayerJSON', layer)
   },
 
-  prepareCanvas: ({commit}, payload) => {
+  prepareCanvas: ({ commit }, payload) => {
     commit('prepareCanvas', payload)
   },
 
-  newLayer: ({commit}, payload) => {
+  newLayer: ({ commit }, payload) => {
     commit('newLayer', payload)
   },
 
-  setActiveLayer: ({commit}, layerID) => {
+  setActiveLayer: ({ commit }, layerID) => {
     commit('setActiveLayer', layerID)
   }
 }
 
 const mutations = {
-
   // Setup the PaperJs instance on the canvas DOM element.
   initialiseAnnotation: (state, payload) => {
     state.paperScope = paper.setup(document.getElementById('paper-canvas'))

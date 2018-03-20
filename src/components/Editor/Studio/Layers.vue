@@ -123,15 +123,15 @@ export default {
         return
       }
 
-      // Reset currently editing data
-      this.editingLayer = null
-
       // If no layer name then set to untitled else trim
       if (layer.name === undefined) {
         layer.name = 'Untitled'
       } else {
         layer.name = layer.name.trim()
       }
+
+      // Reset currently editing data
+      this.editingLayer = null
     },
 
     // Housekeeping on canceling edit
@@ -176,7 +176,8 @@ export default {
 }
 
 #action {
-  margin-right: 8px;
+  color: #616161;
+  margin-right: 2px;
   height: 30px;
   margin-bottom: 0px;
 }
