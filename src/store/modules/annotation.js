@@ -42,8 +42,8 @@ const actions = {
     commit('prepareCanvas', payload)
   },
 
-  newLayer: ({ commit }, payload) => {
-    commit('newLayer', payload)
+  newLayer: ({ commit, dispatch }, payload) => {
+    commit('newLayer')
   },
 
   setActiveLayer: ({ commit }, layerID) => {
@@ -86,7 +86,7 @@ const mutations = {
   },
 
   // Add a new layer to the annotation project.
-  newLayer: (state, payload) => {
+  newLayer: state => {
     let newLayerIndex = state.paperScope.project.layers.length + 1
     let newLayer = new paper.Layer({
       name: 'Layer ' + newLayerIndex,
@@ -95,8 +95,10 @@ const mutations = {
 
     // Error check in the console to make sure that the new layer was created
     // and then activated properly.
-    console.assert(paper.project.activeLayer === newLayer,
-      'New Layer was not created/activated correctly')
+    console.assert(
+      paper.project.activeLayer === newLayer,
+      'New Layer was not created/activated correctly'
+    )
   },
 
   // Set specified layer to be active

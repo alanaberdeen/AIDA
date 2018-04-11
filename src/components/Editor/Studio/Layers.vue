@@ -106,7 +106,6 @@ export default {
   methods: {
     ...mapActions([
       'newLayer',
-      'activateLayer',
       'exportLayerJSON',
       'setActiveStepAndLayer'
     ]),
