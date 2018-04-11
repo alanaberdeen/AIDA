@@ -145,6 +145,7 @@ const mutations = {
   // TODO: build in some kind of cache of opacity so that when it is toggled
   // from not-visible to visible it can easily return to the state it was.
   toggleChannelVisibility: (state, payload) => {
+    console.log('HARRO')
     // Payload should be a Channel object as defined by getChannels().
     if (payload.opacity > 0) {
       payload.channel.setOpacity(0)

@@ -12,62 +12,36 @@
         <v-spacer/>
       </v-toolbar>
 
-      <v-list
-        id="list"
-        dense
-      >
+      <v-list id="list">
         <v-list-group
           v-for="(channel, channelIndex) in getChannels"
+          id="group"
           :key="channelIndex"
+          :append-icon="channel.visible ? 'visibility' : 'visibility_off'"
           no-action
         >
-
           <v-list-tile
-            id="tile"
-            slot="item"
+            slot="activator"
+            no-action
           >
             <v-list-tile-content id="content">
-
               <v-list-tile-title id="name">
                 {{ channel.name }}
               </v-list-tile-title>
-
             </v-list-tile-content>
 
-            <v-list-tile-action>
-              <v-btn
-                id="action"
-                icon
-                @click.native="toggleChannelVisibility(channel)"
-              >
-
-                <v-icon
-                  v-if="channel.visible"
-                  id="iconButton">
-                  visibility
-                </v-icon>
-
-                <v-icon
-                  v-else
-                  id="iconButton">
-                  visibility_off
-                </v-icon>
-
-              </v-btn>
-            </v-list-tile-action>
           </v-list-tile>
 
-          <v-list-tile class="slider-tile">
-            <v-list-tile-content id="slider-content">
-              <v-slider
-                v-model="channel.opacity"
-                @input="setChannelVisibility(channel)"/>
-            </v-list-tile-content>
-          </v-list-tile>
+          <div>
+            <v-slider
+              id="slider"
+              v-model="channel.opacity"
+              @input="setChannelVisibility(channel)"/>
+          </div>
 
         </v-list-group>
-
       </v-list>
+
     </v-card>
   </div>
 </template>
@@ -83,7 +57,15 @@ export default {
 
     ...mapGetters([
       'getChannels'
-    ])
+    ]),
+
+    channelIcon: function (channel) {
+      if (channel.visibility) {
+        return 'visibility'
+      } else {
+        return 'visibility-off'
+      }
+    }
   },
 
   methods: {
@@ -120,25 +102,7 @@ export default {
   margin-left: 16px;
 }
 
-#action {
-  margin-right: 8px;
-  height: 30px;
-  margin-bottom: 0px;
-}
-
-.input-group {
-  padding: 7px 20px 7px 10px;
-}
-
 #list {
-  background-color: #EEEEEE;
-}
-
-.slider-tile {
-  background-color: #EEEEEE;
-}
-
-#slider-content {
   background-color: #EEEEEE;
 }
 
@@ -146,7 +110,15 @@ export default {
   height: 30px;
 }
 
-#iconButton {
-  font-size: 18px;
+#group{
+  padding-right: 10px;
+}
+
+#slider{
+  padding-left: 20px;
+}
+
+#slider:focus{
+  outline: none;
 }
 </style>
