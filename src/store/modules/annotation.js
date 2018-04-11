@@ -1,7 +1,6 @@
 // This file handles the management of the state for the annotations.
 // The annotation layers are controled via the PaperJS lib.
 import paper from 'paper'
-import Vue from 'vue'
 
 const state = {
   paperScope: {
@@ -68,16 +67,6 @@ const mutations = {
   loadProject: (state, payload) => {
     state.paperScope.project.clear()
     state.paperScope.project.importJSON(payload)
-
-    // The way that PaperJS adds a new layer to the paperScope instance
-    // slips by the VueJS Change Detection. This is a known issue when
-    // mutating objects/arrays in certain ways. Therefore, must explicitly
-    // tell Vue to set the property and watch for it's changes.
-    // See: https://vuejs.org/v2/guide/reactivity.html
-
-    // console.log('The state.paperScope.project is: ')
-    // console.log(state.paperScope.project)
-    // Vue.set(state.paperScope.project, 'layers', state.paperScope.project.layers)
   },
 
   // Export a PaperJS JSON string representing current state to the console.
@@ -104,8 +93,10 @@ const mutations = {
       position: state.paperScope.view.center
     })
 
-    Vue.set(state.paperScope.project, 'layers', state.paperScope.project.layers)
-    Vue.set(state.paperScope.project, 'activeLayer', newLayer)
+    // Error check in the console to make sure that the new layer was created
+    // and then activated properly.
+    console.assert(paper.project.activeLayer === newLayer,
+      'New Layer was not created/activated correctly')
   },
 
   // Set specified layer to be active
