@@ -8,7 +8,7 @@
       :value.sync="activeStep"
       non-linear
     >
-      <v-stepper-header>
+      <v-stepper-header id="stepper-header">
         <div
           v-for="step in steps"
           :key="step.id">
@@ -56,6 +56,10 @@ export default {
 <style lang='css' scoped>
 #stepper{
   background-color: #E0E0E0;
+}
+
+#stepper-header{
+  height:100%;
 }
 
 #hint-card {
