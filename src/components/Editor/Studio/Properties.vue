@@ -46,6 +46,7 @@
               class="action pointers-no">
               <colour-picker
                 :color="groupFillColor"
+                :type="'fill'"
                 class="pointers-please"/>
             </v-btn>
           </v-list-tile-action>
@@ -66,6 +67,7 @@
               class="action pointers-no">
               <colour-picker
                 :color="groupStrokeColor"
+                :type="'stroke'"
                 class="pointers-please"/>
             </v-btn>
           </v-list-tile-action>

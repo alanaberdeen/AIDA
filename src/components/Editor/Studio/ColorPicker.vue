@@ -46,6 +46,12 @@ export default {
           }
         }
       }
+    },
+    type: {
+      type: String,
+      default: function () {
+        return 'fill'
+      }
     }
   },
 
@@ -64,26 +70,32 @@ export default {
 
   watch: {
     // Whenever dialog toggled, change the colour of the selected items
-    dialog (newValue) {
-      if (newValue === true) {
+    dialog (pickerToggle) {
+      if (pickerToggle === true) {
         this.colorPick = this.color.obj
-      } else if (newValue === false) {
+      } else if (pickerToggle === false) {
         if (this.paperScope.project.selectedItems.length > 1) {
           let group = this.paperScope.project.getItem({
             selected: true,
             className: 'Group'
           })
 
-          if (this.type === 'fill') {
-            group.fillColor = new paper.Color({ hue: this.colorPick.hsl.h,
-              saturation: this.colorPick.hsl.s,
-              lightness: this.colorPick.hsl.l,
-              alpha: this.colorPick.hsl.a})
-          } else if (this.type === 'stroke') {
-            group.strokeColor = new paper.Color({ hue: this.colorPick.hsl.h,
-              saturation: this.colorPick.hsl.s,
-              lightness: this.colorPick.hsl.l,
-              alpha: this.colorPick.hsl.a})
+          if (this.type === 'fill' && this.colorPick.hsl) {
+            group.fillColor = new paper.Color(
+              {
+                hue: this.colorPick.hsl.h,
+                saturation: this.colorPick.hsl.s,
+                lightness: this.colorPick.hsl.l,
+                alpha: this.colorPick.hsl.a
+              })
+          } else if (this.type === 'stroke' && this.colorPick.hsl) {
+            group.strokeColor = new paper.Color(
+              {
+                hue: this.colorPick.hsl.h,
+                saturation: this.colorPick.hsl.s,
+                lightness: this.colorPick.hsl.l,
+                alpha: this.colorPick.hsl.a
+              })
           }
 
           // Emit selection event to the eventBus so that the properties
