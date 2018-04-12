@@ -9,7 +9,7 @@
       <i
         :class="{
           'fa': true,
-          'fa-pencil': true,
+          'fa-pencil-alt': true,
           'faIcons': !active,
           'faIconsActive': active
       }"/>
