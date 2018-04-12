@@ -30,7 +30,7 @@
     <!-- Docs -->
     <router-link to="/docs">
       <v-btn icon >
-        <v-icon> fa-book </v-icon>
+        <v-icon small> fa-book </v-icon>
       </v-btn>
     </router-link>
 
