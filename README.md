@@ -29,7 +29,7 @@ to a database via a web API. Login enables specific
 configuration of the tool for different trials
 and tasks.
 
-### What's planned?
+## What's planned?
 
 The software is published as Open Source under the permissive [MIT license](https://github.com/alanaberdeen/AIDA/blob/master/LICENSE) and can be modified by anyone.
 The [API](https://alanaberdeen.github.io/AIDA/#/docs/api) will also be public.
@@ -39,6 +39,13 @@ intelligent tools that leverage the power of machine
 learning techniques. We hope to enhance the ability
 of the user to quickly and accuratley mark up images
 with using predicitive technqiues.
+
+
+## Get going 
+1. Clone the repo
+2. Install dependencies via npm install
+3. For development: start a hot-reloading dev server with npm run dev
+4. For deployment: bundle together with npm run build
 
 ## About
 
