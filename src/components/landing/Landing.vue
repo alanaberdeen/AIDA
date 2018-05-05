@@ -77,7 +77,7 @@
             <v-btn
               light
               block
-              to="/docs">
+              href="https://aida.gitbook.io/docs/">
               <v-icon>fa-book</v-icon>
               <span class="button-text">
                 Docs
