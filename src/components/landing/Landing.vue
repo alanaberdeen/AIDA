@@ -120,8 +120,8 @@
             </p>
             <p>
               The trial and annotation data can be accessed
-              programatically via a <router-link to="/docs/api">
-                documented API. </router-link>
+              programatically via a <a href="https://aida.gitbook.io/docs/api-reference">
+                documented API. </a>
             </p>
           </div>
         </v-card>
@@ -159,7 +159,7 @@
             <p>
               The software is published as Open Source under the permissive <a href="https://github.com/alanaberdeen/AIDA/blob/master/LICENSE"> MIT license </a> and can be
               modified by anyone.
-              The <router-link to="/docs/api"> API </router-link>
+              The <a href="https://aida.gitbook.io/docs/api-reference"> API </a>
               will also be public.
 
               The next stage of development will be to integrate
