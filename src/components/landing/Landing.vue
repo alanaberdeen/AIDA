@@ -57,7 +57,9 @@
               light
               block
               href="https://github.com/alanaberdeen/AIDA">
-              <v-icon>fa-github</v-icon>
+              <i
+                aria-hidden="true"
+                class="icon text--darken-1 fab fa-github"/>
               <span class="button-text">
                 Github
               </span>
