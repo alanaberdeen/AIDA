@@ -7,12 +7,13 @@
       @click.native="initialiseTool"
     >
 
-      <v-icon
-        :color="color"
-        small
-      >
-        fa-mouse-pointer
-      </v-icon>
+      <i
+        :class="{
+          'fa': true,
+          'fa-mouse-pointer': true,
+          'faIcons': !active,
+          'faIconsActive': active
+      }"/>
 
     </v-btn>
   </v-list-tile>
@@ -45,14 +46,7 @@ export default {
       paperScope: state => state.annotation.paperScope,
       viewportZoom: state => state.image.viewer.viewport.getZoom(true),
       imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
-    }),
-    color: function () {
-      if (this.active) {
-        return 'blue darken-2'
-      } else {
-        return 'grey darken-1'
-      }
-    }
+    })
   },
 
   created () {

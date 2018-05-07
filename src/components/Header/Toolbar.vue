@@ -24,15 +24,15 @@
     <v-btn
       icon
       href="https://imageannotation.nds.ox.ac.uk:8443/AIDA/">
-      <v-icon> apps</v-icon>
+      <v-icon> apps </v-icon>
     </v-btn>
 
     <!-- Docs -->
-    <router-link to="/docs">
-      <v-btn icon >
-        <v-icon small> fa-book </v-icon>
-      </v-btn>
-    </router-link>
+    <v-btn
+      icon
+      href="https://aida.gitbook.io/docs/" >
+      <v-icon small> fa-book </v-icon>
+    </v-btn>
 
     <!-- <v-btn icon class='pointers-no'>
             <app-settings   :config='config'
