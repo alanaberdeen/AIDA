@@ -43,7 +43,6 @@ export default {
 
   computed: {
     ...mapState({
-      paperScope: state => state.annotation.paperScope,
       viewportZoom: state => state.image.viewer.viewport.getZoom(true),
       imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
     })
@@ -62,7 +61,7 @@ export default {
 
     const toolDown = (event) => {
       // Get details of the element the user has clicked on.
-      hitResult = this.paperScope.project.hitTest(event.point, this.selectOptions)
+      hitResult = paper.project.hitTest(event.point, this.selectOptions)
 
       // If no modiefiers and item has been selected then create the
       // selection group (of one element) to be selected.
@@ -86,7 +85,7 @@ export default {
       }
 
       // Clean current selection
-      this.paperScope.project.deselectAll()
+      paper.project.deselectAll()
       if (selectedGroup) {
         selectedGroup.selected = false
         selectedGroup.bounds.selected = false
@@ -132,13 +131,13 @@ export default {
         })
 
         // Get items inside the selection rectangle.
-        toBeSelected = this.paperScope.project.getItems({
+        toBeSelected = paper.project.getItems({
           class: 'Path',
           inside: selectionRect.bounds
         })
 
         // Clean current selection
-        this.paperScope.project.deselectAll()
+        paper.project.deselectAll()
         if (selectedGroup) {
           selectedGroup.selected = false
           selectedGroup.bounds.selected = false
@@ -207,7 +206,7 @@ export default {
 
       // Emit selection event to the eventBus so that the properties
       // panel can be updated.
-      eventBus.$emit('selectionChanged', this.paperScope.project.selectedItems)
+      eventBus.$emit('selectionChanged', paper.project.selectedItems)
 
       // As the number of circle markers in the project may have
       // changed, emit an event that will check to see if we are
@@ -222,14 +221,15 @@ export default {
       if (selectedGroup && selectedGroup.hitTest(event.point, this.selectOptions)) {
         let hit = selectedGroup.hitTest(event.point, this.selectOptions)
         if (hit.name === 'bottom-right' || hit.name === 'top-left') {
-          this.paperScope.view.element.style.cursor = 'nwse-resize'
+          paper.view.element.style.cursor = 'nwse-resize'
         } else if (hit.name === 'bottom-left' || hit.name === 'top-right') {
-          this.paperScope.view.element.style.cursor = 'nesw-resize'
+          paper.view.element.style.cursor = 'nesw-resize'
         } else if (hit.type === 'fill') {
-          this.paperScope.view.element.style.cursor = 'move'
+          paper.view.element.style.cursor = 'move'
         }
       } else {
-        this.paperScope.view.element.style.cursor = 'auto'
+        let canvas = document.getElementById('paper-canvas')
+        canvas.style.cursor = 'auto'
       }
     }
 
@@ -238,9 +238,9 @@ export default {
       // Remove items
       if (event.key === 'backspace' || event.key === 'delete') {
         // Check for current selection
-        if (this.paperScope.project.selectedItems) {
+        if (paper.project.selectedItems) {
           // For each item selected remove if item is not a layer
-          this.paperScope.project.selectedItems.forEach((item) => {
+          paper.project.selectedItems.forEach((item) => {
             if (item.className !== 'Layer') {
               item.remove()
             }
@@ -249,7 +249,7 @@ export default {
 
         // Emit selection event to the eventBus so that the properties
         // panel can be updated.
-        eventBus.$emit('selectionChanged', this.paperScope.project.selectedItems)
+        eventBus.$emit('selectionChanged', paper.project.selectedItems)
 
         // As the number of circle markers in the project may have
         // changed, emit an event that will check to see if we are

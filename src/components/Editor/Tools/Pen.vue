@@ -39,7 +39,6 @@ export default {
 
   computed: {
     ...mapState({
-      paperScope: state => state.annotation.paperScope,
       viewportZoom: state => state.image.viewer.viewport.getZoom(true),
       imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
     })
@@ -84,7 +83,7 @@ export default {
 
     // Feedfoward information on mouseMove
     const toolMove = (event) => {
-      let hitResult = this.paperScope.project.hitTest(event.point, this.hitOptions)
+      let hitResult = paper.project.hitTest(event.point, this.hitOptions)
 
       // If hovering over first/last segment then remove the selected
       // highlighting to indicate path will be finsihed.

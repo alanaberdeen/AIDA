@@ -4,6 +4,7 @@
     class="elevation-1">
     <v-card class="panel">
 
+      <!-- Panel Toolbar, Title and Action button -->
       <v-toolbar
         id="toolbar"
         dense
@@ -21,59 +22,93 @@
         </v-btn>
       </v-toolbar>
 
+      <!-- List with Panel contents -->
       <v-list
         id="list"
         dense
       >
-        <v-list-tile
+        <v-list-group
           v-for="(layer, id) in layers"
-          id="tile"
           :key="id"
-          @click.native="setActiveStepAndLayer(id + 1)"
-          @dblclick.native="editLayerName(layer)"
+          no-action
         >
+          <v-list-tile
+            slot="activator"
+            no-action
+            @click.native="setActiveStepAndLayer(id + 1)"
+          >
+            <v-list-tile-content id="content" >
 
-          <v-list-tile-content id="content">
+              <!-- Name of List Item -->
+              <v-list-tile-title
+                id="name"
+                :class="[(layer == activeLayer) ? 'faIconsActive' : 'faIcons']"
+              >
+                {{ layer.name }}
+              </v-list-tile-title>
 
-            <v-list-tile-title
-              id="name"
-              :class="[(layer == activeLayer) ? 'faIconsActive' : 'faIcons',
-                       (layer.id == editingLayer) ? 'editing' : 'not-editing']">
-              {{ layer.name }}
-            </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
 
-            <input
-              id="nameEdit"
-              :class="[(layer.id !== editingLayer) ? 'editing' : 'not-editing']"
-              v-model="layer.name"
-              autofocus
-              @blur="finishedEdit(layer)"
-              @keyup.enter="finishedEdit(layer)"
-              @keyup.esc="cancelEdit(layer)"
-            >
+          <!-- Controls for List Item -->
+          <v-tabs
+            v-model="tabs"
+            left
+            color="transparent"
+          >
+            <v-tab>
+              <v-icon> visibility </v-icon>
+            </v-tab>
 
-          </v-list-tile-content>
+            <v-tab>
+              <v-icon> text_format </v-icon>
+            </v-tab>
 
-          <v-list-tile-action>
-            <v-btn
-              id="action"
-              icon
-              @click.native="exportLayerJSON(layer)"
-            >
-              <v-icon id="iconButton">
-                save
-              </v-icon>
-            </v-btn>
-          </v-list-tile-action>
+            <v-tab>
+              <v-icon> delete </v-icon>
+            </v-tab>
 
-        </v-list-tile>
+            <v-tabs-items v-model="tabs">
+
+              <!-- Opacity Slider -->
+              <v-tab-item>
+                <div>
+                  <v-slider
+                    id="slider"
+                    v-model="activeLayer.opacity"
+                    step="0"
+                    min="0"
+                    max="1"
+                    @input="setLayerOpacity(layer)"
+                  />
+                </div>
+                <div>
+                  ActubeLayer Opacity = {{ activeLayer.opacity }}
+                </div>
+              </v-tab-item>
+
+              <!-- Rename List Item -->
+              <v-tab-item>
+                <div>rename</div>
+              </v-tab-item>
+
+              <!-- Delete List item -->
+              <v-tab-item>
+                <div>delete</div>
+              </v-tab-item>
+
+            </v-tabs-items>
+          </v-tabs>
+
+        </v-list-group>
       </v-list>
+
     </v-card>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 // TODO: figure out why the feedfoward highlighting for mouse clicks doesn't
 //      want to work here.
 // TODO: when editing layer name, and textinput is visible match the font-size
@@ -84,7 +119,8 @@ export default {
   data () {
     return {
       editingLayer: null,
-      beforeEditCache: null
+      beforeEditCache: null,
+      tabs: '0'
     }
   },
 
@@ -92,7 +128,11 @@ export default {
     ...mapState({
       activeLayer: state => state.annotation.paperScope.project.activeLayer,
       layers: state => state.annotation.paperScope.project.layers
-    })
+    }),
+
+    ...mapGetters([
+      'getLayers'
+    ])
   },
 
   mounted () {
@@ -107,7 +147,8 @@ export default {
     ...mapActions([
       'newLayer',
       'exportLayerJSON',
-      'setActiveStepAndLayer'
+      'setActiveStepAndLayer',
+      'setLayerOpacity'
     ]),
 
     // Begin editing
@@ -154,6 +195,7 @@ export default {
 #title {
   font-size: 14px;
   font-weight: 400;
+  height: 30px;
 }
 
 .panel {
@@ -196,8 +238,7 @@ export default {
   font-size: 18px;
 }
 
-#tile{
-  height: 30px;
+#sub-menu {
+  padding-left: 20px;
 }
-
 </style>

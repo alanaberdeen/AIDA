@@ -39,7 +39,6 @@ export default {
 
   computed: {
     ...mapState({
-      paperScope: state => state.annotation.paperScope,
       viewportZoom: state => state.image.viewer.viewport.getZoom(true),
       imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
     })
@@ -54,7 +53,7 @@ export default {
 
     const toolDown = (event) => {
       // Get details of the element the user has clicked on.
-      hitResult = this.paperScope.project.hitTest(event.point, this.hitOptions)
+      hitResult = paper.project.hitTest(event.point, this.hitOptions)
 
       // Check if use selected something
       if (hitResult) {
@@ -70,7 +69,7 @@ export default {
         // If user selecteds a segment.
         } else if (hitResult.type === 'segment') {
           // Select only that segment and associate handles.
-          this.paperScope.project.deselectAll()
+          paper.project.deselectAll()
           hitResult.item.selected = true
           hitResult.segment.selected = true
           hitResult.segment.handleIn.selected = true
@@ -85,7 +84,7 @@ export default {
 
       // Otherwise deselect all selections
       } else {
-        this.paperScope.project.deselectAll()
+        paper.project.deselectAll()
       }
     }
 

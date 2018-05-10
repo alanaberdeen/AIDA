@@ -7,6 +7,7 @@ import Vuex from 'vuex'
 import image from './modules/image'
 import annotation from './modules/annotation'
 import config from './modules/config'
+import common from './modules/common'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -17,6 +18,7 @@ export default new Vuex.Store({
   modules: {
     image,
     annotation,
-    config
+    config,
+    common
   }
 })

@@ -2,10 +2,70 @@
 // This specifies the layout of the annotation interface. This may include
 // the required steps and instructions, the tools necessary to complete
 // the annotations or the default image and annotation content.
-import axios from 'axios'
 import Vue from 'vue'
 
-const state = {}
+// Default conifugation.
+const state = {
+  'activeStep': 1,
+  'steps': [{
+    'ROI': false,
+    'color': {
+      'fill': {
+        'alpha': 0.4,
+        'hue': 170,
+        'lightness': 0.5,
+        'saturation': 0.7
+      },
+      'stroke': {
+        'alpha': 1,
+        'hue': 170,
+        'lightness': 0.5,
+        'saturation': 0.7
+      }
+    },
+    'id': 1,
+    'instruction': 'Instructions for Step 1: ',
+    'tools': ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count', 'delete']
+  }, {
+    'ROI': false,
+    'color': {
+      'fill': {
+        'alpha': 0.4,
+        'hue': 350,
+        'lightness': 0.5,
+        'saturation': 0.7
+      },
+      'stroke': {
+        'alpha': 1,
+        'hue': 350,
+        'lightness': 0.5,
+        'saturation': 0.7
+      }
+    },
+    'id': 2,
+    'instruction': 'Instructions for Step 2',
+    'tools': ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count', 'delete']
+  }, {
+    'ROI': false,
+    'color': {
+      'fill': {
+        'alpha': 0.4,
+        'hue': 20,
+        'lightness': 0.5,
+        'saturation': 0.7
+      },
+      'stroke': {
+        'alpha': 1,
+        'hue': 20,
+        'lightness': 0.5,
+        'saturation': 0.7
+      }
+    },
+    'id': 3,
+    'instruction': 'Instructions for Step 3:',
+    'tools': ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count', 'delete']
+  }]
+}
 
 const getters = {
   // Get an array specifiying the tools included in the current step.
@@ -42,85 +102,28 @@ const getters = {
 }
 
 const actions = {
-  // Load a configuration into the tool.
-  // May perform asynchronous tasks here (like pulling from REST API) before
-  // committing the state mutation which must run synchronously.
-  loadConfig: ({ state, rootState, commit, dispatch }, newConfig) => {
-    axios
-      .get('https://aida-testing.firebaseio.com/.json')
-
-      // Update the config.js state
-      .then(function (response) {
-        commit('loadConfig', {
-          rootState: rootState,
-          newConfig: response.data.config
-        })
-
-        // Update the PaperJS project representation
-        dispatch('loadProject', response.data.config.annotation, { root: true })
-
-        // Update the OpenSeaDragon image channels
-        dispatch('addImages', response.data.config.channels, { root: true })
-      })
-      .catch(function (error) {
-        console.log('Could not read data from external source.')
-        console.log('Returned the following error: ')
-        console.log(error)
-      })
-  },
-
-  addImage: ({ commit }, payload) => {
-    commit('addImage', payload)
-  },
-
-  // Action dispatches events to set both the active step and the active layer
-  // ensuring that they are in sync.
-  setActiveStepAndLayer: ({ dispatch }, step) => {
-    dispatch('setActiveLayer', step)
-    dispatch('setActiveStep', step)
-  },
-
   setActiveStep: ({ commit }, step) => {
     commit('setActiveStep', step)
   },
 
-  // Save the current configuration to the server.
-  saveConfig: ({ dispatch, commit, state }) => {
-    // Update the config and then save to RestAPI
-    dispatch('updateConfig', state).then(() => {
-      // Here is where we would push to REST API
-      // ****** Save to API *****
-      axios
-        .put('https://aida-testing.firebaseio.com/.json', {
-          config: state
-        })
-        .then(function (response) {
-          console.log(response)
-        })
+  loadConfig: ({ commit, rootState }, payload) => {
+    commit('loadConfig', {
+      config: payload,
+      rootState: rootState
     })
-  },
-
-  updateConfig: ({ dispatch, commit, rootState, rootGetters }) => {
-    let newAnnotations = rootGetters.getAnnotationProjectJSON
-    commit('updateConfig', newAnnotations)
   }
 }
 
 const mutations = {
-  addImage: (state, payload) => {
-    state.channels.push()
-  },
-
   setActiveStep: (state, step) => {
     state.activeStep = step
   },
 
-  updateConfig: (state, newAnnotations) => {
-    state.annotation = newAnnotations
-  },
-
   loadConfig: (state, payload) => {
-    Vue.set(payload.rootState, 'config', payload.newConfig)
+    // Using Vue.set on the parent (rootState) to ensure that we don't fall into
+    // the trap of Vue reactivity caveats.
+    // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
+    Vue.set(payload.rootState, 'config', payload.config)
   }
 }
 

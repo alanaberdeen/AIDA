@@ -1,7 +1,7 @@
 <template lang="html">
   <v-btn
     icon
-    @click.native="saveConfig()">
+    @click.native="saveProject()">
     <v-icon>
       save
     </v-icon>
@@ -15,7 +15,7 @@ export default {
 
   methods: {
     ...mapActions([
-      'saveConfig'
+      'saveProject'
     ])
   }
 }

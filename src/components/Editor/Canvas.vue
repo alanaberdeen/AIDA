@@ -10,25 +10,18 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
-  computed: {
-    ...mapState({
-      channels: state => state.config.channels,
-      annotation: state => state.config.annotation
-    })
-  },
-
   mounted () {
-    // Create the OpenSeadragon instance viewer.
-    this.initialiseViewer()
+    // Setup the OpenSeadragon instance viewer on the HTML element
+    this.setupViewer('osd-canvas')
 
-    // Create the PaperJS instance targetting the canvas DOM element.
-    this.initialiseAnnotation()
+    // Setup the PaperJS instance targetting the canvas DOM element.
+    this.setupAnnotation('paper-canvas')
 
-    // Load configuration from the API
-    this.loadConfig()
+    // Load project data from the API
+    this.loadProject()
 
     // Ensure the size of the PaperJS annotation view and the OpenSeaDragon
     // viewer are always synchronised.
@@ -37,12 +30,10 @@ export default {
 
   methods: {
     ...mapActions([
-      'initialiseViewer',
-      'initialiseAnnotation',
-      'addImages',
+      'setupViewer',
+      'setupAnnotation',
       'synchroniseAnnotationAndImage',
-      'loadAnnotation',
-      'loadConfig'
+      'loadProject'
     ])
   }
 }

@@ -1,37 +1,29 @@
 // This file handles the management of the state for the annotations.
 // The annotation layers are controled via the PaperJS lib.
 import paper from 'paper'
+import Vue from 'vue'
 
 const state = {
-  paperScope: {
-    project: {
-      layers: []
-    }
-  }
+  project: [
+    [
+      'Layer',
+      {
+        'name': 'Layer 1',
+        'applyMatrix': true
+      }
+    ]
+  ]
 }
 
-const getters = {
-  // Get a JSON object describing the current state of the PaperJS project.
-  // Using a hack to get past the fact it might not initially be defined with
-  // the if check for paperscope version.
-  getAnnotationProjectJSON: state => {
-    if (state.paperScope.version) {
-      return state.paperScope.project.exportJSON()
-    }
-  }
-}
+const getters = {}
 
 const actions = {
-  initialiseAnnotation: ({ commit }, payload) => {
-    commit('initialiseAnnotation', payload)
+  setupAnnotation: ({ commit }, payload) => {
+    commit('setupAnnotation', payload)
   },
 
   loadAnnotation: ({ commit }, payload) => {
     commit('loadAnnotation', payload)
-  },
-
-  loadProject: ({ commit }, payload) => {
-    commit('loadProject', payload)
   },
 
   exportLayerJSON: ({ commit }, layer) => {
@@ -42,31 +34,30 @@ const actions = {
     commit('prepareCanvas', payload)
   },
 
-  newLayer: ({ commit, dispatch }, payload) => {
+  newLayer: ({ commit }, payload) => {
     commit('newLayer')
   },
 
   setActiveLayer: ({ commit }, layerID) => {
     commit('setActiveLayer', layerID)
+  },
+
+  setLayerOpacity: ({ commit }, payload) => {
+    commit('setLayerOpacity', payload)
   }
 }
 
 const mutations = {
   // Setup the PaperJs instance on the canvas DOM element.
-  initialiseAnnotation: (state, payload) => {
-    state.paperScope = paper.setup(document.getElementById('paper-canvas'))
-  },
-
-  // Loads a PaperJS project JSON string into the current PaperScope
-  loadAnnotation: (state, payload) => {
-    state.paperScope.project.importJSON(payload)
+  setupAnnotation: (state, canvas) => {
+    paper.setup(canvas)
   },
 
   // Load a new PaperJS JSON string representing new project data into the
   // paperJS instance
-  loadProject: (state, payload) => {
-    state.paperScope.project.clear()
-    state.paperScope.project.importJSON(payload)
+  loadAnnotation: (state, payload) => {
+    paper.project.importJSON(payload)
+    state.project = paper.project.exportJSON({asString: false, precision: 5})
   },
 
   // Export a PaperJS JSON string representing current state to the console.
@@ -80,31 +71,37 @@ const mutations = {
   // Prepare the canvas for adding annotations.
   prepareCanvas: (state, payload) => {
     // Remove the class that interupts the pointer interaction.
-    if (state.paperScope.view.element.classList.contains('pointers-no')) {
-      state.paperScope.view.element.classList.remove('pointers-no')
+    if (paper.view.element.classList.contains('pointers-no')) {
+      paper.view.element.classList.remove('pointers-no')
     }
   },
 
   // Add a new layer to the annotation project.
   newLayer: state => {
-    let newLayerIndex = state.paperScope.project.layers.length + 1
     let newLayer = new paper.Layer({
-      name: 'Layer ' + newLayerIndex,
-      position: state.paperScope.view.center
+      name: 'Layer ' + (paper.project.layers.length + 1),
+      position: paper.view.center
     })
+    console.log(newLayer)
 
-    // Error check in the console to make sure that the new layer was created
-    // and then activated properly.
-    console.assert(
-      paper.project.activeLayer === newLayer,
-      'New Layer was not created/activated correctly'
-    )
+    // Update the store with the new project representation
+    state.project = paper.project.exportJSON({ asString: false, precision: 5 })
   },
 
   // Set specified layer to be active
   setActiveLayer: (state, id) => {
-    let layer = state.paperScope.project.layers[id - 1]
-    layer.activate()
+    paper.project.layers[id - 1].activate()
+  },
+
+  // Set the opactiy of a specific layer
+  setLayerOpacity: (state, payload) => {
+    // Change opacity
+    paper.project.activeLayer.opacity = payload
+
+    // Save changed opacity to the Vuex state.
+    // Watch out for Vue Change Detection Caveats: isn't reactive to new
+    // attributes being added to an object. Use Vue.set to get around this.
+    Vue.set(state.project[paper.project.activeLayer.index][1], 'opacity', payload)
   }
 }
 

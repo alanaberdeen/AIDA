@@ -38,7 +38,6 @@ export default {
 
   computed: {
     ...mapState({
-      paperScope: state => state.annotation.paperScope,
       viewportZoom: state => state.image.viewer.viewport.getZoom(true),
       imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
     })
@@ -48,7 +47,7 @@ export default {
     // Listen for an event indicating the marker counts should be updated.
     eventBus.$on('updateMarkerCount', () => {
       // Find counters in the project at this moment.
-      let counters = this.paperScope.project.getItems({
+      let counters = paper.project.getItems({
         data: {
           type: 'counter'
         }
@@ -56,7 +55,7 @@ export default {
 
       // Check which marker circles are inside the counting rectangle
       // at this moment.
-      let markerItems = this.paperScope.project.getItems({
+      let markerItems = paper.project.getItems({
         className: 'Path',
         data: {
           countable: true
@@ -146,7 +145,7 @@ export default {
       this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
 
       // Deselect any current selections to avoid confusion.
-      this.paperScope.project.deselectAll()
+      paper.project.deselectAll()
     }
   }
 

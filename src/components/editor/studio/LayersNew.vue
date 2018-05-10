@@ -7,9 +7,16 @@
         dense
       >
         <v-toolbar-title id="title">
-          Channels
+          Layers
         </v-toolbar-title>
         <v-spacer/>
+        <v-btn
+          icon
+          @click.native="newLayer">
+          <v-icon id="iconButton">
+            tab
+          </v-icon>
+        </v-btn>
       </v-toolbar>
 
       <v-list
@@ -17,18 +24,19 @@
         dense
       >
         <v-list-group
-          v-for="(channel, channelIndex) in getChannels"
+          v-for="(layer, id) in layers"
           id="group"
-          :key="channelIndex"
+          :key="id"
           no-action
         >
           <v-list-tile
             slot="activator"
             no-action
+            @click.native="selectLayer(id)"
           >
             <v-list-tile-content id="content">
               <v-list-tile-title id="name">
-                {{ channel.name }}
+                {{ layer[1].name ? layer[1].name : ('Layer ' + id) }}
               </v-list-tile-title>
             </v-list-tile-content>
 
@@ -37,11 +45,12 @@
           <div>
             <v-slider
               id="slider"
-              v-model="channel.opacity"
+              :value="layer[1].opacity ? layer[1].opacity : 1"
               step="0"
               min="0"
               max="1"
-              @input="setChannelVisibility(channel)"/>
+              @input="setLayerOpacity"
+            />
           </div>
 
         </v-list-group>
@@ -52,23 +61,27 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   computed: {
     ...mapState({
-      viewer: state => state.image.viewer
-    }),
-
-    ...mapGetters([
-      'getChannels'
-    ])
+      layers: state => state.annotation.project
+    })
   },
 
   methods: {
     ...mapActions([
-      'setChannelVisibility'
-    ])
+      'setLayerOpacity',
+      'newLayer',
+      'exportLayerJSON',
+      'setActiveStepAndLayer',
+      'setLayerOpacity'
+    ]),
+
+    selectLayer (id) {
+      this.setActiveStepAndLayer(id + 1)
+    }
   }
 }
 </script>
