@@ -67,7 +67,6 @@ export default {
 }
 
 #hint {
-  font-size: 12px;
   color: #616161;
   padding: 5px 24px;
   margin: 0px;
