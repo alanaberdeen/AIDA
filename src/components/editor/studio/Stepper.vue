@@ -5,18 +5,18 @@
   >
     <v-stepper
       id="stepper"
-      :value.sync="activeStep"
+      :value="activeStep+1"
       non-linear
     >
       <v-stepper-header id="stepper-header">
         <div
-          v-for="step in steps"
-          :key="step.id">
+          v-for="(step, index) in steps"
+          :key="index">
           <v-stepper-step
             id="stepper-step"
             :step = "step.id"
             editable
-            @click.native="setActiveStepAndLayer(step.id)"
+            @click.native="setActiveStepAndLayer(index)"
           />
           <v-divider/>
         </div>
@@ -27,7 +27,7 @@
       id="hint-card"
       class="elevation-1">
       <p id="hint">
-        {{ steps[(activeStep - 1)].instruction }}
+        {{ steps[activeStep].instruction }}
       </p>
     </div>
   </div>

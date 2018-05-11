@@ -22,7 +22,8 @@ import {
   VStepper,
   VSlider,
   VDialog,
-  VTabs
+  VTabs,
+  VTextField
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
 import './css/main.css'
@@ -44,7 +45,8 @@ Vue.use(Vuetify, {
     VStepper,
     VSlider,
     VDialog,
-    VTabs
+    VTabs,
+    VTextField
   }
 })
 

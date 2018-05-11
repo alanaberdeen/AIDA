@@ -38,12 +38,23 @@ const actions = {
     commit('newLayer')
   },
 
-  setActiveLayer: ({ commit }, layerID) => {
-    commit('setActiveLayer', layerID)
+  setActiveLayer: ({ commit, dispatch }, layerIndex) => {
+    commit('setActiveLayer', layerIndex)
+
+    // Also, store the new active layer in the config
+    dispatch('setConfigActiveLayer', layerIndex)
   },
 
   setLayerOpacity: ({ commit }, payload) => {
     commit('setLayerOpacity', payload)
+  },
+
+  setLayerName: ({ commit }, payload) => {
+    commit('setLayerName', payload)
+  },
+
+  deleteLayer: ({ commit }, payload) => {
+    commit('deleteLayer', payload)
   }
 }
 
@@ -89,19 +100,62 @@ const mutations = {
   },
 
   // Set specified layer to be active
-  setActiveLayer: (state, id) => {
-    paper.project.layers[id - 1].activate()
+  setActiveLayer: (state, index) => {
+    paper.project.layers[index].activate()
   },
 
-  // Set the opactiy of a specific layer
+  // Set the opactiy of the active layer
   setLayerOpacity: (state, payload) => {
-    // Change opacity
-    paper.project.activeLayer.opacity = payload
+    let newOpacity
+    // Check if keyboard event. This happens in the case that the user types
+    // the opacity value in the text box and hits enter
+    if (payload instanceof KeyboardEvent) {
+      newOpacity = payload.target.value / 100
+    } else {
+      newOpacity = payload / 100
+    }
+
+    // Check if within range
+    if (newOpacity > 1) {
+      newOpacity = 1
+    } else if (payload < 0) {
+      newOpacity = 0
+    }
+
+    // Set opacity
+    paper.project.activeLayer.opacity = newOpacity
 
     // Save changed opacity to the Vuex state.
     // Watch out for Vue Change Detection Caveats: isn't reactive to new
     // attributes being added to an object. Use Vue.set to get around this.
-    Vue.set(state.project[paper.project.activeLayer.index][1], 'opacity', payload)
+    Vue.set(state.project[paper.project.activeLayer.index][1], 'opacity', newOpacity)
+  },
+
+  // Set the name of the active layer
+  setLayerName: (state, payload) => {
+    let newName
+    // Check if keyboard event. This happens in the case that the user types
+    // the opacity value in the text box and hits enter
+    if (payload instanceof KeyboardEvent) {
+      newName = payload.target.value
+    } else {
+      newName = payload
+    }
+
+    // Set name
+    paper.project.activeLayer.name = newName
+
+    // Save changes to Vuex state
+    Vue.set(state.project[paper.project.activeLayer.index][1], 'name', newName)
+  },
+
+  // Remove active layer
+  deleteLayer: (state, payload) => {
+    // Remove from Vuex state
+    state.project.splice(paper.project.activeLayer.index, 1)
+
+    // Remove from paperJS proejct
+    paper.project.activeLayer.remove()
   }
 }
 

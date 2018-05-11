@@ -9,10 +9,12 @@ const state = {
 
 const getters = {
   getImageWidth: state => {
-    if (state.viewer.world.getItemCount() > 0) {
-      return state.viewer.world.getItemAt(0).getContentSize.x
-    } else {
-      return 0
+    if (state.viewer) {
+      if (state.viewer.world.getItemCount() > 0) {
+        return state.viewer.world.getItemAt(0).getContentSize.x
+      } else {
+        return 0
+      }
     }
   },
 

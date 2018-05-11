@@ -13,7 +13,7 @@
 
 <script>
 // Import child components
-import layers from './LayersNew.vue'
+import layers from './Layers.vue'
 import channels from './Channels.vue'
 import properties from './Properties.vue'
 

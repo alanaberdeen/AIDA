@@ -6,7 +6,8 @@ import Vue from 'vue'
 
 // Default conifugation.
 const state = {
-  'activeStep': 1,
+  'activeStep': 0,
+  'activeLayer': 0,
   'steps': [{
     'ROI': false,
     'color': {
@@ -71,7 +72,7 @@ const getters = {
   // Get an array specifiying the tools included in the current step.
   getConfigStepTools: state => {
     if (state.steps) {
-      return state.steps[state.activeStep - 1].tools
+      return state.steps[state.activeStep].tools
     } else {
       return []
     }
@@ -81,7 +82,7 @@ const getters = {
   // step.
   getDefaultColor: state => {
     if (state.steps) {
-      return state.steps[state.activeStep - 1].color
+      return state.steps[state.activeStep].color
     } else {
       return {
         fill: {
@@ -106,6 +107,10 @@ const actions = {
     commit('setActiveStep', step)
   },
 
+  setConfigActiveLayer: ({ commit }, layerIndex) => {
+    commit('setConfigActiveLayer', layerIndex)
+  },
+
   loadConfig: ({ commit, rootState }, payload) => {
     commit('loadConfig', {
       config: payload,
@@ -115,8 +120,12 @@ const actions = {
 }
 
 const mutations = {
-  setActiveStep: (state, step) => {
-    state.activeStep = step
+  setActiveStep: (state, index) => {
+    state.activeStep = index
+  },
+
+  setConfigActiveLayer: (state, layerIndex) => {
+    state.activeLayer = layerIndex
   },
 
   loadConfig: (state, payload) => {

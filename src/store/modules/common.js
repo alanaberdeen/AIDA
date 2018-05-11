@@ -55,9 +55,9 @@ const actions = {
 
   // Dispatch mutations to set both the active step and the active layer,
   // ensuring that they are in sync.
-  setActiveStepAndLayer: ({ dispatch }, step) => {
-    dispatch('setActiveLayer', step)
-    dispatch('setActiveStep', step)
+  setActiveStepAndLayer: ({ dispatch }, index) => {
+    dispatch('setActiveLayer', index)
+    dispatch('setActiveStep', index)
   }
 
 }
