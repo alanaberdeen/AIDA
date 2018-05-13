@@ -8,6 +8,7 @@ import Vue from 'vue'
 const state = {
   'activeStep': 0,
   'activeLayer': 0,
+  'activeChannel': 0,
   'steps': [{
     'ROI': false,
     'color': {
@@ -111,6 +112,10 @@ const actions = {
     commit('setConfigActiveLayer', layerIndex)
   },
 
+  setConfigActiveChannel: ({ commit }, channelIndex) => {
+    commit('setConfigActiveChannel', channelIndex)
+  },
+
   loadConfig: ({ commit, rootState }, payload) => {
     commit('loadConfig', {
       config: payload,
@@ -120,12 +125,16 @@ const actions = {
 }
 
 const mutations = {
-  setActiveStep: (state, index) => {
-    state.activeStep = index
+  setActiveStep: (state, stepIndex) => {
+    state.activeStep = stepIndex
   },
 
   setConfigActiveLayer: (state, layerIndex) => {
     state.activeLayer = layerIndex
+  },
+
+  setConfigActiveChannel: (state, channelIndex) => {
+    state.activeChannel = channelIndex
   },
 
   loadConfig: (state, payload) => {

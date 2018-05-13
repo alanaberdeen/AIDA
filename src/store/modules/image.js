@@ -48,12 +48,20 @@ const actions = {
     commit('loadImages', images)
   },
 
-  toggleChannelVisibility: ({ commit }, payload) => {
-    commit('toggleChannelVisibility', payload)
+  toggleChannelOpacity: ({ commit }, payload) => {
+    commit('toggleChannelOpacity', payload)
   },
 
-  setChannelVisibility: ({ commit }, payload) => {
-    commit('setChannelVisibility', payload)
+  setChannelOpacity: ({ commit, rootState }, payload) => {
+    commit('setChannelOpacity', {
+      input: payload,
+      activeChannel: rootState.config.activeChannel,
+      rootState: rootState
+    })
+  },
+
+  setChannelName: ({ commit }, payload) => {
+    commit('setChannelName')
   }
 }
 
@@ -89,8 +97,7 @@ const mutations = {
   // Toggle the visibility of a channel.
   // TODO: build in some kind of cache of opacity so that when it is toggled
   // from not-visible to visible it can easily return to the state it was.
-  toggleChannelVisibility: (state, payload) => {
-    console.log('HARRO')
+  toggleChannelOpacity: (state, payload) => {
     // Payload should be a Channel object as defined by getChannels().
     if (payload.opacity > 0) {
       payload.channel.setOpacity(0)
@@ -100,8 +107,33 @@ const mutations = {
   },
 
   // Set channel visibility
-  setChannelVisibility: (state, payload) => {
-    payload.channel.setOpacity(payload.opacity)
+  setChannelOpacity: (state, payload) => {
+    let input = payload.input
+    let newOpacity = 1 // Default
+
+    // There are multiple ways to edit the opacity.
+    // Handle each of the different inputs.
+    // If passed an integer
+    if (typeof input === 'string' || typeof input === 'number') {
+      input = Number(input)
+      if (input > 1) {
+        newOpacity = input / 100
+      } else {
+        newOpacity = input
+      }
+
+    // If passed a keyboard event. (mostlikely enter key from a text edit.)
+    } else if (input instanceof KeyboardEvent) {
+      newOpacity = input.target.value / 100
+    }
+
+    // Set the new opacity level
+    state.viewer.world.getItemAt(payload.activeChannel).setOpacity(newOpacity)
+  },
+
+  // Set the channel name
+  setChannelName: (state, payload) => {
+    // payload.channel.
   }
 }
 
