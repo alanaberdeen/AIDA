@@ -40,78 +40,84 @@
 
           </v-list-tile>
 
-          <!-- Controls for List Item -->
-          <v-tabs
-            id="tabs"
-            left
-            color="transparent"
-          >
-            <v-tab>
-              <v-icon> visibility </v-icon>
-            </v-tab>
+          <!-- Layer Controls -->
+          <div id="controls">
+            <v-tabs
+              left
+              color="transparent"
+            >
+              <v-tab>
+                <v-icon> visibility </v-icon>
+              </v-tab>
 
-            <v-tab>
-              <v-icon> text_format </v-icon>
-            </v-tab>
+              <v-tab>
+                <v-icon> text_format </v-icon>
+              </v-tab>
 
-            <v-tab>
-              <v-icon> delete </v-icon>
-            </v-tab>
+              <v-tab>
+                <v-icon> delete </v-icon>
+              </v-tab>
 
-            <v-tabs-items>
+              <v-tabs-items id="tab-items">
 
-              <!-- Opacity Slider -->
-              <v-tab-item>
-                <v-layout
-                  row
-                  wrap>
-                  <v-flex xs9>
-                    <v-slider
-                      :value="layer[1].opacity ? layer[1].opacity*100 : 100"
-                      max="100"
-                      @input="setLayerOpacity"
-                    />
-                  </v-flex>
-                  <v-flex xs3>
+                <!-- Opacity Slider -->
+                <v-tab-item>
+                  <div id="tab-item">
+                    <v-layout
+                      row
+                      wrap>
+                      <v-flex xs9>
+                        <v-slider
+                          :value="layer[1].opacity ? layer[1].opacity*100 : 100"
+                          max="100"
+                          @input="setLayerOpacity"
+                        />
+                      </v-flex>
+                      <v-flex xs3>
+                        <v-text-field
+                          :value="layer[1].opacity ? Math.round(layer[1].opacity*100) : 100"
+                          suffix="%"
+                          single-line
+                          mask="###"
+                          @change="setLayerOpacity"
+                          @keyup.native.enter="setLayerOpacity"/>
+                      </v-flex>
+                    </v-layout>
+                  </div>
+                </v-tab-item>
+
+                <!-- Rename List Item -->
+                <v-tab-item>
+                  <div id="tab-item">
                     <v-text-field
-                      :value="layer[1].opacity ? Math.round(layer[1].opacity*100) : 100"
-                      suffix="%"
+                      :value="layer[1].name ? layer[1].name : ('Layer ' + index)"
                       single-line
-                      mask="###"
-                      @change="setLayerOpacity"
-                      @keyup.native.enter="setLayerOpacity"/>
-                  </v-flex>
-                </v-layout>
-              </v-tab-item>
+                      @change="setLayerName"
+                      @keyup.native.enter="setLayerName"
+                    />
+                  </div>
 
-              <!-- Rename List Item -->
-              <v-tab-item>
-                <v-text-field
-                  :value="layer[1].name ? layer[1].name : ('Layer ' + index)"
-                  single-line
-                  @change="setLayerName"
-                  @keyup.native.enter="setLayerName"
-                />
-              </v-tab-item>
+                </v-tab-item>
 
-              <!-- Delete List item -->
-              <v-tab-item>
-                <div id="buttonBox">
-                  <v-btn
-                    id="deleteButton"
-                    small
-                    color="error"
-                    dark
-                    flat
-                    outline
-                    @click="deleteLayer">
-                    Delete
-                  </v-btn>
-                </div>
-              </v-tab-item>
+                <!-- Delete List item -->
+                <v-tab-item>
+                  <div id="tab-item">
+                    <v-btn
+                      id="deleteButton"
+                      small
+                      color="error"
+                      dark
+                      flat
+                      outline
+                      @click="deleteLayer">
+                      Delete
+                    </v-btn>
+                  </div>
+                </v-tab-item>
 
-            </v-tabs-items>
-          </v-tabs>
+              </v-tabs-items>
+            </v-tabs>
+          </div>
 
         </v-list-group>
       </v-list>
@@ -168,12 +174,18 @@ export default {
   background-color: #EEEEEE;
 }
 
-#tabs {
-  padding: 0px 16px;
+#controls {
+  background-color: #F5F5F5;
+  border-top: 1px solid #E0E0E0;
 }
 
-#buttonBox {
+#tab-items {
+  background-color: #FAFAFA;
+}
+
+#tab-item {
   height: 74px;
+  padding: 0px 16px;
 }
 
 #deleteButton {
