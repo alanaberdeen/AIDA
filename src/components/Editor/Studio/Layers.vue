@@ -68,7 +68,7 @@
                       wrap>
                       <v-flex xs9>
                         <v-slider
-                          :value="layer[1].opacity ? layer[1].opacity*100 : 100"
+                          :value="(layer[1].opacity !== null) ? layer[1].opacity*100 : 100"
                           max="100"
                           @input="setLayerOpacity"
                         />
