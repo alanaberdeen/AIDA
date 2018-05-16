@@ -35,16 +35,19 @@ const actions = {
   },
 
   // Save AIDA project to REST API
-  saveProject: ({ rootState }) => {
-    axios
-      .put('https://aida-private.firebaseio.com/.json', {
-        config: rootState.config,
-        annotation: rootState.annotation,
-        images: rootState.image.images
-      })
-      .then(function (response) {
-        console.log(response)
-      })
+  saveProject: ({ rootState, dispatch }) => {
+    dispatch('refreshState').then(
+      axios
+        .put('https://aida-private.firebaseio.com/.json', {
+          config: rootState.config,
+          annotation: rootState.annotation,
+          images: rootState.image.images
+        })
+        .then(function (response) {
+          console.log(response)
+        })
+    )
+    console.log(rootState.annotation)
   },
 
   // Install event hooks to keep the annotations and the image in sync when

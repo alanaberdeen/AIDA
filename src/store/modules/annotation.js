@@ -18,6 +18,10 @@ const state = {
 const getters = {}
 
 const actions = {
+  refreshState: ({ commit }, payload) => {
+    commit('refreshState', payload)
+  },
+
   setupAnnotation: ({ commit }, payload) => {
     commit('setupAnnotation', payload)
   },
@@ -59,6 +63,11 @@ const actions = {
 }
 
 const mutations = {
+  // Refresh the Vuex store state with the current paperJS project representation
+  refreshState: (state, payload) => {
+    state.project = paper.project.exportJSON({asString: false, precision: 5})
+  },
+
   // Setup the PaperJs instance on the canvas DOM element.
   setupAnnotation: (state, canvas) => {
     paper.setup(canvas)
