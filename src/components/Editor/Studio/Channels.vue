@@ -4,6 +4,7 @@
 
       <v-toolbar
         id="toolbar"
+        dense
       >
         <v-toolbar-title>
           Channels
