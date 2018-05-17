@@ -45,7 +45,7 @@
 // Import child components
 import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
-import Stepper from './studio/Stepper.vue'
+import Stepper from './Stepper.vue'
 import Canvas from './Canvas.vue'
 import Toolbar from '../header/Toolbar.vue'
 

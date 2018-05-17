@@ -1,26 +1,27 @@
 <template>
-  <div
-    v-if="steps"
-    class="pointers-please"
-  >
+  <div>
     <v-stepper
+      v-if="steps"
       id="stepper"
-      :value="activeStep+1"
+      :value="(activeStep + 1)"
+      class="pointers-please"
       non-linear
     >
       <v-stepper-header id="stepper-header">
-        <div
-          v-for="(step, index) in steps"
-          :key="index">
+        <template
+          v-for="(step, index) in steps">
           <v-stepper-step
-            id="stepper-step"
-            :step = "step.id"
+            :key="index"
+            :step="step.id"
             editable
             @click.native="setActiveStepAndLayer(index)"
           />
-          <v-divider/>
-        </div>
+          <v-divider
+            v-if="step.id !== steps.length"
+            :key="step.length" />
+        </template>
       </v-stepper-header>
+
     </v-stepper>
 
     <div
@@ -54,12 +55,12 @@ export default {
 </script>
 
 <style lang='css' scoped>
-#stepper{
+#stepper {
   background-color: #E0E0E0;
 }
 
-#stepper-header{
-  height:100%;
+#stepper-header {
+  height: 50px;
 }
 
 #hint-card {
@@ -70,9 +71,5 @@ export default {
   color: #616161;
   padding: 5px 24px;
   margin: 0px;
-}
-
-#stepper-step {
-  padding: 10px 24px;
 }
 </style>
