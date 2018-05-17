@@ -6,7 +6,7 @@
         id="toolbar"
         dense
       >
-        <v-toolbar-title>
+        <v-toolbar-title class="toolBarTitle">
           Channels
         </v-toolbar-title>
         <v-spacer/>
@@ -17,9 +17,7 @@
         </v-btn>
       </v-toolbar>
 
-      <v-list
-        id="list"
-      >
+      <v-list id="list" >
         <v-list-group
           v-for="(channel, index) in getChannels"
           :key="index"
@@ -31,7 +29,8 @@
             @click.native="setConfigActiveChannel(index)"
           >
             <v-list-tile-content>
-              <v-list-tile-title>
+              <v-list-tile-title
+                class="faIcons">
                 {{ channel.name ? channel.name : ('Channel ' + index) }}
               </v-list-tile-title>
             </v-list-tile-content>
@@ -152,6 +151,10 @@ export default {
   margin-top: 7px;
   background-color: #EEEEEE;
   width: 240px;
+}
+
+.toolBarTitle {
+  color: #424242;
 }
 
 #toolbar {

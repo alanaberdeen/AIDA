@@ -6,7 +6,7 @@
         id="toolbar"
         dense
       >
-        <v-toolbar-title>
+        <v-toolbar-title class="toolBarTitle">
           Layers
         </v-toolbar-title>
         <v-spacer/>
@@ -161,6 +161,10 @@ export default {
   margin-top: 7px;
   background-color: #EEEEEE;
   width: 240px;
+}
+
+.toolBarTitle {
+  color: #424242;
 }
 
 #toolbar {

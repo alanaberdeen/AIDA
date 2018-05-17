@@ -6,36 +6,31 @@
         id="toolbar"
         dense
       >
-        <v-toolbar-title id="title">
+        <v-toolbar-title class="toolBarTitle">
           Properties
         </v-toolbar-title>
         <v-spacer/>
       </v-toolbar>
 
-      <v-list
-        id="list"
-        dense
-      >
-        <v-list-tile id="tile">
+      <v-list id="list" >
+        <v-list-tile>
 
-          <v-list-tile-content class="content">
-            <v-list-tile-title class="name">
+          <v-list-tile-content>
+            <v-list-tile-title class="faIcons">
               No. selected items:
             </v-list-tile-title>
           </v-list-tile-content>
 
           <v-list-tile-action>
-            <span class="number">
-              {{ numItems }}
-            </span>
+            {{ numItems }}
           </v-list-tile-action>
 
         </v-list-tile>
 
-        <v-list-tile id="tile">
+        <v-list-tile>
 
-          <v-list-tile-content class="content">
-            <v-list-tile-title class="name">
+          <v-list-tile-content>
+            <v-list-tile-title class="faIcons">
               Fill colour:
             </v-list-tile-title>
           </v-list-tile-content>
@@ -53,10 +48,10 @@
 
         </v-list-tile>
 
-        <v-list-tile id="tile">
+        <v-list-tile>
 
-          <v-list-tile-content class="content">
-            <v-list-tile-title class="name">
+          <v-list-tile-content>
+            <v-list-tile-title class="faIcons">
               Stroke colour:
             </v-list-tile-title>
           </v-list-tile-content>
@@ -200,28 +195,18 @@ export default {
 </script>
 
 <style lang='css' scoped>
-#title {
-  font-size: 14px;
-  font-weight: 400;
+.panel {
+  margin-top: 7px;
+  background-color: #EEEEEE;
+  width: 240px;
 }
 
-.panel {
-  margin-top: 20px;
-  background-color: #EEEEEE;
+.toolBarTitle {
+  color: #424242;
 }
 
 #toolbar {
   background-color: #E0E0E0;
-}
-
-.name {
-  font-size: 13px;
-  height: 30px;
-  color: #616161;
-}
-
-.content {
-  margin-left: 16px;
 }
 
 .action {
@@ -234,19 +219,8 @@ export default {
   padding: 7px 20px 7px 10px;
 }
 
-.number {
-  text-align: center;
-  margin-right: 8px;
-  width: 36px;
-  margin-bottom: 5px;
-}
-
 #list {
   background-color: #EEEEEE;
-}
-
-#tile{
-  height: 30px;
 }
 
 </style>
