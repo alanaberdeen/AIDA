@@ -73,9 +73,11 @@ export default {
     dialog (pickerToggle) {
       if (pickerToggle === true) {
         this.colorPick = this.color.obj
-      } else if (pickerToggle === false) {
-        if (this.paperScope.project.selectedItems.length > 1) {
-          let group = this.paperScope.project.getItem({
+      } else {
+        // If there are items selected in the current project
+        if (paper.project.selectedItems.length > 1) {
+          // Create a temporary group out of the selected items
+          let group = paper.project.getItem({
             selected: true,
             className: 'Group'
           })
@@ -100,7 +102,7 @@ export default {
 
           // Emit selection event to the eventBus so that the properties
           // panel can be updated.
-          eventBus.$emit('selectionChanged', this.paperScope.project.selectedItems)
+          eventBus.$emit('selectionChanged', paper.project.selectedItems)
         }
       }
     }
