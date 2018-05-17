@@ -1,19 +1,26 @@
 <template lang="html">
   <v-list-tile id="tool-tile">
-    <v-btn
-      id="tool"
-      flat
-      block
-      @click.native="initialiseTool"
-    >
-      <i
-        :class="{
-          'fa': true,
-          'fa-circle': true,
-          'faIcons': !active,
-          'faIconsActive': active
-      }"/>
-    </v-btn>
+    <v-tooltip
+      id="tooltip"
+      right
+      open-delay="700">
+      <v-btn
+        id="tool"
+        slot="activator"
+        flat
+        block
+        @click.native="initialiseTool"
+      >
+        <i
+          :class="{
+            'fa': true,
+            'fa-circle': true,
+            'faIcons': !active,
+            'faIconsActive': active
+        }"/>
+      </v-btn>
+      <span> Circle Tool </span>
+    </v-tooltip>
   </v-list-tile>
 
 </template>
@@ -150,6 +157,9 @@ export default {
 </script>
 
 <style lang='css' scoped>
+#tooltip {
+  width: 100%;
+}
 
 #tool {
   min-width: 0px;

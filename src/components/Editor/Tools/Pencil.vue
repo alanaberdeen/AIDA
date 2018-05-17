@@ -1,21 +1,28 @@
 <template lang="html">
   <v-list-tile id="tool-tile">
-    <v-btn
-      id="tool"
-      flat
-      block
-      @click.native="initialiseTool"
+    <v-tooltip
+      id="tooltip"
+      right
+      open-delay="700"
     >
-      <i
-        :class="{
-          'fa': true,
-          'fa-pencil-alt': true,
-          'faIcons': !active,
-          'faIconsActive': active
-      }"/>
-    </v-btn>
+      <v-btn
+        id="tool"
+        slot="activator"
+        flat
+        block
+        @click.native="initialiseTool"
+      >
+        <i
+          :class="{
+            'fa': true,
+            'fa-pencil-alt': true,
+            'faIcons': !active,
+            'faIconsActive': active
+        }"/>
+      </v-btn>
+      <span> Pencil Tool </span>
+    </v-tooltip>
   </v-list-tile>
-
 </template>
 
 <script>
@@ -140,6 +147,10 @@ export default {
 </script>
 
 <style lang='css'>
+#tooltip {
+  width: 100%
+}
+
 #tool {
   min-width: 0px;
 }

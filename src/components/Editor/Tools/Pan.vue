@@ -1,26 +1,32 @@
 <template lang="html">
-
   <v-list-tile id="tool-tile">
-    <v-btn
-      id="tool"
-      flat
-      block
-      @click.native="initialiseTool"
+    <v-tooltip
+      id="tooltip"
+      right
+      open-delay="700"
     >
-      <v-icon
-        v-if="active"
-        class="blue--text text--darken-1">
-        lock_open
-      </v-icon>
+      <v-btn
+        id="tool"
+        slot="activator"
+        flat
+        block
+        @click.native="initialiseTool"
+      >
+        <v-icon
+          v-if="active"
+          class="blue--text text--darken-1">
+          lock_open
+        </v-icon>
 
-      <v-icon
-        v-else
-        class="grey--text text--darken-2">
-        lock_outline
-      </v-icon>
-    </v-btn>
+        <v-icon
+          v-else
+          class="grey--text text--darken-2">
+          lock_outline
+        </v-icon>
+      </v-btn>
+      <span> Lock View Tool </span>
+    </v-tooltip>
   </v-list-tile>
-
 </template>
 
 <script>
@@ -54,6 +60,10 @@ export default {
 </script>
 
 <style lang='css'>
+#tooltip {
+  width: 100%;
+}
+
 #tool {
   min-width: 0px;
 }

@@ -137,8 +137,4 @@ export default {
 #toolList {
   background: #EEEEEE;
 }
-
-[data-tooltip]:before {
-  transition-delay: 800ms;
-}
 </style>

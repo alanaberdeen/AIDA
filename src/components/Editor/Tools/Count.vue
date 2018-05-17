@@ -1,17 +1,24 @@
 <template lang="html">
   <v-list-tile id="tool-tile">
-    <v-btn
-      id="tool"
-      flat
-      block
-      @click.native="initialiseTool"
-    >
-      <v-icon
-        :class="{'grey--text text--darken-2': !active,
-                 'blue--text text--darken-1': active}">
-        filter_9_plus
-      </v-icon>
-    </v-btn>
+    <v-tooltip
+      id="tooltip"
+      right
+      open-delay="700">
+      <v-btn
+        id="tool"
+        slot="activator"
+        flat
+        block
+        @click.native="initialiseTool"
+      >
+        <v-icon
+          :class="{'grey--text text--darken-2': !active,
+                   'blue--text text--darken-1': active}">
+          filter_9_plus
+        </v-icon>
+      </v-btn>
+      <span> Count Tool </span>
+    </v-tooltip>
   </v-list-tile>
 </template>
 
@@ -153,6 +160,10 @@ export default {
 </script>
 
 <style lang='css'>
+#tooltip {
+  width: 100%;
+}
+
 #tool {
   min-width: 0px;
 }
