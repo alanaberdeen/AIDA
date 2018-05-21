@@ -88,9 +88,9 @@ const actions = {
 const mutations = {
   // Add a handler function that will run when osd-viewport is updated.
   // This will synchronously update the paperJS viewport.
-  // This is an expensive operation as it ensures all parameteres are in sync
+  // This is an expensive operation as it ensures all parameters are in sync
   // on every viewport update. For example, zoom may not have changed but it
-  // would still fire this event and update the zoom. However, seperating into
+  // would still fire this event and update the zoom. However, separating into
   // the individual parts led to a far less smooth experience. Leave it here
   // for now at least.
   synchroniseAnnotationAndImage: (state, viewer) => {
@@ -115,7 +115,7 @@ const mutations = {
       // This might be computationally-expensive but will try for now.
       // TODO: consider the computational expensive of this and find a more
       // effectively method of handling it. Additionally, the hard coded 500
-      // is clearly a tempory fix here.
+      // is clearly a temporary fix here.
       paper.project.layers.forEach(layer => {
         layer.children.forEach(child => {
           if (child.className === 'Path') {
@@ -127,7 +127,7 @@ const mutations = {
   }
 }
 
-// Export all of the relevent logic so that it can be combined with the
+// Export all of the relevant logic so that it can be combined with the
 // respective parts in the other modules and complete the store.
 export default {
   state,
