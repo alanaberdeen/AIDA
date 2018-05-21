@@ -75,6 +75,8 @@ export default {
 
         // If user selecteds a segment.
         } else if (hitResult.type === 'segment') {
+          console.log('The segment: ')
+          console.log(hitResult)
           // Select only that segment and associate handles.
           paper.project.deselectAll()
           hitResult.item.selected = true

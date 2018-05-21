@@ -45,15 +45,21 @@ export default {
   computed: {
     ...mapState({
       viewportZoom: state => state.image.viewer.viewport.getZoom(true),
-      imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+      imageWidth: state =>
+        state.image.viewer.world.getItemAt(0).getContentSize().x
     })
   },
 
   created () {
     // On drag draw feedforward shadow rectangle in realtime.
-    const toolDrag = (event) => {
+    const toolDrag = event => {
       let trackingRect = new paper.Path.Rectangle(event.downPoint, event.point)
-      trackingRect.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1})
+      trackingRect.strokeColor = new paper.Color({
+        hue: 220,
+        saturation: 0.7,
+        lightness: 0.5,
+        alpha: 1
+      })
       trackingRect.strokeWidth = this.strokeWidth
 
       // Constantly update tracking rect by removing it and re-drawing.
@@ -64,7 +70,7 @@ export default {
     }
 
     // Finalise rectangle properties and draw.
-    const toolUp = (event) => {
+    const toolUp = event => {
       let newRect = new paper.Path.Rectangle(event.downPoint, event.point)
       newRect.strokeColor = new paper.Color(this.getDefaultColor().stroke)
       newRect.fillColor = new paper.Color(this.getDefaultColor().fill)
@@ -77,13 +83,9 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'prepareCanvas'
-    ]),
+    ...mapActions(['prepareCanvas']),
 
-    ...mapGetters([
-      'getDefaultColor'
-    ]),
+    ...mapGetters(['getDefaultColor']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.
@@ -96,7 +98,6 @@ export default {
       this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
     }
   }
-
 }
 </script>
 

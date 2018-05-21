@@ -12,30 +12,44 @@ const actions = {
   // Load a project into AIDA.
   // May perform asynchronous tasks here, in the ACTION, (like pulling from a
   // REST API) before committing the state MUTATION which must run synchronously.
-  loadProject: ({ state, rootState, commit, dispatch }) => {
+  loadProject: ({
+    state,
+    rootState,
+    commit,
+    dispatch
+  }) => {
     // Pull latest test project from REST api
     axios
       .get('https://aida-private.firebaseio.com/.json')
       // Update the config.js state
       .then(function (response) {
         // Load the editor configuration
-        dispatch('loadConfig', response.data.config, { root: true })
+        dispatch('loadConfig', response.data.config, {
+          root: true
+        })
 
         // Load the PaperJS project representation of the annotation data
-        dispatch('loadAnnotation', response.data.annotation, { root: true })
+        dispatch('loadAnnotation', response.data.annotation, {
+          root: true
+        })
 
         // Load the images into the OpenSeaDragon viewer
-        dispatch('loadImages', response.data.images, { root: true })
+        dispatch('loadImages', response.data.images, {
+          root: true
+        })
       })
       .catch(function (error) {
         console.log(`Could not read data from external source. \n
                     Returned the following error: ' \n` +
-                    error)
+          error)
       })
   },
 
   // Save AIDA project to REST API
-  saveProject: ({ rootState, dispatch }) => {
+  saveProject: ({
+    rootState,
+    dispatch
+  }) => {
     dispatch('refreshState').then(
       axios
         .put('https://aida-private.firebaseio.com/.json', {
@@ -52,13 +66,19 @@ const actions = {
 
   // Install event hooks to keep the annotations and the image in sync when
   // panning or zooming.
-  synchroniseAnnotationAndImage: ({ state, commit, rootState }) => {
+  synchroniseAnnotationAndImage: ({
+    state,
+    commit,
+    rootState
+  }) => {
     commit('synchroniseAnnotationAndImage', rootState.image.viewer)
   },
 
   // Dispatch mutations to set both the active step and the active layer,
   // ensuring that they are in sync.
-  setActiveStepAndLayer: ({ dispatch }, index) => {
+  setActiveStepAndLayer: ({
+    dispatch
+  }, index) => {
     dispatch('setActiveLayer', index)
     dispatch('setActiveStep', index)
   }
