@@ -20,7 +20,7 @@ const actions = {
   }) => {
     // Pull latest test project from REST api
     axios
-      .get('https://aida-private.firebaseio.com/.json')
+      .get('https://aida-testing.firebaseio.com/.json')
       // Update the config.js state
       .then(function (response) {
         // Load the editor configuration
@@ -52,7 +52,7 @@ const actions = {
   }) => {
     dispatch('refreshState').then(
       axios
-        .put('https://aida-private.firebaseio.com/.json', {
+        .put('https://aida-testing.firebaseio.com/.json', {
           config: rootState.config,
           annotation: rootState.annotation,
           images: rootState.image.images
