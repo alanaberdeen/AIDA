@@ -103,18 +103,15 @@
             </h4>
 
             <p>
-              AIDA is an attempt to bring an open source web-based
-              workflow to image annotation. Currently, in the
-              biomedical imaging space, image annotation is largely
-              confined to single computer shrink-wrapped software with
-              limited interactive capabilities and few, usually
-              closed, data formats.
+              AIDA brings an open source and web-based workflow to image annotation.
             </p>
             <p>
-              AIDA is a web interface that enables distributed teams
+              Currently, image annotation is largely confined to single computer
+              shrink-wrapped software with limited interactive capabilities and
+              few, usually closed, data formats. AIDA is a web interface that enables distributed teams
               of researchers to direclty annotate images with easy
               to use on screen drawing tools. AIDA supports the
-              creation of well defined annotatio trials which include
+              creation of well defined annotation trials which include
               a series of high resolution images or video and a
               specific set of annotation tasks.
             </p>
@@ -157,16 +154,16 @@
             </h4>
 
             <p>
-              The software is published as Open Source under the permissive <a href="https://github.com/alanaberdeen/AIDA/blob/master/LICENSE"> MIT license </a> and can be
-              modified by anyone.
+              The software is published as Open Source under the permissive
+              <a href="https://github.com/alanaberdeen/AIDA/blob/master/LICENSE">
+              MIT license </a> and can be modified by anyone.
               The <a href="https://aida.gitbook.io/docs/api-reference"> API </a>
               will also be public.
 
               The next stage of development will be to integrate
-              intelligent tools that leverage the power of machine
-              learning techniques. We hope to enhance the ability
-              of the user to quickly and accuratley mark up images
-              with using predicitive technqiues.
+              intelligent tools that leverage machine learning techniques.
+              We hope to enhance the ability of the user to quickly and
+              accuratley mark up images.
             </p>
           </div>
         </v-card>
@@ -197,11 +194,9 @@
 </template>
 
 <script>
-
 </script>
 
 <style scoped>
-
 #home {
   padding-top: 48px;
 }
@@ -231,7 +226,7 @@
   padding-bottom: 0px;
 }
 
-#subtitle-container{
+#subtitle-container {
   padding-top: 0px;
 }
 
@@ -252,5 +247,4 @@ h4 {
   margin-top: 0px;
   margin-bottom: 5px;
 }
-
 </style>
