@@ -1,5 +1,5 @@
 // This file handles the management of the state for the annotations.
-// The annotation layers are controled via the PaperJS lib.
+// The annotation layers are controlled via the PaperJS lib.
 import paper from 'paper'
 import Vue from 'vue'
 
@@ -18,46 +18,67 @@ const state = {
 const getters = {}
 
 const actions = {
-  refreshState: ({ commit }, payload) => {
+  refreshState: ({
+    commit
+  }, payload) => {
     commit('refreshState', payload)
   },
 
-  setupAnnotation: ({ commit }, payload) => {
+  setupAnnotation: ({
+    commit
+  }, payload) => {
     commit('setupAnnotation', payload)
   },
 
-  loadAnnotation: ({ commit }, payload) => {
+  loadAnnotation: ({
+    commit
+  }, payload) => {
     commit('loadAnnotation', payload)
   },
 
-  exportLayerJSON: ({ commit }, layer) => {
+  exportLayerJSON: ({
+    commit
+  }, layer) => {
     commit('exportLayerJSON', layer)
   },
 
-  prepareCanvas: ({ commit }, payload) => {
+  prepareCanvas: ({
+    commit
+  }, payload) => {
     commit('prepareCanvas', payload)
   },
 
-  newLayer: ({ commit }, payload) => {
+  newLayer: ({
+    commit
+  }, payload) => {
     commit('newLayer')
   },
 
-  setActiveLayer: ({ commit, dispatch }, layerIndex) => {
+  setActiveLayer: ({
+    commit,
+    dispatch
+  }, layerIndex) => {
     commit('setActiveLayer', layerIndex)
 
     // Also, store the new active layer in the config
     dispatch('setConfigActiveLayer', layerIndex)
   },
 
-  setLayerOpacity: ({ commit }, payload) => {
+  setLayerOpacity: ({
+    commit
+  }, payload) => {
     commit('setLayerOpacity', payload)
   },
 
-  setLayerName: ({ commit }, payload) => {
+  setLayerName: ({
+    commit
+  }, payload) => {
     commit('setLayerName', payload)
   },
 
-  deleteLayer: ({ commit }, payload) => {
+  deleteLayer: ({
+    commit
+  }, payload) => {
     commit('deleteLayer', payload)
   }
 }
@@ -65,7 +86,10 @@ const actions = {
 const mutations = {
   // Refresh the Vuex store state with the current paperJS project representation
   refreshState: (state, payload) => {
-    state.project = paper.project.exportJSON({asString: false, precision: 5})
+    state.project = paper.project.exportJSON({
+      asString: false,
+      precision: 5
+    })
   },
 
   // Setup the PaperJs instance on the canvas DOM element.
@@ -77,7 +101,10 @@ const mutations = {
   // paperJS instance
   loadAnnotation: (state, payload) => {
     paper.project.importJSON(payload)
-    state.project = paper.project.exportJSON({asString: false, precision: 5})
+    state.project = paper.project.exportJSON({
+      asString: false,
+      precision: 5
+    })
   },
 
   // Export a PaperJS JSON string representing current state to the console.
@@ -90,7 +117,7 @@ const mutations = {
 
   // Prepare the canvas for adding annotations.
   prepareCanvas: (state, payload) => {
-    // Remove the class that interupts the pointer interaction.
+    // Remove the class that interrupts the pointer interaction.
     if (paper.view.element.classList.contains('pointers-no')) {
       paper.view.element.classList.remove('pointers-no')
     }
@@ -105,7 +132,10 @@ const mutations = {
     console.log(newLayer)
 
     // Update the store with the new project representation
-    state.project = paper.project.exportJSON({ asString: false, precision: 5 })
+    state.project = paper.project.exportJSON({
+      asString: false,
+      precision: 5
+    })
   },
 
   // Set specified layer to be active
@@ -113,7 +143,7 @@ const mutations = {
     paper.project.layers[index].activate()
   },
 
-  // Set the opactiy of the active layer
+  // Set the opacity of the active layer
   setLayerOpacity: (state, payload) => {
     let newOpacity
     // Check if keyboard event. This happens in the case that the user types
@@ -163,12 +193,12 @@ const mutations = {
     // Remove from Vuex state
     state.project.splice(paper.project.activeLayer.index, 1)
 
-    // Remove from paperJS proejct
+    // Remove from paperJS project
     paper.project.activeLayer.remove()
   }
 }
 
-// Export all of the relevent logic so that it can be combined with the complete
+// Export all of the relevant logic so that it can be combined with the complete
 // store and all other module logic.
 export default {
   state,

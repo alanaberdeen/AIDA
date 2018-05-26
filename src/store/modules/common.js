@@ -1,6 +1,5 @@
 // This file handles the Vuex state changes that are either common, or involve
 // using more than one of the different parts: annotation, config and image.
-
 import axios from 'axios'
 import paper from 'paper'
 
@@ -10,17 +9,15 @@ const getters = {}
 
 const actions = {
   // Load a project into AIDA.
-  // May perform asynchronous tasks here, in the ACTION, (like pulling from a
-  // REST API) before committing the state MUTATION which must run synchronously.
   loadProject: ({
-    state,
-    rootState,
-    commit,
     dispatch
-  }) => {
+  }, payload) => {
+    // Construct endpoint from which to pull the data from
+    let endpoint = 'https://aida-private.firebaseio.com/' + payload + '.json'
+
     // Pull latest test project from REST api
     axios
-      .get('https://aida-testing.firebaseio.com/.json')
+      .get(endpoint)
       // Update the config.js state
       .then(function (response) {
         // Load the editor configuration
@@ -28,20 +25,18 @@ const actions = {
           root: true
         })
 
+        // Load the images into the viewer
+        dispatch('loadImages', response.data.images, {
+          root: true
+        })
+
         // Load the PaperJS project representation of the annotation data
         dispatch('loadAnnotation', response.data.annotation, {
           root: true
         })
-
-        // Load the images into the OpenSeaDragon viewer
-        dispatch('loadImages', response.data.images, {
-          root: true
-        })
       })
       .catch(function (error) {
-        console.log(`Could not read data from external source. \n
-                    Returned the following error: ' \n` +
-          error)
+        console.log(`Could not load all data from external source. Returned the following error: \n \n` + error)
       })
   },
 
@@ -50,9 +45,12 @@ const actions = {
     rootState,
     dispatch
   }) => {
+    // Construct endpoint to store data at
+    let endpoint = 'https://aida-private.firebaseio.com/' + rootState.config.type + '.json'
+
     dispatch('refreshState').then(
       axios
-        .put('https://aida-testing.firebaseio.com/.json', {
+        .put(endpoint, {
           config: rootState.config,
           annotation: rootState.annotation,
           images: rootState.image.images
@@ -64,14 +62,14 @@ const actions = {
     console.log(rootState.annotation)
   },
 
-  // Install event hooks to keep the annotations and the image in sync when
+  // Install event hooks to keep the annotations and the OSDcanvas in sync when
   // panning or zooming.
-  synchroniseAnnotationAndImage: ({
+  synchroniseAnnotationAndOSDCanvas: ({
     state,
     commit,
     rootState
   }) => {
-    commit('synchroniseAnnotationAndImage', rootState.image.viewer)
+    commit('synchroniseAnnotationAndOSDCanvas', rootState.image.OSDviewer)
   },
 
   // Dispatch mutations to set both the active step and the active layer,
@@ -93,13 +91,9 @@ const mutations = {
   // would still fire this event and update the zoom. However, separating into
   // the individual parts led to a far less smooth experience. Leave it here
   // for now at least.
-  synchroniseAnnotationAndImage: (state, viewer) => {
+  synchroniseAnnotationAndOSDCanvas: (state, viewer) => {
     // Add functionality that is triggered by the 'update-viewport' event
     viewer.addHandler('update-viewport', function () {
-      // Match the size of paperScope view to the OSD viewer canvas
-      paper.view.viewSize.width = viewer.canvas.clientWidth
-      paper.view.viewSize.height = viewer.canvas.clientHeight
-
       // Match changes in zoom level
       let viewportZoom = viewer.viewport.getZoom(true)
       let image1 = viewer.world.getItemAt(0)

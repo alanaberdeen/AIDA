@@ -4,8 +4,9 @@
 // the annotations or the default image and annotation content.
 import Vue from 'vue'
 
-// Default conifugation.
+// Default configuration.
 const state = {
+  'type': 'dzi',
   'activeStep': 0,
   'activeLayer': 0,
   'activeChannel': 0,
@@ -70,7 +71,7 @@ const state = {
 }
 
 const getters = {
-  // Get an array specifiying the tools included in the current step.
+  // Get an array specifying the tools included in the current step.
   getConfigStepTools: state => {
     if (state.steps) {
       return state.steps[state.activeStep].tools
@@ -79,7 +80,7 @@ const getters = {
     }
   },
 
-  // Get an object that specifies the default color for annotatations in this
+  // Get an object that specifies the default color for annotations in this
   // step.
   getDefaultColor: state => {
     if (state.steps) {
@@ -104,19 +105,28 @@ const getters = {
 }
 
 const actions = {
-  setActiveStep: ({ commit }, step) => {
+  setActiveStep: ({
+    commit
+  }, step) => {
     commit('setActiveStep', step)
   },
 
-  setConfigActiveLayer: ({ commit }, layerIndex) => {
+  setConfigActiveLayer: ({
+    commit
+  }, layerIndex) => {
     commit('setConfigActiveLayer', layerIndex)
   },
 
-  setConfigActiveChannel: ({ commit }, channelIndex) => {
+  setConfigActiveChannel: ({
+    commit
+  }, channelIndex) => {
     commit('setConfigActiveChannel', channelIndex)
   },
 
-  loadConfig: ({ commit, rootState }, payload) => {
+  loadConfig: ({
+    commit,
+    rootState
+  }, payload) => {
     commit('loadConfig', {
       config: payload,
       rootState: rootState
@@ -145,7 +155,7 @@ const mutations = {
   }
 }
 
-// Export all of the relevent logic so that it can be combined with the complete
+// Export all of the relevant logic so that it can be combined with the complete
 // store and all other module logic.
 export default {
   state,
