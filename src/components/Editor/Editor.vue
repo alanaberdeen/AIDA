@@ -23,8 +23,13 @@
               <app-stepper/>
             </div>
 
-            <div id="canvas-container">
-              <app-canvas/>
+            <app-examples v-if="type==='examples'"/>
+
+            <div
+              v-else
+              id="view-container">
+
+              <app-view :type="type"/>
             </div>
           </div>
         </v-flex>
@@ -46,7 +51,8 @@
 import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
 import Stepper from './Stepper.vue'
-import Canvas from './Canvas.vue'
+import View from './view/View.vue'
+import Examples from './Examples.vue'
 import Toolbar from '../header/Toolbar.vue'
 
 export default {
@@ -54,14 +60,21 @@ export default {
     'app-tools': Tools,
     'app-studio': Studio,
     'app-stepper': Stepper,
-    'app-canvas': Canvas,
+    'app-view': View,
+    'app-examples': Examples,
     'app-toolbar': Toolbar
+  },
+
+  props: {
+    type: {
+      type: String,
+      default: 'examples'
+    }
   }
 }
 </script>
 
 <style media='screen' scoped>
-
 #content-container {
   padding: 0px;
   padding-top: 48px;
@@ -79,7 +92,7 @@ export default {
   padding: 5px 0px;
 }
 
-#canvas-container {
+#view-container {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
