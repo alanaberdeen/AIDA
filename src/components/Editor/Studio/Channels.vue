@@ -129,7 +129,7 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      viewer: state => state.image.viewer
+      viewer: state => state.image.OSDviewer
     }),
 
     ...mapGetters([
