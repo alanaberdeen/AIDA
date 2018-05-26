@@ -47,13 +47,15 @@ export default {
   },
 
   mounted () {
-    this.initialiseTool()
+    // this.initialiseTool()
   },
 
   methods: {
     initialiseTool () {
       // Relinquish control of PaperJS interface
-      document.getElementById('paper-canvas').setAttribute('class', 'pointers-no')
+      document
+        .getElementById('annotation-canvas')
+        .setAttribute('class', 'pointers-no')
     }
   }
 }

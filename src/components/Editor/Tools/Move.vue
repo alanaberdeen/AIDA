@@ -51,8 +51,9 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.viewer.viewport.getZoom(true),
-      imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      imageWidth: state =>
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
     })
   },
 
@@ -67,15 +68,24 @@ export default {
     // Current tool status.
     let toolStatus = ''
 
-    const toolDown = (event) => {
+    const toolDown = event => {
       // Get details of the element the user has clicked on.
       hitResult = paper.project.hitTest(event.point, this.selectOptions)
 
       // If no modiefiers and item has been selected then create the
       // selection group (of one element) to be selected.
-      if (hitResult && hitResult.type !== 'bounds' && (hitResult.type === 'fill' || hitResult.type === 'stroke' || hitResult.type === 'segment')) {
-        if (selectedGroup && selectedGroup.hitTest(event.point, this.selectOptions)) {
-        // If clicking an already selected item then make no change.
+      if (
+        hitResult &&
+        hitResult.type !== 'bounds' &&
+        (hitResult.type === 'fill' ||
+          hitResult.type === 'stroke' ||
+          hitResult.type === 'segment')
+      ) {
+        if (
+          selectedGroup &&
+          selectedGroup.hitTest(event.point, this.selectOptions)
+        ) {
+          // If clicking an already selected item then make no change.
         } else if (event.modifiers.shift) {
           toBeSelected.push(hitResult.item)
         } else {
@@ -84,7 +94,7 @@ export default {
 
         toolStatus = 'move'
 
-      // If user has clicked bounds then assume transforming.
+        // If user has clicked bounds then assume transforming.
       } else if (hitResult && hitResult.type === 'bounds') {
         toolStatus = 'transform'
       } else {
@@ -122,10 +132,13 @@ export default {
 
     // Functionality for user dragging select/move tool.
     // Specified action should have been set on the mouseDown event.
-    const toolDrag = (event) => {
+    const toolDrag = event => {
       // Draggable selection box.
       if (toolStatus === 'select') {
-        let selectionRect = new paper.Shape.Rectangle(event.downPoint, event.point)
+        let selectionRect = new paper.Shape.Rectangle(
+          event.downPoint,
+          event.point
+        )
         selectionRect.strokeColor = '#4D88D4'
         selectionRect.fillColor = '#A3C5E8'
         selectionRect.opacity = 0.3
@@ -204,7 +217,7 @@ export default {
     }
 
     // Select the group and provide housekeeping/emit events.
-    const toolUp = (event) => {
+    const toolUp = event => {
       if (selectedGroup) {
         selectedGroup.bounds.selected = true
       }
@@ -225,8 +238,11 @@ export default {
     // Change tool icon based on context in order to Feedforward to the
     // user the action that could be taken.
     // I imagine this is a relatively expensive operation?
-    const toolMove = (event) => {
-      if (selectedGroup && selectedGroup.hitTest(event.point, this.selectOptions)) {
+    const toolMove = event => {
+      if (
+        selectedGroup &&
+        selectedGroup.hitTest(event.point, this.selectOptions)
+      ) {
         let hit = selectedGroup.hitTest(event.point, this.selectOptions)
         if (hit.name === 'bottom-right' || hit.name === 'top-left') {
           paper.view.element.style.cursor = 'nwse-resize'
@@ -236,19 +252,19 @@ export default {
           paper.view.element.style.cursor = 'move'
         }
       } else {
-        let canvas = document.getElementById('paper-canvas')
+        let canvas = document.getElementById('annotation-canvas')
         canvas.style.cursor = 'auto'
       }
     }
 
     // handlers for keyEvents.
-    const toolKeyUp = (event) => {
+    const toolKeyUp = event => {
       // Remove items
       if (event.key === 'backspace' || event.key === 'delete') {
         // Check for current selection
         if (paper.project.selectedItems) {
           // For each item selected remove if item is not a layer
-          paper.project.selectedItems.forEach((item) => {
+          paper.project.selectedItems.forEach(item => {
             if (item.className !== 'Layer') {
               item.remove()
             }
@@ -276,9 +292,7 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'prepareCanvas'
-    ]),
+    ...mapActions(['prepareCanvas']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.

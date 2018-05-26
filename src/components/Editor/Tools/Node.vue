@@ -46,8 +46,9 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.viewer.viewport.getZoom(true),
-      imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      imageWidth: state =>
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
     })
   },
 
@@ -58,7 +59,7 @@ export default {
     // Current tool status.
     let toolStatus = null
 
-    const toolDown = (event) => {
+    const toolDown = event => {
       // Get details of the element the user has clicked on.
       hitResult = paper.project.hitTest(event.point, this.hitOptions)
 
@@ -69,14 +70,12 @@ export default {
           hitResult.item.selected = true
           toolStatus = 'selecting'
 
-        // If user selects stroke then add node
+          // If user selects stroke then add node
         } else if (hitResult.type === 'stroke') {
           toolStatus = 'adding-node'
 
-        // If user selecteds a segment.
+          // If user selecteds a segment.
         } else if (hitResult.type === 'segment') {
-          console.log('The segment: ')
-          console.log(hitResult)
           // Select only that segment and associate handles.
           paper.project.deselectAll()
           hitResult.item.selected = true
@@ -86,24 +85,37 @@ export default {
 
           toolStatus = 'adjusting-segment'
 
-        // If user selects handle
-        } else if (hitResult.type === 'handle-out' || hitResult.type === 'handle-in') {
+          // If user selects handle
+        } else if (
+          hitResult.type === 'handle-out' ||
+          hitResult.type === 'handle-in'
+        ) {
           toolStatus = 'adjusting-handle'
         }
 
-      // Otherwise deselect all selections
+        // Otherwise deselect all selections
       } else {
         paper.project.deselectAll()
       }
     }
 
     // On mouseDrag functionality
-    const toolDrag = (event) => {
-      if (hitResult && (toolStatus === 'adjusting-segment')) {
+    const toolDrag = event => {
+      if (hitResult && toolStatus === 'adjusting-segment') {
         hitResult.segment.point = hitResult.segment.point.add(event.delta)
-      } else if (hitResult && (hitResult.type === 'handle-out') && (toolStatus === 'adjusting-handle')) {
-        hitResult.segment.handleOut = hitResult.segment.handleOut.add(event.delta)
-      } else if (hitResult && (hitResult.type === 'handle-in') && (toolStatus === 'adjusting-handle')) {
+      } else if (
+        hitResult &&
+        hitResult.type === 'handle-out' &&
+        toolStatus === 'adjusting-handle'
+      ) {
+        hitResult.segment.handleOut = hitResult.segment.handleOut.add(
+          event.delta
+        )
+      } else if (
+        hitResult &&
+        hitResult.type === 'handle-in' &&
+        toolStatus === 'adjusting-handle'
+      ) {
         hitResult.segment.handleIn = hitResult.segment.handleIn.add(event.delta)
       }
     }
@@ -114,9 +126,7 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'prepareCanvas'
-    ]),
+    ...mapActions(['prepareCanvas']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.
@@ -136,7 +146,6 @@ export default {
       }
     }
   }
-
 }
 </script>
 

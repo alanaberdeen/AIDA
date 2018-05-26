@@ -91,7 +91,6 @@ import toolCount from './Count.vue'
 import toolDelete from './Delete.vue'
 
 export default {
-
   components: {
     'app-circle': toolCircle,
     'app-rectangle': toolRectangle,
@@ -118,9 +117,7 @@ export default {
   },
 
   methods: {
-    ...mapGetters([
-      'getConfigStepTools'
-    ])
+    ...mapGetters(['getConfigStepTools'])
   }
 }
 </script>
@@ -131,10 +128,10 @@ export default {
 <style lang='css' scoped>
 #toolsPanel {
   height: calc(100vh - 48px);
-  background: #EEEEEE;
+  background: #eeeeee;
 }
 
 #toolList {
-  background: #EEEEEE;
+  background: #eeeeee;
 }
 </style>

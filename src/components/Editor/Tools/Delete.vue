@@ -46,8 +46,8 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.viewer.viewport.getZoom(true),
-      imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x
+      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x
     })
   },
 

@@ -48,21 +48,22 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.viewer.viewport.getZoom(true),
-      imageWidth: state => state.image.viewer.world.getItemAt(0).getContentSize().x,
+      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      imageWidth: state =>
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
       activeStep: state => state.config.activeStep
     })
   },
 
   created () {
-    const toolDown = (event) => {
+    const toolDown = event => {
       // The distance the mouse has to be dragged before an event is fired
       // is dependent on the default radius which is set by the
       // current zoom level.
       this.toolCircle.minDistance = this.strokeWidth * 4
     }
 
-    const toolDrag = (event) => {
+    const toolDrag = event => {
       // If user dragged fire enough to fire this event assume they are
       // adjusting the default size of the circle.
       // Reset the distance before further events fired.
@@ -73,7 +74,12 @@ export default {
 
       // Draw the tracking path
       let trackingPath = new paper.Path.Line(event.downPoint, event.point)
-      trackingPath.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1})
+      trackingPath.strokeColor = new paper.Color({
+        hue: 220,
+        saturation: 0.7,
+        lightness: 0.5,
+        alpha: 1
+      })
       trackingPath.strokeWidth = this.strokeWidth
       trackingPath.add(event.point)
       trackingPath.removeOn({
@@ -85,7 +91,12 @@ export default {
       // Create a circle positioned at point where mousedown was, with radius
       // the distance between mousedown/mouseup
       let trackingCircle = new paper.Path.Circle(event.downPoint, this.radius)
-      trackingCircle.strokeColor = new paper.Color({hue: 220, saturation: 0.7, lightness: 0.5, alpha: 1})
+      trackingCircle.strokeColor = new paper.Color({
+        hue: 220,
+        saturation: 0.7,
+        lightness: 0.5,
+        alpha: 1
+      })
       trackingCircle.strokeWidth = this.strokeWidth
       trackingCircle.removeOn({
         drag: true,
@@ -94,7 +105,7 @@ export default {
       })
     }
 
-    const toolUp = (event) => {
+    const toolUp = event => {
       // Create a circle marker positioned on the point where mousedown was,
       // with either the default radius or the new radius as set by the
       // distance between the point of mouseDown and mouseUp.
@@ -122,13 +133,9 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'prepareCanvas'
-    ]),
+    ...mapActions(['prepareCanvas']),
 
-    ...mapGetters([
-      'getDefaultColor'
-    ]),
+    ...mapGetters(['getDefaultColor']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.
@@ -149,7 +156,7 @@ export default {
       let x2 = secondPoint.x
       let y2 = secondPoint.y
 
-      let distance = Math.sqrt((Math.pow((x2 - x1), 2)) + (Math.pow((y2 - y1), 2)))
+      let distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
       return distance
     }
   }
