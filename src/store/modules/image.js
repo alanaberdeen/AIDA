@@ -58,6 +58,10 @@ const actions = {
     state,
     dispatch
   }, images) => {
+    // First, empty the images previously stored in the state.
+    state.images = []
+
+    // Then add the new images to both the state and the OSD viewer.
     dispatch('addImagesToState', images).then(() => {
       for (let i in images) {
         dispatch('addOSDImage', images[i])
