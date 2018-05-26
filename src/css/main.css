@@ -1,70 +1,74 @@
 /** CSS Styles */
+
 .faIcons {
-    /*  'grey darken-2' in the material color palette */
-    color: #616161;
+  /*  'grey darken-2' in the material color palette */
+  color: #616161;
 }
 
 .faIconsActive {
-    /*  'blue darken-1' in the material color palette */
-    color: #1E88E5;
+  /*  'blue darken-1' in the material color palette */
+  color: #1E88E5;
 }
 
 /*  There are a few classes in here to handle pointer events on the overlapping
     openseadragon and paperJS canvas elements. At the moment these are simply
     switched on our off to toggle the interaction mode. */
+
 .pointers-please {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 .pointers-no {
-    pointer-events: none;
+  pointer-events: none;
 }
 
-html, body {
-      height: 100%;
-      width: 100%;
+html,
+body {
+  height: 100%;
+  width: 100%;
 }
 
 /* The following styles will be applied to the markdown content that is
        compiled by vue-loader-markdown and injected into the page via
        vue-loader
 */
+
 h2 {
-    font-size: 40px !important;
-    margin: 0 0 1em;
+  font-size: 40px !important;
+  margin: 0 0 1em;
 }
 
 h4 {
-    font-size: 20px !important;
-    border-bottom: 1px solid #ddd;
-    color: #1976d2;
-    margin-top: 30px;
+  font-size: 20px !important;
+  border-bottom: 1px solid #ddd;
+  color: #1976d2;
+  margin-top: 30px;
 }
 
 h5 {
-    font-size: 16px !important;
-    color: #1976D2;
-    margin: 30px 0px 0px 0px !important;
+  font-size: 16px !important;
+  color: #1976D2;
+  margin: 30px 0px 0px 0px !important;
 }
 
 p {
-    line-height: 1.6em;
-    padding-top: 5px;
+  line-height: 1.6em;
+  padding-top: 5px;
 }
 
 tbody tr:nth-child(odd) {
-    background-color: rgba(0,0,0,0.05);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 table {
-    margin-top: 20px;
-    margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 td {
-    padding: 5px;
+  padding: 5px;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
