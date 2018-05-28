@@ -1,11 +1,13 @@
 // This file handles the management of the state for the image viewer.
 // The image viewer is controlled via the OpenSeaDragon js lib.
 import openseadragon from 'openseadragon'
+import Vue from 'vue'
 
 const state = {
   OSDviewer: null,
   OSDworld: null,
   images: [],
+  activeChannel: 0,
   view: {
     viewSize: [null, null],
     imageSize: [null, null],
@@ -81,6 +83,12 @@ const actions = {
     commit('addOSDImage', image)
   },
 
+  setActiveChannel: ({
+    commit
+  }, payload) => {
+    commit('setActiveChannel', payload)
+  },
+
   toggleChannelOpacity: ({
     commit
   }, payload) => {
@@ -99,9 +107,10 @@ const actions = {
   },
 
   setChannelName: ({
-    commit
+    commit,
+    rootState
   }, payload) => {
-    commit('setChannelName')
+    commit('setChannelName', payload)
   }
 }
 
@@ -174,6 +183,10 @@ const mutations = {
     }
   },
 
+  setActiveChannel: (state, payload) => {
+    state.activeChannel = payload
+  },
+
   // Toggle the visibility of a channel.
   // TODO: build in some kind of cache of opacity so that when it is toggled
   // from not-visible to visible it can easily return to the state it was.
@@ -213,7 +226,17 @@ const mutations = {
 
   // Set the channel name
   setChannelName: (state, payload) => {
-    // payload.channel.
+    let newName
+    // Check if keyboard event. This happens in the case that the user types
+    // the opacity value in the text box and hits enter
+    if (payload instanceof KeyboardEvent) {
+      newName = payload.target.value
+    } else {
+      newName = payload
+    }
+
+    // Save changes to Vuex state
+    Vue.set(state.images[state.activeChannel], 'name', newName)
   }
 }
 

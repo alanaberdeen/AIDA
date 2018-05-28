@@ -117,12 +117,6 @@ const actions = {
     commit('setConfigActiveLayer', layerIndex)
   },
 
-  setConfigActiveChannel: ({
-    commit
-  }, channelIndex) => {
-    commit('setConfigActiveChannel', channelIndex)
-  },
-
   loadConfig: ({
     commit,
     rootState
@@ -141,10 +135,6 @@ const mutations = {
 
   setConfigActiveLayer: (state, layerIndex) => {
     state.activeLayer = layerIndex
-  },
-
-  setConfigActiveChannel: (state, channelIndex) => {
-    state.activeChannel = channelIndex
   },
 
   loadConfig: (state, payload) => {

@@ -12,7 +12,7 @@
         <v-spacer/>
         <v-btn icon>
           <v-icon id="iconButton">
-            tab
+            add
           </v-icon>
         </v-btn>
       </v-toolbar>
@@ -26,7 +26,7 @@
           <v-list-tile
             slot="activator"
             no-action
-            @click.native="setConfigActiveChannel(index)"
+            @click.native="setActiveChannel(index)"
           >
             <v-list-tile-content>
               <v-list-tile-title
@@ -85,7 +85,7 @@
                 </v-tab-item>
 
                 <!-- Rename List Item -->
-                <!-- <v-tab-item>
+                <v-tab-item>
                   <div id="tab-item">
                     <v-text-field
                       :value="channel.name ? channel.name : ('Channel ' + index)"
@@ -94,10 +94,10 @@
                       @keyup.native.enter="setChannelName"
                     />
                   </div>
-                </v-tab-item> -->
+                </v-tab-item>
 
                 <!-- Delete List item -->
-                <!-- <v-tab-item>
+                <v-tab-item>
                   <div id="tab-item">
                     <v-btn
                       id="deleteButton"
@@ -110,7 +110,7 @@
                       Delete
                     </v-btn>
                   </div>
-                </v-tab-item> -->
+                </v-tab-item>
 
               </v-tabs-items>
             </v-tabs>
@@ -140,7 +140,9 @@ export default {
   methods: {
     ...mapActions([
       'setChannelOpacity',
-      'setConfigActiveChannel'
+      'setActiveChannel',
+      'setChannelName',
+      'deleteChannel'
     ])
   }
 }
