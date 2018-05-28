@@ -20,7 +20,7 @@
           to="/example/dzi"
         >
           <v-card-media
-            src="/static/img/dzi_example.png"
+            :src="require('./dzi_example.png')"
             height="200px"/>
           <v-card-title primary-title>
             <div>
@@ -49,7 +49,7 @@
           to="/example/simple"
         >
           <v-card-media
-            src="/static/img/simple_example.png"
+            :src="require('./simple_example.png')"
             height="200px"/>
           <v-card-title primary-title>
             <div>

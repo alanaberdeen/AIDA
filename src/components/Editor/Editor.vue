@@ -52,7 +52,7 @@ import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
 import Stepper from './Stepper.vue'
 import View from './view/View.vue'
-import Examples from './Examples.vue'
+import Examples from './examples/Examples.vue'
 import Toolbar from '../header/Toolbar.vue'
 
 export default {
