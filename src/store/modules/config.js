@@ -106,9 +106,13 @@ const getters = {
 
 const actions = {
   setActiveStep: ({
-    commit
+    commit,
+    dispatch
   }, step) => {
-    commit('setActiveStep', step)
+    if (typeof step.specificLayer === 'number') {
+      dispatch('setActiveLayer', (step.specificLayer))
+    }
+    commit('setActiveStep', (step.id - 1))
   },
 
   setConfigActiveLayer: ({
