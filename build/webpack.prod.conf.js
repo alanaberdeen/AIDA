@@ -97,7 +97,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     ]),
     // service worker caching
     new SWPrecacheWebpackPlugin({
-      cacheId: 'aida2',
+      cacheId: 'aida',
       filename: 'service-worker.js',
       staticFileGlobs: ['dist/**/*.{js,html,css}'],
       minify: true,
