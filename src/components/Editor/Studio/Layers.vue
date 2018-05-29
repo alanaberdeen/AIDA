@@ -143,14 +143,14 @@ export default {
       'setLayerOpacity',
       'newLayer',
       'exportLayerJSON',
-      'setActiveStepAndLayer',
+      'setActiveLayer',
       'setLayerOpacity',
       'setLayerName',
       'deleteLayer'
     ]),
 
     selectLayer (index) {
-      this.setActiveStepAndLayer(index)
+      this.setActiveLayer(index)
     }
   }
 }
@@ -159,7 +159,7 @@ export default {
 <style lang='css' scoped>
 .panel {
   margin-top: 7px;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   width: 240px;
 }
 
@@ -168,7 +168,7 @@ export default {
 }
 
 #toolbar {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
 }
 
 #iconButton {
@@ -176,16 +176,16 @@ export default {
 }
 
 #list {
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
 
 #controls {
-  background-color: #F5F5F5;
-  border-top: 1px solid #E0E0E0;
+  background-color: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
 }
 
 #tab-items {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 
 #tab-item {

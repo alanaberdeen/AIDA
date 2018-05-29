@@ -14,7 +14,7 @@
             :key="index"
             :step="step.id"
             editable
-            @click.native="setActiveStepAndLayer(index)"
+            @click.native="setActiveStep(step)"
           />
           <v-divider
             v-if="step.id !== steps.length"
@@ -46,17 +46,14 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'setActiveStep',
-      'setActiveStepAndLayer'
-    ])
+    ...mapActions(['setActiveStep', 'setActiveStepAndLayer'])
   }
 }
 </script>
 
 <style lang='css' scoped>
 #stepper {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
 }
 
 #stepper-header {
@@ -64,7 +61,7 @@ export default {
 }
 
 #hint-card {
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
 
 #hint {
