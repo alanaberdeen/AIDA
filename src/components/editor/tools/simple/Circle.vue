@@ -27,7 +27,7 @@
 
 <script>
 import paper from 'paper'
-import { eventBus } from '../../../main'
+import { eventBus } from '../../../../main'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {

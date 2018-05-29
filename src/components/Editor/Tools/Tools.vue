@@ -80,15 +80,15 @@
 import { mapState, mapGetters } from 'vuex'
 
 // Import child components
-import toolCircle from './Circle.vue'
-import toolRectangle from './Rectangle.vue'
-import toolPen from './Pen.vue'
-import toolPencil from './Pencil.vue'
-import toolMove from './Move.vue'
-import toolPan from './Pan.vue'
-import toolNode from './Node.vue'
-import toolCount from './Count.vue'
-import toolDelete from './Delete.vue'
+import toolCircle from './simple/Circle.vue'
+import toolRectangle from './simple/Rectangle.vue'
+import toolPen from './simple/Pen.vue'
+import toolPencil from './simple/Pencil.vue'
+import toolMove from './simple/Move.vue'
+import toolPan from './simple/Pan.vue'
+import toolNode from './simple/Node.vue'
+import toolCount from './simple/Count.vue'
+import toolDelete from './simple/Delete.vue'
 
 export default {
   components: {
