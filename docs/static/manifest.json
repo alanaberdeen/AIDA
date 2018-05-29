@@ -1,6 +1,6 @@
 {
-  "name": "aida2",
-  "short_name": "aida2",
+  "name": "aida",
+  "short_name": "aida",
   "start_url": "/index.html",
   "display": "standalone",
 }
