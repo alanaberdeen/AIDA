@@ -10,6 +10,12 @@ const state = {
 const getters = {}
 
 const actions = {
+  resetAnnotationState: ({
+    commit
+  }) => {
+    commit('resetAnnotationState')
+  },
+
   refreshState: ({
     commit
   }, payload) => {
@@ -76,6 +82,12 @@ const actions = {
 }
 
 const mutations = {
+  resetAnnotationState: (state) => {
+    state = {
+      project: null
+    }
+  },
+
   // Refresh the Vuex store state with the current paperJS project representation
   refreshState: (state, payload) => {
     state.project = paper.project.exportJSON({

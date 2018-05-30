@@ -8,6 +8,15 @@ const state = {}
 const getters = {}
 
 const actions = {
+  // Reset Vuex state to default
+  resetState: ({
+    dispatch
+  }) => {
+    dispatch('resetEditorState')
+    dispatch('resetAnnotationState')
+    dispatch('resetImageState')
+  },
+
   // Load a project into AIDA.
   loadProject: ({
     dispatch

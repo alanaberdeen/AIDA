@@ -49,6 +49,12 @@ const getters = {
 }
 
 const actions = {
+  resetImageState: ({
+    commit
+  }) => {
+    commit('resetImageState')
+  },
+
   setupOSDCanvas: ({
     commit
   }, payload) => {
@@ -115,6 +121,21 @@ const actions = {
 }
 
 const mutations = {
+  resetImageState: (state) => {
+    state = {
+      OSDviewer: null,
+      OSDworld: null,
+      images: [],
+      activeChannel: 0,
+      view: {
+        viewSize: [null, null],
+        imageSize: [null, null],
+        imageCenter: [null, null],
+        imageZoom: null
+      }
+    }
+  },
+
   // Setup an OpenSeaDragon OSDviewer.
   setupOSDCanvas: (state, payload) => {
     // Create and OSD viewer

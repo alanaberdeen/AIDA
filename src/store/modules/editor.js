@@ -41,6 +41,12 @@ const getters = {
 }
 
 const actions = {
+  resetEditorState: ({
+    commit
+  }) => {
+    commit('resetEditorState')
+  },
+
   setActiveStep: ({
     commit,
     dispatch
@@ -69,6 +75,10 @@ const actions = {
 }
 
 const mutations = {
+  resetEditorState: (state) => {
+    state = {}
+  },
+
   setActiveStep: (state, stepIndex) => {
     state.activeStep = stepIndex
   },
