@@ -74,6 +74,7 @@
       <v-divider/>
 
       <app-faces
+        v-if="(getStepTools().includes('faces'))"
         :active="(activeTool === 'faces')"
         @click.native="activeTool = 'faces'"
       />
