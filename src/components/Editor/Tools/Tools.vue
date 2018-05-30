@@ -10,7 +10,7 @@
     >
 
       <app-pan
-        v-if="(getConfigStepTools().includes('pan'))"
+        v-if="(getStepTools().includes('pan'))"
         :active="(activeTool === 'pan')"
         @click.native="activeTool = 'pan'"
       />
@@ -18,13 +18,13 @@
       <v-divider/>
 
       <app-move
-        v-if="(getConfigStepTools().includes('move'))"
+        v-if="(getStepTools().includes('move'))"
         :active="(activeTool === 'move')"
         @click.native="activeTool = 'move'"
       />
 
       <app-node
-        v-if="(getConfigStepTools().includes('node'))"
+        v-if="(getStepTools().includes('node'))"
         :active="(activeTool === 'node')"
         @click.native="activeTool = 'node'"
       />
@@ -32,25 +32,25 @@
       <v-divider/>
 
       <app-circle
-        v-if="(getConfigStepTools().includes('circle'))"
+        v-if="(getStepTools().includes('circle'))"
         :active="(activeTool === 'circle')"
         @click.native="activeTool = 'circle'"
       />
 
       <app-rectangle
-        v-if="(getConfigStepTools().includes('rectangle'))"
+        v-if="(getStepTools().includes('rectangle'))"
         :active="(activeTool === 'rectangle')"
         @click.native="activeTool = 'rectangle'"
       />
 
       <app-pen
-        v-if="(getConfigStepTools().includes('pen'))"
+        v-if="(getStepTools().includes('pen'))"
         :active="(activeTool === 'pen')"
         @click.native="activeTool = 'pen'"
       />
 
       <app-pencil
-        v-if="(getConfigStepTools().includes('pencil'))"
+        v-if="(getStepTools().includes('pencil'))"
         :active="(activeTool === 'pencil')"
         @click.native="activeTool = 'pencil'"
       />
@@ -58,7 +58,7 @@
       <v-divider/>
 
       <app-count
-        v-if="(getConfigStepTools().includes('count'))"
+        v-if="(getStepTools().includes('count'))"
         :active="(activeTool === 'count')"
         @click.native="activeTool = 'count'"
       />
@@ -66,7 +66,7 @@
       <v-divider/>
 
       <app-delete
-        v-if="(getConfigStepTools().includes('delete'))"
+        v-if="(getStepTools().includes('delete'))"
         :active="(activeTool === 'delete')"
         @click.native="activeTool = 'delete'"
       />
@@ -130,7 +130,7 @@ export default {
   },
 
   methods: {
-    ...mapGetters(['getConfigStepTools'])
+    ...mapGetters(['getStepTools'])
   }
 }
 </script>

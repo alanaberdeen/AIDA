@@ -8,7 +8,7 @@ const state = {}
 
 const getters = {
   // Get an array specifying the tools included in the current step.
-  getConfigStepTools: state => {
+  getStepTools: state => {
     if (state.steps) {
       return state.steps[state.activeStep].tools
     } else {
