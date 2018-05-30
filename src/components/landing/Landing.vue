@@ -194,6 +194,18 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
+export default {
+  mounted () {
+    // Reset store data to default
+    this.resetState()
+  },
+
+  methods: {
+    ...mapActions(['resetState'])
+  }
+}
 </script>
 
 <style scoped>
