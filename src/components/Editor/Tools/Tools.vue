@@ -71,6 +71,13 @@
         @click.native="activeTool = 'delete'"
       />
 
+      <v-divider/>
+
+      <app-faces
+        :active="(activeTool === 'faces')"
+        @click.native="activeTool = 'faces'"
+      />
+
     </v-list>
 
   </div>
@@ -80,6 +87,8 @@
 import { mapState, mapGetters } from 'vuex'
 
 // Import child components
+
+// Simple Tools:
 import toolCircle from './simple/Circle.vue'
 import toolRectangle from './simple/Rectangle.vue'
 import toolPen from './simple/Pen.vue'
@@ -89,6 +98,9 @@ import toolPan from './simple/Pan.vue'
 import toolNode from './simple/Node.vue'
 import toolCount from './simple/Count.vue'
 import toolDelete from './simple/Delete.vue'
+
+// Assissted Tools:
+import toolFaces from './assisted/Faces.vue'
 
 export default {
   components: {
@@ -100,7 +112,8 @@ export default {
     'app-node': toolNode,
     'app-pencil': toolPencil,
     'app-count': toolCount,
-    'app-delete': toolDelete
+    'app-delete': toolDelete,
+    'app-faces': toolFaces
   },
 
   data () {
