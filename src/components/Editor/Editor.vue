@@ -101,6 +101,7 @@ export default {
 
 #left-panel {
   flex: 0 1 auto;
+  min-width: 54px;
 }
 
 #right-panel {
