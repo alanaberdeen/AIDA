@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 // files.
 import image from './modules/image'
 import annotation from './modules/annotation'
-import config from './modules/config'
+import editor from './modules/editor'
 import common from './modules/common'
 Vue.use(Vuex)
 
@@ -18,7 +18,7 @@ export default new Vuex.Store({
   modules: {
     image,
     annotation,
-    config,
+    editor,
     common
   }
 })

@@ -46,10 +46,10 @@
               </v-list-tile>
 
               <v-list-tile
-                v-for="(step,index) in config.steps"
+                v-for="(step,index) in editor.steps"
                 :key="index"
-                :class="{'option-active': (config.activeStep === index)}"
-                @click.native="config.activeStep = index; active=''"
+                :class="{'option-active': (editor.activeStep === index)}"
+                @click.native="editor.activeStep = index; active=''"
               >
 
                 <v-list-tile-content>
@@ -92,7 +92,7 @@
               </v-list-tile>
 
               <v-list-tile
-                v-for="(image,index) in config.images"
+                v-for="(image,index) in editor.images"
                 :key="index"
                 :class="{'option-active': (activeImage === index)}"
                 @click.native="activeImage = index; active=''"
@@ -164,19 +164,19 @@
                 <!-- Show task settings -->
                 <app-step-settings
                   v-if="steps"
-                  :config="config"
-                  :step="config.activeStep"/>
+                  :editor="editor"
+                  :step="editor.activeStep"/>
 
                 <!-- Show image settings -->
                 <app-add-image
                   v-if="images && active === 'addImage'"
-                  :config="config"
+                  :editor="editor"
                   :osd-viewer="osdViewer"/>
 
                 <!-- Show annotation settings -->
                 <app-add-annotation
                   v-if="annotations && active === 'addAnnotation'"
-                  :config="config"
+                  :editor="editor"
                   :osd-viewer="osdViewer"
                   :paper-scope="paperScope"/>
               </v-card-text>
@@ -220,7 +220,7 @@ export default {
   },
 
   props: {
-    config: {
+    editor: {
       type: Object,
       default: function () { return {} }
     },

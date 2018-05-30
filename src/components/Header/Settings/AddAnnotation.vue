@@ -45,7 +45,7 @@
 
 export default {
   props: {
-    config: {
+    editor: {
       type: Object,
       default: function () { return {} }
     },

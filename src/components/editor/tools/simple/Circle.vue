@@ -51,7 +51,7 @@ export default {
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      activeStep: state => state.config.activeStep
+      activeStep: state => state.editor.activeStep
     })
   },
 

@@ -6,7 +6,7 @@
       two-line
       subheader>
       <v-list-item
-        v-for="tool in config.tools"
+        v-for="tool in editor.tools"
         :key="tool.name">
         <v-list-tile avatar>
 
@@ -29,7 +29,7 @@
 <script>
 export default {
   props: {
-    config: {
+    editor: {
       type: Object,
       default: function () { return {} }
     }

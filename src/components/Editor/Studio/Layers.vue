@@ -134,7 +134,7 @@ export default {
   computed: {
     ...mapState({
       layers: state => state.annotation.project,
-      activeLayer: state => state.config.activeLayer
+      activeLayer: state => state.editor.activeLayer
     })
   },
 

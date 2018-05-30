@@ -1,5 +1,5 @@
 // This file handles the Vuex state changes that are either common, or involve
-// using more than one of the different parts: annotation, config and image.
+// using more than one of the different parts: annotation, editor and image.
 import axios from 'axios'
 import paper from 'paper'
 
@@ -18,10 +18,10 @@ const actions = {
     // Pull latest test project from REST api
     axios
       .get(endpoint)
-      // Update the config.js state
+      // Update the editor.js state
       .then(function (response) {
         // Load the editor configuration
-        dispatch('loadConfig', response.data.config, {
+        dispatch('loadConfig', response.data.editor, {
           root: true
         })
 
@@ -46,12 +46,12 @@ const actions = {
     dispatch
   }) => {
     // Construct endpoint to store data at
-    let endpoint = 'https://aida-testing.firebaseio.com/' + rootState.config.type + '.json'
+    let endpoint = 'https://aida-testing.firebaseio.com/' + rootState.editor.type + '.json'
 
     dispatch('refreshState').then(
       axios
         .put(endpoint, {
-          config: rootState.config,
+          editor: rootState.editor,
           annotation: rootState.annotation,
           images: rootState.image.images
         })

@@ -46,7 +46,7 @@
 
 export default {
   props: {
-    config: {
+    editor: {
       type: Object,
       default: function () { return {} }
     },
@@ -97,9 +97,9 @@ export default {
     success () {
       let vm = this
 
-      // Add new image details to config object.
-      let newid = this.config.images.length + 1
-      this.config.images.push({
+      // Add new image details to editor object.
+      let newid = this.editor.images.length + 1
+      this.editor.images.push({
         id: newid,
         name: this.imageName,
         url: this.imagePath

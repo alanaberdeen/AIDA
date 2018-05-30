@@ -35,7 +35,7 @@
     </v-btn>
 
     <!-- <v-btn icon class='pointers-no'>
-            <app-settings   :config='config'
+            <app-settings   :editor='editor'
                             :osdViewer='osdViewer'
                             :paperScope='paperScope'>
             </app-settings>

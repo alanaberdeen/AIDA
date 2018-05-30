@@ -4,15 +4,7 @@ import paper from 'paper'
 import Vue from 'vue'
 
 const state = {
-  project: [
-    [
-      'Layer',
-      {
-        'name': 'Layer 1',
-        'applyMatrix': true
-      }
-    ]
-  ]
+  project: null
 }
 
 const getters = {}
@@ -60,7 +52,7 @@ const actions = {
   }, layerIndex) => {
     commit('setActiveLayer', layerIndex)
 
-    // Also, store the new active layer in the config
+    // Also, store the new active layer in the editor
     dispatch('setConfigActiveLayer', layerIndex)
   },
 

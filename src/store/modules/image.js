@@ -101,7 +101,7 @@ const actions = {
   }, payload) => {
     commit('setChannelOpacity', {
       input: payload,
-      activeChannel: rootState.config.activeChannel,
+      activeChannel: rootState.editor.activeChannel,
       rootState: rootState
     })
   },

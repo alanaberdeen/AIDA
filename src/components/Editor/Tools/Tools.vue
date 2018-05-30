@@ -124,8 +124,8 @@ export default {
 
   computed: {
     ...mapState({
-      activeStep: state => state.config.activeStep,
-      tools: state => state.config.tools
+      activeStep: state => state.editor.activeStep,
+      tools: state => state.editor.tools
     })
   },
 

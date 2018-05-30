@@ -40,8 +40,8 @@ import { mapActions, mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      activeStep: state => state.config.activeStep,
-      steps: state => state.config.steps
+      activeStep: state => state.editor.activeStep,
+      steps: state => state.editor.steps
     })
   },
 

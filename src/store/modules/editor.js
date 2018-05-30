@@ -4,71 +4,7 @@
 // the annotations or the default image and annotation content.
 import Vue from 'vue'
 
-// Default configuration.
-const state = {
-  'type': 'dzi',
-  'activeStep': 0,
-  'activeLayer': 0,
-  'activeChannel': 0,
-  'steps': [{
-    'ROI': false,
-    'color': {
-      'fill': {
-        'alpha': 0.4,
-        'hue': 170,
-        'lightness': 0.5,
-        'saturation': 0.7
-      },
-      'stroke': {
-        'alpha': 1,
-        'hue': 170,
-        'lightness': 0.5,
-        'saturation': 0.7
-      }
-    },
-    'id': 1,
-    'instruction': 'Instructions for Step 1: ',
-    'tools': ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count', 'delete']
-  }, {
-    'ROI': false,
-    'color': {
-      'fill': {
-        'alpha': 0.4,
-        'hue': 350,
-        'lightness': 0.5,
-        'saturation': 0.7
-      },
-      'stroke': {
-        'alpha': 1,
-        'hue': 350,
-        'lightness': 0.5,
-        'saturation': 0.7
-      }
-    },
-    'id': 2,
-    'instruction': 'Instructions for Step 2',
-    'tools': ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count', 'delete']
-  }, {
-    'ROI': false,
-    'color': {
-      'fill': {
-        'alpha': 0.4,
-        'hue': 20,
-        'lightness': 0.5,
-        'saturation': 0.7
-      },
-      'stroke': {
-        'alpha': 1,
-        'hue': 20,
-        'lightness': 0.5,
-        'saturation': 0.7
-      }
-    },
-    'id': 3,
-    'instruction': 'Instructions for Step 3:',
-    'tools': ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count', 'delete']
-  }]
-}
+const state = {}
 
 const getters = {
   // Get an array specifying the tools included in the current step.
@@ -126,7 +62,7 @@ const actions = {
     rootState
   }, payload) => {
     commit('loadConfig', {
-      config: payload,
+      editor: payload,
       rootState: rootState
     })
   }
@@ -145,7 +81,7 @@ const mutations = {
     // Using Vue.set on the parent (rootState) to ensure that we don't fall into
     // the trap of Vue reactivity caveats.
     // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
-    Vue.set(payload.rootState, 'config', payload.config)
+    Vue.set(payload.rootState, 'editor', payload.editor)
   }
 }
 
