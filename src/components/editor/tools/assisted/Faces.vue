@@ -73,6 +73,11 @@ export default {
       // In production the key here should only be valid if the domain that
       // refers the call is: alanaberdeen.github.io/AIDA.
       // This is to ensure there is no un-authorised use.
+      //
+      // Clearly there is still a major authentication probelm here. It is
+      // difficult to balance the full client side SPA setup and a secure
+      // RESTful backend. Need a way of autheticating calls without keeping the
+      // secrets in the client code...
       axios
         .post(
           'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAeCFXV_oK3QjGQdypK_2hVTH_ck2mshFw',
