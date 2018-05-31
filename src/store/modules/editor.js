@@ -4,7 +4,13 @@
 // the annotations or the default image and annotation content.
 import Vue from 'vue'
 
-const state = {}
+const state = {
+  'type': 'dzi',
+  'activeChannel': 0,
+  'activeLayer': 0,
+  'activeStep': 0,
+  'steps': null
+}
 
 const getters = {
   // Get an array specifying the tools included in the current step.
