@@ -114,8 +114,9 @@ export default {
       newCircle.strokeWidth = this.strokeWidth
       newCircle.fillColor = new paper.Color(this.getDefaultColor().fill)
 
-      // Custom attribute: includes item in counting tools.
+      // Custom data attribute:
       newCircle.data.countable = true
+      newCircle.data.subType = 'circle'
 
       // As the number of circle markers in the project has changed,
       // Emit an event that will check to see if we are counting these

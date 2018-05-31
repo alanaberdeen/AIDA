@@ -75,6 +75,9 @@ export default {
       newRect.strokeColor = new paper.Color(this.getDefaultColor().stroke)
       newRect.fillColor = new paper.Color(this.getDefaultColor().fill)
       newRect.strokeWidth = this.strokeWidth
+
+      // Custom data attribute:
+      newRect.data.subType = 'rectangle'
     }
 
     this.toolRect = new paper.Tool()
