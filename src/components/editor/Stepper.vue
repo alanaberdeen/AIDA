@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div v-if="steps">
     <v-stepper
-      v-if="steps"
       id="stepper"
       :value="(activeStep + 1)"
       class="pointers-please"
