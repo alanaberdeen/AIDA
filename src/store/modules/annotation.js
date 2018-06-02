@@ -248,8 +248,6 @@ const mutations = {
 
       return segments
     }
-
-    console.log(state.project)
   },
 
   // Setup the PaperJs instance on the canvas DOM element.
