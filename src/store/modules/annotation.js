@@ -95,7 +95,14 @@ const state = {
   ]
 }
 
-const getters = {}
+const getters = {
+  // Get default color for the current layer
+  getDefaultLayerColor: state => {
+    let activeLayerIndex = paper.project.activeLayer.index
+    let numberLayers = state.project.layers.length
+    return state.defaultColors[activeLayerIndex % numberLayers]
+  }
+}
 
 const actions = {
   resetAnnotationState: ({
@@ -328,16 +335,17 @@ const mutations = {
 
   // Add a new layer to the annotation project.
   newLayer: state => {
+    // Create layer in paperJS environment
     let newLayer = new paper.Layer({
-      name: 'Layer ' + (paper.project.layers.length + 1),
       position: paper.view.center
     })
-    console.log(newLayer)
+    newLayer.opacity = 1
 
-    // Update the store with the new project representation
-    state.project = paper.project.exportJSON({
-      asString: false,
-      precision: 5
+    // Add new layer to the Vuex state representation
+    state.project.layers.push({
+      name: 'Layer ' + (state.project.layers.length + 1),
+      opacity: 1,
+      items: []
     })
   },
 
@@ -371,7 +379,7 @@ const mutations = {
     // Watch out for Vue Change Detection Caveats: isn't reactive to new
     // attributes being added to an object. Use Vue.set to get around this.
     Vue.set(
-      state.project[paper.project.activeLayer.index][1],
+      state.project.layers[paper.project.activeLayer.index],
       'opacity',
       newOpacity
     )
@@ -402,7 +410,7 @@ const mutations = {
   // Remove active layer
   deleteLayer: (state, payload) => {
     // Remove from Vuex state
-    state.project.splice(paper.project.activeLayer.index, 1)
+    state.project.layers.splice(paper.project.activeLayer.index, 1)
 
     // Remove from paperJS project
     paper.project.activeLayer.remove()
