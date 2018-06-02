@@ -22,7 +22,7 @@ const actions = {
     dispatch
   }, payload) => {
     // Construct endpoint from which to pull the data from
-    let endpoint = 'https://aida-testing.firebaseio.com/' + payload + '.json'
+    let endpoint = 'https://aida-private.firebaseio.com/' + payload + '.json'
 
     // Pull latest test project from REST api
     axios
@@ -55,9 +55,9 @@ const actions = {
     dispatch
   }) => {
     // Construct endpoint to store data at
-    let endpoint = 'https://aida-testing.firebaseio.com/' + rootState.editor.type + '.json'
+    let endpoint = 'https://aida-private.firebaseio.com/' + rootState.editor.type + '.json'
 
-    dispatch('refreshState').then(
+    dispatch('refreshAnnotationState').then(
       axios
         .put(endpoint, {
           editor: rootState.editor,
@@ -68,7 +68,6 @@ const actions = {
           console.log(response)
         })
     )
-    console.log(rootState.annotation)
   },
 
   // Install event hooks to keep the annotations and the OSDcanvas in sync when

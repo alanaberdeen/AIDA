@@ -8,141 +8,163 @@ const state = {
     name: 'An AIDA project',
     layers: []
   },
-  defaultColors: [
-    {
-      stroke: {
-        alpha: 1,
-        hue: 170,
-        lightness: 0.69,
-        saturation: 0.44
-      },
-      fill: {
-        alpha: 0.7,
-        hue: 170,
-        lightness: 0.69,
-        saturation: 0.44
-      }
+  defaultColors: [{
+    stroke: {
+      alpha: 1,
+      hue: 170,
+      lightness: 0.69,
+      saturation: 0.44
     },
-    {
-      stroke: {
-        alpha: 1,
-        hue: 6,
-        lightness: 0.72,
-        saturation: 0.94
-      },
-      fill: {
-        alpha: 0.7,
-        hue: 6,
-        lightness: 0.72,
-        saturation: 0.94
-      }
-    },
-    {
-      stroke: {
-        alpha: 1,
-        hue: 60,
-        lightness: 0.85,
-        saturation: 1
-      },
-      fill: {
-        alpha: 0.7,
-        hue: 60,
-        lightness: 0.85,
-        saturation: 1
-      }
-    },
-    {
-      stroke: {
-        alpha: 1,
-        hue: 190,
-        lightness: 0.79,
-        saturation: 0.3
-      },
-      fill: {
-        alpha: 0.7,
-        hue: 190,
-        lightness: 0.79,
-        saturation: 0.3
-      }
-    },
-    {
-      stroke: {
-        alpha: 1,
-        hue: 6,
-        lightness: 0.72,
-        saturation: 0.94
-      },
-      fill: {
-        alpha: 0.7,
-        hue: 6,
-        lightness: 0.72,
-        saturation: 0.94
-      }
-    },
-    {
-      stroke: {
-        alpha: 1,
-        hue: 205,
-        lightness: 0.66,
-        saturation: 0.49
-      },
-      fill: {
-        alpha: 0.7,
-        hue: 205,
-        lightness: 0.66,
-        saturation: 0.49
-      }
+    fill: {
+      alpha: 0.7,
+      hue: 170,
+      lightness: 0.69,
+      saturation: 0.44
     }
+  },
+  {
+    stroke: {
+      alpha: 1,
+      hue: 6,
+      lightness: 0.72,
+      saturation: 0.94
+    },
+    fill: {
+      alpha: 0.7,
+      hue: 6,
+      lightness: 0.72,
+      saturation: 0.94
+    }
+  },
+  {
+    stroke: {
+      alpha: 1,
+      hue: 60,
+      lightness: 0.85,
+      saturation: 1
+    },
+    fill: {
+      alpha: 0.7,
+      hue: 60,
+      lightness: 0.85,
+      saturation: 1
+    }
+  },
+  {
+    stroke: {
+      alpha: 1,
+      hue: 190,
+      lightness: 0.79,
+      saturation: 0.3
+    },
+    fill: {
+      alpha: 0.7,
+      hue: 190,
+      lightness: 0.79,
+      saturation: 0.3
+    }
+  },
+  {
+    stroke: {
+      alpha: 1,
+      hue: 6,
+      lightness: 0.72,
+      saturation: 0.94
+    },
+    fill: {
+      alpha: 0.7,
+      hue: 6,
+      lightness: 0.72,
+      saturation: 0.94
+    }
+  },
+  {
+    stroke: {
+      alpha: 1,
+      hue: 205,
+      lightness: 0.66,
+      saturation: 0.49
+    },
+    fill: {
+      alpha: 0.7,
+      hue: 205,
+      lightness: 0.66,
+      saturation: 0.49
+    }
+  }
   ]
 }
 
 const getters = {}
 
 const actions = {
-  resetAnnotationState: ({ commit }) => {
+  resetAnnotationState: ({
+    commit
+  }) => {
     commit('resetAnnotationState')
   },
 
-  refreshAnnotationState: ({ commit }, payload) => {
+  refreshAnnotationState: ({
+    commit
+  }, payload) => {
     commit('refreshAnnotationState', payload)
   },
 
-  setupAnnotation: ({ commit }, payload) => {
+  setupAnnotation: ({
+    commit
+  }, payload) => {
     commit('setupAnnotation', payload)
   },
 
-  loadAnnotation: ({ commit }, payload) => {
+  loadAnnotation: ({
+    commit
+  }, payload) => {
     commit('loadAnnotation', payload)
   },
 
-  exportLayerJSON: ({ commit }, layer) => {
+  exportLayerJSON: ({
+    commit
+  }, layer) => {
     commit('exportLayerJSON', layer)
   },
 
-  prepareCanvas: ({ commit }, payload) => {
+  prepareCanvas: ({
+    commit
+  }, payload) => {
     commit('prepareCanvas', payload)
   },
 
-  newLayer: ({ commit }, payload) => {
+  newLayer: ({
+    commit
+  }, payload) => {
     commit('newLayer')
   },
 
-  setActiveLayer: ({ commit, dispatch }, layerIndex) => {
+  setActiveLayer: ({
+    commit,
+    dispatch
+  }, layerIndex) => {
     commit('setActiveLayer', layerIndex)
 
     // Also, store the new active layer in the editor
     dispatch('setConfigActiveLayer', layerIndex)
   },
 
-  setLayerOpacity: ({ commit }, payload) => {
+  setLayerOpacity: ({
+    commit
+  }, payload) => {
     commit('setLayerOpacity', payload)
   },
 
-  setLayerName: ({ commit }, payload) => {
+  setLayerName: ({
+    commit
+  }, payload) => {
     commit('setLayerName', payload)
   },
 
-  deleteLayer: ({ commit }, payload) => {
+  deleteLayer: ({
+    commit
+  }, payload) => {
     commit('deleteLayer', payload)
   }
 }
