@@ -72,8 +72,8 @@ export default {
     // Finalise rectangle properties and draw.
     const toolUp = event => {
       let newRect = new paper.Path.Rectangle(event.downPoint, event.point)
-      newRect.strokeColor = new paper.Color(this.getDefaultColor().stroke)
-      newRect.fillColor = new paper.Color(this.getDefaultColor().fill)
+      newRect.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
+      newRect.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
       newRect.strokeWidth = this.strokeWidth
 
       // Custom data attribute:
@@ -88,7 +88,7 @@ export default {
   methods: {
     ...mapActions(['prepareCanvas']),
 
-    ...mapGetters(['getDefaultColor']),
+    ...mapGetters(['getDefaultLayerColor']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.

@@ -49,12 +49,13 @@ export default {
   computed: {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
-      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x
+      imageWidth: state =>
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
     })
   },
 
   created () {
-    const toolDown = (event) => {
+    const toolDown = event => {
       // If there is no current active path then create one.
       if (!this.path || !this.path.data.active) {
         this.path = this.newPath()
@@ -62,7 +63,7 @@ export default {
       }
     }
 
-    const toolDrag = (event) => {
+    const toolDrag = event => {
       this.path.add(event.point)
 
       // If the user if sufficiently clost to the intial point that the
@@ -71,20 +72,25 @@ export default {
       let hitResult = this.path.hitTest(event.point, this.hitOptions)
       if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getDefaultColor().fill)
+        this.path.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
       } else {
         this.path.closed = false
-        this.path.fillColor = new paper.Color({hue: 200, saturation: 0.7, lightness: 0.5, alpha: 0})
+        this.path.fillColor = new paper.Color({
+          hue: 200,
+          saturation: 0.7,
+          lightness: 0.5,
+          alpha: 0
+        })
       }
     }
 
-    const toolUp = (event) => {
+    const toolUp = event => {
       // If user releases mouse near the first segment then close path
       // and set fill.
       let hitResult = this.path.hitTest(event.point, this.hitOptions)
       if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getDefaultColor().fill)
+        this.path.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
       }
 
       // Deselect path.
@@ -106,13 +112,9 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'prepareCanvas'
-    ]),
+    ...mapActions(['prepareCanvas']),
 
-    ...mapGetters([
-      'getDefaultColor'
-    ]),
+    ...mapGetters(['getDefaultLayerColor']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.
@@ -135,20 +137,19 @@ export default {
 
     newPath () {
       let newPath = new paper.Path()
-      newPath.strokeColor = new paper.Color(this.getDefaultColor().stroke)
+      newPath.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true
 
       return newPath
     }
   }
-
 }
 </script>
 
 <style lang='css'>
 #tooltip {
-  width: 100%
+  width: 100%;
 }
 
 #tool {

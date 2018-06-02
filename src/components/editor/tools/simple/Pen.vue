@@ -47,12 +47,13 @@ export default {
   computed: {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
-      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x
+      imageWidth: state =>
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
     })
   },
 
   created () {
-    const toolDown = (event) => {
+    const toolDown = event => {
       // If there is no current active path then create one.
       if (!this.path || !this.path.data.active) {
         this.path = this.newPath()
@@ -68,10 +69,10 @@ export default {
         this.path.selected = false
         this.path.data.active = false
 
-      // If first segment clicked, close path.
+        // If first segment clicked, close path.
       } else if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getDefaultColor().fill)
+        this.path.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
         this.path.smooth()
         this.path.selected = false
         this.path.data.active = false
@@ -81,7 +82,7 @@ export default {
         this.path.selected = false
         this.path.data.active = false
 
-      // Else add new point
+        // Else add new point
       } else {
         this.path.add(event.point)
         this.path.smooth()
@@ -89,7 +90,7 @@ export default {
     }
 
     // Feedfoward information on mouseMove
-    const toolMove = (event) => {
+    const toolMove = event => {
       let hitResult = paper.project.hitTest(event.point, this.hitOptions)
 
       // If hovering over first/last segment then remove the selected
@@ -98,8 +99,10 @@ export default {
         if (hitResult.segment === hitResult.item.firstSegment) {
           this.path.closed = true
           this.path.selected = false
-        } else if (hitResult.segment === hitResult.item.firstSegment ||
-         hitResult.segment === hitResult.item.lastSegment) {
+        } else if (
+          hitResult.segment === hitResult.item.firstSegment ||
+          hitResult.segment === hitResult.item.lastSegment
+        ) {
           this.path.selected = false
         }
       } else {
@@ -116,13 +119,9 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'prepareCanvas'
-    ]),
+    ...mapActions(['prepareCanvas']),
 
-    ...mapGetters([
-      'getDefaultColor'
-    ]),
+    ...mapGetters(['getDefaultLayerColor']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.
@@ -141,7 +140,7 @@ export default {
 
     newPath () {
       let newPath = new paper.Path()
-      newPath.strokeColor = new paper.Color(this.getDefaultColor().stroke)
+      newPath.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true
 

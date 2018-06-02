@@ -110,9 +110,9 @@ export default {
       // with either the default radius or the new radius as set by the
       // distance between the point of mouseDown and mouseUp.
       let newCircle = new paper.Path.Circle(event.downPoint, this.radius)
-      newCircle.strokeColor = new paper.Color(this.getDefaultColor().stroke)
+      newCircle.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
       newCircle.strokeWidth = this.strokeWidth
-      newCircle.fillColor = new paper.Color(this.getDefaultColor().fill)
+      newCircle.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
 
       // Custom data attribute:
       newCircle.data.countable = true
@@ -136,7 +136,7 @@ export default {
   methods: {
     ...mapActions(['prepareCanvas']),
 
-    ...mapGetters(['getDefaultColor']),
+    ...mapGetters(['getDefaultLayerColor']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.

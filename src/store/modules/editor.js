@@ -20,29 +20,6 @@ const getters = {
     } else {
       return []
     }
-  },
-
-  // Get an object that specifies the default color for annotations in this
-  // step.
-  getDefaultColor: state => {
-    if (state.steps) {
-      return state.steps[state.activeStep].color
-    } else {
-      return {
-        fill: {
-          alpha: 0,
-          hue: 170,
-          lightness: 0.5,
-          saturation: 1
-        },
-        stroke: {
-          alpha: 0,
-          hue: 170,
-          lightness: 0.5,
-          saturation: 1
-        }
-      }
-    }
   }
 }
 
