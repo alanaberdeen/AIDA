@@ -129,12 +129,6 @@ const actions = {
     commit('loadAnnotation', payload)
   },
 
-  exportLayerJSON: ({
-    commit
-  }, layer) => {
-    commit('exportLayerJSON', layer)
-  },
-
   prepareCanvas: ({
     commit
   }, payload) => {
@@ -318,14 +312,6 @@ const mutations = {
 
     // Set the first layer as active
     paper.project.layers[0].activate()
-  },
-
-  // Export a PaperJS JSON string representing current state to the console.
-  // If no payload param then default to exporting the whole PaperJS project.
-  exportLayerJSON: (state, layer) => {
-    console.log('Layer to be exported: ')
-    console.log(layer.name)
-    console.log(layer.exportJSON())
   },
 
   // Prepare the canvas for adding annotations.
