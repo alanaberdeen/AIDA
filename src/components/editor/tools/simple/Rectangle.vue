@@ -77,7 +77,7 @@ export default {
       newRect.strokeWidth = this.strokeWidth
 
       // Custom data attribute:
-      newRect.data.subType = 'rectangle'
+      newRect.data.type = 'rectangle'
     }
 
     this.toolRect = new paper.Tool()

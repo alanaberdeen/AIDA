@@ -127,6 +127,9 @@ export default {
             )
             newRect.closed = true
             newRect.strokeWidth = this.strokeWidth
+
+            // Custom data attribute:
+            newRect.data.type = 'rectangle'
           }
         })
         // Catch errors - reset and report issue.

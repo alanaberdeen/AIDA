@@ -198,20 +198,20 @@ const mutations = {
         className: 'Path'
       })
       .forEach(item => {
-        if (item.data.subType === 'circle') {
+        if (item.data.type === 'circle') {
           state.project.layers[item.layer.index].items.push({
             class: item.data.class,
-            subType: 'circle',
+            type: 'circle',
             center: {
               x: item.position.x,
               y: item.position.y
             },
             radius: item.bounds.width / 2
           })
-        } else if (item.data.subType === 'rectangle') {
+        } else if (item.data.type === 'rectangle') {
           state.project.layers[item.layer.index].items.push({
             class: item.data.class,
-            subType: 'rectangle',
+            type: 'rectangle',
             from: {
               x: item.bounds.topLeft.x,
               y: item.bounds.topRight.y
@@ -224,7 +224,7 @@ const mutations = {
         } else {
           state.project.layers[item.layer.index].items.push({
             class: item.data.class,
-            subType: 'path',
+            type: 'path',
             segments: getSegments(item),
             closed: item.closed
           })
@@ -278,21 +278,21 @@ const mutations = {
       if (layer.items) {
         layer.items.forEach(item => {
           let newPaperItem
-          if (item.subType === 'circle') {
+          if (item.type === 'circle') {
             newPaperItem = new paper.Path.Circle({
               center: item.center,
               radius: item.radius,
               data: {
-                subType: 'circle',
+                type: 'circle',
                 countable: true
               }
             })
-          } else if (item.subType === 'rectangle') {
+          } else if (item.type === 'rectangle') {
             newPaperItem = new paper.Path.Rectangle({
               from: item.from,
               to: item.to,
               data: {
-                subType: 'rectangle'
+                type: 'rectangle'
               }
             })
           } else {
@@ -300,7 +300,7 @@ const mutations = {
               segments: item.segments,
               closed: item.closed,
               data: {
-                subType: 'path'
+                type: 'path'
               }
             })
           }
