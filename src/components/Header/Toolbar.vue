@@ -17,6 +17,9 @@
 
     <v-spacer/>
 
+    <!-- Export -->
+    <app-export/>
+
     <!-- Save -->
     <app-save/>
 
@@ -52,24 +55,24 @@
 </template>
 
 <script>
-
 // Import child components
 import Settings from './settings/Settings.vue'
 import Account from './account/Account.vue'
 import Save from './save/Save.vue'
+import Export from './export/Export.vue'
 
 export default {
   components: {
     'app-settings': Settings,
     'app-account': Account,
-    'app-save': Save
+    'app-save': Save,
+    'app-export': Export
   }
 }
 </script>
 
 <style lang='css' scoped>
-
-#toolbar-side-icon-spacer{
+#toolbar-side-icon-spacer {
   height: 36px;
   width: 36px;
 }
