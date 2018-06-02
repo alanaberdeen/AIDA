@@ -315,6 +315,9 @@ const mutations = {
         })
       }
     })
+
+    // Set the first layer as active
+    paper.project.layers[0].activate()
   },
 
   // Export a PaperJS JSON string representing current state to the console.
