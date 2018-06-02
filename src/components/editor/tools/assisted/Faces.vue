@@ -60,7 +60,7 @@ export default {
   },
 
   methods: {
-    ...mapGetters(['getDefaultColor']),
+    ...mapGetters(['getDefaultLayerColor']),
 
     activate () {
       // Set the default strokewidth relative to image size and zoom.
@@ -122,7 +122,9 @@ export default {
             }
 
             let newRect = new paper.Path(segments)
-            newRect.strokeColor = new paper.Color(this.getDefaultColor().stroke)
+            newRect.strokeColor = new paper.Color(
+              this.getDefaultLayerColor().stroke
+            )
             newRect.closed = true
             newRect.strokeWidth = this.strokeWidth
           }
