@@ -35,7 +35,7 @@
             <v-list-tile-content>
               <v-list-tile-title
                 :class="[(activeLayer === index) ? 'faIconsActive' : 'faIcons']">
-                {{ layer[1].name ? layer[1].name : ('Layer ' + index) }}
+                {{ layer.name ? layer.name : ('Layer ' + index) }}
               </v-list-tile-title>
             </v-list-tile-content>
 
@@ -69,14 +69,14 @@
                       wrap>
                       <v-flex xs9>
                         <v-slider
-                          :value="(layer[1].opacity != null) ? layer[1].opacity*100 : 100"
+                          :value="(layer.opacity != null) ? layer.opacity*100 : 100"
                           max="100"
                           @input="setLayerOpacity"
                         />
                       </v-flex>
                       <v-flex xs3>
                         <v-text-field
-                          :value="layer[1].opacity ? Math.round(layer[1].opacity*100) : 100"
+                          :value="layer.opacity ? Math.round(layer.opacity*100) : 100"
                           suffix="%"
                           single-line
                           mask="###"
@@ -91,7 +91,7 @@
                 <v-tab-item>
                   <div id="tab-item">
                     <v-text-field
-                      :value="layer[1].name ? layer[1].name : ('Layer ' + index)"
+                      :value="layer.name ? layer.name : ('Layer ' + index)"
                       single-line
                       @change="setLayerName"
                       @keyup.native.enter="setLayerName"
@@ -133,7 +133,7 @@ import { mapActions, mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
-      layers: state => state.annotation.project,
+      layers: state => state.annotation.project.layers,
       activeLayer: state => state.editor.activeLayer
     })
   },

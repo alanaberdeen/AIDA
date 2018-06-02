@@ -4,96 +4,229 @@ import paper from 'paper'
 import Vue from 'vue'
 
 const state = {
-  project: null
+  project: {
+    name: 'An AIDA project',
+    layers: []
+  },
+  defaultColors: [
+    {
+      stroke: {
+        alpha: 1,
+        hue: 170,
+        lightness: 0.69,
+        saturation: 0.44
+      },
+      fill: {
+        alpha: 0.7,
+        hue: 170,
+        lightness: 0.69,
+        saturation: 0.44
+      }
+    },
+    {
+      stroke: {
+        alpha: 1,
+        hue: 6,
+        lightness: 0.72,
+        saturation: 0.94
+      },
+      fill: {
+        alpha: 0.7,
+        hue: 6,
+        lightness: 0.72,
+        saturation: 0.94
+      }
+    },
+    {
+      stroke: {
+        alpha: 1,
+        hue: 60,
+        lightness: 0.85,
+        saturation: 1
+      },
+      fill: {
+        alpha: 0.7,
+        hue: 60,
+        lightness: 0.85,
+        saturation: 1
+      }
+    },
+    {
+      stroke: {
+        alpha: 1,
+        hue: 190,
+        lightness: 0.79,
+        saturation: 0.3
+      },
+      fill: {
+        alpha: 0.7,
+        hue: 190,
+        lightness: 0.79,
+        saturation: 0.3
+      }
+    },
+    {
+      stroke: {
+        alpha: 1,
+        hue: 6,
+        lightness: 0.72,
+        saturation: 0.94
+      },
+      fill: {
+        alpha: 0.7,
+        hue: 6,
+        lightness: 0.72,
+        saturation: 0.94
+      }
+    },
+    {
+      stroke: {
+        alpha: 1,
+        hue: 205,
+        lightness: 0.66,
+        saturation: 0.49
+      },
+      fill: {
+        alpha: 0.7,
+        hue: 205,
+        lightness: 0.66,
+        saturation: 0.49
+      }
+    }
+  ]
 }
 
 const getters = {}
 
 const actions = {
-  resetAnnotationState: ({
-    commit
-  }) => {
+  resetAnnotationState: ({ commit }) => {
     commit('resetAnnotationState')
   },
 
-  refreshState: ({
-    commit
-  }, payload) => {
-    commit('refreshState', payload)
+  refreshAnnotationState: ({ commit }, payload) => {
+    commit('refreshAnnotationState', payload)
   },
 
-  setupAnnotation: ({
-    commit
-  }, payload) => {
+  setupAnnotation: ({ commit }, payload) => {
     commit('setupAnnotation', payload)
   },
 
-  loadAnnotation: ({
-    commit
-  }, payload) => {
+  loadAnnotation: ({ commit }, payload) => {
     commit('loadAnnotation', payload)
   },
 
-  exportLayerJSON: ({
-    commit
-  }, layer) => {
+  exportLayerJSON: ({ commit }, layer) => {
     commit('exportLayerJSON', layer)
   },
 
-  prepareCanvas: ({
-    commit
-  }, payload) => {
+  prepareCanvas: ({ commit }, payload) => {
     commit('prepareCanvas', payload)
   },
 
-  newLayer: ({
-    commit
-  }, payload) => {
+  newLayer: ({ commit }, payload) => {
     commit('newLayer')
   },
 
-  setActiveLayer: ({
-    commit,
-    dispatch
-  }, layerIndex) => {
+  setActiveLayer: ({ commit, dispatch }, layerIndex) => {
     commit('setActiveLayer', layerIndex)
 
     // Also, store the new active layer in the editor
     dispatch('setConfigActiveLayer', layerIndex)
   },
 
-  setLayerOpacity: ({
-    commit
-  }, payload) => {
+  setLayerOpacity: ({ commit }, payload) => {
     commit('setLayerOpacity', payload)
   },
 
-  setLayerName: ({
-    commit
-  }, payload) => {
+  setLayerName: ({ commit }, payload) => {
     commit('setLayerName', payload)
   },
 
-  deleteLayer: ({
-    commit
-  }, payload) => {
+  deleteLayer: ({ commit }, payload) => {
     commit('deleteLayer', payload)
   }
 }
 
 const mutations = {
-  resetAnnotationState: (state) => {
+  resetAnnotationState: state => {
     state = {
       project: null
     }
   },
 
-  // Refresh the Vuex store state with the current paperJS project representation
-  refreshState: (state, payload) => {
-    state.project = paper.project.exportJSON({
-      asString: false,
-      precision: 5
+  // Refresh the Vuex store to incorporate all of the paperJS annotation items
+  refreshAnnotationState: (state, payload) => {
+    // Clear the current items
+    state.project.layers.forEach(layer => {
+      layer['items'] = []
     })
+
+    // Gather all the Path items in the paperJS environment and store them in
+    // the state appropriately. Convention follows AIDA annotation schema:
+    // https://aida.gitbook.io/docs/annotation-schema
+    paper.project
+      .getItems({
+        className: 'Path'
+      })
+      .forEach(item => {
+        if (item.data.subType === 'circle') {
+          state.project.layers[item.layer.index].items.push({
+            class: item.data.class,
+            subType: 'circle',
+            center: {
+              x: item.position.x,
+              y: item.position.y
+            },
+            radius: item.bounds.width / 2
+          })
+        } else if (item.data.subType === 'rectangle') {
+          state.project.layers[item.layer.index].items.push({
+            class: item.data.class,
+            subType: 'rectangle',
+            from: {
+              x: item.bounds.topLeft.x,
+              y: item.bounds.topRight.y
+            },
+            to: {
+              x: item.bounds.bottomRight.x,
+              y: item.bounds.bottomRight.y
+            }
+          })
+        } else {
+          state.project.layers[item.layer.index].items.push({
+            class: item.data.class,
+            subType: 'path',
+            segments: getSegments(item),
+            closed: item.closed
+          })
+        }
+      })
+
+    // Function that, given a paperJS path item, return the segments in the
+    // format specified by the AIDA annotation schema
+    function getSegments (item) {
+      let segments = []
+      item.segments.forEach(segment => {
+        segments.push({
+          point: {
+            x: segment.point.x,
+            y: segment.point.y
+          },
+          handleIn: {
+            x: segment.handleIn.x,
+            y: segment.handleIn.y
+          },
+          handleOut: {
+            x: segment.handleOut.x,
+            y: segment.handleOut.y
+          }
+        })
+      })
+
+      return segments
+    }
+
+    console.log(state.project)
   },
 
   // Setup the PaperJs instance on the canvas DOM element.
@@ -101,13 +234,57 @@ const mutations = {
     paper.setup(canvas)
   },
 
-  // Load a new PaperJS JSON string representing new project data into the
-  // paperJS instance
+  // Load annotation data into both the state and the paperJS environment.
   loadAnnotation: (state, payload) => {
-    paper.project.importJSON(payload)
-    state.project = paper.project.exportJSON({
-      asString: false,
-      precision: 5
+    // Save the loaded annotation data to the Vuex state
+    state.project = payload.project
+
+    // Cycle through the layers
+    state.project.layers.forEach(layer => {
+      // Create a new layer
+      let newPaperLayer = new paper.Layer()
+      newPaperLayer.opacity = layer.opacity
+
+      // Draw each item
+      if (layer.items) {
+        layer.items.forEach(item => {
+          let newPaperItem
+          if (item.subType === 'circle') {
+            newPaperItem = new paper.Path.Circle({
+              center: item.center,
+              radius: item.radius,
+              data: {
+                subType: 'circle',
+                countable: true
+              }
+            })
+          } else if (item.subType === 'rectangle') {
+            newPaperItem = new paper.Path.Rectangle({
+              from: item.from,
+              to: item.to,
+              data: {
+                subType: 'rectangle'
+              }
+            })
+          } else {
+            newPaperItem = new paper.Path({
+              segments: item.segments,
+              closed: item.closed,
+              data: {
+                subType: 'path'
+              }
+            })
+          }
+
+          // Set the path colors to the default for their layer.
+          if (newPaperItem.closed) {
+            newPaperItem.fillColor =
+              state.defaultColors[newPaperItem.layer.index].fill
+          }
+          newPaperItem.strokeColor =
+            state.defaultColors[newPaperItem.layer.index].stroke
+        })
+      }
     })
   },
 
@@ -171,7 +348,11 @@ const mutations = {
     // Save changed opacity to the Vuex state.
     // Watch out for Vue Change Detection Caveats: isn't reactive to new
     // attributes being added to an object. Use Vue.set to get around this.
-    Vue.set(state.project[paper.project.activeLayer.index][1], 'opacity', newOpacity)
+    Vue.set(
+      state.project[paper.project.activeLayer.index][1],
+      'opacity',
+      newOpacity
+    )
   },
 
   // Set the name of the active layer
@@ -189,7 +370,11 @@ const mutations = {
     paper.project.activeLayer.name = newName
 
     // Save changes to Vuex state
-    Vue.set(state.project[paper.project.activeLayer.index][1], 'name', newName)
+    Vue.set(
+      state.project.layers[paper.project.activeLayer.index],
+      'name',
+      newName
+    )
   },
 
   // Remove active layer
