@@ -24,7 +24,8 @@ import {
   VDialog,
   VTabs,
   VTextField,
-  VTooltip
+  VTooltip,
+  VSubheader
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
 import './css/main.css'
@@ -48,7 +49,8 @@ Vue.use(Vuetify, {
     VDialog,
     VTabs,
     VTextField,
-    VTooltip
+    VTooltip,
+    VSubheader
   }
 })
 
@@ -62,6 +64,8 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {
+    App
+  },
   template: '<App/>'
 })
