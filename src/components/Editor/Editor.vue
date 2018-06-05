@@ -23,12 +23,7 @@
               <app-stepper/>
             </div>
 
-            <app-examples v-if="type==='examples'"/>
-
-            <div
-              v-else
-              id="view-container">
-
+            <div id="view-container">
               <app-view :type="type"/>
             </div>
           </div>
@@ -52,7 +47,6 @@ import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
 import Stepper from './Stepper.vue'
 import View from './view/View.vue'
-import Examples from './examples/Examples.vue'
 import Toolbar from '../header/Toolbar.vue'
 
 export default {
@@ -61,7 +55,6 @@ export default {
     'app-studio': Studio,
     'app-stepper': Stepper,
     'app-view': View,
-    'app-examples': Examples,
     'app-toolbar': Toolbar
   },
 
