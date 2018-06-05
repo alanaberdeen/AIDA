@@ -4,6 +4,7 @@ import Router from 'vue-router'
 // Import Components
 import Landing from '@/components/landing/Landing'
 import Editor from '@/components/editor/Editor'
+import Examples from '@/components/examples/Examples'
 
 Vue.use(Router)
 
@@ -34,10 +35,19 @@ export default new Router({
   {
     path: '/example',
     name: 'Examples',
-    component: Editor,
+    component: Examples,
     props: {
       default: true,
       type: 'examples'
+    }
+  },
+  {
+    path: '/new',
+    name: 'New',
+    component: Editor,
+    props: {
+      default: true,
+      type: 'new'
     }
   }
 
