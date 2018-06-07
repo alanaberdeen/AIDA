@@ -66,10 +66,8 @@ const actions = {
     state,
     dispatch
   }, images) => {
-    // First, empty the images previously stored in the state.
-    state.images = []
-
-    // Then add the new images to both the state and the OSD viewer.
+    console.log(images)
+    // Add the new images to both the state and the OSD viewer.
     dispatch('addImagesToState', images).then(() => {
       for (let i in images) {
         dispatch('addOSDImage', images[i])
@@ -141,7 +139,8 @@ const mutations = {
     // Create and OSD viewer
     state.OSDviewer = new openseadragon.Viewer({
       id: payload,
-      showNavigationControl: false
+      showNavigationControl: false,
+      showNavigator: true
     })
 
     // Add handlers to update the state when certain events are triggered on the
