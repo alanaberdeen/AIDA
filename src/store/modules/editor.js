@@ -18,7 +18,7 @@ const getters = {
     if (state.steps) {
       return state.steps[state.activeStep].tools
     } else {
-      return []
+      return ['pan', 'circle', 'rectangle', 'pen', 'pencil', 'move', 'node', 'count', 'delete', 'faces']
     }
   }
 }
