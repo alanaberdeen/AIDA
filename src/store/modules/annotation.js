@@ -167,6 +167,12 @@ const actions = {
     commit
   }, payload) => {
     commit('deleteLayer', payload)
+  },
+
+  setProjectName: ({
+    commit
+  }, payload) => {
+    commit('setProjectName', payload)
   }
 }
 
@@ -401,6 +407,20 @@ const mutations = {
 
     // Remove from paperJS project
     paper.project.activeLayer.remove()
+  },
+
+  // Set the project name
+  setProjectName: (state, payload) => {
+    let newName
+    // Check if keyboard event. This happens in the case that the user types
+    // the opacity value in the text box and hits enter
+    if (payload instanceof KeyboardEvent) {
+      newName = payload.target.value
+    } else {
+      newName = payload
+    }
+
+    state.project.name = newName
   }
 }
 
