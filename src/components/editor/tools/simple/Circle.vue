@@ -41,7 +41,7 @@ export default {
   data () {
     return {
       toolCircle: null,
-      strokeWidth: 400, // Default value, will be updated relative to view
+      strokeWidth: 2, // Default value, will be updated relative to view
       radius: 2000
     }
   },
@@ -110,7 +110,9 @@ export default {
       // with either the default radius or the new radius as set by the
       // distance between the point of mouseDown and mouseUp.
       let newCircle = new paper.Path.Circle(event.downPoint, this.radius)
-      newCircle.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
+      newCircle.strokeColor = new paper.Color(
+        this.getDefaultLayerColor().stroke
+      )
       newCircle.strokeWidth = this.strokeWidth
       newCircle.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
 

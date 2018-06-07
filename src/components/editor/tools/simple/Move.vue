@@ -45,7 +45,7 @@ export default {
     return {
       toolMove: null,
       selectOptions: null,
-      strokeWidth: null
+      strokeWidth: 2
     }
   },
 

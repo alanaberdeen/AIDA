@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       toolPencil: null,
-      strokeWidth: 400, // Default value, will be updated relative to view
+      strokeWidth: 2, // Default value, will be updated relative to view
       hitOptions: null,
       path: null
     }

@@ -40,14 +40,15 @@ export default {
     return {
       toolDelete: null,
       selectOptions: null,
-      strokeWidth: null
+      strokeWidth: 2
     }
   },
 
   computed: {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
-      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x
+      imageWidth: state =>
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
     })
   },
 
@@ -59,13 +60,19 @@ export default {
     let toBeDeleted = []
     let selectedGroup = null
 
-    const toolDown = (event) => {
+    const toolDown = event => {
       // Get details of the element the user has clicked on.
       hitResult = paper.project.hitTest(event.point, this.selectOptions)
 
       // If no modiefiers and item has been selected then create the
       // selection group (of one element) to be selected.
-      if (hitResult && (hitResult.type === 'fill' || hitResult.type === 'stroke' || hitResult.type === 'segment' || hitResult.type === 'bounds')) {
+      if (
+        hitResult &&
+        (hitResult.type === 'fill' ||
+          hitResult.type === 'stroke' ||
+          hitResult.type === 'segment' ||
+          hitResult.type === 'bounds')
+      ) {
         toBeDeleted = [hitResult.item]
       } else {
         toBeDeleted = []
@@ -100,8 +107,11 @@ export default {
 
     // Functionality for user dragging select/move tool.
     // Specified action should have been set on the mouseDown event.
-    const toolDrag = (event) => {
-      let selectionRect = new paper.Shape.Rectangle(event.downPoint, event.point)
+    const toolDrag = event => {
+      let selectionRect = new paper.Shape.Rectangle(
+        event.downPoint,
+        event.point
+      )
       selectionRect.strokeColor = '#4D88D4'
       selectionRect.fillColor = '#A3C5E8'
       selectionRect.opacity = 0.3
@@ -147,7 +157,7 @@ export default {
     }
 
     // Select the group and provide housekeeping/emit events.
-    const toolUp = (event) => {
+    const toolUp = event => {
       if (selectedGroup) {
         selectedGroup.remove()
       }
@@ -170,9 +180,7 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'prepareCanvas'
-    ]),
+    ...mapActions(['prepareCanvas']),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.
