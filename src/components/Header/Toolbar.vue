@@ -37,12 +37,12 @@
       <v-icon small> fa-book </v-icon>
     </v-btn>
 
-    <!-- <v-btn icon class='pointers-no'>
-            <app-settings   :editor='editor'
-                            :osdViewer='osdViewer'
-                            :paperScope='paperScope'>
-            </app-settings>
-          </v-btn> -->
+    <!-- Settings -->
+    <v-btn
+      icon
+      class="pointers-no">
+      <app-settings />
+    </v-btn>
 
     <!-- Account -->
     <v-btn

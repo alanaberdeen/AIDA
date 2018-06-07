@@ -1,277 +1,180 @@
 <template lang="html">
   <v-dialog
     v-model="dialog"
-    scrollable
-    width="75%"
-    class="pointers-please">
+    class="pointers-please"
+    max-width="900">
 
     <v-icon slot="activator">
       settings
     </v-icon>
 
     <v-card>
+      <v-container id="container">
+        <v-layout>
+          <v-navigation-drawer
+            permanent
+          >
 
-      <v-card-title>
-        Settings
-      </v-card-title>
-      <v-divider/>
+            <v-toolbar
+              flat
+              class="transparent">
+              <v-list class="pa-0">
+                <v-list-tile avatar>
+                  <v-list-tile-avatar>
+                    <v-icon> settings </v-icon>
+                  </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>Settings</v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </v-toolbar>
 
-      <v-layout>
-        <v-flex
-          id="tabs-column"
-          xs3
-        >
-          <v-list
-            id="settings-list"
-            dense>
+            <v-list>
+              <v-divider/>
 
-            <v-list-group
-              v-model="steps"
-              no-action>
+              <v-list-tile
+                :class="[(settings === 'project') ? 'faIconsActive' : 'faIcons']"
+                @click="settings = 'project'">
 
-              <v-list-tile slot="item">
-
-                <v-list-tile-content>
-                  <v-list-tile-title class="tile-title">
-                    Task
-                  </v-list-tile-title>
-                </v-list-tile-content>
-
-                <v-list-tile-action class="action">
-                  <v-icon>
-                    keyboard_arrow_down
-                  </v-icon>
+                <v-list-tile-action>
+                  <v-icon/>
                 </v-list-tile-action>
 
+                <v-list-tile-content>
+                  <v-list-tile-title> Project </v-list-tile-title>
+                </v-list-tile-content>
+
               </v-list-tile>
 
               <v-list-tile
-                v-for="(step,index) in editor.steps"
-                :key="index"
-                :class="{'option-active': (editor.activeStep === index)}"
-                @click.native="editor.activeStep = index; active=''"
-              >
+                :class="[(settings === 'annotation') ? 'faIconsActive' : 'faIcons']"
+                @click="settings = 'annotation'">
 
-                <v-list-tile-content>
-                  <v-list-tile-title class="tile-title">
-                    Step {{ index + 1 }}
-                  </v-list-tile-title>
-                </v-list-tile-content>
-
-              </v-list-tile>
-
-              <v-list-tile>
-                <v-list-tile-content>
-                  <v-list-tile-title
-                    class="tile-title"
-                    @click.native="active='addStep'">
-                    <v-icon class="add_icon">
-                      add_circle_outline
-                    </v-icon>
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-
-            </v-list-group>
-
-            <v-list-group
-              v-model="images"
-              no-action>
-              <v-list-tile slot="item">
-                <v-list-tile-content>
-                  <v-list-tile-title class="tile-title">
-                    Images
-                  </v-list-tile-title>
-                </v-list-tile-content>
-
-                <v-list-tile-action class="action">
-                  <v-icon>
-                    keyboard_arrow_down
-                  </v-icon>
+                <v-list-tile-action>
+                  <v-icon/>
                 </v-list-tile-action>
-              </v-list-tile>
-
-              <v-list-tile
-                v-for="(image,index) in editor.images"
-                :key="index"
-                :class="{'option-active': (activeImage === index)}"
-                @click.native="activeImage = index; active=''"
-              >
 
                 <v-list-tile-content>
-                  <v-list-tile-title class="tile-title">
-                    {{ image.name }}
-                  </v-list-tile-title>
+                  <v-list-tile-title> Upload Annotation </v-list-tile-title>
                 </v-list-tile-content>
 
               </v-list-tile>
 
               <v-list-tile
-                :class="{ 'option-active': (activeImage === 'add') }"
-                @click.native="activeImage = 'add'; active = 'addImage'"
-              >
-                <v-list-tile-content>
-                  <v-list-tile-title class="tile-title">
-                    <v-icon class="add_icon">
-                      add_circle_outline
-                    </v-icon>
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
+                :class="[(settings === 'image') ? 'faIconsActive' : 'faIcons']"
+                @click="settings = 'image'">
 
-            </v-list-group>
-
-            <v-list-group
-              v-model="annotations"
-              no-action>
-              <v-list-tile slot="item">
-                <v-list-tile-content>
-                  <v-list-tile-title
-                    class="tile-title"
-                    @click.native="active=''">
-                    Annotations
-                  </v-list-tile-title>
-                </v-list-tile-content>
-
-                <v-list-tile-action class="action">
-                  <v-icon>keyboard_arrow_down</v-icon>
+                <v-list-tile-action>
+                  <v-icon/>
                 </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title> Add an Image </v-list-tile-title>
+                </v-list-tile-content>
+
               </v-list-tile>
 
               <v-list-tile
-                :class="{ 'option-active': (activeAnnotation === 'add') }"
-                @click.native="activeAnnotation = 'add'; active='addAnnotation'"
-              >
+                :class="[(settings === 'steps') ? 'faIconsActive' : 'faIcons']"
+                @click="settings = 'steps'">
+
+                <v-list-tile-action>
+                  <v-icon/>
+                </v-list-tile-action>
+
                 <v-list-tile-content>
-                  <v-list-tile-title class="tile-title">
-                    <v-icon class="add_icon">
-                      add_circle_outline
-                    </v-icon>
-                  </v-list-tile-title>
+                  <v-list-tile-title> Steps </v-list-tile-title>
                 </v-list-tile-content>
+
               </v-list-tile>
 
-            </v-list-group>
+              <v-list-tile
+                :class="[(settings === 'tools') ? 'faIconsActive' : 'faIcons']"
+                @click="settings = 'tools'">
 
-          </v-list>
-        </v-flex>
+                <v-list-tile-action>
+                  <v-icon/>
+                </v-list-tile-action>
 
-        <v-flex xs9>
-          <v-layout>
-            <v-flex>
+                <v-list-tile-content>
+                  <v-list-tile-title> Tools </v-list-tile-title>
+                </v-list-tile-content>
 
-              <v-card-text>
-                <!-- Show task settings -->
-                <app-step-settings
-                  v-if="steps"
-                  :editor="editor"
-                  :step="editor.activeStep"/>
+              </v-list-tile>
 
-                <!-- Show image settings -->
-                <app-add-image
-                  v-if="images && active === 'addImage'"
-                  :editor="editor"
-                  :osd-viewer="osdViewer"/>
+            </v-list>
+          </v-navigation-drawer>
 
-                <!-- Show annotation settings -->
-                <app-add-annotation
-                  v-if="annotations && active === 'addAnnotation'"
-                  :editor="editor"
-                  :osd-viewer="osdViewer"
-                  :paper-scope="paperScope"/>
-              </v-card-text>
+          <div id="content">
+            <!-- Project Settings -->
+            <app-project-settings v-if="settings === 'project'"/>
 
-            </v-flex>
+            <!-- Annotation settings -->
+            <app-annotation-settings v-if="settings === 'annotation'"/>
 
-          </v-layout>
-        </v-flex>
+            <!-- Image Settings -->
+            <app-image-settings v-if="settings === 'image'"/>
 
-      </v-layout>
-      <v-divider/>
+            <!-- Step Settings -->
+            <app-step-settings v-if="settings === 'steps'"/>
 
-      <v-layout actions>
-        <v-btn
-          flat
-          class="blue--text darken-1"
-          @click.native="dialog = false">
-          Close
-        </v-btn>
-      </v-layout>
+            <!-- Tool Settings -->
+            <app-tool-settings v-if="settings === 'tools'"/>
+          </div>
 
+        </v-layout>
+
+        <v-divider/>
+
+        <v-layout justify-end>
+          <v-btn
+            color="blue darken-1"
+            flat
+            @click.native="dialog = false">
+            Close
+          </v-btn>
+        </v-layout>
+
+      </v-container>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-
 // Import child components
+import ProjectSettings from './ProjectSettings.vue'
+import AnnotationSettings from './AnnotationSettings'
+import ImageSettings from './ImageSettings.vue'
 import ToolSettings from './ToolSettings.vue'
 import StepSettings from './StepSettings.vue'
-import AddImage from './AddImage.vue'
-import AddAnnotation from './AddAnnotation.vue'
 
 export default {
-
   components: {
-    'app-tool-settings': ToolSettings,
+    'app-project-settings': ProjectSettings,
+    'app-annotation-settings': AnnotationSettings,
+    'app-image-settings': ImageSettings,
     'app-step-settings': StepSettings,
-    'app-add-image': AddImage,
-    'app-add-annotation': AddAnnotation
-  },
-
-  props: {
-    editor: {
-      type: Object,
-      default: function () { return {} }
-    },
-    osdViewer: {
-      type: Object,
-      default: function () { return {} }
-    },
-    paperScope: {
-      type: Object,
-      default: function () { return {} }
-    }
+    'app-tool-settings': ToolSettings
   },
 
   data () {
     return {
       dialog: false,
-      active: 'Task',
-      steps: false,
-      images: false,
-      annotations: false,
-      activeAnnotation: 0,
-      activeImage: 0,
-      activeStep: 0
+      settings: 'project'
     }
   }
 }
 </script>
 
 <style lang='css' scoped>
-#tabs-column{
-  border-right: 1px solid rgba(0,0,0,0.12);
-}
-
-#settings-list {
+#container {
+  margin: 0px;
   padding: 0px;
 }
 
-.tile-title {
-  font-size: 13px;
-  padding-left: 16px;
-}
-
-.action {
-  padding-right: 4px;
-}
-
-.option-active {
-  background-color: rgba(0,0,0,0.07);
-}
-
-.add_icon{
-  font-size: 20px;
+#content {
+  margin: 10px;
+  width: 100%;
 }
 </style>

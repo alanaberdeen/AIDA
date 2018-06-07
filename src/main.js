@@ -25,7 +25,9 @@ import {
   VTabs,
   VTextField,
   VTooltip,
-  VSubheader
+  VSubheader,
+  VRadioGroup,
+  VForm
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
 import './css/main.css'
@@ -50,7 +52,9 @@ Vue.use(Vuetify, {
     VTabs,
     VTextField,
     VTooltip,
-    VSubheader
+    VSubheader,
+    VRadioGroup,
+    VForm
   }
 })
 

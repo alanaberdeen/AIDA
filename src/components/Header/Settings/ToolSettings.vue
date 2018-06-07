@@ -1,7 +1,10 @@
 <template lang="html">
-  <v-flex xs12>
+  <div>
+    Tools
+  </div>
+  <!-- <v-flex xs12>
 
-    <!-- Adjust which tools are activated.  -->
+     Adjust which tools are activated.
     <v-list
       two-line
       subheader>
@@ -23,7 +26,7 @@
       </v-list-item>
     </v-list>
 
-  </v-flex>
+  </v-flex> -->
 </template>
 
 <script>
@@ -31,7 +34,9 @@ export default {
   props: {
     editor: {
       type: Object,
-      default: function () { return {} }
+      default: function () {
+        return {}
+      }
     }
   }
 }

@@ -1,14 +1,17 @@
 <template lang="html">
   <div>
+    Steps
+  </div>
+  <!-- <div>
     <h6 class="step-id"> Step {{ step + 1 }} </h6>
 
-    <!-- Getting errors on the text entry here because Vue hasn't been
-         updated. Annoying as things seem to break when I do that. -->
-    <!-- <v-text-field
+     Getting errors on the text entry here because Vue hasn't been
+         updated. Annoying as things seem to break when I do that.
+    <v-text-field
               name='input-1'
               label='Label Text'
               id='testing'
-              ></v-text-field> -->
+              ></v-text-field>
 
     <div>
       <p class="label"> Tools required: </p>
@@ -111,16 +114,17 @@
 
     </div>
 
-  </div>
+  </div> -->
 </template>
 
 <script>
 export default {
-
   props: {
     editor: {
       type: Object,
-      default: function () { return {} }
+      default: function () {
+        return {}
+      }
     },
     step: {
       type: Number,
@@ -137,8 +141,7 @@ export default {
 </script>
 
 <style lang='css' scoped>
-
-.step-id{
+.step-id {
   padding-bottom: 20px;
   font-size: 18px;
 }
@@ -147,12 +150,12 @@ export default {
   margin-bottom: 20px;
 }
 
-.instruction-input{
+.instruction-input {
   font-size: 14px;
 }
 
 .label {
-  color: rgba(0,0,0,0.38);
+  color: rgba(0, 0, 0, 0.38);
   font-size: 16px;
 }
 </style>
