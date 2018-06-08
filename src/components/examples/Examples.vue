@@ -26,7 +26,7 @@
             to="/example/dzi"
           >
             <v-card-media
-              :src="require('./dzi_example.png')"
+              :src="require('./slide_example.png')"
               height="200px"/>
             <v-card-title primary-title>
               <div>
