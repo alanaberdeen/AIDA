@@ -17,6 +17,28 @@ const state = {
 }
 
 const getters = {
+  getMaxZoom: state => {
+    if (state.OSDviewer) {
+      return Math.round(state.OSDviewer.viewport.getMaxZoom())
+    } else {
+      return 10
+    }
+  },
+
+  getZoom: state => {
+    if (state.OSDviewer) {
+      let zoom = state.OSDviewer.viewport.getZoom()
+
+      if (zoom < 100) {
+        return Math.round(zoom * 10) / 10
+      } else {
+        return Math.round(zoom)
+      }
+    } else {
+      return 'na'
+    }
+  },
+
   getImageWidth: state => {
     if (state.OSDviewer) {
       if (state.OSDviewer.world.getItemCount() > 0) {
@@ -66,7 +88,6 @@ const actions = {
     state,
     dispatch
   }, images) => {
-    console.log(images)
     // Add the new images to both the state and the OSD viewer.
     dispatch('addImagesToState', images).then(() => {
       for (let i in images) {
@@ -115,6 +136,12 @@ const actions = {
     rootState
   }, payload) => {
     commit('setChannelName', payload)
+  },
+
+  setZoom: ({
+    commit
+  }, payload) => {
+    commit('setZoom', payload)
   }
 }
 
@@ -140,7 +167,8 @@ const mutations = {
     state.OSDviewer = new openseadragon.Viewer({
       id: payload,
       showNavigationControl: false,
-      showNavigator: true
+      showNavigator: true,
+      navigatorId: 'navigator'
     })
 
     // Add handlers to update the state when certain events are triggered on the
@@ -257,7 +285,24 @@ const mutations = {
 
     // Save changes to Vuex state
     Vue.set(state.images[state.activeChannel], 'name', newName)
+  },
+
+  // Set the zoom level
+  setZoom: (state, payload) => {
+    let newZoom
+    // Check if keyboard event. This happens in the case that the user types
+    // the zoom value in the text box and hits enter
+    if (payload instanceof KeyboardEvent) {
+      newZoom = Number(payload.target.value)
+    } else {
+      newZoom = Number(payload)
+    }
+
+    if (typeof newZoom === 'number' && newZoom > 0) {
+      state.OSDviewer.viewport.zoomTo(newZoom)
+    }
   }
+
 }
 
 // Export all of the relevant logic so that it can be combined with the complete
