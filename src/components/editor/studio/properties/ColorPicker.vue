@@ -23,11 +23,10 @@
 <script>
 import { Chrome } from 'vue-color'
 import paper from 'paper'
-import { eventBus } from '../../../main'
+import { eventBus } from '../../../../main'
 import { mapState } from 'vuex'
 
 export default {
-
   components: {
     'colour-picker': Chrome
   },
@@ -83,21 +82,19 @@ export default {
           })
 
           if (this.type === 'fill' && this.colorPick.hsl) {
-            group.fillColor = new paper.Color(
-              {
-                hue: this.colorPick.hsl.h,
-                saturation: this.colorPick.hsl.s,
-                lightness: this.colorPick.hsl.l,
-                alpha: this.colorPick.hsl.a
-              })
+            group.fillColor = new paper.Color({
+              hue: this.colorPick.hsl.h,
+              saturation: this.colorPick.hsl.s,
+              lightness: this.colorPick.hsl.l,
+              alpha: this.colorPick.hsl.a
+            })
           } else if (this.type === 'stroke' && this.colorPick.hsl) {
-            group.strokeColor = new paper.Color(
-              {
-                hue: this.colorPick.hsl.h,
-                saturation: this.colorPick.hsl.s,
-                lightness: this.colorPick.hsl.l,
-                alpha: this.colorPick.hsl.a
-              })
+            group.strokeColor = new paper.Color({
+              hue: this.colorPick.hsl.h,
+              saturation: this.colorPick.hsl.s,
+              lightness: this.colorPick.hsl.l,
+              alpha: this.colorPick.hsl.a
+            })
           }
 
           // Emit selection event to the eventBus so that the properties
@@ -111,12 +108,10 @@ export default {
 </script>
 
 <style lang='css' scoped>
-
 .color-tile {
   width: 20px;
   height: 20px;
   margin: auto;
   border: 1px solid #616161;
 }
-
 </style>

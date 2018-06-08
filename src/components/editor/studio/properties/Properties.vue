@@ -13,6 +13,8 @@
       </v-toolbar>
 
       <v-list id="list" >
+
+        <!-- Number of selected items -->
         <v-list-tile>
 
           <v-list-tile-content>
@@ -24,11 +26,10 @@
           <v-list-tile-action>
             {{ numItems }}
           </v-list-tile-action>
-
         </v-list-tile>
 
+        <!-- Fill color -->
         <v-list-tile>
-
           <v-list-tile-content>
             <v-list-tile-title class="faIcons">
               Fill colour:
@@ -45,11 +46,10 @@
                 class="pointers-please"/>
             </v-btn>
           </v-list-tile-action>
-
         </v-list-tile>
 
+        <!-- Stroke color -->
         <v-list-tile>
-
           <v-list-tile-content>
             <v-list-tile-title class="faIcons">
               Stroke colour:
@@ -66,8 +66,24 @@
                 class="pointers-please"/>
             </v-btn>
           </v-list-tile-action>
-
         </v-list-tile>
+
+        <!-- Class
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title class="faIcons">
+              Class:
+            </v-list-tile-title>
+          </v-list-tile-content>
+
+          <v-list-tile-action>
+            <v-text-field
+              :value="groupClass"
+              name="input-3-4"
+              single-line
+            />
+          </v-list-tile-action>
+        </v-list-tile> -->
 
       </v-list>
     </v-card>
@@ -75,17 +91,17 @@
 </template>
 
 <script>
-import { eventBus } from '../../../main'
+import { eventBus } from '../../../../main'
 import ColorPicker from './ColorPicker.vue'
 
 export default {
-
   components: {
     'colour-picker': ColorPicker
   },
   data () {
     return {
       numItems: 0,
+      groupClass: '',
       groupFillColor: {
         style: 'transparent',
         obj: {
@@ -112,18 +128,25 @@ export default {
   created () {
     // Listen for an event indicating the selection has changed and
     // update the component data appropriately.
-    eventBus.$on('selectionChanged', (selection) => {
+    eventBus.$on('selectionChanged', selection => {
       if (selection.length >= 1) {
         this.numItems = 0
-        selection.forEach((item) => {
+        selection.forEach(item => {
           if (item.className === 'Group') {
+            console.log(item)
+            if (item.data.class) {
+              this.groupClass = item.data.class
+              console.log(item.data.class)
+            }
+
             if (item.fillColor) {
               let hue = item.fillColor.hue
-              let sat = (item.fillColor.saturation * 100) + '%'
-              let light = (item.fillColor.lightness * 100) + '%'
+              let sat = item.fillColor.saturation * 100 + '%'
+              let light = item.fillColor.lightness * 100 + '%'
               let alpha = item.fillColor.alpha
 
-              this.groupFillColor.style = 'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')'
+              this.groupFillColor.style =
+                'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')'
               this.groupFillColor.obj = {
                 h: hue,
                 s: sat,
@@ -142,11 +165,12 @@ export default {
 
             if (item.strokeColor) {
               let hue = item.strokeColor.hue
-              let sat = (item.strokeColor.saturation * 100) + '%'
-              let light = (item.strokeColor.lightness * 100) + '%'
+              let sat = item.strokeColor.saturation * 100 + '%'
+              let light = item.strokeColor.lightness * 100 + '%'
               let alpha = item.strokeColor.alpha
 
-              this.groupStrokeColor.style = 'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')'
+              this.groupStrokeColor.style =
+                'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')'
               this.groupStrokeColor.obj = {
                 h: hue,
                 s: sat,
@@ -167,6 +191,9 @@ export default {
           }
         })
       } else {
+        // Reset class
+        this.groupClass = ''
+
         // Reset property data
         this.numItems = 0
         this.groupFillColor = {
@@ -197,7 +224,7 @@ export default {
 <style lang='css' scoped>
 .panel {
   margin-top: 7px;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   width: 240px;
 }
 
@@ -206,7 +233,7 @@ export default {
 }
 
 #toolbar {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
 }
 
 .action {
@@ -220,7 +247,6 @@ export default {
 }
 
 #list {
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
-
 </style>
