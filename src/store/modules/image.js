@@ -219,14 +219,14 @@ const mutations = {
         tileSource: image.source,
         x: 0,
         y: 0,
-        opacity: 0.8
+        opacity: 1.0
       })
     } else if (image.type === 'simple') {
       state.OSDviewer.addSimpleImage({
         url: image.source,
         x: 0,
         y: 0,
-        opacity: 0.8
+        opacity: 1.0
       })
     }
   },
