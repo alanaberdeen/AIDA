@@ -33,5 +33,6 @@ export default {
 .studioPanel {
   height: calc(100vh - 48px);
   background: #eeeeee;
+  overflow: auto;
 }
 </style>
