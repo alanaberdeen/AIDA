@@ -47,7 +47,7 @@ export default {
   },
 
   mounted () {
-    // this.initialiseTool()
+    this.initialiseTool()
   },
 
   methods: {
