@@ -130,6 +130,7 @@ export default {
 
             // Custom data attribute:
             newRect.data.type = 'rectangle'
+            newRect.data.class = 'face'
           }
         })
         // Catch errors - reset and report issue.

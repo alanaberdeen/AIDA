@@ -58,6 +58,7 @@ export default {
       if (!this.path || !this.path.data.active) {
         this.path = this.newPath()
         this.path.data.active = true
+        this.path.data.class = ''
       }
 
       let hitResult = this.path.hitTest(event.point, this.hitOptions)

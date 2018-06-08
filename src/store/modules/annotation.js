@@ -282,7 +282,8 @@ const mutations = {
               radius: item.radius,
               data: {
                 type: 'circle',
-                countable: true
+                countable: true,
+                class: item.class
               }
             })
           } else if (item.type === 'rectangle') {
@@ -290,7 +291,8 @@ const mutations = {
               from: item.from,
               to: item.to,
               data: {
-                type: 'rectangle'
+                type: 'rectangle',
+                class: item.class
               }
             })
           } else {
@@ -298,7 +300,8 @@ const mutations = {
               segments: item.segments,
               closed: item.closed,
               data: {
-                type: 'path'
+                type: 'path',
+                class: item.class
               }
             })
           }

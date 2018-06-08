@@ -119,6 +119,7 @@ export default {
       // Custom data attribute:
       newCircle.data.countable = true
       newCircle.data.type = 'circle'
+      newCircle.data.class = ''
 
       // As the number of circle markers in the project has changed,
       // Emit an event that will check to see if we are counting these

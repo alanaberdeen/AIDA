@@ -78,6 +78,7 @@ export default {
 
       // Custom data attribute:
       newRect.data.type = 'rectangle'
+      newRect.data.class = ''
     }
 
     this.toolRect = new paper.Tool()
