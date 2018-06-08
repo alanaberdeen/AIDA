@@ -132,9 +132,7 @@ export default {
       viewer: state => state.image.OSDviewer
     }),
 
-    ...mapGetters([
-      'getChannels'
-    ])
+    ...mapGetters(['getChannels'])
   },
 
   methods: {
@@ -151,7 +149,7 @@ export default {
 <style lang='css' scoped>
 .panel {
   margin-top: 7px;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   width: 240px;
 }
 
@@ -160,7 +158,7 @@ export default {
 }
 
 #toolbar {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
 }
 
 #iconButton {
@@ -168,16 +166,16 @@ export default {
 }
 
 #list {
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
 
 #controls {
-  background-color: #F5F5F5;
-  border-top: 1px solid #E0E0E0;
+  background-color: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
 }
 
 #tab-items {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 
 #tab-item {
