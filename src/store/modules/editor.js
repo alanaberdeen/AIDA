@@ -59,7 +59,13 @@ const actions = {
 
 const mutations = {
   resetEditorState: (state) => {
-    state = {}
+    state = {
+      'type': 'dzi',
+      'activeChannel': 0,
+      'activeLayer': 0,
+      'activeStep': 0,
+      'steps': null
+    }
   },
 
   setActiveStep: (state, stepIndex) => {

@@ -72,9 +72,10 @@ const getters = {
 
 const actions = {
   resetImageState: ({
-    commit
+    commit,
+    rootState
   }) => {
-    commit('resetImageState')
+    commit('resetImageState', rootState)
   },
 
   setupOSDCanvas: ({
@@ -88,8 +89,9 @@ const actions = {
     state,
     dispatch
   }, images) => {
-    // Add the new images to both the state and the OSD viewer.
+    // Add the new images to the state and the OSD
     dispatch('addImagesToState', images).then(() => {
+      // Add each image to the OSD viewer
       for (let i in images) {
         dispatch('addOSDImage', images[i])
       }
@@ -147,6 +149,9 @@ const actions = {
 
 const mutations = {
   resetImageState: (state) => {
+    // Destroy the openseadragon viewer
+    state.OSDviewer.destroy()
+
     state = {
       OSDviewer: null,
       OSDworld: null,
@@ -207,6 +212,7 @@ const mutations = {
 
   // Add images to the state
   addImagesToState: (state, images) => {
+    state.images = []
     for (let i in images) {
       state.images.push(images[i])
     }

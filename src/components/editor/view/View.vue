@@ -48,8 +48,18 @@ export default {
     this.loadProject(this.type)
   },
 
+  // When the view element is removed from the app (ie. the user navigates away)
+  // apply all the cleaning functionality and reset the state.
+  destroyed () {
+    this.resetState()
+  },
+
   methods: {
-    ...mapActions(['synchroniseAnnotationAndOSDCanvas', 'loadProject'])
+    ...mapActions([
+      'synchroniseAnnotationAndOSDCanvas',
+      'loadProject',
+      'resetState'
+    ])
   }
 }
 </script>

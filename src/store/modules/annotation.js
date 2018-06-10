@@ -192,9 +192,14 @@ const actions = {
 
 const mutations = {
   resetAnnotationState: state => {
-    state = {
-      project: null
-    }
+    // Vuex state
+    Vue.set(state, 'project', {
+      name: 'An AIDA project',
+      layers: []
+    })
+
+    // Remove paperJS project instance
+    paper.project.remove()
   },
 
   // Refresh the Vuex store to incorporate all of the paperJS annotation items

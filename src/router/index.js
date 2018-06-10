@@ -35,11 +35,7 @@ export default new Router({
   {
     path: '/example',
     name: 'Examples',
-    component: Examples,
-    props: {
-      default: true,
-      type: 'examples'
-    }
+    component: Examples
   },
   {
     path: '/new',
