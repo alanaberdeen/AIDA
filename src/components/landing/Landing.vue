@@ -40,7 +40,7 @@
               to="/example">
               <v-icon>web</v-icon>
               <span class="button-text">
-                Example
+                Get Started
               </span>
             </v-btn>
           </v-flex>
