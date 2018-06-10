@@ -133,10 +133,8 @@ export default {
         this.numItems = 0
         selection.forEach(item => {
           if (item.className === 'Group') {
-            console.log(item)
             if (item.data.class) {
               this.groupClass = item.data.class
-              console.log(item.data.class)
             }
 
             if (item.fillColor) {
