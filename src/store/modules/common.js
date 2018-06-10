@@ -61,7 +61,7 @@ const actions = {
       axios
         .put(endpoint, {
           editor: rootState.editor,
-          annotation: rootState.annotation,
+          annotation: rootState.annotation.project,
           images: rootState.image.images
         })
         .then(function (response) {

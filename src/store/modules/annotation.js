@@ -124,9 +124,23 @@ const actions = {
   },
 
   loadAnnotation: ({
+    commit,
+    dispatch
+  }, payload) => {
+    // Handle both legacy string representation and new AIDA annotation schema
+    if (typeof payload === 'object') {
+      commit('loadAnnotation', payload)
+    } else if (typeof payload === 'string') {
+      dispatch('loadPaperStringAnnotation', payload).then(
+        dispatch('refreshAnnotationState')
+      )
+    }
+  },
+
+  loadPaperStringAnnotation: ({
     commit
   }, payload) => {
-    commit('loadAnnotation', payload)
+    commit('loadPaperStringAnnotation', payload)
   },
 
   prepareCanvas: ({
@@ -185,9 +199,13 @@ const mutations = {
 
   // Refresh the Vuex store to incorporate all of the paperJS annotation items
   refreshAnnotationState: (state, payload) => {
-    // Clear the current items
-    state.project.layers.forEach(layer => {
-      layer['items'] = []
+    // Construct the layer structure fresh in the Vuex state
+    paper.project.layers.forEach(layer => {
+      Vue.set(state.project.layers, [layer.index], {
+        name: state.project.layers[layer.index] ? state.project.layers[layer.index].name : layer.name,
+        opacity: layer.opacity,
+        items: []
+      })
     })
 
     // Gather all the Path items in the paperJS environment and store them in
@@ -262,9 +280,11 @@ const mutations = {
   },
 
   // Load annotation data into both the state and the paperJS environment.
+  // For legacy purposes handle both a string of annotation output as created by
+  // PaperJS but also the new AIDA annotation schema.
   loadAnnotation: (state, payload) => {
     // Save the loaded annotation data to the Vuex state
-    state.project = payload.project
+    state.project = payload
 
     // Cycle through the layers
     state.project.layers.forEach(layer => {
@@ -316,9 +336,11 @@ const mutations = {
         })
       }
     })
+  },
 
-    // Set the first layer as active
-    paper.project.layers[0].activate()
+  // Load legacy, paperJS project string representation
+  loadPaperStringAnnotation: (state, payload) => {
+    paper.project.importJSON(payload)
   },
 
   // Prepare the canvas for adding annotations.
