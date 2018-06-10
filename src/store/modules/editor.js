@@ -9,7 +9,8 @@ const state = {
   'activeChannel': 0,
   'activeLayer': 0,
   'activeStep': 0,
-  'steps': null
+  'steps': null,
+  'settingsFlag': false
 }
 
 const getters = {
@@ -54,6 +55,12 @@ const actions = {
       editor: payload,
       rootState: rootState
     })
+  },
+
+  toggleSettings: ({
+    commit
+  }, payload) => {
+    commit('toggleSettings')
   }
 }
 
@@ -81,6 +88,11 @@ const mutations = {
     // the trap of Vue reactivity caveats.
     // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
     Vue.set(payload.rootState, 'editor', payload.editor)
+  },
+
+  toggleSettings: (state) => {
+    state.settingsFlag = !state.settingsFlag
+    console.log(state.settingsFlag)
   }
 }
 

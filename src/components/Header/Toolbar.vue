@@ -24,11 +24,7 @@
     <app-save/>
 
     <!-- Settings -->
-    <v-btn
-      icon
-      class="pointers-no">
-      <app-settings />
-    </v-btn>
+    <app-settings />
 
     <!-- Dashboard -->
     <v-btn

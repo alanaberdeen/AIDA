@@ -9,12 +9,12 @@
         <v-toolbar-title class="toolBarTitle">
           Images
         </v-toolbar-title>
-        <v-spacer/>
+        <!-- <v-spacer/>
         <v-btn icon>
           <v-icon id="iconButton">
             add
           </v-icon>
-        </v-btn>
+        </v-btn> -->
       </v-toolbar>
 
       <v-list id="list" >
