@@ -5,7 +5,7 @@
 
     <app-layers/>
 
-    <app-channels/>
+    <app-images/>
 
     <app-properties/>
 
@@ -17,14 +17,14 @@
 // Import child components
 import navigator from './Navigator.vue'
 import layers from './Layers.vue'
-import channels from './Channels.vue'
+import images from './Images.vue'
 import properties from './properties/Properties.vue'
 
 export default {
   components: {
     'app-navigator': navigator,
     'app-layers': layers,
-    'app-channels': channels,
+    'app-images': images,
     'app-properties': properties
   }
 }
