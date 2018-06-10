@@ -23,6 +23,13 @@
     <!-- Save -->
     <app-save/>
 
+    <!-- Settings -->
+    <v-btn
+      icon
+      class="pointers-no">
+      <app-settings />
+    </v-btn>
+
     <!-- Dashboard -->
     <v-btn
       icon
@@ -35,13 +42,6 @@
       icon
       href="https://aida.gitbook.io/docs/" >
       <v-icon small> fa-book </v-icon>
-    </v-btn>
-
-    <!-- Settings -->
-    <v-btn
-      icon
-      class="pointers-no">
-      <app-settings />
     </v-btn>
 
     <!-- Account -->
