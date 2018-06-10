@@ -124,17 +124,29 @@ const actions = {
   },
 
   loadAnnotation: ({
-    commit,
-    dispatch
-  }, payload) => {
+    dispatch,
+    rootState
+  }, annotation) => {
     // Handle both legacy string representation and new AIDA annotation schema
-    if (typeof payload === 'object') {
-      commit('loadAnnotation', payload)
-    } else if (typeof payload === 'string') {
-      dispatch('loadPaperStringAnnotation', payload).then(
+    if (typeof annotation === 'object') {
+      dispatch('loadAidaAnnotation', {
+        annotation: annotation,
+        activeLayer: rootState.editor.activeLayer
+      })
+    } else if (typeof annotation === 'string') {
+      dispatch('loadPaperStringAnnotation', {
+        annotation: annotation,
+        activeLayer: rootState.editor.activeLayer
+      }).then(() => {
         dispatch('refreshAnnotationState')
-      )
+      })
     }
+  },
+
+  loadAidaAnnotation: ({
+    commit
+  }, payload) => {
+    commit('loadAidaAnnotation', payload)
   },
 
   loadPaperStringAnnotation: ({
@@ -287,9 +299,9 @@ const mutations = {
   // Load annotation data into both the state and the paperJS environment.
   // For legacy purposes handle both a string of annotation output as created by
   // PaperJS but also the new AIDA annotation schema.
-  loadAnnotation: (state, payload) => {
+  loadAidaAnnotation: (state, payload) => {
     // Save the loaded annotation data to the Vuex state
-    state.project = payload
+    state.project = payload.annotation
 
     // Cycle through the layers
     state.project.layers.forEach(layer => {
@@ -341,11 +353,15 @@ const mutations = {
         })
       }
     })
+
+    // Active the correct layer as specified by editor state.
+    paper.project.layers[payload.activeLayer].activate()
   },
 
   // Load legacy, paperJS project string representation
   loadPaperStringAnnotation: (state, payload) => {
-    paper.project.importJSON(payload)
+    paper.project.importJSON(payload.annotation)
+    paper.project.layers[payload.activeLayer].activate()
   },
 
   // Prepare the canvas for adding annotations.
