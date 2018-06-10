@@ -14,7 +14,7 @@
           icon
           @click.native="newLayer">
           <v-icon id="iconButton">
-            tab
+            add
           </v-icon>
         </v-btn>
       </v-toolbar>
