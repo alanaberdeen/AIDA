@@ -2,9 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 // Import Components
-import Landing from '@/components/landing/Landing'
-import Editor from '@/components/editor/Editor'
-import Examples from '@/components/examples/Examples'
+import Landing from '../components/landing/Landing.vue'
+import Editor from '../components/editor/Editor.vue'
+import Examples from '../components/examples/Examples.vue'
 
 Vue.use(Router)
 
@@ -46,6 +46,5 @@ export default new Router({
       type: 'new'
     }
   }
-
   ]
 })
