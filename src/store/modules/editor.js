@@ -92,7 +92,6 @@ const mutations = {
 
   toggleSettings: (state) => {
     state.settingsFlag = !state.settingsFlag
-    console.log(state.settingsFlag)
   }
 }
 
