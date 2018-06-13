@@ -1,3 +1,6 @@
+// Editor.vue
+// This component represents an instance of the AIDA editor
+// It includes the sub components that make up the interface
 <template>
   <div>
     <header>
