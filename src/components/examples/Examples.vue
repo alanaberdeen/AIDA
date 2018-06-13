@@ -26,7 +26,7 @@
             to="/example/dzi"
           >
             <v-card-media
-              :src="require('./slide_example.png')"
+              src="https://s3-eu-west-1.amazonaws.com/aida-example/ui-images/slide_example.png"
               height="200px"/>
             <v-card-title primary-title>
               <div>
@@ -56,7 +56,7 @@
             to="/example/simple"
           >
             <v-card-media
-              :src="require('./simple_example.png')"
+              src="https://s3-eu-west-1.amazonaws.com/aida-example/ui-images/simple_example.png"
               height="200px"/>
             <v-card-title primary-title>
               <div>
@@ -85,7 +85,7 @@
             to="/new"
           >
             <v-card-media
-              :src="require('./fresh.png')"
+              src="https://s3-eu-west-1.amazonaws.com/aida-example/ui-images/fresh.png"
               height="200px"
             />
             <v-card-title primary-title>
