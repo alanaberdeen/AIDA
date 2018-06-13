@@ -1,3 +1,6 @@
+// Toolbar.vue
+// This component defines the main toolbar for the AIDA application
+// It contains the sub-components for different functionality
 <template lang="html">
   <v-toolbar
     :fixed="true"
