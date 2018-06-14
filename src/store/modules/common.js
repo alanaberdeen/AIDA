@@ -3,6 +3,9 @@
 import axios from 'axios'
 import paper from 'paper'
 
+// Import helper functions
+import readOldSchema from './helpers/readOldSchema.js'
+
 const state = {}
 
 const getters = {}
@@ -29,18 +32,26 @@ const actions = {
       .get(endpoint)
       // Update the editor.js state
       .then(function (response) {
+        // Check if data loaded is of the old format (it will have tools prop
+        // at the highest level) and if so use the helper function to translate
+        // the content into the new schema before loading
+        let config = response.data
+        if (response.data.tools) {
+          config = readOldSchema(response.data)
+        }
+
         // Load the editor configuration
-        dispatch('loadConfig', response.data.editor, {
+        dispatch('loadConfig', config.editor, {
           root: true
         })
 
         // Load the images into the viewer
-        dispatch('loadImages', response.data.images, {
+        dispatch('loadImages', config.images, {
           root: true
         })
 
         // Load the PaperJS project representation of the annotation data
-        dispatch('loadAnnotation', response.data.annotation, {
+        dispatch('loadAnnotation', config.annotation, {
           root: true
         })
       })
