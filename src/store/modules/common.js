@@ -25,19 +25,19 @@ const actions = {
     dispatch
   }, payload) => {
     // Construct endpoint from which to pull the data from
-    let endpoint = 'https://aida-testing.firebaseio.com/' + payload + '.json'
+    let endpoint = 'https://aida-testing.firebaseio.com/' + payload + '.json '
 
     // Pull latest test project from REST api
     axios
       .get(endpoint)
       // Update the editor.js state
       .then(function (response) {
-        // Check if data loaded is of the old format (it will have tools prop
+        // Check if data loaded is of the old format (it will have config prop
         // at the highest level) and if so use the helper function to translate
         // the content into the new schema before loading
         let config = response.data
-        if (response.data.tools) {
-          config = readOldSchema(response.data)
+        if (response.data.config) {
+          config = readOldSchema(response.data.config)
         }
 
         // Load the editor configuration
