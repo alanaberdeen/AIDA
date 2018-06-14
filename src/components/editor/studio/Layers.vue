@@ -134,7 +134,9 @@ export default {
   computed: {
     ...mapState({
       layers: state => state.annotation.project.layers,
-      activeLayer: state => state.editor.activeLayer
+      activeLayer: state => state.editor.activeLayer,
+      steps: state => state.editor.steps,
+      activeStep: state => state.editor.activeStep
     })
   },
 
@@ -146,11 +148,23 @@ export default {
       'setActiveLayer',
       'setLayerOpacity',
       'setLayerName',
-      'deleteLayer'
+      'deleteLayer',
+      'setActiveStep'
     ]),
 
     selectLayer (index) {
-      this.setActiveLayer(index)
+      // First check to see if the editor configuration syncs the active step
+      // and layer. If so, change the step to the required index.
+      // This is a quick hack. Could do with a better method.
+      for (let i in this.steps) {
+        let step = this.steps[i]
+
+        if (step.specificLayer === index) {
+          this.setActiveStep(step)
+        } else {
+          this.setActiveLayer(index)
+        }
+      }
     }
   }
 }
