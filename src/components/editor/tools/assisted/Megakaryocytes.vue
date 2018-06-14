@@ -33,7 +33,7 @@
 <script>
 // Import libs
 import paper from 'paper'
-// import openseadragon from 'openseadragon'
+import openseadragon from 'openseadragon'
 
 // Vuex
 import { mapState, mapActions } from 'vuex'
@@ -59,8 +59,8 @@ export default {
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      tiledImage: state => state.image.OSDviewer.world.getItemAt(0),
-      OSDviewer: state => state.image.OSDviewer
+      tileSource: state => state.image.OSDviewer.source,
+      viewport: state => state.image.OSDviewer.viewport
     })
   },
 
@@ -85,18 +85,49 @@ export default {
 
     // Get a list of tiles in the defined rectangle
     const toolUp = event => {
-      console.log('The event points are: ')
+      // Source dimensions
+      let dimensions = this.tileSource.dimensions
+      let aspectRatio = this.tileSource.aspectRatio
 
-      // let downPoint = new openseadragon.Point(
-      //   event.downPoint.x,
-      //   event.downPoint.y
-      // )
-      // let upPoint = new openseadragon.Point(event.point.x, event.point.y)
+      // Point given to getTileAtPoint must be 0 < point < 1, therefore it's in
+      // openseadragon viewport coordinates rather than image and is magnitude
+      // limited.
+      let downX = Math.min(Math.max((event.downPoint.x / dimensions.x), 0), 1)
+      let downY = Math.min(Math.max((event.downPoint.y / dimensions.y), 0), 1)
+      let upX = Math.min(Math.max((event.point.x / dimensions.x), 0), 1)
+      let upY = Math.min(Math.max((event.point.y / dimensions.y), 0), 1)
+      let downPoint = new openseadragon.Point(downX, downY / aspectRatio)
+      let upPoint = new openseadragon.Point(upX, upY / aspectRatio)
 
-      // let downTile = this.OSDviewer.tileSource.getTileAtPoint(downPoint)
-      // let upTile = this.OSDviewer.tileSource.getTileAtPoint(upPoint)
+      // These two tiles define the area in which we want to search, from the
+      // first (downTile) to the last (upTile).
+      let level = 15
+      let downTile = this.tileSource.getTileAtPoint(level, downPoint)
+      let upTile = this.tileSource.getTileAtPoint(level, upPoint)
 
-      console.log('downTile: ' + this.OSDviewer.world.getItemAt(0).source)
+      // Create list of tile data in which the algorithm should search
+      let tilesToSearch = []
+      for (let col = downTile.x; col <= upTile.x; col++) {
+        for (let row = downTile.y; row <= upTile.y; row++) {
+          let position = this.viewport.viewportToImageCoordinates(
+            this.tileSource.getTileBounds(level, col, row).x,
+            this.tileSource.getTileBounds(level, col, row).y
+          )
+          tilesToSearch.push({
+            tile: [row, col],
+            postion: [
+              position.x,
+              position.y
+            ]
+          })
+        }
+      }
+
+      // getTileBounds
+      console.log(tilesToSearch)
+
+      // console.log('downTile: ')
+      // console.log(downTile)
       // console.log('upTile: ' + upTile)
 
       // let newRect = new paper.Path.Rectangle(event.downPoint, event.point)
