@@ -25,7 +25,7 @@ const actions = {
     dispatch
   }, payload) => {
     // Construct endpoint from which to pull the data from
-    let endpoint = 'https://aida-testing.firebaseio.com/' + 'oldData' + '.json '
+    let endpoint = 'https://aida-testing.firebaseio.com/' + payload + '.json '
 
     // Pull latest test project from REST api
     axios
