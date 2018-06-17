@@ -59,8 +59,9 @@ export default {
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      tileSource: state => state.image.OSDviewer.source,
-      viewport: state => state.image.OSDviewer.viewport
+      tileSource: state => state.image.OSDviewer.world.getItemAt(0).source,
+      viewport: state => state.image.OSDviewer.viewport,
+      tiledImage: state => state.image.OSDviewer.world.getItemAt(0)
     })
   },
 
@@ -109,7 +110,7 @@ export default {
       let tilesToSearch = []
       for (let col = downTile.x; col <= upTile.x; col++) {
         for (let row = downTile.y; row <= upTile.y; row++) {
-          let position = this.viewport.viewportToImageCoordinates(
+          let position = this.tiledImage.viewportToImageCoordinates(
             this.tileSource.getTileBounds(level, col, row).x,
             this.tileSource.getTileBounds(level, col, row).y
           )
