@@ -7,7 +7,7 @@
         dense
       >
         <v-toolbar-title class="toolBarTitle">
-          Images
+          Channels
         </v-toolbar-title>
         <!-- <v-spacer/>
         <v-btn icon>
