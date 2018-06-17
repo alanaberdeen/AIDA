@@ -279,7 +279,7 @@ const mutations = {
     }
 
     // Set the new opacity level
-    state.OSDviewer.world.getItemAt(payload.activeChannel).setOpacity(newOpacity)
+    state.OSDviewer.world.getItemAt(state.activeChannel).setOpacity(newOpacity)
   },
 
   // Set the channel name
