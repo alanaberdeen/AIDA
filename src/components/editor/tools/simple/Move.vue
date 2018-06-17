@@ -204,13 +204,13 @@ export default {
 
     // handlers for keyEvents.
     const toolKeyUp = event => {
-      // Remove current selection group bounds
-      this.selectionGroup.bounds.selected = false
-
       // Remove items
       if (event.key === 'backspace' || event.key === 'delete') {
         // Check for current selection
         if (paper.project.selectedItems) {
+          // Remove current selection group bounds
+          this.selectionGroup.bounds.selected = false
+
           // For each item selected remove if item is not a layer
           paper.project.selectedItems.forEach(item => {
             if (item.className !== 'Layer') {
