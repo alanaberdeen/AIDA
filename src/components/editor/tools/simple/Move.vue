@@ -30,7 +30,6 @@
 
 <script>
 import paper from 'paper'
-import { eventBus } from '../../../../main'
 import { mapActions, mapState } from 'vuex'
 
 export default {
@@ -44,8 +43,10 @@ export default {
   data () {
     return {
       toolMove: null,
-      selectOptions: null,
-      strokeWidth: 2
+      hitOptions: null,
+      strokeWidth: 2,
+      selectionGroup: null,
+      toolMode: ''
     }
   },
 
@@ -58,83 +59,53 @@ export default {
   },
 
   created () {
-    // Result of user click interaction on PaperJS instance.
+    // NOTE: This method is rather unsatisfactory. Currently paper.js does not
+    // have functionality for un-grouping items in a project. Therefore, the
+    // following code will leave many groups that are un-used in the project.
+
+    // Initialise variables to be used across tool events
     let hitResult = null
 
-    // Array of items that will be selected and the selected group
-    let toBeSelected = []
-    let selectedGroup = null
-
-    // Current tool status.
-    let toolStatus = ''
-
     const toolDown = event => {
-      // Get details of the element the user has clicked on.
-      hitResult = paper.project.hitTest(event.point, this.selectOptions)
+      // Check if item hit
+      hitResult = paper.project.hitTest(event.point, this.hitOptions)
 
-      // If no modiefiers and item has been selected then create the
-      // selection group (of one element) to be selected.
-      if (
-        hitResult &&
-        hitResult.type !== 'bounds' &&
-        (hitResult.type === 'fill' ||
-          hitResult.type === 'stroke' ||
-          hitResult.type === 'segment')
-      ) {
-        if (
-          selectedGroup &&
-          selectedGroup.hitTest(event.point, this.selectOptions)
-        ) {
-          // If clicking an already selected item then make no change.
+      // Remove current selection group bounds
+      this.selectionGroup.bounds.selected = false
+
+      // Hit result and event modifier conditions
+      if (hitResult) {
+        // If hit a bounds item, assume user is attempting to trasnform
+        if (hitResult.type === 'bounds') {
+          this.toolMode = 'transform'
+
+          // If hit an item and shift key held then add to selection
         } else if (event.modifiers.shift) {
-          toBeSelected.push(hitResult.item)
+          hitResult.item.selected = true
+
+          // If item is already selected, assume user is attempting to move
+        } else if (hitResult.item.selected) {
+          this.toolMode = 'move'
+
+          // If hit an unselected item with no modifer then deselct all but this
         } else {
-          toBeSelected = [hitResult.item]
+          paper.project.deselectAll()
+          hitResult.item.selected = true
+          this.toolMode = 'move'
         }
 
-        toolStatus = 'move'
-
-        // If user has clicked bounds then assume transforming.
-      } else if (hitResult && hitResult.type === 'bounds') {
-        toolStatus = 'transform'
+        // If no hitresult, assume use is attempting to make a new selection
       } else {
-        toBeSelected = []
-        toolStatus = 'select'
-      }
-
-      // Clean current selection
-      paper.project.deselectAll()
-      if (selectedGroup) {
-        selectedGroup.selected = false
-        selectedGroup.bounds.selected = false
-        selectedGroup = null
-      }
-
-      // If there are items to be selected then setup selection.
-      if (toBeSelected.length > 0) {
-        // Check any of the items need to be selected with linked
-        // items. For example in the case of the
-        // counting rectanlge tool need to select the number, tag
-        // and rectangle path.
-        for (let item in toBeSelected) {
-          if (toBeSelected[item].data.selectWith) {
-            for (let extraItem in toBeSelected[item].data.selectWith) {
-              toBeSelected.push(toBeSelected[item].data.selectWith[extraItem])
-            }
-          }
-        }
-
-        selectedGroup = new paper.Group(toBeSelected)
-        selectedGroup.selected = true
-        selectedGroup.bounds.selected = true
+        paper.project.deselectAll()
+        this.toolMode = 'select'
       }
     }
 
     // Functionality for user dragging select/move tool.
-    // Specified action should have been set on the mouseDown event.
+    // Specified mode should have been set on the mouseDown event.
     const toolDrag = event => {
-      // Draggable selection box.
-      if (toolStatus === 'select') {
+      // Select mode: creates a draggable selection box.
+      if (this.toolMode === 'select') {
         let selectionRect = new paper.Shape.Rectangle(
           event.downPoint,
           event.point
@@ -151,88 +122,62 @@ export default {
           up: true
         })
 
-        // Get items inside the selection rectangle.
-        toBeSelected = paper.project.getItems({
+        // Select items inside the selection rectangle.
+        paper.project.deselectAll()
+        paper.project.getItems({
           class: 'Path',
           inside: selectionRect.bounds
+        }).forEach((item) => {
+          item.selected = true
         })
 
-        // Clean current selection
-        paper.project.deselectAll()
-        if (selectedGroup) {
-          selectedGroup.selected = false
-          selectedGroup.bounds.selected = false
-          selectedGroup = null
+      // Move mode: adjusts the position of the selected group
+      } else if (this.toolMode === 'move') {
+        if (this.selectionGroup.children.length > 0) {
+          this.selectionGroup.position = this.selectionGroup.position.add(event.delta)
+        } else {
+          hitResult.item.position = hitResult.item.position.add(event.delta)
         }
 
-        if (toBeSelected.length > 0) {
-          // Check any of the items need to be selected with linked
-          // items. For example in the case of the
-          // counting rectanlge tool need to select the number, tag
-          // and rectangle path.
-          for (let item in toBeSelected) {
-            if (toBeSelected[item].data.selectWith) {
-              for (let extraItem in toBeSelected[item].data.selectWith) {
-                toBeSelected.push(toBeSelected[item].data.selectWith[extraItem])
-              }
-            }
-          }
-
-          selectedGroup = new paper.Group(toBeSelected)
-          selectedGroup.selected = true
-        }
-      } else if (toolStatus === 'move') {
-        selectedGroup.position = selectedGroup.position.add(event.delta)
-      } else if (toolStatus === 'transform') {
+        // Transfrom mode: scales the selected group
+      } else if (this.toolMode === 'transform') {
         let newWidth = null
         let newHeight = null
         let transfromCenter = null
 
         // Set tranformation parameters for each scaling option.
         if (hitResult && hitResult.name === 'top-left') {
-          newWidth = event.point.x - selectedGroup.bounds.topRight.x
-          newHeight = event.point.y - selectedGroup.bounds.bottomLeft.y
-          transfromCenter = selectedGroup.bounds.bottomRight
+          newWidth = event.point.x - this.selectionGroup.bounds.topRight.x
+          newHeight = event.point.y - this.selectionGroup.bounds.bottomLeft.y
+          transfromCenter = this.selectionGroup.bounds.bottomRight
         } else if (hitResult && hitResult.name === 'top-right') {
-          newWidth = event.point.x - selectedGroup.bounds.topLeft.x
-          newHeight = event.point.y - selectedGroup.bounds.bottomRight.y
-          transfromCenter = selectedGroup.bounds.bottomLeft
+          newWidth = event.point.x - this.selectionGroup.bounds.topLeft.x
+          newHeight = event.point.y - this.selectionGroup.bounds.bottomRight.y
+          transfromCenter = this.selectionGroup.bounds.bottomLeft
         } else if (hitResult && hitResult.name === 'bottom-right') {
-          newWidth = event.point.x - selectedGroup.bounds.bottomLeft.x
-          newHeight = event.point.y - selectedGroup.bounds.topRight.y
-          transfromCenter = selectedGroup.bounds.topLeft
+          newWidth = event.point.x - this.selectionGroup.bounds.bottomLeft.x
+          newHeight = event.point.y - this.selectionGroup.bounds.topRight.y
+          transfromCenter = this.selectionGroup.bounds.topLeft
         } else if (hitResult && hitResult.name === 'bottom-left') {
-          newWidth = event.point.x - selectedGroup.bounds.bottomRight.x
-          newHeight = event.point.y - selectedGroup.bounds.topLeft.y
-          transfromCenter = selectedGroup.bounds.topRight
+          newWidth = event.point.x - this.selectionGroup.bounds.bottomRight.x
+          newHeight = event.point.y - this.selectionGroup.bounds.topLeft.y
+          transfromCenter = this.selectionGroup.bounds.topRight
         }
 
         // Set scale factors.
-        let horizScaleFactor = Math.abs(newWidth / selectedGroup.bounds.width)
-        let vertScaleFactor = Math.abs(newHeight / selectedGroup.bounds.height)
+        let horizScaleFactor = Math.abs(newWidth / this.selectionGroup.bounds.width)
+        let vertScaleFactor = Math.abs(newHeight / this.selectionGroup.bounds.height)
 
         // Scale group
-        selectedGroup.scale(horizScaleFactor, vertScaleFactor, transfromCenter)
+        this.selectionGroup.scale(horizScaleFactor, vertScaleFactor, transfromCenter)
       }
     }
 
-    // Select the group and provide housekeeping/emit events.
     const toolUp = event => {
-      if (selectedGroup) {
-        selectedGroup.bounds.selected = true
+      this.selectionGroup = new paper.Group(paper.project.selectedItems)
+      if (!this.selectionGroup.isEmpty()) {
+        this.selectionGroup.bounds.selected = true
       }
-
-      // Housekeeping
-      toolStatus = ''
-
-      // Emit selection event to the eventBus so that the properties
-      // panel can be updated.
-      eventBus.$emit('selectionChanged', paper.project.selectedItems)
-
-      // As the number of circle markers in the project may have
-      // changed, emit an event that will check to see if we are
-      // counting these in a particular area and update that value.
-      eventBus.$emit('updateMarkerCount')
     }
 
     // Change tool icon based on context in order to Feedforward to the
@@ -240,10 +185,10 @@ export default {
     // I imagine this is a relatively expensive operation?
     const toolMove = event => {
       if (
-        selectedGroup &&
-        selectedGroup.hitTest(event.point, this.selectOptions)
+        this.selectionGroup &&
+        this.selectionGroup.hitTest(event.point, this.hitOptions)
       ) {
-        let hit = selectedGroup.hitTest(event.point, this.selectOptions)
+        let hit = this.selectionGroup.hitTest(event.point, this.hitOptions)
         if (hit.name === 'bottom-right' || hit.name === 'top-left') {
           paper.view.element.style.cursor = 'nwse-resize'
         } else if (hit.name === 'bottom-left' || hit.name === 'top-right') {
@@ -259,6 +204,9 @@ export default {
 
     // handlers for keyEvents.
     const toolKeyUp = event => {
+      // Remove current selection group bounds
+      this.selectionGroup.bounds.selected = false
+
       // Remove items
       if (event.key === 'backspace' || event.key === 'delete') {
         // Check for current selection
@@ -270,15 +218,6 @@ export default {
             }
           })
         }
-
-        // Emit selection event to the eventBus so that the properties
-        // panel can be updated.
-        eventBus.$emit('selectionChanged', paper.project.selectedItems)
-
-        // As the number of circle markers in the project may have
-        // changed, emit an event that will check to see if we are
-        // counting these in a particular area and update that value.
-        eventBus.$emit('updateMarkerCount')
       }
     }
 
@@ -286,9 +225,9 @@ export default {
     this.toolMove = new paper.Tool()
     this.toolMove.onMouseDown = toolDown
     this.toolMove.onMouseDrag = toolDrag
-    this.toolMove.onMouseUp = toolUp
     this.toolMove.onMouseMove = toolMove
     this.toolMove.onKeyUp = toolKeyUp
+    this.toolMove.onMouseUp = toolUp
   },
 
   methods: {
@@ -306,13 +245,18 @@ export default {
       let hitTolerance = this.strokeWidth * 3
 
       // Selection options
-      this.selectOptions = {
+      this.hitOptions = {
         segments: true,
         stroke: true,
         bounds: true,
         handles: true,
         fill: true,
         tolerance: hitTolerance
+      }
+
+      // If first time using the tool then must initialise the selection group
+      if (!this.selectionGroup) {
+        this.selectionGroup = new paper.Group([])
       }
     }
   }
