@@ -1,3 +1,5 @@
+// This tool counts circle items within a predefined area.
+// It needs to be re-thought.
 <template lang="html">
   <v-list-tile id="tool-tile">
     <v-tooltip
