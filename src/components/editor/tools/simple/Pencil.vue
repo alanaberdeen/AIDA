@@ -61,6 +61,7 @@ export default {
         this.path = this.newPath()
         this.path.data.active = true
         this.path.data.class = ''
+        this.path.data.type = 'path'
       }
     }
 

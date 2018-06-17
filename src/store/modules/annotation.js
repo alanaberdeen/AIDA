@@ -256,7 +256,7 @@ const mutations = {
               y: item.bounds.bottomRight.y
             }
           })
-        } else {
+        } else if (item.data.type === 'path') {
           state.project.layers[item.layer.index].items.push({
             class: item.data.class,
             type: 'path',
