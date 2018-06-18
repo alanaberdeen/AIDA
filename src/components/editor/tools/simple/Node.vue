@@ -67,6 +67,7 @@ export default {
       if (hitResult) {
         // If item not currrently selected then select.
         if (!hitResult.item.selected) {
+          paper.project.deselectAll()
           hitResult.item.selected = true
           toolStatus = 'selecting'
 
@@ -142,7 +143,20 @@ export default {
         stroke: true,
         handles: true,
         fill: true,
-        tolerance: hitTolerance
+        tolerance: hitTolerance,
+        match: this.matchFilter
+      }
+    },
+
+    matchFilter (itemToCheck) {
+      // When checking a hitResult, need to check under item
+      if (itemToCheck.item && itemToCheck.item.layer.name === 'guide') {
+        return false
+      // When checking from project.getItems(), can check straight under layer
+      } else if (itemToCheck.layer && itemToCheck.layer.name === 'guide') {
+        return false
+      } else {
+        return true
       }
     }
   }
