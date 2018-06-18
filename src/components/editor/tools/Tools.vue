@@ -55,13 +55,26 @@
         @click.native="activeTool = 'pencil'"
       />
 
-      <v-divider/>
+      <app-paint
+        v-if="(getStepTools().includes('paint'))"
+        :active="(activeTool === 'paint')"
+        @click.native="activeTool = 'paint'"
+      />
+
+      <app-grid
+        v-if="(getStepTools().includes('grid'))"
+        :active="(activeTool === 'grid')"
+        @click.native="activeTool = 'grid'"
+      />
+
+      <!-- The count tool needs re-thinking, removing for now -->
+      <!-- <v-divider/>
 
       <app-count
         v-if="(getStepTools().includes('count'))"
         :active="(activeTool === 'count')"
         @click.native="activeTool = 'count'"
-      />
+      /> -->
 
       <v-divider/>
 
@@ -105,6 +118,8 @@ import toolPan from './simple/Pan.vue'
 import toolNode from './simple/Node.vue'
 import toolCount from './simple/Count.vue'
 import toolDelete from './simple/Delete.vue'
+import toolPaint from './simple/Paint.vue'
+import toolGrid from './simple/Grid.vue'
 
 // Assissted Tools:
 import toolFaces from './assisted/Faces.vue'
@@ -122,7 +137,9 @@ export default {
     'app-count': toolCount,
     'app-delete': toolDelete,
     'app-faces': toolFaces,
-    'app-megas': toolMegas
+    'app-megas': toolMegas,
+    'app-paint': toolPaint,
+    'app-grid': toolGrid
   },
 
   data () {
