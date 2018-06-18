@@ -70,14 +70,14 @@ const actions = {
 
     dispatch('refreshAnnotationState').then(
       axios
-        .put(endpoint, {
-          editor: rootState.editor,
-          annotation: rootState.annotation.project,
-          images: rootState.image.images
-        })
-        .then(function (response) {
-          console.log(response)
-        })
+      .put(endpoint, {
+        editor: rootState.editor,
+        annotation: rootState.annotation.project,
+        images: rootState.image.images
+      })
+      .then(function (response) {
+        console.log(response)
+      })
     )
   },
 
