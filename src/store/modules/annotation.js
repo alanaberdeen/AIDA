@@ -156,9 +156,10 @@ const actions = {
   },
 
   prepareCanvas: ({
-    commit
+    commit,
+    rootState
   }, payload) => {
-    commit('prepareCanvas', payload)
+    commit('prepareCanvas', rootState)
   },
 
   newLayer: ({
@@ -218,11 +219,13 @@ const mutations = {
   refreshAnnotationState: (state, payload) => {
     // Construct the layer structure fresh in the Vuex state
     paper.project.layers.forEach(layer => {
-      Vue.set(state.project.layers, [layer.index], {
-        name: state.project.layers[layer.index] ? state.project.layers[layer.index].name : layer.name,
-        opacity: layer.opacity,
-        items: []
-      })
+      if (layer.name !== 'guide') {
+        Vue.set(state.project.layers, [layer.index], {
+          name: state.project.layers[layer.index] ? state.project.layers[layer.index].name : layer.name,
+          opacity: layer.opacity,
+          items: []
+        })
+      }
     })
 
     // Gather all the Path items in the paperJS environment and store them in
@@ -365,11 +368,14 @@ const mutations = {
   },
 
   // Prepare the canvas for adding annotations.
-  prepareCanvas: (state, payload) => {
+  prepareCanvas: (state, rootState) => {
     // Remove the class that interrupts the pointer interaction.
     if (paper.view.element.classList.contains('pointers-no')) {
       paper.view.element.classList.remove('pointers-no')
     }
+
+    // Ensure the correct layer is active
+    paper.project.layers[rootState.editor.activeLayer].activate()
   },
 
   // Add a new layer to the annotation project.
