@@ -126,7 +126,8 @@ export default {
         paper.project.deselectAll()
         paper.project.getItems({
           class: 'Path',
-          inside: selectionRect.bounds
+          inside: selectionRect.bounds,
+          match: this.matchFilter
         }).forEach((item) => {
           item.selected = true
         })
@@ -204,19 +205,22 @@ export default {
 
     // handlers for keyEvents.
     const toolKeyUp = event => {
-      // Remove items
-      if (event.key === 'backspace' || event.key === 'delete') {
+      // Only trigger the following if Move tool is active
+      if (this.active) {
+        // Remove items
+        if (event.key === 'backspace' || event.key === 'delete') {
         // Check for current selection
-        if (paper.project.selectedItems) {
+          if (paper.project.selectedItems) {
           // Remove current selection group bounds
-          this.selectionGroup.bounds.selected = false
+            this.selectionGroup.bounds.selected = false
 
-          // For each item selected remove if item is not a layer
-          paper.project.selectedItems.forEach(item => {
-            if (item.className !== 'Layer') {
-              item.remove()
-            }
-          })
+            // For each item selected remove if item is not a layer
+            paper.project.selectedItems.forEach(item => {
+              if (item.className !== 'Layer') {
+                item.remove()
+              }
+            })
+          }
         }
       }
     }
@@ -251,12 +255,25 @@ export default {
         bounds: true,
         handles: true,
         fill: true,
-        tolerance: hitTolerance
+        tolerance: hitTolerance,
+        match: this.matchFilter
       }
 
       // If first time using the tool then must initialise the selection group
       if (!this.selectionGroup) {
         this.selectionGroup = new paper.Group([])
+      }
+    },
+
+    matchFilter (itemToCheck) {
+      // When checking a hitResult, need to check under item
+      if (itemToCheck.item && itemToCheck.item.layer.name === 'guide') {
+        return false
+      // When checking from project.getItems(), can check straight under layer
+      } else if (itemToCheck.layer && itemToCheck.layer.name === 'guide') {
+        return false
+      } else {
+        return true
       }
     }
   }
