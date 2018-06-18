@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// Import the Vuex logic that has been modularized and seperated into different
+// Import the Vuex logic that has been modularized and separated into different
 // files.
 import image from './modules/image'
 import annotation from './modules/annotation'
