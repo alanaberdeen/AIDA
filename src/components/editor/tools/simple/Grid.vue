@@ -36,7 +36,7 @@
               </div>
             </v-flex>
             <v-flex xs6 offset-xs1>
-              Enable
+              Visibility
             </v-flex>
           </v-list-tile>
           <v-list-tile>
