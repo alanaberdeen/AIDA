@@ -129,7 +129,6 @@ export default {
         class: 'Path',
         inside: selectionRect.bounds,
         match: this.matchFilter
-
       })
 
       // Clean current selection
