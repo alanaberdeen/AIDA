@@ -180,38 +180,34 @@ const mutations = {
     // viewer. These state changes can be propagated through to the annotation
     // data to keep the two parts in sync.
 
-    // At the moment not in use, would like to move towards this but
-    // implementation was causing strange jitters in zoom and pan. Instead using
-    // the viewport-updated handler in common.js
-
     // Resize
-    // state.OSDviewer.addHandler('resize', function (e) {
-    //   state.view.viewSize = [e.newContainerSize.x, e.newContainerSize.y]
-    //   let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
-    //     state.OSDviewer.viewport.getCenter(true)
-    //   )
-    //   state.view.imageCenter = [centerPoint.x, centerPoint.y]
-    // })
+    state.OSDviewer.addHandler('resize', function (e) {
+      state.view.viewSize = [e.newContainerSize.x, e.newContainerSize.y]
+      let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
+        state.OSDviewer.viewport.getCenter(true)
+      )
+      state.view.imageCenter = [centerPoint.x, centerPoint.y]
+    })
 
-    // // Zoom
-    // state.OSDviewer.addHandler('zoom', function (e) {
-    //   state.view.imageZoom = state.OSDviewer.viewport.viewportToImageZoom(
-    //     state.OSDviewer.viewport.getZoom(true)
-    //   )
+    // Zoom
+    state.OSDviewer.addHandler('zoom', function (e) {
+      state.view.imageZoom = state.OSDviewer.viewport.viewportToImageZoom(
+        state.OSDviewer.viewport.getZoom(true)
+      )
 
-    //   let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
-    //     state.OSDviewer.viewport.getCenter(true)
-    //   )
-    //   state.view.imageCenter = [centerPoint.x, centerPoint.y]
-    // })
+      let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
+        state.OSDviewer.viewport.getCenter(true)
+      )
+      state.view.imageCenter = [centerPoint.x, centerPoint.y]
+    })
 
-    // // Pan
-    // state.OSDviewer.addHandler('pan', function (e) {
-    //   let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
-    //     state.OSDviewer.viewport.getCenter(true)
-    //   )
-    //   state.view.imageCenter = [centerPoint.x, centerPoint.y]
-    // })
+    // Pan
+    state.OSDviewer.addHandler('pan', function (e) {
+      let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
+        state.OSDviewer.viewport.getCenter(true)
+      )
+      state.view.imageCenter = [centerPoint.x, centerPoint.y]
+    })
   },
 
   // Add images to the state
