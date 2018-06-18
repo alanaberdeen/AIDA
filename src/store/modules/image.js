@@ -183,7 +183,7 @@ const mutations = {
     // Resize
     state.OSDviewer.addHandler('resize', function (e) {
       state.view.viewSize = [e.newContainerSize.x, e.newContainerSize.y]
-      let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
+      let centerPoint = state.OSDviewer.world.getItemAt(0).viewportToImageCoordinates(
         state.OSDviewer.viewport.getCenter(true)
       )
       state.view.imageCenter = [centerPoint.x, centerPoint.y]
@@ -191,11 +191,11 @@ const mutations = {
 
     // Zoom
     state.OSDviewer.addHandler('zoom', function (e) {
-      state.view.imageZoom = state.OSDviewer.viewport.viewportToImageZoom(
+      state.view.imageZoom = state.OSDviewer.world.getItemAt(0).viewportToImageZoom(
         state.OSDviewer.viewport.getZoom(true)
       )
 
-      let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
+      let centerPoint = state.OSDviewer.world.getItemAt(0).viewportToImageCoordinates(
         state.OSDviewer.viewport.getCenter(true)
       )
       state.view.imageCenter = [centerPoint.x, centerPoint.y]
@@ -203,7 +203,7 @@ const mutations = {
 
     // Pan
     state.OSDviewer.addHandler('pan', function (e) {
-      let centerPoint = state.OSDviewer.viewport.viewportToImageCoordinates(
+      let centerPoint = state.OSDviewer.world.getItemAt(0).viewportToImageCoordinates(
         state.OSDviewer.viewport.getCenter(true)
       )
       state.view.imageCenter = [centerPoint.x, centerPoint.y]
