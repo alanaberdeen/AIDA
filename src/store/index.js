@@ -8,6 +8,10 @@ import image from './modules/image'
 import annotation from './modules/annotation'
 import editor from './modules/editor'
 import common from './modules/common'
+
+import CognitoAuth from './modules/user'
+import cognitoConfig from '../../config/cognito'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -19,6 +23,7 @@ export default new Vuex.Store({
     image,
     annotation,
     editor,
-    common
+    common,
+    cognito: new CognitoAuth(cognitoConfig)
   }
 })
