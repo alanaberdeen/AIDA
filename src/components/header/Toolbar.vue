@@ -43,11 +43,11 @@
       <v-icon small> fa-book </v-icon>
     </v-btn>
 
-    <!-- Account -->
+    <!-- User -->
     <v-btn
       icon
       class="pointers-no">
-      <app-account/>
+      <app-user/>
     </v-btn>
 
   </v-toolbar>
@@ -56,14 +56,14 @@
 <script>
 // Import child components
 import Settings from './settings/Settings.vue'
-import Account from './account/Account.vue'
+import User from './user/User.vue'
 import Save from './save/Save.vue'
 import Export from './export/Export.vue'
 
 export default {
   components: {
     'app-settings': Settings,
-    'app-account': Account,
+    'app-user': User,
     'app-save': Save,
     'app-export': Export
   }
