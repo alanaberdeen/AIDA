@@ -32,7 +32,7 @@
     <!-- Dashboard -->
     <v-btn
       icon
-      href="https://imageannotation.nds.ox.ac.uk:8443/AIDA/">
+      to="/dashboard">
       <v-icon> apps </v-icon>
     </v-btn>
 
