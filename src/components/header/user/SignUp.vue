@@ -17,41 +17,32 @@
           ></v-text-field>
 
           <v-text-field
-            v-validate="'required'"
-            prepend-icon="lock"
+            type="password"
+            ref="password"
             name="password"
-            type="password"
-            >
-
-          </v-text-field>
-
-          <v-text-field
-            v-validate="'required|confirmed:password'"
-            prepend-icon="lock"
-            name="password_confirmation"
-            data-vv-name='password_confirmation'
-            type="password"
-            data-vv-as="password"
-            >
-
-          </v-text-field>
-
-          <!-- <v-text-field
-            prepend-icon="lock"
-            v-validate="'required'"
+            label="Password"
+            data-vv-name="password"
+            v-validate="'required|min:8|verify_password'"
             v-model="password"
             :error-messages="errors.collect('password')"
-            label="password"
-            data-vv-name="password"
-          ></v-text-field>
+            prepend-icon="lock"
+            >
+
+          </v-text-field>
 
           <v-text-field
-            prepend-icon="lock"
-            v-validate="'required|confirmed:password'"
-            :error-messages="errors.collect('password_confirmation')"
-            label="confirm your password"
+            type="password"
+            label="Password confirmation"
             data-vv-name="password_confirmation"
-          ></v-text-field> -->
+            target="password"
+            v-validate="'confirmed:password'"
+            v-model="password_confirmation"
+            :error-messages="errors.collect('password_confirmation')"
+            prepend-icon="lock"
+            >
+
+          </v-text-field>
+
         </v-form>
 
       </v-card-text>
@@ -80,6 +71,7 @@ export default {
   data: () => ({
     email: '',
     password: '',
+    password_confirmation: '',
     canSubmit: false,
     dictionary: {
       attributes: {
@@ -102,22 +94,25 @@ export default {
 
     // Attempt to create an account for the user
     createAccount () {
-      this.$validator.validateAll().then((result) => {
-        console.log(result)
+      this.$validator.validateAll().then((valid) => {
+        // Check if all the inputs are valid
+        if (valid) {
+          // Attempt to sign up an account via Cognito
+          this.signUp({
+            username: this.email,
+            password: this.password,
+            attributes: {
+              email: this.email
+            }
+          }).then(() => {
+            console.log('Successfuly signed up')
+          }).catch((err) => {
+            console.log(new Error(err.message))
+          })
+        }
       }).catch((err) => {
         console.log(new Error(err.message))
       })
-    //   this.signUp({
-    //     username: this.email,
-    //     password: this.password,
-    //     attributes: {
-    //       email: this.email
-    //     }
-    //   }).then(() => {
-    //     console.log('Successfuly signed up')
-    //   }).catch((err) => {
-    //     console.log(new Error(err.message))
-    //   })
     }
   }
 }
