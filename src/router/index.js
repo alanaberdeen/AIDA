@@ -5,7 +5,6 @@ import Router from 'vue-router'
 import Landing from '../components/landing/Landing.vue'
 import Editor from '../components/editor/Editor.vue'
 import Examples from '../components/examples/Examples.vue'
-import Dashboard from '../components/dashboard/Dashboard.vue'
 
 Vue.use(Router)
 
@@ -46,11 +45,6 @@ export default new Router({
       default: true,
       type: 'new'
     }
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard
   }
   ]
 })
