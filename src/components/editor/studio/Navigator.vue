@@ -1,5 +1,6 @@
 // Navigation element.
-// Provides minimap to pan around the view in addition to accurate zoom control.
+// Provides minimap to pan around the view and a method of controlling and
+// specifying the zoom level accuratley.
 <template lang="html">
   <div class="elevation-1">
     <v-card class="panel">

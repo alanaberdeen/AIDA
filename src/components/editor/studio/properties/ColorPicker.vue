@@ -1,3 +1,6 @@
+// ColorPicker.vue
+// Component triggers a color picker dialog.
+// The color change will be applied to all the currently selected items
 <template lang="html">
   <v-dialog
     v-model="dialog"

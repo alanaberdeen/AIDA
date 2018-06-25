@@ -1,3 +1,6 @@
+// Properties.vue
+// Component displays, and allows the user to edit,  the properties of the
+// currently selected items.
 <template lang="html">
   <div class="elevation-1">
     <v-card class="panel">

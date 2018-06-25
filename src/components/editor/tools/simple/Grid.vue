@@ -43,7 +43,7 @@
             <v-flex xs5>
               <v-text-field
               :value="gridWidth"
-              suffix="µm"
+              suffix="px"
               single-line
               @change="setGridWidth"
               @keyup.native.enter="setGridWidth"/>
@@ -56,7 +56,7 @@
             <v-flex xs5>
               <v-text-field
               :value="gridHeight"
-              suffix="µm"
+              suffix="px"
               single-line
               @change="setGridHeight"
               @keyup.native.enter="setGridHeight"/>
