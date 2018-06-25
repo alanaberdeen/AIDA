@@ -1,3 +1,5 @@
+// Images.vue
+// Component displays and controls the images in the current Aida instance.
 <template lang="html">
   <div class="elevation-1">
     <v-card class="panel">

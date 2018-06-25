@@ -1,12 +1,19 @@
+// Studio.vue
+// Component defines the studio; the interaction elements on the right side of
+// the editor.
 <template lang="html">
   <div class="pointers-please studioPanel elevation-2">
 
+    <!-- The minimap naigation element -->
     <app-navigator/>
 
+    <!-- Display and control annotation layers -->
     <app-layers/>
 
+    <!-- Display and control images in the instance -->
     <app-images/>
 
+    <!-- Display and control properties of the selected items -->
     <app-properties/>
 
   </div>

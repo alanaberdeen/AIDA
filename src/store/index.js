@@ -8,6 +8,7 @@ import image from './modules/image'
 import annotation from './modules/annotation'
 import editor from './modules/editor'
 import common from './modules/common'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({

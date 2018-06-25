@@ -1,3 +1,6 @@
+// Faces.vue
+// Example of calling an API to tigger algorithm assisted annotation.
+// This example calls the Google Faces api.
 <template lang="html">
   <v-list-tile id="tool-tile">
     <v-tooltip
