@@ -27,7 +27,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setProjectName'])
+    ...mapActions({
+      setProjectName: 'annotation/setProjectName'
+    })
   }
 }
 </script>

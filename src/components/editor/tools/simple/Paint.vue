@@ -76,35 +76,19 @@ export default {
       })
     }
 
-    const smudge = (smudgeBrush) => {
-
-    }
-
-    const toolDown = event => {
-
-
-    }
-
-    const toolDrag = event => {
-
-    }
-
-    const toolUp = event => {
-
-    }
-
     // Add the defined functions to the tool object.
     this.toolPaint = new paper.Tool()
-    this.toolPaint.onMouseDown = toolDown
-    this.toolPaint.onMouseDrag = toolDrag
-    this.toolPaint.onMouseUp = toolUp
     this.toolPaint.onMouseMove = toolMove
   },
 
   methods: {
-    ...mapActions(['prepareCanvas']),
+    ...mapActions({
+      prepareCanvas: 'annotation/prepareCanvas'
+    }),
 
-    ...mapGetters(['getDefaultLayerColor']),
+    ...mapGetters({
+      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+    }),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.

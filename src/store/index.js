@@ -4,18 +4,14 @@ import Vuex from 'vuex'
 
 // Import the Vuex logic that has been modularized and separated into different
 // files.
-import image from './modules/image'
-import annotation from './modules/annotation'
-import editor from './modules/editor'
-import common from './modules/common'
+import image from './modules/image/index'
+import annotation from './modules/annotation/index'
+import editor from './modules/editor/index'
+import common from './modules/common/index'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {},
-  getters: {},
-  actions: {},
-  mutations: {},
   modules: {
     image,
     annotation,

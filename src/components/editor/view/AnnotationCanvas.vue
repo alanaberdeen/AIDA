@@ -50,7 +50,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setupAnnotation'])
+    ...mapActions('annotation', [
+      'setupAnnotation'
+    ])
   }
 }
 

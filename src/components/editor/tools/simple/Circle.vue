@@ -137,9 +137,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(['prepareCanvas']),
+    ...mapActions({
+      prepareCanvas: 'annotation/prepareCanvas'
+    }),
 
-    ...mapGetters(['getDefaultLayerColor']),
+    ...mapGetters({
+      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+    }),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.

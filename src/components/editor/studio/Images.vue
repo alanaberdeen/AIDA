@@ -134,16 +134,18 @@ export default {
       viewer: state => state.image.OSDviewer
     }),
 
-    ...mapGetters(['getChannels'])
+    ...mapGetters({
+      getChannels: 'image/getChannels'
+    })
   },
 
   methods: {
-    ...mapActions([
-      'setChannelOpacity',
-      'setActiveChannel',
-      'setChannelName',
-      'deleteChannel'
-    ])
+    ...mapActions({
+      setChannelOpacity: 'image/setChannelOpacity',
+      setActiveChannel: 'image/setActiveChannel',
+      setChannelName: 'image/setChannelName',
+      deleteChannel: 'image/deleteChannel'
+    })
   }
 }
 </script>

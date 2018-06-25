@@ -45,7 +45,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setActiveStep', 'setActiveStepAndLayer'])
+    ...mapActions({
+      setActiveStep: 'editor/setActiveStep'
+    })
   }
 }
 </script>

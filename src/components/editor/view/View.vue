@@ -55,11 +55,11 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'synchroniseAnnotationAndOSDCanvas',
-      'loadProject',
-      'resetState'
-    ])
+    ...mapActions({
+      synchroniseAnnotationAndOSDCanvas: 'common/synchroniseAnnotationAndOSDCanvas',
+      loadProject: 'common/loadProject',
+      resetState: 'common/resetState'
+    })
   }
 }
 </script>

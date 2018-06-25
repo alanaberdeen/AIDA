@@ -127,7 +127,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(['prepareCanvas']),
+    ...mapActions({
+      prepareCanvas: 'annotation/prepareCanvas'
+    }),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.

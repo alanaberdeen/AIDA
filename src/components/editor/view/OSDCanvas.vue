@@ -14,7 +14,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setupOSDCanvas'])
+    ...mapActions({
+      setupOSDCanvas: 'image/setupOSDCanvas'
+    })
   }
 }
 </script>

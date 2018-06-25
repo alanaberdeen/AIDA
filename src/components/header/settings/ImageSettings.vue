@@ -68,11 +68,14 @@ export default {
       viewer: state => state.image.OSDviewer
     }),
 
-    ...mapGetters(['getChannels'])
+    ...mapGetters({
+      getChannels: 'images/getChannels'})
   },
 
   methods: {
-    ...mapActions(['loadImages']),
+    ...mapActions({
+      loadImages: 'images/loadImages'
+    }),
 
     submit () {
       if (this.$refs.form.validate()) {

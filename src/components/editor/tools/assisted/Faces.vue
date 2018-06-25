@@ -63,7 +63,9 @@ export default {
   },
 
   methods: {
-    ...mapGetters(['getDefaultLayerColor']),
+    ...mapGetters({
+      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+    }),
 
     activate () {
       // Set the default strokewidth relative to image size and zoom.

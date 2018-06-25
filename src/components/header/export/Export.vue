@@ -21,9 +21,9 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'refreshAnnotationState'
-    ]),
+    ...mapActions({
+      refreshAnnotationState: 'annotation/refreshAnnotationState'
+    }),
 
     exportData: function () {
       // Make sure we have refreshed the state to get the current representation

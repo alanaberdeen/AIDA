@@ -144,14 +144,20 @@ export default {
   },
 
   methods: {
-    ...mapActions([
+
+    // Map actions from annotation module
+    ...mapActions('annotation', [
       'setLayerOpacity',
       'newLayer',
       'exportLayerJSON',
       'setActiveLayer',
       'setLayerOpacity',
       'setLayerName',
-      'deleteLayer',
+      'deleteLayer'
+    ]),
+
+    // Map actions from editor module
+    ...mapActions('editor', [
       'setActiveStep'
     ]),
 

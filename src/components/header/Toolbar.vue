@@ -44,11 +44,11 @@
     </v-btn>
 
     <!-- User -->
-    <v-btn
+    <!-- <v-btn
       icon
       class="pointers-no">
       <app-user/>
-    </v-btn>
+    </v-btn> -->
 
   </v-toolbar>
 </template>

@@ -58,11 +58,13 @@ export default {
       viewer: state => state.image.OSDviewer
     }),
 
-    ...mapGetters(['getZoom', 'getMaxZoom'])
+    ...mapGetters('image', ['getZoom', 'getMaxZoom'])
   },
 
   methods: {
-    ...mapActions(['setZoom'])
+    ...mapActions({
+      setZoom: 'image/setZoom'
+    })
   }
 }
 </script>

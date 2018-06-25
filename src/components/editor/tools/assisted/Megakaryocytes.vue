@@ -31,7 +31,8 @@
 </template>
 
 <script>
-// Import libs
+// Import libs:
+// TODO: check why these are here, I feel like they should be extracted out into vuex actions/mutations
 import paper from 'paper'
 import openseadragon from 'openseadragon'
 

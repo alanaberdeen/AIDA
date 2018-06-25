@@ -156,7 +156,9 @@ export default {
   },
 
   methods: {
-    ...mapGetters(['getStepTools'])
+    ...mapGetters({
+      getStepTools: 'editor/getStepTools'
+    })
   }
 }
 </script>

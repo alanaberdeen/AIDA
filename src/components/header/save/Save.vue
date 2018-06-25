@@ -14,9 +14,9 @@ import {mapActions} from 'vuex'
 export default {
 
   methods: {
-    ...mapActions([
-      'saveProject'
-    ])
+    ...mapActions({
+      saveProject: 'common/saveProject'
+    })
   }
 }
 </script>

@@ -4,20 +4,22 @@ import axios from 'axios'
 import paper from 'paper'
 
 // Import helper functions
-import readOldSchema from './helpers/readOldSchema.js'
-
-const state = {}
-
-const getters = {}
+import readOldSchema from './readOldSchema'
 
 const actions = {
   // Reset Vuex state to default
   resetState: ({
     dispatch
   }) => {
-    dispatch('resetEditorState')
-    dispatch('resetAnnotationState')
-    dispatch('resetImageState')
+    dispatch('editor/resetEditorState', '', {
+      root: true
+    })
+    dispatch('annotation/resetAnnotationState', '', {
+      root: true
+    })
+    dispatch('image/resetImageState', '', {
+      root: true
+    })
   },
 
   // Load a project into AIDA.
@@ -41,17 +43,17 @@ const actions = {
         }
 
         // Load the editor configuration
-        dispatch('loadConfig', config.editor, {
+        dispatch('editor/loadConfig', config.editor, {
           root: true
         })
 
         // Load the images into the viewer
-        dispatch('loadImages', config.images, {
+        dispatch('image/loadImages', config.images, {
           root: true
         })
 
         // Load the PaperJS project representation of the annotation data
-        dispatch('loadAnnotation', config.annotation, {
+        dispatch('annotation/loadAnnotation', config.annotation, {
           root: true
         })
       })
@@ -68,7 +70,9 @@ const actions = {
     // Construct endpoint to store data at
     let endpoint = 'https://aida-testing.firebaseio.com/' + rootState.editor.type + '.json'
 
-    dispatch('refreshAnnotationState').then(
+    dispatch('annotation/refreshAnnotationState', '', {
+      root: true
+    }).then(
       axios
         .put(endpoint, {
           editor: rootState.editor,
@@ -143,8 +147,7 @@ const mutations = {
 // Export all of the relevant logic so that it can be combined with the
 // respective parts in the other modules and complete the store.
 export default {
-  state,
-  getters,
+  namespaced: true,
   actions,
   mutations
 }
