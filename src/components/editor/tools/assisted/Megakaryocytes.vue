@@ -107,6 +107,8 @@ export default {
       let downTile = this.tileSource.getTileAtPoint(level, downPoint)
       let upTile = this.tileSource.getTileAtPoint(level, upPoint)
 
+      console.log(this.tileSource.getTileUrl(level, downTile.x, downTile.y))
+
       // Create list of tile data in which the algorithm should search
       let tilesToSearch = []
       for (let col = downTile.x; col <= upTile.x; col++) {
@@ -116,7 +118,7 @@ export default {
             this.tileSource.getTileBounds(level, col, row).y
           )
           tilesToSearch.push({
-            tile: [row, col],
+            source: this.tileSource.getTileUrl(level, col, row),
             postion: [
               position.x,
               position.y
@@ -148,7 +150,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(['prepareCanvas']),
+    ...mapActions({
+      prepareCanvas: 'annotation/prepareCanvas'
+    }),
 
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.
