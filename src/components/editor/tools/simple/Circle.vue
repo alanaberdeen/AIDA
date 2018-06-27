@@ -74,12 +74,8 @@ export default {
 
       // Draw the tracking path
       let trackingPath = new paper.Path.Line(event.downPoint, event.point)
-      trackingPath.strokeColor = new paper.Color({
-        hue: 220,
-        saturation: 0.7,
-        lightness: 0.5,
-        alpha: 1
-      })
+      trackingPath.strokeColor = new paper.Color('#2661D8')
+      trackingPath.strokeColor.alpha = 0.7
       trackingPath.strokeWidth = this.strokeWidth
       trackingPath.add(event.point)
       trackingPath.removeOn({
@@ -91,12 +87,8 @@ export default {
       // Create a circle positioned at point where mousedown was, with radius
       // the distance between mousedown/mouseup
       let trackingCircle = new paper.Path.Circle(event.downPoint, this.radius)
-      trackingCircle.strokeColor = new paper.Color({
-        hue: 220,
-        saturation: 0.7,
-        lightness: 0.5,
-        alpha: 1
-      })
+      trackingCircle.strokeColor = new paper.Color('#2661D8')
+      trackingCircle.strokeColor.alpha = 0.7
       trackingCircle.strokeWidth = this.strokeWidth
       trackingCircle.removeOn({
         drag: true,
@@ -110,11 +102,10 @@ export default {
       // with either the default radius or the new radius as set by the
       // distance between the point of mouseDown and mouseUp.
       let newCircle = new paper.Path.Circle(event.downPoint, this.radius)
-      newCircle.strokeColor = new paper.Color(
-        this.getDefaultLayerColor().stroke
-      )
+      newCircle.strokeColor = new paper.Color(this.getColor())
       newCircle.strokeWidth = this.strokeWidth
-      newCircle.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
+      newCircle.fillColor = new paper.Color(this.getColor())
+      newCircle.fillColor.alpha = 0.7
 
       // Custom data attribute:
       newCircle.data.countable = true
@@ -142,7 +133,7 @@ export default {
     }),
 
     ...mapGetters({
-      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+      getColor: 'annotation/getColor'
     }),
 
     initialiseTool () {

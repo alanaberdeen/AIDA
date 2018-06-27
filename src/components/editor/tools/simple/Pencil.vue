@@ -74,15 +74,11 @@ export default {
       let hitResult = this.path.hitTest(event.point, this.hitOptions)
       if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
+        this.path.fillColor = new paper.Color(this.getColor())
+        this.path.fillColor.alpha = 0.7
       } else {
         this.path.closed = false
-        this.path.fillColor = new paper.Color({
-          hue: 200,
-          saturation: 0.7,
-          lightness: 0.5,
-          alpha: 0
-        })
+        this.path.fillColor.alpha = 0
       }
     }
 
@@ -92,7 +88,8 @@ export default {
       let hitResult = this.path.hitTest(event.point, this.hitOptions)
       if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
+        this.path.fillColor = new paper.Color(this.getColor())
+        this.path.fillColor.alpha = 0.7
       }
 
       // Deselect path.
@@ -119,7 +116,7 @@ export default {
     }),
 
     ...mapGetters({
-      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+      getColor: 'annotation/getColor'
     }),
 
     initialiseTool () {
@@ -143,7 +140,7 @@ export default {
 
     newPath () {
       let newPath = new paper.Path()
-      newPath.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
+      newPath.strokeColor = new paper.Color(this.getColor())
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true
 

@@ -32,7 +32,8 @@ function readOldSchema (oldData) {
       specificLayer: oldStep.id - 1,
       id: oldStep.id,
       instruction: oldStep.instruction,
-      tools: oldStep.tools
+      tools: oldStep.tools,
+      color: oldStep.color.stroke
     })
   }
 

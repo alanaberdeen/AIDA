@@ -54,12 +54,8 @@ export default {
     // On drag draw feedforward shadow rectangle in realtime.
     const toolDrag = event => {
       let trackingRect = new paper.Path.Rectangle(event.downPoint, event.point)
-      trackingRect.strokeColor = new paper.Color({
-        hue: 220,
-        saturation: 0.7,
-        lightness: 0.5,
-        alpha: 1
-      })
+      trackingRect.strokeColor = new paper.Color('#2661D8')
+      trackingRect.strokeColor.alpha = 0.7
       trackingRect.strokeWidth = this.strokeWidth
 
       // Constantly update tracking rect by removing it and re-drawing.
@@ -72,8 +68,9 @@ export default {
     // Finalise rectangle properties and draw.
     const toolUp = event => {
       let newRect = new paper.Path.Rectangle(event.downPoint, event.point)
-      newRect.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
-      newRect.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
+      newRect.strokeColor = new paper.Color(this.getColor())
+      newRect.fillColor = new paper.Color(this.getColor())
+      newRect.fillColor.alpha = 0.7
       newRect.strokeWidth = this.strokeWidth
 
       // Custom data attribute:
@@ -92,7 +89,7 @@ export default {
     }),
 
     ...mapGetters({
-      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+      getColor: 'annotation/getColor'
     }),
 
     initialiseTool () {

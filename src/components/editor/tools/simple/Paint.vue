@@ -87,7 +87,7 @@ export default {
     }),
 
     ...mapGetters({
-      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+      getColor: 'annotation/getColor'
     }),
 
     initialiseTool () {

@@ -64,7 +64,7 @@ export default {
 
   methods: {
     ...mapGetters({
-      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+      getColor: 'annotation/getColor'
     }),
 
     activate () {
@@ -127,9 +127,7 @@ export default {
             }
 
             let newRect = new paper.Path(segments)
-            newRect.strokeColor = new paper.Color(
-              this.getDefaultLayerColor().stroke
-            )
+            newRect.strokeColor = new paper.Color(this.getColor())
             newRect.closed = true
             newRect.strokeWidth = this.strokeWidth
 

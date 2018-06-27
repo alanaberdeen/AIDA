@@ -164,6 +164,7 @@ export default {
             strokeColor: 'grey',
             strokeWidth: this.strokeWidth
           })
+          gridRect.strokeColor.alpha = 0.7
         }
       }
     },

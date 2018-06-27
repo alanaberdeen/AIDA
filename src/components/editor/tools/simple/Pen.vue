@@ -74,7 +74,8 @@ export default {
         // If first segment clicked, close path.
       } else if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
+        this.path.fillColor = new paper.Color(this.getColor())
+        this.path.fillColor.alpha = 0.7
         this.path.smooth()
         this.path.selected = false
         this.path.data.active = false
@@ -126,7 +127,7 @@ export default {
     }),
 
     ...mapGetters({
-      getDefaultLayerColor: 'annotation/getDefaultLayerColor'
+      getColor: 'annotation/getColor'
     }),
 
     initialiseTool () {
@@ -146,7 +147,7 @@ export default {
 
     newPath () {
       let newPath = new paper.Path()
-      newPath.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
+      newPath.strokeColor = new paper.Color(this.getColor())
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true
 
