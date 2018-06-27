@@ -6,5 +6,4 @@ export default {
     let numberLayers = state.project.layers.length
     return state.defaultColors[activeLayerIndex % numberLayers]
   }
-
 }

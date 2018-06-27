@@ -98,5 +98,11 @@ export default {
     commit
   }, payload) => {
     commit('setProjectName', payload)
+  },
+
+  setSelectedItems: ({
+    commit
+  }, payload) => {
+    commit('setSelectedItems', payload)
   }
 }

@@ -69,7 +69,7 @@ export default {
 
     // Function that, given a paperJS path item, return the segments in the
     // format specified by the AIDA annotation schema
-    function getSegments (item) {
+    function getSegments(item) {
       let segments = []
       item.segments.forEach(segment => {
         segments.push({
@@ -271,5 +271,14 @@ export default {
     }
 
     state.project.name = newName
+  },
+
+  /**
+   * Stores an array of the current selected items in the state
+   * @function setSelectedItems
+   * @param {Array} selectedItems: an array of the currently selected items
+   */
+  setSelectedItems: (state, selectedItems) => {
+    state.selectedItems = selectedItems
   }
 }

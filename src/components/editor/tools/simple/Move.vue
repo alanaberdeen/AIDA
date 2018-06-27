@@ -179,6 +179,9 @@ export default {
       if (!this.selectionGroup.isEmpty()) {
         this.selectionGroup.bounds.selected = true
       }
+
+      // Store an array of selected items in the group
+      this.setSelectedItems(paper.project.selectedItems)
     }
 
     // Change tool icon based on context in order to Feedforward to the
@@ -236,7 +239,8 @@ export default {
 
   methods: {
     ...mapActions({
-      prepareCanvas: 'annotation/prepareCanvas'
+      prepareCanvas: 'annotation/prepareCanvas',
+      setSelectedItems: 'annotation/setSelectedItems'
     }),
 
     initialiseTool () {

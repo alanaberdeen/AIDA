@@ -94,7 +94,8 @@ const state = {
       saturation: 0.49
     }
   }
-  ]
+  ],
+  selectedItems: []
 }
 
 export default {
