@@ -27,7 +27,7 @@
           </v-list-tile-content>
 
           <v-list-tile-action>
-            {{ numItems }}
+            {{ selectedItems.length }}
           </v-list-tile-action>
         </v-list-tile>
 
@@ -44,7 +44,7 @@
               icon
               class="action pointers-no">
               <colour-picker
-                :color="groupFillColor"
+                :color="selectedFillColor"
                 :type="'fill'"
                 class="pointers-please"/>
             </v-btn>
@@ -64,7 +64,7 @@
               icon
               class="action pointers-no">
               <colour-picker
-                :color="groupStrokeColor"
+                :color="selectedStrokeColor"
                 :type="'stroke'"
                 class="pointers-please"/>
             </v-btn>
@@ -94,120 +94,45 @@
 </template>
 
 <script>
-import { eventBus } from '../../../../main'
+import { mapState, mapGetters } from 'vuex'
 import ColorPicker from './ColorPicker.vue'
 
 export default {
   components: {
     'colour-picker': ColorPicker
   },
-  data () {
-    return {
-      numItems: 0,
-      groupClass: '',
-      groupFillColor: {
-        style: 'transparent',
-        obj: {
-          h: 0,
-          s: 0,
-          l: 0,
-          a: 0
+
+  computed: {
+    ...mapState({
+      selectedItems: state => state.annotation.selectedItems
+    }),
+
+    /**
+     * Returns the fill color of the selected item(s) only if all items in the
+     * selection are the same color. Otherwise, return translucent
+     * @function selectedFillColor
+     */
+    selectedFillColor () {
+      if (this.selectedItems.length > 0 && this.selectedItems.every(
+        (value, index, array) => (
+          value.fillColor.hue === array[0].fillColor.hue &&
+          value.fillColor.saturation === array[0].fillColor.saturation &&
+          value.fillColor.lightness === array[0].fillColor.lightness &&
+          value.fillColor.alpha === array[0].fillColor.alpha
+        )
+      )) {
+        let color = {
+          h: this.selectedItems[0].fillColor.hue,
+          s: this.selectedItems[0].fillColor.saturation,
+          l: this.selectedItems[0].fillColor.lightness,
+          a: this.selectedItems[0].fillColor.alpha
         }
-      },
-      groupStrokeWidth: '',
-      groupStrokeColor: {
-        style: 'transparent',
-        obj: {
-          h: 0,
-          s: 0,
-          l: 0,
-          a: 0
+        return {
+          style: 'hsla(' + color.h + ', ' + color.s * 100 + '%, ' + color.l * 100 + '%, ' + color.a + ')',
+          obj: color
         }
-      },
-      color: 'blue'
-    }
-  },
-
-  created () {
-    // Listen for an event indicating the selection has changed and
-    // update the component data appropriately.
-    eventBus.$on('selectionChanged', selection => {
-      if (selection.length >= 1) {
-        this.numItems = 0
-        selection.forEach(item => {
-          if (item.className === 'Group') {
-            if (item.data.class) {
-              this.groupClass = item.data.class
-            }
-
-            if (item.fillColor) {
-              let hue = item.fillColor.hue
-              let sat = item.fillColor.saturation * 100 + '%'
-              let light = item.fillColor.lightness * 100 + '%'
-              let alpha = item.fillColor.alpha
-
-              this.groupFillColor.style =
-                'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')'
-              this.groupFillColor.obj = {
-                h: hue,
-                s: sat,
-                l: light,
-                a: alpha
-              }
-            } else {
-              this.groupFillColor.style = 'transparent'
-              this.groupFillColor.obj = {
-                h: 0,
-                s: 0,
-                l: 0,
-                a: 0
-              }
-            }
-
-            if (item.strokeColor) {
-              let hue = item.strokeColor.hue
-              let sat = item.strokeColor.saturation * 100 + '%'
-              let light = item.strokeColor.lightness * 100 + '%'
-              let alpha = item.strokeColor.alpha
-
-              this.groupStrokeColor.style =
-                'hsla(' + hue + ', ' + sat + ', ' + light + ', ' + alpha + ')'
-              this.groupStrokeColor.obj = {
-                h: hue,
-                s: sat,
-                l: light,
-                a: alpha
-              }
-            } else {
-              this.groupStrokeColor.style = 'transparent'
-              this.groupStrokeColor.obj = {
-                h: 0,
-                s: 0,
-                l: 0,
-                a: 0
-              }
-            }
-          } else {
-            this.numItems++
-          }
-        })
       } else {
-        // Reset class
-        this.groupClass = ''
-
-        // Reset property data
-        this.numItems = 0
-        this.groupFillColor = {
-          style: 'transparent',
-          obj: {
-            h: 0,
-            s: 0,
-            l: 0,
-            a: 0
-          }
-        }
-        this.groupStrokeWidth = ''
-        this.groupStrokeColor = {
+        return {
           style: 'transparent',
           obj: {
             h: 0,
@@ -217,6 +142,49 @@ export default {
           }
         }
       }
+    },
+
+    /**
+     * Returns the stroke color of the selected item(s) only if all items in the
+     * selection are the same color. Otherwise, return translucent
+     * @function selectedStrokeColor
+     */
+    selectedStrokeColor () {
+      if (this.selectedItems.length > 0 && this.selectedItems.every(
+        (value, index, array) => (
+          value.strokeColor.hue === array[0].strokeColor.hue &&
+          value.strokeColor.saturation === array[0].strokeColor.saturation &&
+          value.strokeColor.lightness === array[0].strokeColor.lightness &&
+          value.strokeColor.alpha === array[0].strokeColor.alpha
+        )
+      )) {
+        let color = {
+          h: this.selectedItems[0].strokeColor.hue,
+          s: this.selectedItems[0].strokeColor.saturation * 100 + '%',
+          l: this.selectedItems[0].strokeColor.lightness * 100 + '%',
+          a: this.selectedItems[0].strokeColor.alpha
+        }
+        return {
+          style: 'hsla(' + color.h + ', ' + color.s + ', ' + color.l + ', ' + color.a + ')',
+          obj: color
+        }
+      } else {
+        return {
+          style: 'transparent',
+          obj: {
+            h: 0,
+            s: 0,
+            l: 0,
+            a: 0
+          }
+        }
+      }
+    }
+  },
+
+  methods: {
+    ...mapGetters({
+      getSelectedItems: 'annotation/getSelectedItems'
     })
   }
 }

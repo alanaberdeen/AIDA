@@ -16,7 +16,7 @@
     <v-card>
       <colour-picker
         id="picker"
-        v-model="colorPick"
+         v-model="colorPick"
       />
     </v-card>
 
@@ -24,10 +24,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import { Chrome } from 'vue-color'
 import paper from 'paper'
-import { eventBus } from '../../../../main'
-import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -60,49 +60,41 @@ export default {
   data () {
     return {
       dialog: false,
-      colorPick: this.color.obj
+      colorPick: {hsl: this.color.obj}
     }
   },
 
   computed: {
     ...mapState({
-      paperScope: state => state.annotation.paperScope
+      selectedItems: state => state.annotation.selectedItems
     })
   },
 
   watch: {
     // Whenever dialog toggled, change the colour of the selected items
     dialog (pickerToggle) {
-      if (pickerToggle === true) {
-        this.colorPick = this.color.obj
-      } else {
+      // on closing the dialog
+      if (!pickerToggle) {
         // If there are items selected in the current project
-        if (paper.project.selectedItems.length > 1) {
-          // Create a temporary group out of the selected items
-          let group = paper.project.getItem({
-            selected: true,
-            className: 'Group'
+        if (this.selectedItems.length > 0) {
+          // Change the color of the selected items.
+          this.selectedItems.map(item => {
+            if (this.type === 'fill') {
+              item.fillColor = new paper.Color({
+                hue: this.colorPick.hsl.h,
+                saturation: this.colorPick.hsl.s,
+                lightness: this.colorPick.hsl.l,
+                alpha: this.colorPick.hsl.a
+              })
+            } else if (this.type === 'stroke') {
+              item.strokeColor = new paper.Color({
+                hue: this.colorPick.hsl.h,
+                saturation: this.colorPick.hsl.s,
+                lightness: this.colorPick.hsl.l,
+                alpha: this.colorPick.hsl.a
+              })
+            }
           })
-
-          if (this.type === 'fill' && this.colorPick.hsl) {
-            group.fillColor = new paper.Color({
-              hue: this.colorPick.hsl.h,
-              saturation: this.colorPick.hsl.s,
-              lightness: this.colorPick.hsl.l,
-              alpha: this.colorPick.hsl.a
-            })
-          } else if (this.type === 'stroke' && this.colorPick.hsl) {
-            group.strokeColor = new paper.Color({
-              hue: this.colorPick.hsl.h,
-              saturation: this.colorPick.hsl.s,
-              lightness: this.colorPick.hsl.l,
-              alpha: this.colorPick.hsl.a
-            })
-          }
-
-          // Emit selection event to the eventBus so that the properties
-          // panel can be updated.
-          eventBus.$emit('selectionChanged', paper.project.selectedItems)
         }
       }
     }
