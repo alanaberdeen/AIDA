@@ -4,7 +4,7 @@
 // Export
 export default readOldSchema
 
-function readOldSchema (oldData) {
+function readOldSchema(oldData) {
   let newData = {}
 
   // -----
@@ -33,7 +33,10 @@ function readOldSchema (oldData) {
       id: oldStep.id,
       instruction: oldStep.instruction,
       tools: oldStep.tools,
-      color: oldStep.color.stroke
+      color: {
+        fill: oldStep.color.fill,
+        stroke: oldStep.color.stroke
+      }
     })
   }
 
