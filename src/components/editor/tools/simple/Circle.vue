@@ -102,7 +102,6 @@ export default {
       // with either the default radius or the new radius as set by the
       // distance between the point of mouseDown and mouseUp.
       let newCircle = new paper.Path.Circle(event.downPoint, this.radius)
-      console.log(this.getColor())
       newCircle.strokeColor = new paper.Color(this.getColor().stroke)
       newCircle.strokeWidth = this.strokeWidth
       newCircle.fillColor = new paper.Color(this.getColor().fill)

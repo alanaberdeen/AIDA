@@ -82,7 +82,6 @@ export default {
           // Change the color of the selected items.
           this.selectedItems.map(item => {
             if (this.type === 'fill') {
-              console.log(this.colorPick)
               item.fillColor = new paper.Color({
                 hue: this.colorPick.hsl.h,
                 saturation: this.colorPick.hsl.s,
@@ -90,7 +89,6 @@ export default {
                 alpha: this.colorPick.hsl.a
               })
             } else if (this.type === 'stroke') {
-              console.log(this.colorPick.hsl)
               item.strokeColor = new paper.Color({
                 hue: this.colorPick.hsl.h,
                 saturation: this.colorPick.hsl.s,
