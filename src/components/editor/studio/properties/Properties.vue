@@ -109,7 +109,7 @@ export default {
 
     /**
      * Returns the fill color of the selected item(s) only if all items in the
-     * selection are the same color. Otherwise, return translucent
+     * selection are the same color. Otherwise, return transparent
      * @function selectedFillColor
      */
     selectedFillColor () {
@@ -128,7 +128,7 @@ export default {
           a: this.selectedItems[0].fillColor.alpha
         }
         return {
-          style: 'hsla(' + color.h + ', ' + color.s * 100 + '%, ' + color.l * 100 + '%, ' + color.a + ')',
+          style: this.selectedItems[0].fillColor.toCSS(),
           obj: color
         }
       } else {
@@ -146,7 +146,7 @@ export default {
 
     /**
      * Returns the stroke color of the selected item(s) only if all items in the
-     * selection are the same color. Otherwise, return translucent
+     * selection are the same color. Otherwise, return transparent
      * @function selectedStrokeColor
      */
     selectedStrokeColor () {
@@ -158,6 +158,7 @@ export default {
           value.strokeColor.alpha === array[0].strokeColor.alpha
         )
       )) {
+        console.log(this.selectedItems[0].strokeColor)
         let color = {
           h: this.selectedItems[0].strokeColor.hue,
           s: this.selectedItems[0].strokeColor.saturation,
@@ -165,7 +166,7 @@ export default {
           a: this.selectedItems[0].strokeColor.alpha
         }
         return {
-          style: 'hsla(' + color.h + ', ' + color.s * 100 + '%, ' + color.l * 100 + '%, ' + color.a + ')',
+          style: this.selectedItems[0].strokeColor.toCSS(),
           obj: color
         }
       } else {
