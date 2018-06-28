@@ -74,8 +74,7 @@ export default {
       let hitResult = this.path.hitTest(event.point, this.hitOptions)
       if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getColor())
-        this.path.fillColor.alpha = 0.7
+        this.path.fillColor = new paper.Color(this.getColor().fill)
       } else {
         this.path.closed = false
         this.path.fillColor.alpha = 0
@@ -88,8 +87,7 @@ export default {
       let hitResult = this.path.hitTest(event.point, this.hitOptions)
       if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getColor())
-        this.path.fillColor.alpha = 0.7
+        this.path.fillColor = new paper.Color(this.getColor().fill)
       }
 
       // Deselect path.
@@ -140,7 +138,7 @@ export default {
 
     newPath () {
       let newPath = new paper.Path()
-      newPath.strokeColor = new paper.Color(this.getColor())
+      newPath.strokeColor = new paper.Color(this.getColor().stroke)
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true
 

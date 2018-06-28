@@ -68,9 +68,8 @@ export default {
     // Finalise rectangle properties and draw.
     const toolUp = event => {
       let newRect = new paper.Path.Rectangle(event.downPoint, event.point)
-      newRect.strokeColor = new paper.Color(this.getColor())
-      newRect.fillColor = new paper.Color(this.getColor())
-      newRect.fillColor.alpha = 0.7
+      newRect.strokeColor = new paper.Color(this.getColor().stroke)
+      newRect.fillColor = new paper.Color(this.getColor().fill)
       newRect.strokeWidth = this.strokeWidth
 
       // Custom data attribute:

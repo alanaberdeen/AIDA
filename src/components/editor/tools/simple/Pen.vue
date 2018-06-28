@@ -74,8 +74,7 @@ export default {
         // If first segment clicked, close path.
       } else if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
-        this.path.fillColor = new paper.Color(this.getColor())
-        this.path.fillColor.alpha = 0.7
+        this.path.fillColor = new paper.Color(this.getColor().fill)
         this.path.smooth()
         this.path.selected = false
         this.path.data.active = false
@@ -147,7 +146,7 @@ export default {
 
     newPath () {
       let newPath = new paper.Path()
-      newPath.strokeColor = new paper.Color(this.getColor())
+      newPath.strokeColor = new paper.Color(this.getColor().stroke)
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true
 
