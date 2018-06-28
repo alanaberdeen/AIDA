@@ -160,12 +160,12 @@ export default {
       )) {
         let color = {
           h: this.selectedItems[0].strokeColor.hue,
-          s: this.selectedItems[0].strokeColor.saturation * 100 + '%',
-          l: this.selectedItems[0].strokeColor.lightness * 100 + '%',
+          s: this.selectedItems[0].strokeColor.saturation,
+          l: this.selectedItems[0].strokeColor.lightness,
           a: this.selectedItems[0].strokeColor.alpha
         }
         return {
-          style: 'hsla(' + color.h + ', ' + color.s + ', ' + color.l + ', ' + color.a + ')',
+          style: 'hsla(' + color.h + ', ' + color.s * 100 + '%, ' + color.l * 100 + '%, ' + color.a + ')',
           obj: color
         }
       } else {

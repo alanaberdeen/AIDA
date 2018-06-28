@@ -73,13 +73,16 @@ export default {
   watch: {
     // Whenever dialog toggled, change the colour of the selected items
     dialog (pickerToggle) {
+      if (pickerToggle) {
+        this.colorPick = {hsl: this.color.obj}
       // on closing the dialog
-      if (!pickerToggle) {
+      } else if (!pickerToggle) {
         // If there are items selected in the current project
         if (this.selectedItems.length > 0) {
           // Change the color of the selected items.
           this.selectedItems.map(item => {
             if (this.type === 'fill') {
+              console.log(this.colorPick)
               item.fillColor = new paper.Color({
                 hue: this.colorPick.hsl.h,
                 saturation: this.colorPick.hsl.s,
@@ -87,6 +90,7 @@ export default {
                 alpha: this.colorPick.hsl.a
               })
             } else if (this.type === 'stroke') {
+              console.log(this.colorPick.hsl)
               item.strokeColor = new paper.Color({
                 hue: this.colorPick.hsl.h,
                 saturation: this.colorPick.hsl.s,
