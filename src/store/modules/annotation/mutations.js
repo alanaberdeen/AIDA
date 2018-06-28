@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import paper from 'paper'
 
+import helpers from './helpers.js'
+
 export default {
   resetAnnotationState: state => {
     // Vuex state
@@ -38,6 +40,7 @@ export default {
           state.project.layers[item.layer.index].items.push({
             class: item.data.class,
             type: 'circle',
+            color: helpers.getColor(item),
             center: {
               x: item.position.x,
               y: item.position.y
@@ -48,6 +51,7 @@ export default {
           state.project.layers[item.layer.index].items.push({
             class: item.data.class,
             type: 'rectangle',
+            color: helpers.getColor(item),
             from: {
               x: item.bounds.topLeft.x,
               y: item.bounds.topRight.y
@@ -61,35 +65,12 @@ export default {
           state.project.layers[item.layer.index].items.push({
             class: item.data.class,
             type: 'path',
-            segments: getSegments(item),
+            color: helpers.getColor(item),
+            segments: helpers.getSegments(item),
             closed: item.closed
           })
         }
       })
-
-    // Function that, given a paperJS path item, return the segments in the
-    // format specified by the AIDA annotation schema
-    function getSegments(item) {
-      let segments = []
-      item.segments.forEach(segment => {
-        segments.push({
-          point: {
-            x: segment.point.x,
-            y: segment.point.y
-          },
-          handleIn: {
-            x: segment.handleIn.x,
-            y: segment.handleIn.y
-          },
-          handleOut: {
-            x: segment.handleOut.x,
-            y: segment.handleOut.y
-          }
-        })
-      })
-
-      return segments
-    }
   },
 
   // Setup the PaperJs instance on the canvas DOM element.
@@ -146,11 +127,28 @@ export default {
 
           // Set the path colors to the default for their layer.
           if (newPaperItem.closed) {
-            newPaperItem.fillColor =
-              state.defaultColors[newPaperItem.layer.index].fill
+            if (item.color) {
+              newPaperItem.fillColor = new paper.Color({
+                hue: item.color.fill.hue,
+                saturation: item.color.fill.saturation,
+                lightness: item.color.fill.lightness,
+                alpha: item.color.fill.alpha
+              })
+            } else {
+              newPaperItem.fillColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length]
+              newPaperItem.fillColor.alpha = 0.7
+            }
           }
-          newPaperItem.strokeColor =
-            state.defaultColors[newPaperItem.layer.index].stroke
+          if (item.color) {
+            newPaperItem.strokeColor = new paper.Color({
+              hue: item.color.stroke.hue,
+              saturation: item.color.stroke.saturation,
+              lightness: item.color.stroke.lightness,
+              alpha: item.color.stroke.alpha
+            })
+          } else {
+            newPaperItem.strokeColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length]
+          }
         })
       }
     })
