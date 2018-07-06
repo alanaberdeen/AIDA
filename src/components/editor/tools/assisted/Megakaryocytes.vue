@@ -31,13 +31,12 @@
 </template>
 
 <script>
-// Import libs:
-// TODO: check why these are here, I feel like they should be extracted out into vuex actions/mutations
 import paper from 'paper'
 import openseadragon from 'openseadragon'
+import axios from 'axios'
 
 // Vuex
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -50,7 +49,8 @@ export default {
   data () {
     return {
       strokeWidth: 400,
-      loading: false
+      loading: false,
+      trackingRect: null
     }
   },
 
@@ -69,79 +69,93 @@ export default {
   created () {
     // On drag draw feedforward shadow rectangle in realtime.
     const toolDrag = event => {
-      let trackingRect = new paper.Path.Rectangle(event.downPoint, event.point)
-      trackingRect.strokeColor = new paper.Color({
-        hue: 220,
-        saturation: 0.7,
-        lightness: 0.5,
-        alpha: 1
-      })
-      trackingRect.strokeWidth = this.strokeWidth
+      this.trackingRect = new paper.Path.Rectangle(event.downPoint, event.point)
+      this.trackingRect.strokeColor = new paper.Color('#2661D8')
+      this.trackingRect.strokeColor.alpha = 0.7
+      this.trackingRect.strokeWidth = this.strokeWidth
 
       // Constantly update tracking rect by removing it and re-drawing.
-      trackingRect.removeOn({
-        drag: true,
-        up: true
+      this.trackingRect.removeOn({
+        drag: true
       })
     }
 
     // Get a list of tiles in the defined rectangle
     const toolUp = event => {
-      // Source dimensions
-      let dimensions = this.tileSource.dimensions
-      let aspectRatio = this.tileSource.aspectRatio
+      // Point given to getTileAtPoint must be in viewport coordiantes
+      let downPoint = this.tiledImage.imageToViewportCoordinates(event.downPoint.x, event.downPoint.y)
+      let upPoint = this.tiledImage.imageToViewportCoordinates(event.point.x, event.point.y
+      )
 
-      // Point given to getTileAtPoint must be 0 < point < 1, therefore it's in
-      // openseadragon viewport coordinates rather than image and is magnitude
-      // limited.
-      let downX = Math.min(Math.max((event.downPoint.x / dimensions.x), 0), 1)
-      let downY = Math.min(Math.max((event.downPoint.y / dimensions.y), 0), 1)
-      let upX = Math.min(Math.max((event.point.x / dimensions.x), 0), 1)
-      let upY = Math.min(Math.max((event.point.y / dimensions.y), 0), 1)
-      let downPoint = new openseadragon.Point(downX, downY / aspectRatio)
-      let upPoint = new openseadragon.Point(upX, upY / aspectRatio)
-
-      // These two tiles define the area in which we want to search, from the
-      // first (downTile) to the last (upTile).
-      let level = 15
-      let downTile = this.tileSource.getTileAtPoint(level, downPoint)
-      let upTile = this.tileSource.getTileAtPoint(level, upPoint)
-
-      console.log(this.tileSource.getTileUrl(level, downTile.x, downTile.y))
-
-      // Create list of tile data in which the algorithm should search
-      let tilesToSearch = []
-      for (let col = downTile.x; col <= upTile.x; col++) {
-        for (let row = downTile.y; row <= upTile.y; row++) {
-          let position = this.tiledImage.viewportToImageCoordinates(
-            this.tileSource.getTileBounds(level, col, row).x,
-            this.tileSource.getTileBounds(level, col, row).y
-          )
-          tilesToSearch.push({
-            source: this.tileSource.getTileUrl(level, col, row),
-            postion: [
-              position.x,
-              position.y
-            ]
-          })
-        }
+      // Selection rectangle defined as:
+      let topLeft = {
+        x: Math.min(downPoint.x, upPoint.x),
+        y: Math.min(downPoint.y, upPoint.y)
+      }
+      let bottomRight = {
+        x: Math.max(downPoint.x, upPoint.x),
+        y: Math.max(downPoint.y, upPoint.y)
       }
 
-      // getTileBounds
-      console.log(tilesToSearch)
+      // Check if selected area overlaps image
+      if (this.overlapsImage({topLeft, bottomRight})) {
+        let aspectRatio = this.tileSource.aspectRatio
 
-      // console.log('downTile: ')
-      // console.log(downTile)
-      // console.log('upTile: ' + upTile)
+        // Extract the part of the selection rectangle overlaps with the image
+        let selectionTL = new openseadragon.Point(
+          Math.min(Math.max(topLeft.x, 0), 1),
+          Math.min(Math.max(topLeft.y, 0), 1 / aspectRatio)
+        )
 
-      // let newRect = new paper.Path.Rectangle(event.downPoint, event.point)
-      // newRect.strokeColor = new paper.Color(this.getDefaultLayerColor().stroke)
-      // newRect.fillColor = new paper.Color(this.getDefaultLayerColor().fill)
-      // newRect.strokeWidth = this.strokeWidth
+        let selectionBR = new openseadragon.Point(
+          Math.min(Math.max(bottomRight.x, 0), 1),
+          Math.min(Math.max(bottomRight.y, 0), 1 / aspectRatio)
+        )
 
-      // // Custom data attribute:
-      // newRect.data.type = 'rectangle'
-      // newRect.data.class = ''
+        // These two tiles define the area in which we want to search, from the
+        // first (topLeftTile) to the last (bottomRightTile).
+        let level = 17
+        let topLeftTile = this.tileSource.getTileAtPoint(level, selectionTL)
+        let bottomRightTile = this.tileSource.getTileAtPoint(level, selectionBR)
+
+        // Create list of tile data in which the algorithm should search
+        let tilesToSearch = []
+        for (let col = topLeftTile.x; col <= bottomRightTile.x; col++) {
+          for (let row = topLeftTile.y; row <= bottomRightTile.y; row++) {
+            let position = this.tiledImage.viewportToImageCoordinates(
+              this.tileSource.getTileBounds(level, col, row).x,
+              this.tileSource.getTileBounds(level, col, row).y
+            )
+            tilesToSearch.push({
+              source: this.tileSource.getTileUrl(level, col, row),
+              position: [
+                Math.round(position.x),
+                Math.round(position.y)
+              ]
+            })
+          }
+        }
+        console.log(tilesToSearch)
+        this.saveToJSON(tilesToSearch, 'tiles_for_mega_search.json')
+
+        // Send the query to the compute
+        // Pretending to do this now
+
+        // Run loading animation
+
+        // Read results and display results
+        axios
+          .get('https://aida-private.firebaseio.com/megas.json ')
+          // Update the editor.js state
+          .then((response) => {
+            let megas = response.data
+            megas.map(this.drawMega)
+            this.trackingRect.remove()
+          }).then(
+            // Now run through the validation workflow
+
+          )
+      }
     }
 
     this.toolMega = new paper.Tool()
@@ -154,6 +168,10 @@ export default {
       prepareCanvas: 'annotation/prepareCanvas'
     }),
 
+    ...mapGetters({
+      getColor: 'annotation/getColor'
+    }),
+
     initialiseTool () {
       // Prepare PaperJS canvas for interaction.
       this.prepareCanvas()
@@ -162,7 +180,61 @@ export default {
       this.toolMega.activate()
 
       // Set the default strokewidth relative to image size and zoom.
-      this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
+      this.strokeWidth = this.imageWidth / (this.viewportZoom * 300)
+    },
+
+    // Returns true if rectangle overlaps the image in viewport coordinates
+    overlapsImage (rect) {
+      // If one rectangle is on left side of other
+      if (rect.topLeft.x > this.tiledImage.getBounds().width || rect.bottomRight.x < 0) {
+        return false
+      // If one rectangle is above other
+      } else if (rect.topLeft.y > this.tiledImage.getBounds().height || rect.bottomRight.y < 0) {
+        return false
+      } else {
+        return true
+      }
+    },
+
+    // Saves data to JSON
+    saveToJSON (data, filename) {
+      // Build the data into a properly encoded string
+      let dataStr = 'data:text/json;charset=utf-8,' +
+        encodeURIComponent(JSON.stringify(data, null, 2))
+
+      // Create an anchor node that triggers a download of the annotation.json
+      // briefly attach it to the window, trigger it being clicked and then
+      // remove it from the window once done.
+      let downloadAnchorNode = document.createElement('a')
+      downloadAnchorNode.setAttribute('href', dataStr)
+      downloadAnchorNode.setAttribute('download', filename)
+      document.body.appendChild(downloadAnchorNode) // required for firefox
+      downloadAnchorNode.click()
+      downloadAnchorNode.remove()
+    },
+
+    /**
+    * @function drawMegas
+    * Draws the results from the megakaryocytes classifier in the paperJS instance
+    * @param {array} megas - An array of annotation items as described by schema
+    */
+    drawMega (mega) {
+      // Create item
+      let newMega = new paper.Path.Rectangle({
+        from: new paper.Point(mega.x_min, mega.y_min),
+        to: new paper.Point(mega.x_max, mega.y_max),
+        data: {
+          type: 'rectangle',
+          class: mega.class,
+          data: {
+            score: mega.score
+          }
+        }
+      })
+
+      // Style item
+      newMega.strokeColor = new paper.Color(this.getColor().stroke)
+      newMega.strokeWidth = this.strokeWidth
     }
   }
 }
