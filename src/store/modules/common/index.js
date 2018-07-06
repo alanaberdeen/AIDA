@@ -136,7 +136,7 @@ const mutations = {
       paper.project.layers.forEach(layer => {
         layer.children.forEach(child => {
           if (child.className === 'Path') {
-            child.strokeWidth = image1.getContentSize().x / (viewportZoom * 500)
+            child.strokeWidth = image1.getContentSize().x / (viewportZoom * 300)
           }
         })
       })
