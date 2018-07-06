@@ -228,13 +228,13 @@ export default {
           this.previousMega()
           break
         case 49:
-          this.markCorrect()
+          if (!e.getModifierState('Meta')) { this.markCorrect() }
           break
         case 50:
-          this.markAdjusted()
+          if (!e.getModifierState('Meta')) { this.markAdjusted() }
           break
         case 51:
-          this.markIncorrect()
+          if (!e.getModifierState('Meta')) { this.markIncorrect() }
       }
     },
 
