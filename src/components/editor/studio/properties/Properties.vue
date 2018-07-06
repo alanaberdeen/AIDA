@@ -115,6 +115,7 @@ export default {
     selectedFillColor () {
       if (this.selectedItems.length > 0 && this.selectedItems.every(
         (value, index, array) => (
+          value.fillColor !== null &&
           value.fillColor.hue === array[0].fillColor.hue &&
           value.fillColor.saturation === array[0].fillColor.saturation &&
           value.fillColor.lightness === array[0].fillColor.lightness &&
@@ -152,10 +153,11 @@ export default {
     selectedStrokeColor () {
       if (this.selectedItems.length > 0 && this.selectedItems.every(
         (value, index, array) => (
-          value.strokeColor.hue === array[0].strokeColor.hue &&
-          value.strokeColor.saturation === array[0].strokeColor.saturation &&
-          value.strokeColor.lightness === array[0].strokeColor.lightness &&
-          value.strokeColor.alpha === array[0].strokeColor.alpha
+          value.strokeColor !== null &&
+            value.strokeColor.hue === array[0].strokeColor.hue &&
+            value.strokeColor.saturation === array[0].strokeColor.saturation &&
+            value.strokeColor.lightness === array[0].strokeColor.lightness &&
+            value.strokeColor.alpha === array[0].strokeColor.alpha
         )
       )) {
         let color = {
