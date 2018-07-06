@@ -45,7 +45,8 @@ export default {
               x: item.position.x,
               y: item.position.y
             },
-            radius: item.bounds.width / 2
+            radius: item.bounds.width / 2,
+            data: item.data.data
           })
         } else if (item.data.type === 'rectangle') {
           state.project.layers[item.layer.index].items.push({
@@ -59,7 +60,8 @@ export default {
             to: {
               x: item.bounds.bottomRight.x,
               y: item.bounds.bottomRight.y
-            }
+            },
+            data: item.data.data
           })
         } else if (item.data.type === 'path') {
           state.project.layers[item.layer.index].items.push({
@@ -67,7 +69,8 @@ export default {
             type: 'path',
             color: helpers.getColor(item),
             segments: helpers.getSegments(item),
-            closed: item.closed
+            closed: item.closed,
+            data: item.data.data
           })
         }
       })
@@ -79,8 +82,6 @@ export default {
   },
 
   // Load annotation data into both the state and the paperJS environment.
-  // For legacy purposes handle both a string of annotation output as created by
-  // PaperJS but also the new AIDA annotation schema.
   loadAidaAnnotation: (state, payload) => {
     // Save the loaded annotation data to the Vuex state
     state.project = payload.annotation
@@ -102,7 +103,8 @@ export default {
               data: {
                 type: 'circle',
                 countable: true,
-                class: item.class
+                class: item.class,
+                data: item.data
               }
             })
           } else if (item.type === 'rectangle') {
@@ -111,23 +113,25 @@ export default {
               to: item.to,
               data: {
                 type: 'rectangle',
-                class: item.class
+                class: item.class,
+                data: item.data
               }
             })
           } else {
             newPaperItem = new paper.Path({
               segments: item.segments,
-              closed: item.closed,
+              closed: item.closed ? item.closed : false,
               data: {
                 type: 'path',
-                class: item.class
+                class: item.class,
+                data: item.data
               }
             })
           }
 
           // Set the path colors to the default for their layer.
           if (newPaperItem.closed) {
-            if (item.color) {
+            if (item.color && item.color.fill) {
               newPaperItem.fillColor = new paper.Color({
                 hue: item.color.fill.hue,
                 saturation: item.color.fill.saturation,
@@ -135,11 +139,11 @@ export default {
                 alpha: item.color.fill.alpha
               })
             } else {
-              newPaperItem.fillColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length]
-              newPaperItem.fillColor.alpha = 0.7
+              newPaperItem.fillColor = 'blue'
+              newPaperItem.fillColor.alpha = 0
             }
           }
-          if (item.color) {
+          if (item.color && item.color.stroke) {
             newPaperItem.strokeColor = new paper.Color({
               hue: item.color.stroke.hue,
               saturation: item.color.stroke.saturation,
@@ -147,7 +151,7 @@ export default {
               alpha: item.color.stroke.alpha
             })
           } else {
-            newPaperItem.strokeColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length]
+            newPaperItem.strokeColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length].stroke
           }
         })
       }
