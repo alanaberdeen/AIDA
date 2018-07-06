@@ -6,7 +6,7 @@
       open-delay="700"
     >
       <v-btn
-        id="tool"
+        id="node"
         slot="activator"
         flat
         block
@@ -20,7 +20,7 @@
             'faIconsActive': active
         }"/>
       </v-btn>
-      <span> Node Tool </span>
+      <span> Node Tool [a] </span>
     </v-tooltip>
   </v-list-tile>
 </template>
@@ -170,7 +170,7 @@ export default {
   width: 100%;
 }
 
-#tool {
+#node {
   min-width: 0px;
 }
 

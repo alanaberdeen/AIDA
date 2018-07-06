@@ -6,7 +6,7 @@
       open-delay="700"
     >
       <v-btn
-        id="tool"
+        id="pan"
         slot="activator"
         flat
         block
@@ -24,7 +24,7 @@
           lock_outline
         </v-icon>
       </v-btn>
-      <span> Lock View Tool </span>
+      <span> Lock View Tool [space] </span>
     </v-tooltip>
   </v-list-tile>
 </template>
@@ -66,7 +66,7 @@ export default {
   width: 100%;
 }
 
-#tool {
+#pan {
   min-width: 0px;
 }
 

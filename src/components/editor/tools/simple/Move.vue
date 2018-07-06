@@ -6,7 +6,7 @@
       open-delay="700"
     >
       <v-btn
-        id="tool"
+        id="move"
         slot="activator"
         flat
         block
@@ -23,7 +23,7 @@
         />
 
       </v-btn>
-      <span> Move Tool </span>
+      <span> Move Tool [v]</span>
     </v-tooltip>
   </v-list-tile>
 </template>
@@ -266,9 +266,7 @@ export default {
       }
 
       // If first time using the tool then must initialise the selection group
-      if (!this.selectionGroup) {
-        this.selectionGroup = new paper.Group([])
-      }
+      this.selectionGroup = new paper.Group(paper.project.selectedItems)
     },
 
     matchFilter (itemToCheck) {
@@ -286,12 +284,12 @@ export default {
 }
 </script>
 
-<style lang='css'>
+<style lang='css' >
 #tooltip {
   width: 100%;
 }
 
-#tool {
+#move {
   min-width: 0px;
 }
 

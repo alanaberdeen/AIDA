@@ -5,7 +5,7 @@
       right
       open-delay="700">
       <v-btn
-        id="tool"
+        id="circle"
         slot="activator"
         flat
         block
@@ -19,7 +19,7 @@
             'faIconsActive': active
         }"/>
       </v-btn>
-      <span> Circle Tool </span>
+      <span> Circle Tool [c] </span>
     </v-tooltip>
   </v-list-tile>
 
@@ -160,7 +160,7 @@ export default {
   width: 100%;
 }
 
-#tool {
+#circle {
   min-width: 0px;
 }
 

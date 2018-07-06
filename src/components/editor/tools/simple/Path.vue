@@ -6,7 +6,7 @@
       open-delay="700"
     >
       <v-btn
-        id="tool"
+        id="path"
         slot="activator"
         flat
         block
@@ -18,7 +18,7 @@
           timeline
         </v-icon>
       </v-btn>
-      <span> Path Tool </span>
+      <span> Path Tool [p] </span>
     </v-tooltip>
   </v-list-tile>
 </template>
@@ -161,7 +161,7 @@ export default {
   width: 100%;
 }
 
-#tool {
+#path {
   min-width: 0px;
 }
 

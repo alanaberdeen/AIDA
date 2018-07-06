@@ -6,7 +6,7 @@
       open-delay="700"
     >
       <v-btn
-        id="tool"
+        id="rectangle"
         slot="activator"
         flat
         block
@@ -18,7 +18,7 @@
           crop_landscape
         </v-icon>
       </v-btn>
-      <span> Rectangel Tool </span>
+      <span> Rectangel Tool [r] </span>
     </v-tooltip>
   </v-list-tile>
 </template>
@@ -110,7 +110,7 @@ export default {
   width: 100%;
 }
 
-#tool {
+#rectangle {
   min-width: 0px;
 }
 

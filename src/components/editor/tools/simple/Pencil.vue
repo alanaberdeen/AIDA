@@ -6,7 +6,7 @@
       open-delay="700"
     >
       <v-btn
-        id="tool"
+        id="pencil"
         slot="activator"
         flat
         block
@@ -20,7 +20,7 @@
             'faIconsActive': active
         }"/>
       </v-btn>
-      <span> Pencil Tool </span>
+      <span> Pencil Tool [m] </span>
     </v-tooltip>
   </v-list-tile>
 </template>
@@ -153,7 +153,7 @@ export default {
   width: 100%;
 }
 
-#tool {
+#pencil {
   min-width: 0px;
 }
 

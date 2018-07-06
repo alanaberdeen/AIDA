@@ -43,10 +43,10 @@
         @click.native="activeTool = 'rectangle'"
       />
 
-      <app-pen
-        v-if="(getStepTools().includes('pen'))"
-        :active="(activeTool === 'pen')"
-        @click.native="activeTool = 'pen'"
+      <app-path
+        v-if="(getStepTools().includes('path'))"
+        :active="(activeTool === 'path')"
+        @click.native="activeTool = 'path'"
       />
 
       <app-pencil
@@ -107,11 +107,10 @@
 import { mapState, mapGetters } from 'vuex'
 
 // Import child components
-
 // Simple Tools:
 import toolCircle from './simple/Circle.vue'
 import toolRectangle from './simple/Rectangle.vue'
-import toolPen from './simple/Pen.vue'
+import toolPath from './simple/Path.vue'
 import toolPencil from './simple/Pencil.vue'
 import toolMove from './simple/Move.vue'
 import toolPan from './simple/Pan.vue'
@@ -129,7 +128,7 @@ export default {
   components: {
     'app-circle': toolCircle,
     'app-rectangle': toolRectangle,
-    'app-pen': toolPen,
+    'app-path': toolPath,
     'app-move': toolMove,
     'app-pan': toolPan,
     'app-node': toolNode,
@@ -148,6 +147,10 @@ export default {
     }
   },
 
+  mounted () {
+    window.addEventListener('keydown', this.keyDown)
+  },
+
   computed: {
     ...mapState({
       activeStep: state => state.editor.activeStep,
@@ -158,7 +161,34 @@ export default {
   methods: {
     ...mapGetters({
       getStepTools: 'editor/getStepTools'
-    })
+    }),
+
+    // Attach event listeners for the keyboard shortcuts
+    keyDown (e) {
+      switch (e.keyCode) {
+        case 32:
+          document.getElementById('pan').click()
+          break
+        case 86:
+          document.getElementById('move').click()
+          break
+        case 65:
+          document.getElementById('node').click()
+          break
+        case 67:
+          document.getElementById('circle').click()
+          break
+        case 82:
+          document.getElementById('rectangle').click()
+          break
+        case 80:
+          document.getElementById('path').click()
+          break
+        case 77:
+          document.getElementById('pencil').click()
+          break
+      }
+    }
   }
 }
 </script>
