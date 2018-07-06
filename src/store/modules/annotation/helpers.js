@@ -28,18 +28,18 @@ export default {
   // as an object
   getColor (item) {
     return {
-      fill: {
+      fill: item.fillColor !== null ? {
         hue: item.fillColor.hue,
         saturation: item.fillColor.saturation,
         lightness: item.fillColor.lightness,
         alpha: item.fillColor.alpha
-      },
-      stroke: {
+      } : null,
+      stroke: item.strokeColor !== null ? {
         hue: item.strokeColor.hue,
         saturation: item.strokeColor.saturation,
         lightness: item.strokeColor.lightness,
         alpha: item.strokeColor.alpha
-      }
+      } : null
     }
   },
 
