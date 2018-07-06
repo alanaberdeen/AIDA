@@ -27,7 +27,6 @@
 
 <script>
 import paper from 'paper'
-import { eventBus } from '../../../../main'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
@@ -110,11 +109,6 @@ export default {
       newCircle.data.countable = true
       newCircle.data.type = 'circle'
       newCircle.data.class = ''
-
-      // As the number of circle markers in the project has changed,
-      // Emit an event that will check to see if we are counting these
-      // in a particular area and update that value if so.
-      eventBus.$emit('updateMarkerCount')
     }
 
     // Add the defined functions to the tool object.
