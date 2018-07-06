@@ -26,7 +26,8 @@
     <div
       id="hint-card"
       class="elevation-1">
-      <p id="hint">
+      <app-validate v-if="steps[activeStep].type === 'validate'"></app-validate>
+      <p id="hint" v-else>
         {{ steps[activeStep].instruction }}
       </p>
     </div>
@@ -36,7 +37,13 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 
+import Validate from './Validate.vue'
+
 export default {
+  components: {
+    'app-validate': Validate
+  },
+
   computed: {
     ...mapState({
       activeStep: state => state.editor.activeStep,
