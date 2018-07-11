@@ -2,46 +2,21 @@
 // This component represents an instance of the AIDA editor
 // It includes the sub components that make up the interface
 <template>
-  <div>
-    <header>
-      <app-toolbar/>
-    </header>
+  <v-container id="center" fill-height fluid grid-list-sm>
 
-    <v-container
-      id="content-container"
-      fluid
-    >
-      <v-layout row>
+    <v-layout column >
+       <!-- Stepper -->
+      <v-flex xs1>
+        <app-stepper/>
+      </v-flex>
 
-        <v-flex
-          id="left-panel"
-          d-flex
-        >
-          <app-tools/>
-        </v-flex>
+      <!-- Viewer -->
+      <v-flex xs12>
+        <app-view :type="type"/>
+      </v-flex>
+    </v-layout>
 
-        <v-flex d-flex>
-          <div id="centre-container">
-            <div id="stepper">
-              <app-stepper/>
-            </div>
-
-            <div id="view-container">
-              <app-view :type="type"/>
-            </div>
-          </div>
-        </v-flex>
-
-        <v-flex
-          id="right-panel"
-          d-flex
-        >
-          <app-studio/>
-        </v-flex>
-
-      </v-layout>
-    </v-container>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -71,36 +46,7 @@ export default {
 </script>
 
 <style media='screen' scoped>
-#content-container {
-  padding: 0px;
-  padding-top: 48px;
-}
-
-#centre-container {
-  display: flex;
-  flex-direction: column;
-  padding: 0px 5px;
-  overflow-y: auto;
-}
-
-#stepper {
-  flex-shrink: 1;
-  padding: 5px 0px;
-}
-
-#view-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 5px;
-}
-
-#left-panel {
-  flex: 0 1 auto;
-  min-width: 54px;
-}
-
-#right-panel {
-  flex: 0 1 auto;
+#center {
+  padding: 5px;
 }
 </style>

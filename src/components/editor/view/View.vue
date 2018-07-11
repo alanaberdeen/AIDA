@@ -68,6 +68,6 @@ export default {
 #view {
   position: relative;
   width: 100%;
-  flex: 1;
+  height: 100%;
 }
 </style>

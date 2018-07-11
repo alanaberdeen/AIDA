@@ -3,13 +3,19 @@
 // It contains the sub-components for different functionality
 <template lang="html">
   <v-toolbar
-    :fixed="true"
+    fixed
     dark
     dense
-    class="primary pointers-please">
+    app
+    clipped-right
+    clipped-left
+    class="primary pointers-please"
+    >
 
-    <!-- Spacer for where v-toolbar-side-icon may be in other views -->
-    <div id="toolbar-side-icon-spacer"/>
+    <!-- Toggle Tools Drawer -->
+    <div id="toolbar-toggle">
+      <v-toolbar-side-icon @click.stop="$emit('toggleToolsDrawer')"></v-toolbar-side-icon>
+    </div>
 
     <!-- Home -->
     <router-link to="/">
@@ -50,6 +56,11 @@
       <app-user/>
     </v-btn> -->
 
+    <!-- Toggle Studio Drawer -->
+    <div>
+      <v-toolbar-side-icon @click.stop="$emit('toggleStudioDrawer')"></v-toolbar-side-icon>
+    </div>
+
   </v-toolbar>
 </template>
 
@@ -74,5 +85,10 @@ export default {
 #toolbar-side-icon-spacer {
   height: 36px;
   width: 36px;
+}
+
+#toolbar-toggle {
+  margin-left: -18px;
+  margin-right: 40px;
 }
 </style>
