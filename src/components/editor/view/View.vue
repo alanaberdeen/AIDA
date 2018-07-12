@@ -67,7 +67,8 @@ export default {
 <style lang='css' scoped>
 #view {
   position: relative;
-  width: 100%;
-  height: 100%;
+  display: inline-flex;
+  flex: 1;
+  flex-basis: auto;
 }
 </style>
