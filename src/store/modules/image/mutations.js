@@ -4,6 +4,7 @@ import openseadragon from 'openseadragon'
 export default {
   resetImageState: (state) => {
     // Destroy the openseadragon viewer
+    state.OSDviewer.navigator.destroy()
     state.OSDviewer.destroy()
 
     state = {
