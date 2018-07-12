@@ -194,7 +194,23 @@
 </template>
 
 <script>
-export default {}
+import { mapActions } from 'vuex'
+export default {
+
+  mounted () {
+    this.toolbarOff()
+    this.toolsDrawerOff()
+    this.studioDrawerOff()
+  },
+
+  methods: {
+    ...mapActions({
+      toolbarOff: 'app/toolbarOff',
+      toolsDrawerOff: 'app/toolsDrawerOff',
+      studioDrawerOff: 'app/studioDrawerOff'
+    })
+  }
+}
 </script>
 
 <style scoped>
