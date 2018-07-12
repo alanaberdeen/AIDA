@@ -6,6 +6,10 @@ import paper from 'paper'
 // Import helper functions
 import readOldSchema from './readOldSchema'
 
+const state = {
+  projectEndpoint: ''
+}
+
 const actions = {
   // Reset Vuex state to default
   resetState: ({
@@ -24,10 +28,12 @@ const actions = {
 
   // Load a project into AIDA.
   loadProject: ({
-    dispatch
+    dispatch,
+    commit
   }, payload) => {
-    // Construct endpoint from which to pull the data from
+    // Construct endpoint from which to pull the data from and save to state
     let endpoint = 'https://aida-testing.firebaseio.com/' + payload + '.json '
+    commit('setProjectEndpoint', endpoint)
 
     // Pull latest test project from REST api
     axios
@@ -64,25 +70,22 @@ const actions = {
 
   // Save AIDA project to REST API
   saveProject: ({
+    state,
     rootState,
     dispatch
   }) => {
-    // Construct endpoint to store data at
-    let endpoint = 'https://aida-testing.firebaseio.com/' + rootState.editor.type + '.json'
-
     dispatch('annotation/refreshAnnotationState', '', {
       root: true
-    }).then(
+    }).then(() => {
       axios
-        .put(endpoint, {
+        .put(state.projectEndpoint, {
           editor: rootState.editor,
           annotation: rootState.annotation.project,
           images: rootState.image.images
-        })
-        .then(function (response) {
+        }).then(function (response) {
           console.log(response)
         })
-    )
+    })
   },
 
   // Install event hooks to keep the annotations and the OSDcanvas in sync when
@@ -141,6 +144,10 @@ const mutations = {
         })
       })
     })
+  },
+
+  setProjectEndpoint: (state, projectEndpoint) => {
+    state.projectEndpoint = projectEndpoint
   }
 }
 
@@ -148,6 +155,7 @@ const mutations = {
 // respective parts in the other modules and complete the store.
 export default {
   namespaced: true,
+  state,
   actions,
   mutations
 }
