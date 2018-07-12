@@ -63,7 +63,7 @@ export default {
             },
             data: item.data.data
           })
-        } else if (item.data.type === 'path') {
+        } else {
           state.project.layers[item.layer.index].items.push({
             class: item.data.class,
             type: 'path',

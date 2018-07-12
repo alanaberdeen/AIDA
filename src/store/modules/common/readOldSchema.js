@@ -4,7 +4,7 @@
 // Export
 export default readOldSchema
 
-function readOldSchema(oldData) {
+function readOldSchema (oldData) {
   let newData = {}
 
   // -----
