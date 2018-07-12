@@ -2,24 +2,23 @@
 // This component represents an instance of the AIDA editor
 // It includes the sub components that make up the interface
 <template>
-  <v-container id="center" fill-height fluid grid-list-sm>
+  <div id="container">
 
-    <v-layout column >
-       <!-- Stepper -->
-      <v-flex xs1>
-        <app-stepper/>
-      </v-flex>
+    <div id="stepper-item">
+      <app-stepper/>
+    </div>
 
-      <!-- Viewer -->
-      <v-flex xs12>
-        <app-view :type="type"/>
-      </v-flex>
-    </v-layout>
+    <div id="view-item">
+      <app-view :type="type"/>
+    </div>
 
-  </v-container>
+  </div>
 </template>
 
 <script>
+// Vuex State Management
+import { mapActions } from 'vuex'
+
 // Import child components
 import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
@@ -41,12 +40,38 @@ export default {
       type: String,
       default: 'examples'
     }
+  },
+
+  mounted () {
+    this.toolbarOn()
+    this.toolsDrawerOn()
+    this.studioDrawerOn()
+  },
+
+  methods: {
+    ...mapActions({
+      toolbarOn: 'app/toolbarOn',
+      toolsDrawerOn: 'app/toolsDrawerOn',
+      studioDrawerOn: 'app/studioDrawerOn'
+    })
   }
 }
 </script>
 
 <style media='screen' scoped>
-#center {
-  padding: 5px;
+#container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#stepper-item {
+  margin: 5px;
+}
+
+#view-item {
+  display: flex;
+  flex: auto;
+  margin: 0px 5px 5px 5px;
 }
 </style>

@@ -14,7 +14,7 @@
 
     <!-- Toggle Tools Drawer -->
     <div id="toolbar-toggle">
-      <v-toolbar-side-icon @click.stop="$emit('toggleToolsDrawer')"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click="toggleToolsDrawer()"></v-toolbar-side-icon>
     </div>
 
     <!-- Home -->
@@ -58,13 +58,16 @@
 
     <!-- Toggle Studio Drawer -->
     <div>
-      <v-toolbar-side-icon @click.stop="$emit('toggleStudioDrawer')"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click="toggleStudioDrawer()"></v-toolbar-side-icon>
     </div>
 
   </v-toolbar>
 </template>
 
 <script>
+// Vuex State Management
+import { mapActions } from 'vuex'
+
 // Import child components
 import Settings from './settings/Settings.vue'
 import User from './user/User.vue'
@@ -77,6 +80,13 @@ export default {
     'app-user': User,
     'app-save': Save,
     'app-export': Export
+  },
+
+  methods: {
+    ...mapActions({
+      toggleToolsDrawer: 'app/toggleToolsDrawer',
+      toggleStudioDrawer: 'app/toggleStudioDrawer'
+    })
   }
 }
 </script>

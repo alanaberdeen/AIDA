@@ -3,6 +3,7 @@
 
     <!-- Header Tool Bar -->
     <app-toolbar
+      v-if="this.toolbar"
       v-on:toggleToolsDrawer="toolsDrawer = !toolsDrawer"
       v-on:toggleStudioDrawer="studioDrawer = !studioDrawer"
     />
@@ -12,7 +13,7 @@
       id="tools-drawer"
       fixed
       clipped
-      v-model="toolsDrawer"
+      :value="this.toolsDrawer"
       mini-variant
       mini-variant-width="60"
       app
@@ -31,10 +32,10 @@
       id="studio-drawer"
       fixed
       clipped
-      v-model="studioDrawer"
+      :value="this.studioDrawer"
       app
       right
-      mobile-break-point="800"
+      mobile-break-point="1000"
     >
       <app-studio/>
     </v-navigation-drawer>
@@ -43,6 +44,9 @@
 </template>
 
 <script>
+// Vuex state management
+import { mapState } from 'vuex'
+
 // Import child component
 import Toolbar from './components/header/Toolbar.vue'
 import Tools from './components/editor/tools/Tools.vue'
@@ -55,10 +59,13 @@ export default {
     'app-studio': Studio
   },
 
-  data: () => ({
-    toolsDrawer: true,
-    studioDrawer: true
-  })
+  computed: {
+    ...mapState({
+      toolbar: state => state.app.toolbar,
+      toolsDrawer: state => state.app.toolsDrawer,
+      studioDrawer: state => state.app.studioDrawer
+    })
+  }
 }
 
 </script>
