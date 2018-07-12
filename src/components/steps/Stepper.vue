@@ -1,5 +1,5 @@
 <template>
-  <div v-if="steps">
+  <div v-if="steps" id="stepper-container">
     <v-stepper
       id="stepper"
       :value="(activeStep + 1)"
@@ -60,8 +60,13 @@ export default {
 </script>
 
 <style lang='css' scoped>
+#stepper-container {
+  width: 100%;
+}
+
 #stepper {
   background-color: #e0e0e0;
+  width: 100%;
 }
 
 #stepper-header {
