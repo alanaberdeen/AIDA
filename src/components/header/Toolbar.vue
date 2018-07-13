@@ -50,11 +50,11 @@
     </v-btn>
 
     <!-- User -->
-    <!-- <v-btn
+    <v-btn
       icon
       class="pointers-no">
       <app-user/>
-    </v-btn> -->
+    </v-btn>
 
     <!-- Toggle Studio Drawer -->
     <div>
@@ -98,7 +98,7 @@ export default {
 }
 
 #toolbar-toggle {
-  margin-left: -18px;
-  margin-right: 40px;
+  margin-left: 5px;
+  margin-right: 20px;
 }
 </style>
