@@ -25,7 +25,6 @@
 
 <script>
 import paper from 'paper'
-import { eventBus } from '../../../../main'
 import { mapActions, mapState } from 'vuex'
 
 export default {
@@ -162,15 +161,6 @@ export default {
       if (selectedGroup) {
         selectedGroup.remove()
       }
-
-      // Emit selection event to the eventBus so that the properties
-      // panel can be updated.
-      eventBus.$emit('selectionChanged', paper.project.selectedItems)
-
-      // As the number of circle markers in the project may have
-      // changed, emit an event that will check to see if we are
-      // counting these in a particular area and update that value.
-      eventBus.$emit('updateMarkerCount')
     }
 
     // Assign tool to paper instance.

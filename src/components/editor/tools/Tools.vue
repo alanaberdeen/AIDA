@@ -64,15 +64,6 @@
       @click.native="activeTool = 'grid'"
     />
 
-    <!-- The count tool needs re-thinking, removing for now -->
-    <!-- <v-divider/>
-
-    <app-count
-      v-if="(getStepTools().includes('count'))"
-      :active="(activeTool === 'count')"
-      @click.native="activeTool = 'count'"
-    /> -->
-
     <v-divider/>
 
     <app-delete
