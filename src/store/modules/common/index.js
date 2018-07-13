@@ -77,8 +77,11 @@ const actions = {
     dispatch('annotation/refreshAnnotationState', '', {
       root: true
     }).then(() => {
+      // Declare saving endpoint
+      let endpoint = state.projectEndpoint
+
       axios
-        .put(state.projectEndpoint, {
+        .put(endpoint, {
           editor: rootState.editor,
           annotation: rootState.annotation.project,
           images: rootState.image.images
