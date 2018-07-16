@@ -23,8 +23,10 @@
       <div id="tab-item">
         <v-layout
           row
-          wrap>
-          <v-flex xs9>
+          wrap
+          justify-space-between
+        >
+          <v-flex xs8>
             <v-slider
               :value="getZoom"
               :max="getMaxZoom"
@@ -73,7 +75,6 @@ export default {
 .panel {
   margin-top: 7px;
   background-color: #eeeeee;
-  width: 240px;
 }
 
 .toolBarTitle {

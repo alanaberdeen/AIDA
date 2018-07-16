@@ -38,7 +38,6 @@ export default {
 </script>
 <style lang='css' scoped>
 .studioPanel {
-  height: calc(100vh - 48px);
   background: #eeeeee;
   overflow: auto;
 }

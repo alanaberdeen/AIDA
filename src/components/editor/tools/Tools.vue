@@ -1,106 +1,102 @@
 <template lang="html">
-  <div
-    id="toolsPanel"
-    class="pointers-please elevation-2"
+
+  <v-list
+    id="toolList"
+    class="pointers-please"
+    dense
   >
 
-    <v-list
-      id="toolList"
-      dense
-    >
+    <app-pan
+      v-if="(getStepTools().includes('pan'))"
+      :active="(activeTool === 'pan')"
+      @click.native="activeTool = 'pan'"
+    />
 
-      <app-pan
-        v-if="(getStepTools().includes('pan'))"
-        :active="(activeTool === 'pan')"
-        @click.native="activeTool = 'pan'"
-      />
+    <v-divider></v-divider>
 
-      <v-divider/>
+    <app-move
+      v-if="(getStepTools().includes('move'))"
+      :active="(activeTool === 'move')"
+      @click.native="activeTool = 'move'"
+    />
 
-      <app-move
-        v-if="(getStepTools().includes('move'))"
-        :active="(activeTool === 'move')"
-        @click.native="activeTool = 'move'"
-      />
+    <app-node
+      v-if="(getStepTools().includes('node'))"
+      :active="(activeTool === 'node')"
+      @click.native="activeTool = 'node'"
+    />
 
-      <app-node
-        v-if="(getStepTools().includes('node'))"
-        :active="(activeTool === 'node')"
-        @click.native="activeTool = 'node'"
-      />
+    <v-divider/>
 
-      <v-divider/>
+    <app-circle
+      v-if="(getStepTools().includes('circle'))"
+      :active="(activeTool === 'circle')"
+      @click.native="activeTool = 'circle'"
+    />
 
-      <app-circle
-        v-if="(getStepTools().includes('circle'))"
-        :active="(activeTool === 'circle')"
-        @click.native="activeTool = 'circle'"
-      />
+    <app-rectangle
+      v-if="(getStepTools().includes('rectangle'))"
+      :active="(activeTool === 'rectangle')"
+      @click.native="activeTool = 'rectangle'"
+    />
 
-      <app-rectangle
-        v-if="(getStepTools().includes('rectangle'))"
-        :active="(activeTool === 'rectangle')"
-        @click.native="activeTool = 'rectangle'"
-      />
+    <app-path
+      v-if="(getStepTools().includes('path'))"
+      :active="(activeTool === 'path')"
+      @click.native="activeTool = 'path'"
+    />
 
-      <app-path
-        v-if="(getStepTools().includes('path'))"
-        :active="(activeTool === 'path')"
-        @click.native="activeTool = 'path'"
-      />
+    <app-pencil
+      v-if="(getStepTools().includes('pencil'))"
+      :active="(activeTool === 'pencil')"
+      @click.native="activeTool = 'pencil'"
+    />
 
-      <app-pencil
-        v-if="(getStepTools().includes('pencil'))"
-        :active="(activeTool === 'pencil')"
-        @click.native="activeTool = 'pencil'"
-      />
+    <app-paint
+      v-if="(getStepTools().includes('paint'))"
+      :active="(activeTool === 'paint')"
+      @click.native="activeTool = 'paint'"
+    />
 
-      <app-paint
-        v-if="(getStepTools().includes('paint'))"
-        :active="(activeTool === 'paint')"
-        @click.native="activeTool = 'paint'"
-      />
+    <app-grid
+      v-if="(getStepTools().includes('grid'))"
+      :active="(activeTool === 'grid')"
+      @click.native="activeTool = 'grid'"
+    />
 
-      <app-grid
-        v-if="(getStepTools().includes('grid'))"
-        :active="(activeTool === 'grid')"
-        @click.native="activeTool = 'grid'"
-      />
+    <!-- The count tool needs re-thinking, removing for now -->
+    <!-- <v-divider/>
 
-      <!-- The count tool needs re-thinking, removing for now -->
-      <!-- <v-divider/>
+    <app-count
+      v-if="(getStepTools().includes('count'))"
+      :active="(activeTool === 'count')"
+      @click.native="activeTool = 'count'"
+    /> -->
 
-      <app-count
-        v-if="(getStepTools().includes('count'))"
-        :active="(activeTool === 'count')"
-        @click.native="activeTool = 'count'"
-      /> -->
+    <v-divider/>
 
-      <v-divider/>
+    <app-delete
+      v-if="(getStepTools().includes('delete'))"
+      :active="(activeTool === 'delete')"
+      @click.native="activeTool = 'delete'"
+    />
 
-      <app-delete
-        v-if="(getStepTools().includes('delete'))"
-        :active="(activeTool === 'delete')"
-        @click.native="activeTool = 'delete'"
-      />
+    <v-divider/>
 
-      <v-divider/>
+    <app-faces
+      v-if="(getStepTools().includes('faces'))"
+      :active="(activeTool === 'faces')"
+      @click.native="activeTool = 'faces'"
+    />
 
-      <app-faces
-        v-if="(getStepTools().includes('faces'))"
-        :active="(activeTool === 'faces')"
-        @click.native="activeTool = 'faces'"
-      />
+    <app-megas
+      v-if="(getStepTools().includes('megas'))"
+      :active="(activeTool === 'megas')"
+      @click.native="activeTool = 'megas'"
+    />
 
-      <app-megas
-        v-if="(getStepTools().includes('megas'))"
-        :active="(activeTool === 'megas')"
-        @click.native="activeTool = 'megas'"
-      />
+  </v-list>
 
-    </v-list>
-
-  </div>
 </template>
 
 <script>
@@ -192,12 +188,8 @@ export default {
   }
 }
 </script>
-<style lang='css' scoped>
-#toolsPanel {
-  height: calc(100vh - 48px);
-  background: #eeeeee;
-}
 
+<style lang='css' scoped>
 #toolList {
   background: #eeeeee;
 }

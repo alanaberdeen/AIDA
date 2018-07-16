@@ -2,49 +2,23 @@
 // This component represents an instance of the AIDA editor
 // It includes the sub components that make up the interface
 <template>
-  <div>
-    <header>
-      <app-toolbar/>
-    </header>
+  <div id="container">
 
-    <v-container
-      id="content-container"
-      fluid
-    >
-      <v-layout row>
+    <div id="stepper-item">
+      <app-stepper/>
+    </div>
 
-        <v-flex
-          id="left-panel"
-          d-flex
-        >
-          <app-tools/>
-        </v-flex>
+    <div id="view-item">
+      <app-view :type="type"/>
+    </div>
 
-        <v-flex d-flex>
-          <div id="centre-container">
-            <div id="stepper">
-              <app-stepper/>
-            </div>
-
-            <div id="view-container">
-              <app-view :type="type"/>
-            </div>
-          </div>
-        </v-flex>
-
-        <v-flex
-          id="right-panel"
-          d-flex
-        >
-          <app-studio/>
-        </v-flex>
-
-      </v-layout>
-    </v-container>
   </div>
 </template>
 
 <script>
+// Vuex State Management
+import { mapActions } from 'vuex'
+
 // Import child components
 import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
@@ -66,41 +40,38 @@ export default {
       type: String,
       default: 'examples'
     }
+  },
+
+  mounted () {
+    this.toolbarOn()
+    this.toolsDrawerOn()
+    this.studioDrawerOn()
+  },
+
+  methods: {
+    ...mapActions({
+      toolbarOn: 'app/toolbarOn',
+      toolsDrawerOn: 'app/toolsDrawerOn',
+      studioDrawerOn: 'app/studioDrawerOn'
+    })
   }
 }
 </script>
 
 <style media='screen' scoped>
-#content-container {
-  padding: 0px;
-  padding-top: 48px;
-}
-
-#centre-container {
+#container {
   display: flex;
   flex-direction: column;
-  padding: 0px 5px;
-  overflow-y: auto;
+  height: 100%;
 }
 
-#stepper {
-  flex-shrink: 1;
-  padding: 5px 0px;
+#stepper-item {
+  margin: 5px;
 }
 
-#view-container {
-  flex-grow: 1;
+#view-item {
   display: flex;
-  flex-direction: column;
-  padding-bottom: 5px;
-}
-
-#left-panel {
-  flex: 0 1 auto;
-  min-width: 54px;
-}
-
-#right-panel {
-  flex: 0 1 auto;
+  flex: auto;
+  margin: 0px 5px 5px 5px;
 }
 </style>

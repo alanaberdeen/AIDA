@@ -154,7 +154,6 @@ export default {
 .panel {
   margin-top: 7px;
   background-color: #eeeeee;
-  width: 240px;
 }
 
 .toolBarTitle {
