@@ -98,7 +98,7 @@ export default {
 }
 
 #toolbar-toggle {
-  margin-left: -18px;
+  margin-left: 5px;
   margin-right: 40px;
 }
 </style>
