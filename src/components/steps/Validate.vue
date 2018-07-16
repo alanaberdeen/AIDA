@@ -10,8 +10,12 @@
 
       <v-divider></v-divider>
 
+      <div v-if="!this.begin">
+        <v-btn small color="primary" @click="beginValidation"> Begin </v-btn>
+      </div>
+
       <!-- Validation controls section -->
-      <v-container fluid id="validation-controls">
+      <v-container fluid id="validation-controls" v-else>
         <v-layout>
           <v-flex xs2>
             <!-- Back Button -->
@@ -25,7 +29,7 @@
               <!-- Number of megas -->
               <span id="mega-title">
                 Mega: {{ this.activeMegaIndex + 1  }} / {{ this.getMegas().length }}
-                <!-- Score: {{ Math.round(this.getMegas()[this.activeMegaIndex].data.score * 100) / 100 }} -->
+                Score: {{ Math.round(this.getMegas()[this.activeMegaIndex].data.score * 100) / 100 }}
               </span>
             </v-layout>
             <v-divider></v-divider>
@@ -39,10 +43,10 @@
                 Correct
               </v-btn>
               <v-btn small color="warning"
-              :outline="!(this.activeValidationButton === 'adjusted')"
-              :depressed="this.activeValidationButton === 'adjusted'"
-              @click="markAdjusted">
-                Adjust
+              :outline="!(this.activeValidationButton === 'flag')"
+              :depressed="this.activeValidationButton === 'flag'"
+              @click="flagForReview">
+                Flag for review
               </v-btn>
               <v-btn small color="error"
               :outline="!(this.activeValidationButton === 'incorrect')"
@@ -86,9 +90,11 @@ export default {
 
   data () {
     return {
+      begin: false,
       activeMegaIndex: 0,
       activeValidationButton: '',
-      paperMega: null
+      paperMega: null,
+      startVerifyTime: 0
     }
   },
 
@@ -109,29 +115,36 @@ export default {
     }),
 
     nextMega () {
+      // If at the end of the set of Megas then go to the beginning, else increment
       if (this.activeMegaIndex === (this.getMegas().length - 1)) {
         this.activeMegaIndex = 0
       } else {
         this.activeMegaIndex++
       }
       this.goToActiveMega()
+
+      // Set the mega we're looking at
       this.highlightMega(this.getMegas()[this.activeMegaIndex])
+
+      // Record the time at which the verification decision started.
+      this.startVerifyTime = Date.now()
     },
 
     previousMega () {
+      // If at the start of the set of Megas then go to the end, else decrement
       if (this.activeMegaIndex === 0) {
         this.activeMegaIndex = this.getMegas().length - 1
       } else {
         this.activeMegaIndex--
       }
       this.goToActiveMega()
+
+      // Set the mega we're looking at
       this.highlightMega(this.getMegas()[this.activeMegaIndex])
     },
 
     // Mark the currently active mega as a correct classification
     markCorrect () {
-      paper.project.deselectAll()
-
       // Set the stroke color and fill to represent a correct classificaiton.
       this.paperMega.strokeColor = '#4CAF50'
       this.paperMega.fillColor = '#4CAF50'
@@ -139,13 +152,21 @@ export default {
       // Flash and then fade the fill color
       this.flashAndFade(this.paperMega)
 
-      // Store indicator that the mega has been validated
-      this.paperMega.data['data'] = {validation: 'correct'}
-      this.activeValidationButton = 'correct'
+      // Add to the validation data this validation event.
+      this.paperMega.data['data'].validations.push(
+        {
+          decision: 'correct',
+          time: Date.now(),
+          timeTaken: Date.now() - this.startVerifyTime
+        }
+      )
+
+      // Go to the next prediction
+      this.nextMega()
     },
 
     // Initiate mega adjustment
-    markAdjusted () {
+    flagForReview () {
       // Set the stroke color and fill to represent a correct classificaiton.
       this.paperMega.strokeColor = '#FFC107'
       this.paperMega.fillColor = '#FFC107'
@@ -153,22 +174,21 @@ export default {
       // Flash and then fade the fill color
       this.flashAndFade(this.paperMega)
 
-      // Store indicator that the mega has been validated
-      this.paperMega.data['data'] = {validation: 'adjusted'}
-      this.activeValidationButton = 'adjusted'
+      // Add to the validation data this validation event.
+      this.paperMega.data['data'].validations.push(
+        {
+          decision: 'flag',
+          time: Date.now(),
+          timeTaken: Date.now() - this.startVerifyTime
+        }
+      )
 
-      // Select only this item
-      paper.project.deselectAll()
-      this.paperMega.selected = true
-
-      // Select move tool
-      document.getElementById('move').click()
+      // Go to the next prediction
+      this.nextMega()
     },
 
     // Mark the currently active mega as incorrect, a miss-classificaiton
     markIncorrect () {
-      paper.project.deselectAll()
-
       // Set the stroke color and fill to represent a correct classificaiton.
       this.paperMega.strokeColor = '#FF5252'
       this.paperMega.fillColor = '#FF5252'
@@ -176,9 +196,17 @@ export default {
       // Flash and then fade the fill color
       this.flashAndFade(this.paperMega)
 
-      // Store indicator that the mega has been validated
-      this.paperMega.data['data'] = {validation: 'incorrect'}
-      this.activeValidationButton = 'incorrect'
+      // Add to the validation data this validation event.
+      this.paperMega.data['data'].validations.push(
+        {
+          decision: 'incorrect',
+          time: Date.now(),
+          timeTaken: Date.now() - this.startVerifyTime
+        }
+      )
+
+      // Go to the next prediction
+      this.nextMega()
     },
 
     // Pan and zoom the viewer to the active mega
@@ -208,14 +236,6 @@ export default {
         ),
         class: 'Path'
       })
-
-      // Check if the mega has already been validated
-      if (this.paperMega.data.data && this.paperMega.data.data.validation) {
-        // Set the correct validation button to appear active
-        this.activeValidationButton = this.paperMega.data.data.validation
-      } else {
-        this.activeValidationButton = ''
-      }
     },
 
     // Attach event listeners for the keyboard shortcuts
@@ -231,22 +251,10 @@ export default {
           if (!e.getModifierState('Meta')) { this.markCorrect() }
           break
         case 50:
-          if (!e.getModifierState('Meta')) { this.markAdjusted() }
+          if (!e.getModifierState('Meta')) { this.flagForReview() }
           break
         case 51:
           if (!e.getModifierState('Meta')) { this.markIncorrect() }
-      }
-    },
-
-    // Attach event listeners for the keyboard shortcuts
-    // If it's classified as correct or incorrect then switch to the next mega
-    keyUp (e) {
-      switch (e.keyCode) {
-        case 49:
-          this.nextMega()
-          break
-        case 51:
-          this.nextMega()
       }
     },
 
@@ -261,6 +269,15 @@ export default {
       window.setTimeout(() => {
         window.clearInterval(fade)
       }, 800)
+    },
+
+    // Begin validating the predictions
+    beginValidation () {
+      // Hack to start beginning of list of megas
+      this.activeMegaIndex = this.getMegas().length - 1
+      this.nextMega()
+
+      this.begin = true
     }
   }
 
