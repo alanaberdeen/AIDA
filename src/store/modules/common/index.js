@@ -32,7 +32,7 @@ const actions = {
     commit
   }, payload) => {
     // Construct endpoint from which to pull the data from and save to state
-    let endpoint = 'https://aida-testing.firebaseio.com/' + payload + '.json '
+    let endpoint = 'https://aida-private.firebaseio.com/' + payload + '.json '
     commit('setProjectEndpoint', endpoint)
 
     // Pull latest test project from REST api
@@ -77,8 +77,13 @@ const actions = {
     dispatch('annotation/refreshAnnotationState', '', {
       root: true
     }).then(() => {
+      // Declare saving endpoint
+      let endpoint = state.projectEndpoint
+
+      console.log(rootState.annotation.project)
+
       axios
-        .put(state.projectEndpoint, {
+        .put(endpoint, {
           editor: rootState.editor,
           annotation: rootState.annotation.project,
           images: rootState.image.images
