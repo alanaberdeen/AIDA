@@ -99,6 +99,6 @@ export default {
 
 #toolbar-toggle {
   margin-left: 5px;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 </style>

@@ -1,69 +1,83 @@
-// Component provides an interface for cycling through the megakaryocytes
-// predictions in the interface and provide validated feedback
+// Component provides an interface for cycling through the megakaryocyte
+// predictions in the interface and storing validated user feedback.
 <template>
 
   <div
     id="hint-card"
     class="elevation-1">
     <div id="hint">
+
+      <!-- Step instruction -->
       {{ steps[activeStep].instruction }}
 
       <v-divider></v-divider>
 
+      <!-- If we have not started validation then show a begin button -->
+      <div v-if="!this.begunValidation">
+        <v-btn small color="primary" @click="beginValidation"> Begin </v-btn>
+      </div>
+
       <!-- Validation controls section -->
-      <v-container fluid id="validation-controls">
+      <v-container fluid id="validation-controls" v-else>
         <v-layout>
           <v-flex xs2>
-            <!-- Back Button -->
-            <v-btn flat icon color="primary" @click="previousMega">
+
+            <!-- Navigate to previous Mega -->
+            <v-btn flat icon color="primary" @click="navigateToPreviousMega">
               <v-icon> arrow_back </v-icon>
             </v-btn>
           </v-flex>
 
           <v-flex xs8>
             <v-layout align-center justify-center>
+
               <!-- Number of megas -->
               <span id="mega-title">
                 Mega: {{ this.activeMegaIndex + 1  }} / {{ this.getMegas().length }}
                 <!-- Score: {{ Math.round(this.getMegas()[this.activeMegaIndex].data.score * 100) / 100 }} -->
               </span>
             </v-layout>
+
             <v-divider></v-divider>
+
             <v-layout align-center justify-center>
-              <!-- Number of megas -->
+
+              <!-- Validate as a successful prediciton -->
               <v-btn small color="success"
               :outline="!(this.activeValidationButton === 'correct')"
               :depressed="this.activeValidationButton === 'correct'"
-              @click="markCorrect"
+              @click="validatePredictionAsCorrect"
               >
                 Correct
               </v-btn>
+
+              <!-- Validate as a prediction that is in need of reviewing -->
               <v-btn small color="warning"
-              :outline="!(this.activeValidationButton === 'adjusted')"
-              :depressed="this.activeValidationButton === 'adjusted'"
-              @click="markAdjusted">
-                Adjust
+              :outline="!(this.activeValidationButton === 'flag')"
+              :depressed="this.activeValidationButton === 'flag'"
+              @click="flagPredictionForReview">
+                Flag for review
               </v-btn>
+
+              <!-- Validate as an incorrect prediction -->
               <v-btn small color="error"
               :outline="!(this.activeValidationButton === 'incorrect')"
               :depressed="this.activeValidationButton === 'incorrect'"
-              @click="markIncorrect">
+              @click="validatePredictionAsIncorrect">
                 Incorrect
               </v-btn>
             </v-layout>
           </v-flex>
 
           <v-flex xs2 text-xs-right>
-            <!-- Forward Button -->
-            <v-btn flat icon color="primary" @click="nextMega">
+
+            <!-- Navigate to the next Mega -->
+            <v-btn flat icon color="primary" @click="navigateToNextMega">
               <v-icon> arrow_forward </v-icon>
             </v-btn>
           </v-flex>
         </v-layout>
       </v-container>
-      <div>
-
-      </div>
     </div>
   </div>
 
@@ -86,9 +100,11 @@ export default {
 
   data () {
     return {
+      begunValidation: false,
       activeMegaIndex: 0,
       activeValidationButton: '',
-      paperMega: null
+      paperMega: null,
+      timeBeganValidatingAtInMs: 0
     }
   },
 
@@ -108,30 +124,40 @@ export default {
       getMegas: 'annotation/getMegas'
     }),
 
-    nextMega () {
+    // Pan and zoom the view to the next predicted megakaryocyte
+    navigateToNextMega () {
+      // If at the end of the set of Megas then go to the beginning, else increment
       if (this.activeMegaIndex === (this.getMegas().length - 1)) {
         this.activeMegaIndex = 0
       } else {
         this.activeMegaIndex++
       }
       this.goToActiveMega()
+
+      // Set the mega we're looking at
       this.highlightMega(this.getMegas()[this.activeMegaIndex])
+
+      // Record the time at which the verification decision started.
+      this.timeBeganValidatingAtInMs = Date.now()
     },
 
-    previousMega () {
+    // Pan and zoom the view to the previous predicted megakaryocyte
+    navigateToPreviousMega () {
+      // If at the start of the set of Megas then go to the end, else decrement
       if (this.activeMegaIndex === 0) {
         this.activeMegaIndex = this.getMegas().length - 1
       } else {
         this.activeMegaIndex--
       }
       this.goToActiveMega()
+
+      // Set the mega we're looking at
       this.highlightMega(this.getMegas()[this.activeMegaIndex])
     },
 
-    // Mark the currently active mega as a correct classification
-    markCorrect () {
-      paper.project.deselectAll()
-
+    // Mark the predicted megakaryocyte that we are currently considering as a
+    // correctly classified.
+    validatePredictionAsCorrect () {
       // Set the stroke color and fill to represent a correct classificaiton.
       this.paperMega.strokeColor = '#4CAF50'
       this.paperMega.fillColor = '#4CAF50'
@@ -139,13 +165,21 @@ export default {
       // Flash and then fade the fill color
       this.flashAndFade(this.paperMega)
 
-      // Store indicator that the mega has been validated
-      this.paperMega.data['data'] = {validation: 'correct'}
-      this.activeValidationButton = 'correct'
+      // Add to the validation data this validation event.
+      this.paperMega.data['data'].validations.push(
+        {
+          decision: 'correct',
+          time: Date.now(),
+          timeTaken: Date.now() - this.timeBeganValidatingAtInMs
+        }
+      )
+
+      // Go to the next prediction
+      this.navigateToNextMega()
     },
 
     // Initiate mega adjustment
-    markAdjusted () {
+    flagPredictionForReview () {
       // Set the stroke color and fill to represent a correct classificaiton.
       this.paperMega.strokeColor = '#FFC107'
       this.paperMega.fillColor = '#FFC107'
@@ -153,22 +187,22 @@ export default {
       // Flash and then fade the fill color
       this.flashAndFade(this.paperMega)
 
-      // Store indicator that the mega has been validated
-      this.paperMega.data['data'] = {validation: 'adjusted'}
-      this.activeValidationButton = 'adjusted'
+      // Add to the validation data this validation event.
+      this.paperMega.data['data'].validations.push(
+        {
+          decision: 'flag',
+          time: Date.now(),
+          timeTaken: Date.now() - this.timeBeganValidatingAtInMs
+        }
+      )
 
-      // Select only this item
-      paper.project.deselectAll()
-      this.paperMega.selected = true
-
-      // Select move tool
-      document.getElementById('move').click()
+      // Go to the next prediction
+      this.navigateToNextMega()
     },
 
-    // Mark the currently active mega as incorrect, a miss-classificaiton
-    markIncorrect () {
-      paper.project.deselectAll()
-
+    // Mark the predicted megakaryocyte that we are currently considering as a
+    // incorrectly classified.
+    validatePredictionAsIncorrect () {
       // Set the stroke color and fill to represent a correct classificaiton.
       this.paperMega.strokeColor = '#FF5252'
       this.paperMega.fillColor = '#FF5252'
@@ -176,16 +210,21 @@ export default {
       // Flash and then fade the fill color
       this.flashAndFade(this.paperMega)
 
-      // Store indicator that the mega has been validated
-      this.paperMega.data['data'] = {validation: 'incorrect'}
-      this.activeValidationButton = 'incorrect'
+      // Add to the validation data this validation event.
+      this.paperMega.data['data'].validations.push(
+        {
+          decision: 'incorrect',
+          time: Date.now(),
+          timeTaken: Date.now() - this.timeBeganValidatingAtInMs
+        }
+      )
+
+      // Go to the next prediction
+      this.navigateToNextMega()
     },
 
     // Pan and zoom the viewer to the active mega
     goToActiveMega () {
-      // Make sure everything is deselected
-      paper.project.deselectAll()
-
       let mega = this.getMegas()[this.activeMegaIndex]
       this.viewport.fitBoundsWithConstraints(
         this.viewport.imageToViewportRectangle(
@@ -208,45 +247,25 @@ export default {
         ),
         class: 'Path'
       })
-
-      // Check if the mega has already been validated
-      if (this.paperMega.data.data && this.paperMega.data.data.validation) {
-        // Set the correct validation button to appear active
-        this.activeValidationButton = this.paperMega.data.data.validation
-      } else {
-        this.activeValidationButton = ''
-      }
     },
 
     // Attach event listeners for the keyboard shortcuts
     keyDown (e) {
       switch (e.keyCode) {
         case 39:
-          this.nextMega()
+          this.navigateToNextMega()
           break
         case 37:
-          this.previousMega()
+          this.navigateToPreviousMega()
           break
         case 49:
-          if (!e.getModifierState('Meta')) { this.markCorrect() }
+          if (!e.getModifierState('Meta')) { this.validatePredictionAsCorrect() }
           break
         case 50:
-          if (!e.getModifierState('Meta')) { this.markAdjusted() }
+          if (!e.getModifierState('Meta')) { this.flagPredictionForReview() }
           break
         case 51:
-          if (!e.getModifierState('Meta')) { this.markIncorrect() }
-      }
-    },
-
-    // Attach event listeners for the keyboard shortcuts
-    // If it's classified as correct or incorrect then switch to the next mega
-    keyUp (e) {
-      switch (e.keyCode) {
-        case 49:
-          this.nextMega()
-          break
-        case 51:
-          this.nextMega()
+          if (!e.getModifierState('Meta')) { this.validatePredictionAsIncorrect() }
       }
     },
 
@@ -261,6 +280,15 @@ export default {
       window.setTimeout(() => {
         window.clearInterval(fade)
       }, 800)
+    },
+
+    // Begin validating the predictions
+    beginValidation () {
+      // Hack to start beginning of list of megas
+      this.activeMegaIndex = this.getMegas().length - 1
+      this.navigateToNextMega()
+
+      this.begunValidation = true
     }
   }
 

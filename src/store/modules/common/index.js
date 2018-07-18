@@ -32,7 +32,7 @@ const actions = {
     commit
   }, payload) => {
     // Construct endpoint from which to pull the data from and save to state
-    let endpoint = 'https://aida-testing.firebaseio.com/' + payload + '.json '
+    let endpoint = 'https://aida-private.firebaseio.com/' + payload + '.json '
     commit('setProjectEndpoint', endpoint)
 
     // Pull latest test project from REST api

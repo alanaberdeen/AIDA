@@ -149,6 +149,7 @@ export default {
           // Update the editor.js state
           .then((response) => {
             let megas = response.data
+            console.log(megas)
             megas.map(this.drawMega)
             this.trackingRect.remove()
           }).then(
@@ -159,8 +160,8 @@ export default {
     }
 
     this.toolMega = new paper.Tool()
-    this.toolMega.onMouseDrag = toolDrag
-    this.toolMega.onMouseUp = toolUp
+    // this.toolMega.onMouseDrag = toolDrag
+    // this.toolMega.onMouseUp = toolUp
   },
 
   methods: {
@@ -181,6 +182,19 @@ export default {
 
       // Set the default strokewidth relative to image size and zoom.
       this.strokeWidth = this.imageWidth / (this.viewportZoom * 300)
+
+      // Read results and display results
+      axios
+        .get('https://aida-private.firebaseio.com/megas.json ')
+      // Update the editor.js state
+        .then((response) => {
+          let megas = response.data
+          console.log(megas)
+          megas.map(this.drawMega)
+        }).then(
+          // Now run through the validation workflow
+
+        )
     },
 
     // Returns true if rectangle overlaps the image in viewport coordinates
@@ -227,7 +241,8 @@ export default {
           type: 'rectangle',
           class: mega.class,
           data: {
-            score: mega.score
+            score: mega.score,
+            validations: []
           }
         }
       })
