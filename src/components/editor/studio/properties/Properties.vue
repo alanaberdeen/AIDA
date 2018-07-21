@@ -1,6 +1,3 @@
-// Properties.vue
-// Component displays, and allows the user to edit,  the properties of the
-// currently selected items.
 <template lang="html">
   <div class="elevation-1">
     <v-card class="panel">
@@ -109,8 +106,7 @@ export default {
 
     /**
      * Returns the fill color of the selected item(s) only if all items in the
-     * selection are the same color. Otherwise, return transparent
-     * @function selectedFillColor
+     * selection are the same color. Otherwise, return transparent.
      */
     selectedFillColor () {
       if (this.selectedItems.length > 0 && this.selectedItems.every(
@@ -147,8 +143,7 @@ export default {
 
     /**
      * Returns the stroke color of the selected item(s) only if all items in the
-     * selection are the same color. Otherwise, return transparent
-     * @function selectedStrokeColor
+     * selection are the same color. Otherwise, return transparent.
      */
     selectedStrokeColor () {
       if (this.selectedItems.length > 0 && this.selectedItems.every(
