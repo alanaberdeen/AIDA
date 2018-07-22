@@ -1,6 +1,3 @@
-// Layers.vue
-// Component displays and controls the annotation layers in the current Aida
-// instance.
 <template lang="html">
   <div class="elevation-1">
     <v-card class="panel">
@@ -145,7 +142,6 @@ export default {
 
   methods: {
 
-    // Map actions from annotation module
     ...mapActions('annotation', [
       'setLayerOpacity',
       'newLayer',
@@ -156,7 +152,6 @@ export default {
       'deleteLayer'
     ]),
 
-    // Map actions from editor module
     ...mapActions('editor', [
       'setActiveStep'
     ]),

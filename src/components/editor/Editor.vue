@@ -1,6 +1,3 @@
-// Editor.vue
-// This component represents an instance of the AIDA editor
-// It includes the sub components that make up the interface
 <template>
   <div id="container">
 
@@ -16,10 +13,8 @@
 </template>
 
 <script>
-// Vuex State Management
 import { mapActions } from 'vuex'
 
-// Import child components
 import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
 import Stepper from '../steps/Stepper.vue'
