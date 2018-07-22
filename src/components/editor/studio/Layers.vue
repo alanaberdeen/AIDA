@@ -110,7 +110,7 @@
                       dark
                       flat
                       outline
-                      @click="deleteLayer">
+                      @click="deleteActiveLayer().then(() => {setActiveLayer(0)})">
                       Delete
                     </v-btn>
                   </div>
@@ -149,7 +149,7 @@ export default {
       'setActiveLayer',
       'setLayerOpacity',
       'setLayerName',
-      'deleteLayer'
+      'deleteActiveLayer'
     ]),
 
     ...mapActions('editor', [
