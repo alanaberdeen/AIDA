@@ -14,12 +14,11 @@ export default {
     }
   },
 
-  // Get megas in the annotation data
   getMegas: (state) => {
     let megaLayer = state.project.layers.filter(layer => layer.name === 'Megas')
 
     if (megaLayer.length > 0) {
-      return megaLayer[0].items.filter(item => item.class === 'megakaryocyte')
+      return megaLayer[0].items
     } else {
       return -1
     }

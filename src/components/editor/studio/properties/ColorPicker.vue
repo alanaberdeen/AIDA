@@ -1,10 +1,8 @@
-// ColorPicker.vue
-// Component triggers a color picker dialog.
-// The color change will be applied to all the currently selected items
 <template lang="html">
   <v-dialog
     v-model="dialog"
-    width="225px">
+    width="225px"
+  >
 
     <a slot="activator">
       <div
@@ -71,34 +69,42 @@ export default {
   },
 
   watch: {
-    // Whenever dialog toggled, change the colour of the selected items
-    dialog (pickerToggle) {
-      if (pickerToggle) {
+    dialog (colorPickerOpen) {
+      if (colorPickerOpen) {
         this.colorPick = {hsl: this.color.obj}
-      // on closing the dialog
-      } else if (!pickerToggle) {
-        // If there are items selected in the current project
+      } else if (!colorPickerOpen) {
         if (this.selectedItems.length > 0) {
-          // Change the color of the selected items.
-          this.selectedItems.map(item => {
-            if (this.type === 'fill') {
-              item.fillColor = new paper.Color({
-                hue: this.colorPick.hsl.h,
-                saturation: this.colorPick.hsl.s,
-                lightness: this.colorPick.hsl.l,
-                alpha: this.colorPick.hsl.a
-              })
-            } else if (this.type === 'stroke') {
-              item.strokeColor = new paper.Color({
-                hue: this.colorPick.hsl.h,
-                saturation: this.colorPick.hsl.s,
-                lightness: this.colorPick.hsl.l,
-                alpha: this.colorPick.hsl.a
-              })
-            }
-          })
+          if (this.type === 'fill') {
+            this.changeItemsFillColor(this.selectedItems)
+          } else if (this.type === 'stroke') {
+            this.changeItemsStrokeColor(this.selectedItems)
+          }
         }
       }
+    }
+  },
+
+  methods: {
+    changeItemsFillColor (items) {
+      items.map(item => {
+        item.fillColor = new paper.Color({
+          hue: this.colorPick.hsl.h,
+          saturation: this.colorPick.hsl.s,
+          lightness: this.colorPick.hsl.l,
+          alpha: this.colorPick.hsl.a
+        })
+      })
+    },
+
+    changeItemsStrokeColor (items) {
+      items.map(item => {
+        item.strokeColor = new paper.Color({
+          hue: this.colorPick.hsl.h,
+          saturation: this.colorPick.hsl.s,
+          lightness: this.colorPick.hsl.l,
+          alpha: this.colorPick.hsl.a
+        })
+      })
     }
   }
 }

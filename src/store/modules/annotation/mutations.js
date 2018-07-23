@@ -5,13 +5,11 @@ import helpers from './helpers.js'
 
 export default {
   resetAnnotationState: state => {
-    // Vuex state
     Vue.set(state, 'project', {
       name: 'An AIDA project',
       layers: []
     })
 
-    // Remove paperJS project instance
     paper.project.remove()
   },
 
@@ -194,7 +192,6 @@ export default {
     })
   },
 
-  // Set specified layer to be active
   setActiveLayer: (state, index) => {
     paper.project.layers[index].activate()
   },
@@ -217,7 +214,6 @@ export default {
       newOpacity = 0
     }
 
-    // Set opacity
     paper.project.activeLayer.opacity = newOpacity
 
     // Save changed opacity to the Vuex state.
@@ -252,12 +248,8 @@ export default {
     )
   },
 
-  // Remove active layer
-  deleteLayer: (state, payload) => {
-    // Remove from Vuex state
+  deleteActiveLayer: (state) => {
     state.project.layers.splice(paper.project.activeLayer.index, 1)
-
-    // Remove from paperJS project
     paper.project.activeLayer.remove()
   },
 

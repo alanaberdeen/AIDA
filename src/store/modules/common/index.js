@@ -1,9 +1,6 @@
-// This file handles the Vuex state changes that are either common, or involve
-// using more than one of the different parts: annotation, editor and image.
+// Manage the vuex state for actions that are common to multiple modules.
 import axios from 'axios'
 import paper from 'paper'
-
-// Import helper functions
 import readOldSchema from './readOldSchema'
 
 const state = {
@@ -11,8 +8,7 @@ const state = {
 }
 
 const actions = {
-  // Reset Vuex state to default
-  resetState: ({
+  resetStateToDefault: ({
     dispatch
   }) => {
     dispatch('editor/resetEditorState', '', {
@@ -26,7 +22,6 @@ const actions = {
     })
   },
 
-  // Load a project into AIDA.
   loadProject: ({
     dispatch,
     commit
@@ -35,7 +30,6 @@ const actions = {
     let endpoint = 'https://aida-private.firebaseio.com/' + payload + '.json '
     commit('setProjectEndpoint', endpoint)
 
-    // Pull latest test project from REST api
     axios
       .get(endpoint)
       // Update the editor.js state
@@ -68,7 +62,6 @@ const actions = {
       })
   },
 
-  // Save AIDA project to REST API
   saveProject: ({
     state,
     rootState,
@@ -77,7 +70,6 @@ const actions = {
     dispatch('annotation/refreshAnnotationState', '', {
       root: true
     }).then(() => {
-      // Declare saving endpoint
       let endpoint = state.projectEndpoint
 
       axios
@@ -91,25 +83,19 @@ const actions = {
     })
   },
 
-  // Install event hooks to keep the annotations and the OSDcanvas in sync when
-  // panning or zooming.
   synchroniseAnnotationAndOSDCanvas: ({
-    state,
     commit,
     rootState
   }) => {
     commit('synchroniseAnnotationAndOSDCanvas', rootState.image.OSDviewer)
   },
 
-  // Dispatch mutations to set both the active step and the active layer,
-  // ensuring that they are in sync.
   setActiveStepAndLayer: ({
     dispatch
   }, index) => {
     dispatch('setActiveLayer', index)
     dispatch('setActiveStep', index)
   }
-
 }
 
 const mutations = {
@@ -121,30 +107,22 @@ const mutations = {
   // the individual parts led to a far less smooth experience. Leave it here
   // for now at least.
   synchroniseAnnotationAndOSDCanvas: (state, viewer) => {
-    // Add functionality that is triggered by the 'update-viewport' event
     viewer.addHandler('update-viewport', function () {
-      // Match changes in zoom level
       let viewportZoom = viewer.viewport.getZoom(true)
       let image1 = viewer.world.getItemAt(0)
       paper.view.zoom = image1.viewportToImageZoom(viewportZoom)
 
-      // Ensure the same center point
       let center = image1.viewportToImageCoordinates(
         viewer.viewport.getCenter(true)
       )
       paper.view.center = new paper.Point(center.x, center.y)
 
       // Update paths to have strokeWidth reactive to zoom level.
-      // This might be computationally-expensive but will try for now.
       // TODO: consider the computational expensive of this and find a more
-      // effectively method of handling it. Additionally, the hard coded 500
+      // effectively method of handling it. Additionally, the hard coded 300
       // is clearly a temporary fix here.
-      paper.project.layers.forEach(layer => {
-        layer.children.forEach(child => {
-          if (child.className === 'Path') {
-            child.strokeWidth = image1.getContentSize().x / (viewportZoom * 300)
-          }
-        })
+      paper.project.getItems({class: paper.Path}).map(path => {
+        path.strokeWidth = image1.getContentSize().x / (viewportZoom * 300)
       })
     })
   },
@@ -154,8 +132,6 @@ const mutations = {
   }
 }
 
-// Export all of the relevant logic so that it can be combined with the
-// respective parts in the other modules and complete the store.
 export default {
   namespaced: true,
   state,

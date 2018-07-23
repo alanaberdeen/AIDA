@@ -51,14 +51,14 @@ export default {
   // When the view element is removed from the app (ie. the user navigates away)
   // apply all the cleaning functionality and reset the state.
   destroyed () {
-    this.resetState()
+    this.resetStateToDefault()
   },
 
   methods: {
     ...mapActions({
       synchroniseAnnotationAndOSDCanvas: 'common/synchroniseAnnotationAndOSDCanvas',
       loadProject: 'common/loadProject',
-      resetState: 'common/resetState'
+      resetStateToDefault: 'common/resetStateToDefault'
     })
   }
 }

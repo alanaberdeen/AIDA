@@ -1,6 +1,3 @@
-// Toolbar.vue
-// This component defines the main toolbar for the AIDA application
-// It contains the sub-components for different functionality
 <template lang="html">
   <v-toolbar
     fixed
@@ -12,12 +9,10 @@
     class="primary pointers-please"
     >
 
-    <!-- Toggle Tools Drawer -->
     <div id="toolbar-toggle">
-      <v-toolbar-side-icon @click="toggleToolsDrawer()"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click="toggleToolsDrawer()"/>
     </div>
 
-    <!-- Home -->
     <router-link to="/">
       <v-toolbar-title class="white--text">
         AIDA
@@ -26,49 +21,44 @@
 
     <v-spacer/>
 
-    <!-- Export -->
     <app-export/>
 
-    <!-- Save -->
     <app-save/>
 
-    <!-- Settings -->
     <app-settings />
 
-    <!-- Dashboard -->
+    <!-- Link to Dashboard -->
     <v-btn
       icon
       href="https://imageannotation.nds.ox.ac.uk:8443/AIDA/">
-      <v-icon> apps </v-icon>
+      <v-icon>
+        apps
+      </v-icon>
     </v-btn>
 
-    <!-- Docs -->
+    <!-- Link to Docs -->
     <v-btn
       icon
       href="https://aida.gitbook.io/docs/" >
       <v-icon small> fa-book </v-icon>
     </v-btn>
 
-    <!-- User -->
     <!-- <v-btn
       icon
       class="pointers-no">
       <app-user/>
     </v-btn> -->
 
-    <!-- Toggle Studio Drawer -->
     <div>
-      <v-toolbar-side-icon @click="toggleStudioDrawer()"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click="toggleStudioDrawer()"/>
     </div>
 
   </v-toolbar>
 </template>
 
 <script>
-// Vuex State Management
 import { mapActions } from 'vuex'
 
-// Import child components
 import Settings from './settings/Settings.vue'
 import User from './user/User.vue'
 import Save from './save/Save.vue'

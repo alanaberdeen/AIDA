@@ -88,10 +88,10 @@ export default {
     commit('setLayerName', payload)
   },
 
-  deleteLayer: ({
+  deleteActiveLayer: ({
     commit
-  }, payload) => {
-    commit('deleteLayer', payload)
+  }) => {
+    commit('deleteActiveLayer')
   },
 
   setProjectName: ({
