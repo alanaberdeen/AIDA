@@ -62,8 +62,8 @@ export default {
   computed: {
     ...mapState({
       toolbar: state => state.app.toolbar,
-      toolsDrawer: state => state.app.toolsDrawer,
-      studioDrawer: state => state.app.studioDrawer
+      toolsDrawer: state => state.editor.toolsDrawer,
+      studioDrawer: state => state.editor.studioDrawer
     })
   }
 }

@@ -13,7 +13,9 @@ const state = {
   'activeLayer': 0,
   'activeStep': 0,
   'steps': null,
-  'settingsFlag': false
+  'settingsFlag': false,
+  'toolsDrawer': false,
+  'studioDrawer': false
 }
 
 // Export all of the relevant logic so that it can be combined with the complete

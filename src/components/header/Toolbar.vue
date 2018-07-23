@@ -50,11 +50,11 @@
     </v-btn>
 
     <!-- User -->
-    <v-btn
+    <!-- <v-btn
       icon
       class="pointers-no">
       <app-user/>
-    </v-btn>
+    </v-btn> -->
 
     <!-- Toggle Studio Drawer -->
     <div>
@@ -84,8 +84,8 @@ export default {
 
   methods: {
     ...mapActions({
-      toggleToolsDrawer: 'app/toggleToolsDrawer',
-      toggleStudioDrawer: 'app/toggleStudioDrawer'
+      toggleToolsDrawer: 'editor/toggleToolsDrawer',
+      toggleStudioDrawer: 'editor/toggleStudioDrawer'
     })
   }
 }

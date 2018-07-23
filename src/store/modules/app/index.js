@@ -6,9 +6,7 @@ import mutations from './mutations'
 import getters from './getters'
 
 const state = {
-  toolbar: false,
-  toolsDrawer: false,
-  studioDrawer: false
+  toolbar: false
 }
 
 export default {

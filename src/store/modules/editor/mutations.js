@@ -23,10 +23,37 @@ export default {
     // Using Vue.set on the parent (rootState) to ensure that we don't fall into
     // the trap of Vue reactivity caveats.
     // https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
-    Vue.set(payload.rootState, 'editor', payload.editor)
+    let newState = { ...state,
+      ...payload.editor
+    }
+    Vue.set(payload.rootState, 'editor', newState)
   },
 
   toggleSettings: (state) => {
     state.settingsFlag = !state.settingsFlag
+  },
+
+  toggleToolsDrawer: state => {
+    state.toolsDrawer = !state.toolsDrawer
+  },
+
+  toolsDrawerOff: state => {
+    state.toolsDrawer = false
+  },
+
+  toolsDrawerOn: state => {
+    state.toolsDrawer = true
+  },
+
+  toggleStudioDrawer: state => {
+    state.studioDrawer = !state.studioDrawer
+  },
+
+  studioDrawerOff: state => {
+    state.studioDrawer = false
+  },
+
+  studioDrawerOn: state => {
+    state.studioDrawer = true
   }
 }

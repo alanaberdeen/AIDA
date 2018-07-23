@@ -206,8 +206,8 @@ export default {
   methods: {
     ...mapActions({
       toolbarOff: 'app/toolbarOff',
-      toolsDrawerOff: 'app/toolsDrawerOff',
-      studioDrawerOff: 'app/studioDrawerOff'
+      toolsDrawerOff: 'editor/toolsDrawerOff',
+      studioDrawerOff: 'editor/studioDrawerOff'
     })
   }
 }

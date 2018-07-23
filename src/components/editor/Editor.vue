@@ -48,11 +48,18 @@ export default {
     this.studioDrawerOn()
   },
 
+  destroyed () {
+    this.toolsDrawerOff()
+    this.studioDrawerOff()
+  },
+
   methods: {
     ...mapActions({
       toolbarOn: 'app/toolbarOn',
-      toolsDrawerOn: 'app/toolsDrawerOn',
-      studioDrawerOn: 'app/studioDrawerOn'
+      toolsDrawerOn: 'editor/toolsDrawerOn',
+      studioDrawerOn: 'editor/studioDrawerOn',
+      toolsDrawerOff: 'editor/toolsDrawerOff',
+      studioDrawerOff: 'editor/studioDrawerOff'
     })
   }
 }
