@@ -27,7 +27,7 @@ const actions = {
     commit
   }, payload) => {
     // Construct endpoint from which to pull the data from and save to state
-    let endpoint = 'https://aida-private.firebaseio.com/' + payload + '.json '
+    let endpoint = 'https://aida-testing.firebaseio.com/' + payload + '.json '
     commit('setProjectEndpoint', endpoint)
 
     axios
@@ -121,7 +121,9 @@ const mutations = {
       // TODO: consider the computational expensive of this and find a more
       // effectively method of handling it. Additionally, the hard coded 300
       // is clearly a temporary fix here.
-      paper.project.getItems({class: paper.Path}).map(path => {
+      paper.project.getItems({
+        class: paper.Path
+      }).map(path => {
         path.strokeWidth = image1.getContentSize().x / (viewportZoom * 300)
       })
     })
