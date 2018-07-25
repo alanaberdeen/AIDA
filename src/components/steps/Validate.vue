@@ -142,8 +142,9 @@ export default {
           decisionTimeInMs: Date.now() - this.timeBeganValidatingAtInMs
         }
       )
-
-      this.intialiseNextMegaForValidation()
+      setTimeout(() => {
+        this.intialiseNextMegaForValidation()
+      }, 500)
     },
 
     flagPredictionForReview () {
@@ -160,7 +161,9 @@ export default {
         }
       )
 
-      this.intialiseNextMegaForValidation()
+      setTimeout(() => {
+        this.intialiseNextMegaForValidation()
+      }, 500)
     },
 
     validatePredictionAsIncorrect () {
@@ -177,7 +180,9 @@ export default {
         }
       )
 
-      this.intialiseNextMegaForValidation()
+      setTimeout(() => {
+        this.intialiseNextMegaForValidation()
+      }, 500)
     },
 
     goToMega (mega) {
@@ -189,13 +194,14 @@ export default {
             mega.to.x - mega.from.x,
             mega.to.y - mega.from.y
           )
-        )
+        ),
+        true
       )
     },
 
     findPaperMega (mega) {
       return paper.project.getItem({
-        overlapping: new paper.Rectangle(
+        inside: new paper.Rectangle(
           mega.from,
           mega.to
         ),
@@ -223,9 +229,9 @@ export default {
     },
 
     flashAndFadeFillColor (item) {
-      item.fillColor.alpha = 0.7
+      item.fillColor.alpha = 0.6
       let fade = window.setInterval(() => {
-        item.fillColor.alpha = item.fillColor.alpha - 0.1
+        item.fillColor.alpha = item.fillColor.alpha - 0.05
       }, 100)
 
       window.setTimeout(() => {
