@@ -1,24 +1,23 @@
-// Given a list of predicted Megakaryocytes, create a schema that describes an
-// AIDA instance for user validation.
-
-// Require the necessary stuff
 const fs = require('fs')
 
-/**
- * @function createMegaValidationSchema
- * @param {string} predictedMegasFile - JSON file containing of predicted megas.Formatted in the AIDA schema.
- */
-function createMegaValidationSchema (predictedMegasFile) {
-  // Get the command line arguments
+function createRoundOneSchema () {
   let args = process.argv.slice(2)
+  let directoryToMegaPredictions = './' + String(args[0])
 
-  // predictedMegas path
-  let predictedMegasPath = './' + String(args[0])
+  fs.readdir(directoryToMegaPredictions, (err, files) => {
+    files.forEach(file => {
+      createMegaValidationSchema(directoryToMegaPredictions + '/' + file)
+    })
 
-  // read the file
+    if (err) {
+      console.log('Could not read all files. Returned error: ' + err)
+    }
+  })
+}
+
+function createMegaValidationSchema (predictedMegasPath) {
   let predictedMegas = require(predictedMegasPath)
 
-  // Define the base schema
   let baseSchema = {
     annotation: {
       layers: [{
@@ -60,7 +59,7 @@ function createMegaValidationSchema (predictedMegasFile) {
     },
     images: [{
       name: '',
-      source: 'https://s3-eu-west-1.amazonaws.com/aida-example/SampleKi67.dzi',
+      source: '',
       type: 'dzi'
     }]
   }
@@ -79,7 +78,7 @@ function createMegaValidationSchema (predictedMegasFile) {
       },
       data: {
         score: mega.score,
-        validation: []
+        validations: [0]
       },
       from: {
         x: mega.x_min,
@@ -94,15 +93,15 @@ function createMegaValidationSchema (predictedMegasFile) {
   })
 
   // Add the required image data
-  baseSchema.images[0].name = String(args[0]).slice(0, -5)
+  let imageName = predictedMegasPath.split('\\').pop().split('/').pop().slice(0, -5)
+  baseSchema.images[0].name = 'Mega Prediction Validation Image'
 
-  // Write data to a file
-  fs.writeFile('test.json', JSON.stringify(baseSchema), 'utf8', () => {
-    console.log('Done')
+  let outputFileName = imageName + '_validation.json'
+  fs.writeFile(outputFileName, JSON.stringify(baseSchema, null, 2), 'utf8', () => {
+    console.log('Created: ' + outputFileName)
   })
 }
 
-// Run the function from the command line
 if (require.main === module) {
-  createMegaValidationSchema()
+  createRoundOneSchema()
 }
