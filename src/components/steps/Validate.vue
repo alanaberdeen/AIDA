@@ -78,14 +78,15 @@
 import openseadragon from 'openseadragon'
 import paper from 'paper'
 
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
     ...mapState({
       activeStep: state => state.editor.activeStep,
       steps: state => state.editor.steps,
-      viewport: state => state.image.OSDviewer.viewport
+      viewport: state => state.image.OSDviewer.viewport,
+      activeValidationIndex: state => state.editor.activeValidationIndex
     })
   },
 
@@ -111,6 +112,11 @@ export default {
   methods: {
     ...mapGetters({
       getMegas: 'annotation/getMegas'
+    }),
+
+    ...mapActions({
+      saveProject: 'common/saveProject',
+      setActiveValidationIndex: 'editor/setActiveValidationIndex'
     }),
 
     intialiseNextMegaForValidation () {
@@ -142,8 +148,11 @@ export default {
           decisionTimeInMs: Date.now() - this.timeBeganValidatingAtInMs
         }
       )
+
       setTimeout(() => {
         this.intialiseNextMegaForValidation()
+        this.setActiveValidationIndex(this.activeMegaIndex)
+        this.saveProject()
       }, 500)
     },
 
@@ -163,6 +172,8 @@ export default {
 
       setTimeout(() => {
         this.intialiseNextMegaForValidation()
+        this.setActiveValidationIndex(this.activeMegaIndex)
+        this.saveProject()
       }, 500)
     },
 
@@ -182,6 +193,8 @@ export default {
 
       setTimeout(() => {
         this.intialiseNextMegaForValidation()
+        this.setActiveValidationIndex(this.activeMegaIndex)
+        this.saveProject()
       }, 500)
     },
 
@@ -240,7 +253,11 @@ export default {
     },
 
     beginValidation () {
-      this.activeMegaIndex = this.getMegas().length - 1
+      if (this.activeValidationIndex === 0) {
+        this.activeMegaIndex = this.getMegas().length - 1
+      } else {
+        this.activeMegaIndex = this.activeValidationIndex - 1
+      }
       this.intialiseNextMegaForValidation()
       this.begunValidation = true
     }

@@ -79,6 +79,11 @@ export default {
     commit
   }) => {
     commit('studioDrawerOn')
-  }
+  },
 
+  setActiveValidationIndex: ({
+    commit
+  }, payload) => {
+    commit('setActiveValidationIndex', payload)
+  }
 }

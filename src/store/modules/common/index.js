@@ -78,7 +78,11 @@ const actions = {
           annotation: rootState.annotation.project,
           images: rootState.image.images
         }).then(function (response) {
+          console.log('Saved State.\nStatus response: ' + response.statusText)
           console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
         })
     })
   },

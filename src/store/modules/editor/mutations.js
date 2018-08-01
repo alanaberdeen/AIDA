@@ -55,5 +55,9 @@ export default {
 
   studioDrawerOn: state => {
     state.studioDrawer = true
+  },
+
+  setActiveValidationIndex: (state, payload) => {
+    state.activeValidationIndex = payload
   }
 }
