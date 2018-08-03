@@ -1,7 +1,7 @@
 <template lang="html">
   <v-btn
     icon
-    @click.native="saveProject">
+    @click.native="saveProject({notification: true})">
     <v-icon>
       save
     </v-icon>

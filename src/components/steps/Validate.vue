@@ -152,7 +152,9 @@ export default {
       setTimeout(() => {
         this.intialiseNextMegaForValidation()
         this.setActiveValidationIndex(this.activeMegaIndex)
-        this.saveProject()
+        this.saveProject({
+          notification: false
+        })
       }, 500)
     },
 
@@ -173,7 +175,9 @@ export default {
       setTimeout(() => {
         this.intialiseNextMegaForValidation()
         this.setActiveValidationIndex(this.activeMegaIndex)
-        this.saveProject()
+        this.saveProject({
+          notification: false
+        })
       }, 500)
     },
 
@@ -194,7 +198,9 @@ export default {
       setTimeout(() => {
         this.intialiseNextMegaForValidation()
         this.setActiveValidationIndex(this.activeMegaIndex)
-        this.saveProject()
+        this.saveProject({
+          notification: false
+        })
       }, 500)
     },
 

@@ -66,7 +66,7 @@ const actions = {
     state,
     rootState,
     dispatch
-  }) => {
+  }, payload) => {
     dispatch('annotation/refreshAnnotationState', '', {
       root: true
     }).then(() => {
@@ -81,25 +81,26 @@ const actions = {
           console.log('Saved State.\nStatus response: ' + response.statusText)
           console.log(response)
 
-          dispatch('app/activateSnackbar', {
-            text: 'Success: the annotations were successfully saved.',
-            color: 'success'
-          }, {
-            root: true
-          })
+          if (payload.notification) {
+            dispatch('app/activateSnackbar', {
+              text: 'Success: the annotations were successfully saved.',
+              color: 'success'
+            }, {
+              root: true
+            })
+          }
         })
         .catch(function (error) {
-          console.log(`Could not load all data from external source. Returned the following error: \n \n` + error)
+          console.log(`Could not save state: \nReturned following Error: \n` + error)
 
-          dispatch('app/activateSnackbar', {
-            text: 'Error: the annotations could not be saved.',
-            color: 'error'
-          }, {
-            root: true
-          })
-        })
-        .catch(function (error) {
-          console.log(error)
+          if (payload.notification) {
+            dispatch('app/activateSnackbar', {
+              text: 'Error: the annotations could not be saved.',
+              color: 'error'
+            }, {
+              root: true
+            })
+          }
         })
     })
   },
