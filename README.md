@@ -6,11 +6,15 @@ AIDA is an attempt to bring an open source web-based work-flow to image annotati
 
 AIDA is a web interface that enables distributed teams of researchers to directly annotate images with easy to use on screen drawing tools. AIDA supports the creation of well defined annotation trials which include a series of high resolution images and a specific set of annotation tasks.
 
-The trial and annotation data can be accessed programmatically via a [documented API](https://alanaberdeen.github.io/AIDA/#/docs/api).
+The trial and annotation data can be accessed programmatically via a [documented API](https://aida.gitbook.io/docs/).
+
+## See a demo
+
+Play with a live example [here](http://localhost:8080/#/example/dzi)
 
 ## How has it been implemented?
 
-The user interface is a [VueJS](https://vuejs.org/) Single Page Application, encapsulating and interacting with two other significant JavaScript libraries: [OpenSeaDragon](https://openseadragon.github.io/) to manipulate the high-res images and [PaperJS](http://paperjs.org/) to provide the drawing functionality.
+The user interface is a [VueJS](https://vuejs.org/) Single Page Application, encapsulating and interacting with two other significant JavaScript libraries: [OpenSeaDragon](https://openseadragon.github.io/) to manipulate the high-res images and [PaperJS](http://paperjs.org/) to provide the drawing functionality. [VuetifyJS](http://vuetifyjs.com/) is used as a UI component library which implements the material design language.
 
 AIDA reads and writes data in a simple JSON structure over a web API. Login and user accounts can enable specific configuration of the tool for different trials and tasks.
 
