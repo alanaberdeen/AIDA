@@ -24,6 +24,7 @@
           no-action
         >
           <v-list-tile
+            class="list-hotfix"
             slot="activator"
             no-action
             @click.native="setActiveChannel(index)"
@@ -168,6 +169,11 @@ export default {
 
 #list {
   background-color: #eeeeee;
+}
+
+.list-hotfix {
+  flex: 1 1 auto !important;
+  overflow: hidden;
 }
 
 #controls {
