@@ -79,6 +79,23 @@ const actions = {
           images: rootState.image.images
         }).then(function (response) {
           console.log(response)
+
+          dispatch('app/activateSnackbar', {
+            text: 'Success: the annotations were successfully saved.',
+            color: 'success'
+          }, {
+            root: true
+          })
+        })
+        .catch(function (error) {
+          console.log(`Could not load all data from external source. Returned the following error: \n \n` + error)
+
+          dispatch('app/activateSnackbar', {
+            text: 'Error: the annotations could not be saved.',
+            color: 'error'
+          }, {
+            root: true
+          })
         })
     })
   },
@@ -121,7 +138,9 @@ const mutations = {
       // TODO: consider the computational expensive of this and find a more
       // effectively method of handling it. Additionally, the hard coded 300
       // is clearly a temporary fix here.
-      paper.project.getItems({class: paper.Path}).map(path => {
+      paper.project.getItems({
+        class: paper.Path
+      }).map(path => {
         path.strokeWidth = image1.getContentSize().x / (viewportZoom * 300)
       })
     })

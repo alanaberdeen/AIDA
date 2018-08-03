@@ -56,5 +56,17 @@ export default {
     commit
   }) => {
     commit('studioDrawerOn')
+  },
+
+  dismissSnackbar: ({
+    commit
+  }) => {
+    commit('dismissSnackbar')
+  },
+
+  activateSnackbar: ({
+    commit
+  }, payload) => {
+    commit('activateSnackbar', payload)
   }
 }

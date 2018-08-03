@@ -1,14 +1,14 @@
 <template>
   <v-app id="inspire">
 
-    <!-- Header Tool Bar -->
     <app-toolbar
       v-if="this.toolbar"
       v-on:toggleToolsDrawer="toolsDrawer = !toolsDrawer"
       v-on:toggleStudioDrawer="studioDrawer = !studioDrawer"
     />
 
-    <!-- Tools Drawer -->
+    <app-snackbar/>
+
     <v-navigation-drawer
       id="tools-drawer"
       fixed
@@ -22,12 +22,10 @@
       <app-tools/>
     </v-navigation-drawer>
 
-    <!-- Central Content -->
     <v-content>
       <router-view/>
     </v-content>
 
-    <!-- Tools Drawer -->
     <v-navigation-drawer
       id="studio-drawer"
       fixed
@@ -44,19 +42,19 @@
 </template>
 
 <script>
-// Vuex state management
 import { mapState } from 'vuex'
 
-// Import child component
 import Toolbar from './components/header/Toolbar.vue'
 import Tools from './components/editor/tools/Tools.vue'
 import Studio from './components/editor/studio/Studio.vue'
+import Snackbar from './components/notification/Snackbar.vue'
 
 export default {
   components: {
     'app-toolbar': Toolbar,
     'app-tools': Tools,
-    'app-studio': Studio
+    'app-studio': Studio,
+    'app-snackbar': Snackbar
   },
 
   computed: {

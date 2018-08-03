@@ -1,6 +1,3 @@
-// This module handles the management of the annotation state.
-
-// Import sub files
 import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
@@ -8,7 +5,13 @@ import getters from './getters'
 const state = {
   toolbar: false,
   toolsDrawer: false,
-  studioDrawer: false
+  studioDrawer: false,
+  snackbar: {
+    active: false,
+    text: 'this is a notification',
+    color: 'info',
+    timeout: 3000
+  }
 }
 
 export default {
