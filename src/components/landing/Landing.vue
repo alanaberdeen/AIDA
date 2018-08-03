@@ -117,7 +117,7 @@
             </p>
             <p>
               The trial and annotation data can be accessed
-              programatically via a <a href="https://aida.gitbook.io/docs/api-reference">
+              programatically via a <a href="https://aida.gitbook.io/docs">
                 documented API. </a>
             </p>
           </div>
@@ -138,7 +138,8 @@
               <a href="https://openseadragon.github.io/">
               OpenSeaDragon</a> to manipulate the high-res images
               and <a href="http://paperjs.org/">PaperJS</a> to
-              provide the drawing functionality.
+              provide the drawing functionality. <a href="https://vuetifyjs.com/en/"> VuetifyJS <\a> is used as a UI component library which implements the material design language.
+
               This interface generates a JSON file that is written
               to a database via a web API. Login enables specific
               configuration of the tool for different trials
