@@ -4,8 +4,8 @@ import getters from './getters'
 
 const state = {
   toolbar: false,
-  toolsDrawer: false,
-  studioDrawer: false,
+  toolsDrawer: true,
+  studioDrawer: true,
   snackbar: {
     active: false,
     text: 'this is a notification',

@@ -39,8 +39,18 @@ export default {
 
   mounted () {
     this.toolbarOn()
-    this.toolsDrawerOn()
-    this.studioDrawerOn()
+
+    if (window.innerWidth > 800) {
+      this.toolsDrawerOn()
+    } else {
+      this.toolsDrawerOff()
+    }
+
+    if (window.innerWidth > 1000) {
+      this.studioDrawerOn()
+    } else {
+      this.studioDrawerOff()
+    }
   },
 
   destroyed () {
