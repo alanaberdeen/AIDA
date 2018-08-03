@@ -78,14 +78,15 @@
 import openseadragon from 'openseadragon'
 import paper from 'paper'
 
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
     ...mapState({
       activeStep: state => state.editor.activeStep,
       steps: state => state.editor.steps,
-      viewport: state => state.image.OSDviewer.viewport
+      viewport: state => state.image.OSDviewer.viewport,
+      activeValidationIndex: state => state.editor.activeValidationIndex
     })
   },
 
@@ -111,6 +112,11 @@ export default {
   methods: {
     ...mapGetters({
       getMegas: 'annotation/getMegas'
+    }),
+
+    ...mapActions({
+      saveProject: 'common/saveProject',
+      setActiveValidationIndex: 'editor/setActiveValidationIndex'
     }),
 
     intialiseNextMegaForValidation () {
@@ -143,7 +149,11 @@ export default {
         }
       )
 
-      this.intialiseNextMegaForValidation()
+      setTimeout(() => {
+        this.intialiseNextMegaForValidation()
+        this.setActiveValidationIndex(this.activeMegaIndex)
+        this.saveProject()
+      }, 500)
     },
 
     flagPredictionForReview () {
@@ -160,7 +170,11 @@ export default {
         }
       )
 
-      this.intialiseNextMegaForValidation()
+      setTimeout(() => {
+        this.intialiseNextMegaForValidation()
+        this.setActiveValidationIndex(this.activeMegaIndex)
+        this.saveProject()
+      }, 500)
     },
 
     validatePredictionAsIncorrect () {
@@ -177,7 +191,11 @@ export default {
         }
       )
 
-      this.intialiseNextMegaForValidation()
+      setTimeout(() => {
+        this.intialiseNextMegaForValidation()
+        this.setActiveValidationIndex(this.activeMegaIndex)
+        this.saveProject()
+      }, 500)
     },
 
     goToMega (mega) {
@@ -189,13 +207,14 @@ export default {
             mega.to.x - mega.from.x,
             mega.to.y - mega.from.y
           )
-        )
+        ),
+        true
       )
     },
 
     findPaperMega (mega) {
       return paper.project.getItem({
-        overlapping: new paper.Rectangle(
+        inside: new paper.Rectangle(
           mega.from,
           mega.to
         ),
@@ -223,9 +242,9 @@ export default {
     },
 
     flashAndFadeFillColor (item) {
-      item.fillColor.alpha = 0.7
+      item.fillColor.alpha = 0.6
       let fade = window.setInterval(() => {
-        item.fillColor.alpha = item.fillColor.alpha - 0.1
+        item.fillColor.alpha = item.fillColor.alpha - 0.05
       }, 100)
 
       window.setTimeout(() => {
@@ -234,7 +253,11 @@ export default {
     },
 
     beginValidation () {
-      this.activeMegaIndex = this.getMegas().length - 1
+      if (this.activeValidationIndex === 0) {
+        this.activeMegaIndex = this.getMegas().length - 1
+      } else {
+        this.activeMegaIndex = this.activeValidationIndex - 1
+      }
       this.intialiseNextMegaForValidation()
       this.begunValidation = true
     }

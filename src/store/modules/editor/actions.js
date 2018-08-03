@@ -37,5 +37,53 @@ export default {
     commit
   }, payload) => {
     commit('toggleSettings')
+  },
+
+  // ToggleToolsDrawer
+  toggleToolsDrawer: ({
+    commit
+  }) => {
+    commit('toggleToolsDrawer')
+  },
+
+  // TurnToolbarOff
+  toolsDrawerOff: ({
+    commit
+  }) => {
+    commit('toolsDrawerOff')
+  },
+
+  // TurnToolbarOn
+  toolsDrawerOn: ({
+    commit
+  }) => {
+    commit('toolsDrawerOn')
+  },
+
+  // ToggleToolsDrawer
+  toggleStudioDrawer: ({
+    commit
+  }) => {
+    commit('toggleStudioDrawer')
+  },
+
+  // TurnToolbarOff
+  studioDrawerOff: ({
+    commit
+  }) => {
+    commit('studioDrawerOff')
+  },
+
+  // TurnToolbarOn
+  studioDrawerOn: ({
+    commit
+  }) => {
+    commit('studioDrawerOn')
+  },
+
+  setActiveValidationIndex: ({
+    commit
+  }, payload) => {
+    commit('setActiveValidationIndex', payload)
   }
 }

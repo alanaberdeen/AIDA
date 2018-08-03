@@ -74,8 +74,8 @@ export default {
 
   methods: {
     ...mapActions({
-      toggleToolsDrawer: 'app/toggleToolsDrawer',
-      toggleStudioDrawer: 'app/toggleStudioDrawer'
+      toggleToolsDrawer: 'editor/toggleToolsDrawer',
+      toggleStudioDrawer: 'editor/toggleStudioDrawer'
     })
   }
 }
