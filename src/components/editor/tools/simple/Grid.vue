@@ -4,6 +4,7 @@
 <template lang="html">
   <v-list-tile id="tool-tile">
     <v-menu
+      id="menu"
       :close-on-content-click="false"
       :nudge-width="150"
       :nudge-right="10"
@@ -211,6 +212,10 @@ export default {
 
 <style lang='css'>
 #tooltip {
+  width: 100%;
+}
+
+#menu {
   width: 100%;
 }
 
