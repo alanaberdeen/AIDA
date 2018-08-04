@@ -86,6 +86,12 @@
       @click.native="activeTool = 'megas'"
     />
 
+    <app-filter
+      v-if="(getStepTools().includes('filter'))"
+      :active="(activeTool === 'filter')"
+      @click.native="activeTool = 'filter'"
+    />
+
   </v-list>
 
 </template>
@@ -93,7 +99,6 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 
-// Import child components
 // Simple Tools:
 import toolCircle from './simple/Circle.vue'
 import toolRectangle from './simple/Rectangle.vue'
@@ -107,9 +112,12 @@ import toolDelete from './simple/Delete.vue'
 import toolPaint from './simple/Paint.vue'
 import toolGrid from './simple/Grid.vue'
 
-// Assissted Tools:
-import toolFaces from './assisted/Faces.vue'
-import toolMegas from './assisted/Megakaryocytes'
+// Assisted Tools:
+import toolFilter from './assisted/Filter.vue'
+
+// Intelligent Tools:
+import toolFaces from './intelligent/Faces.vue'
+import toolMegas from './intelligent/Megakaryocytes'
 
 export default {
   components: {
@@ -125,7 +133,8 @@ export default {
     'app-faces': toolFaces,
     'app-megas': toolMegas,
     'app-paint': toolPaint,
-    'app-grid': toolGrid
+    'app-grid': toolGrid,
+    'app-filter': toolFilter
   },
 
   data () {
