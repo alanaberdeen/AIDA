@@ -28,7 +28,7 @@
       </v-btn>
 
       <v-card>
-        <v-list>
+        <!-- <v-list>
           <v-list-tile>
             <v-btn-toggle v-model="toggle_multiple" multiple>
               <v-btn flat color="success">
@@ -42,7 +42,65 @@
               </v-btn>
             </v-btn-toggle>
           </v-list-tile>
-        </v-list>
+        </v-list> -->
+
+        <v-container fluid grid-list-sm>
+          <v-layout row wrap>
+            <v-flex xs9 offset-xs3>
+              <v-btn-toggle v-model="toggle_multiple" multiple>
+                <v-btn flat color="success">
+                  <v-icon>check_circle</v-icon>
+                </v-btn>
+                <v-btn flat color="warning">
+                  <v-icon>flag</v-icon>
+                </v-btn>
+                <v-btn flat color="error">
+                  <v-icon>cancel</v-icon>
+                </v-btn>
+              </v-btn-toggle>
+            </v-flex>
+          </v-layout>
+
+          <v-layout align-center row>
+            <v-flex xs3>
+              Alan
+            </v-flex>
+            <v-flex xs9>
+              <v-btn-toggle v-model="toggle_multiple" multiple>
+                <v-btn id='toggle-button' depressed color="success"/>
+                <v-btn id='toggle-button' depressed color="warning"/>
+                <v-btn id='toggle-button' depressed color="error"/>
+              </v-btn-toggle>
+            </v-flex>
+          </v-layout>
+
+          <v-layout align-center justify-space-around row fill-height>
+            <v-flex xs3>
+              Gabi
+            </v-flex>
+            <v-flex xs9>
+              <v-btn-toggle v-model="toggle_multiple" multiple>
+                <v-btn id='toggle-button' depressed color="success"/>
+                <v-btn id='toggle-button' depressed color="warning"/>
+                <v-btn id='toggle-button' depressed color="error"/>
+              </v-btn-toggle>
+            </v-flex>
+          </v-layout>
+
+          <v-layout align-center justify-space-around row fill-height>
+            <v-flex xs3>
+              Gareth
+            </v-flex>
+            <v-flex xs9>
+              <v-btn-toggle v-model="toggle_multiple" multiple>
+                <v-btn id='toggle-button' depressed color="success"/>
+                <v-btn id='toggle-button' depressed color="warning"/>
+                <v-btn id='toggle-button' depressed color="error"/>
+              </v-btn-toggle>
+            </v-flex>
+          </v-layout>
+
+        </v-container>
 
       </v-card>
     </v-menu>
@@ -66,14 +124,42 @@ export default {
       menu: false,
       loading: false,
       toggle_multiple: [0, 1, 2],
-      predictions: [],
+      predictions: {
+        correct: [],
+        flagged: [],
+        incorrect: [],
+        alan: {
+          correct: [],
+          flagged: [],
+          incorrect: []
+        },
+        gabi: {
+          correct: [],
+          flagged: [],
+          incorrect: []
+        },
+        gareth: {
+          correct: [],
+          flagged: [],
+          incorrect: []
+        }
+      },
       correctPredictions: [],
       flaggedPredictions: [],
-      incorrectPredictions: []
+      incorrectPredictions: [],
+      visiblePredictions: {
+        alan: [0, 1, 2],
+        gareth: [0, 1, 2],
+        gabi: [0, 1, 2]
+      }
     }
   },
 
   watch: {
+    visiblePrediction: function (val) {
+
+    },
+
     toggle_multiple: function (val) {
       // Filter correct predictions
       if (!this.toggle_multiple.includes(0)) {
@@ -121,11 +207,29 @@ export default {
 
   methods: {
     initialiseTool () {
-      this.predictions = paper.project.getItems({
+      let allPredictions = paper.project.getItems({
         data: {
           class: 'megakaryocyte'
         }
       })
+
+      this.predictions.correct = allPredictions.filter(item =>
+        'data' in item.data &&
+          'validations' in item.data.data &&
+          item.data.data.validations[item.data.data.validations.length - 1].decision === 'correct'
+      )
+
+      this.predictions.flagged = allPredictions.filter(item =>
+        'data' in item.data &&
+          'validations' in item.data.data &&
+          item.data.data.validations[item.data.data.validations.length - 1].decision === 'flag'
+      )
+
+      this.predictions.incorrect = allPredictions.filter(item =>
+        'data' in item.data &&
+          'validations' in item.data.data &&
+          item.data.data.validations[item.data.data.validations.length - 1].decision === 'incorrect'
+      )
     }
   }
 
@@ -145,12 +249,12 @@ export default {
   min-width: 0px;
 }
 
-#tool-tile {
-  padding: 0px;
+#toggle-button {
+  width: 40px;
+  margin-right: 1px;
 }
 
-#switch {
-  padding-top: 25px;
-  padding-left: 10px;
+#tool-tile {
+  padding: 0px;
 }
 </style>
