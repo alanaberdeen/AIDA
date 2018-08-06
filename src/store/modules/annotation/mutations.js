@@ -130,24 +130,33 @@ export default {
           // Set the path colors to the default for their layer.
           if (newPaperItem.closed) {
             if (item.color && item.color.fill) {
-              newPaperItem.fillColor = new paper.Color({
-                hue: item.color.fill.hue,
-                saturation: item.color.fill.saturation,
-                lightness: item.color.fill.lightness,
-                alpha: item.color.fill.alpha
-              })
+              if (typeof item.color.fill === 'string' || item.color.fill instanceof String) {
+                newPaperItem.fillColor = item.color.fill
+                newPaperItem.fillColor.alpha = 0.2
+              } else {
+                newPaperItem.fillColor = new paper.Color({
+                  hue: item.color.fill.hue,
+                  saturation: item.color.fill.saturation,
+                  lightness: item.color.fill.lightness,
+                  alpha: item.color.fill.alpha
+                })
+              }
             } else {
               newPaperItem.fillColor = 'blue'
               newPaperItem.fillColor.alpha = 0
             }
           }
           if (item.color && item.color.stroke) {
-            newPaperItem.strokeColor = new paper.Color({
-              hue: item.color.stroke.hue,
-              saturation: item.color.stroke.saturation,
-              lightness: item.color.stroke.lightness,
-              alpha: item.color.stroke.alpha
-            })
+            if (typeof item.color.fill === 'string' || item.color.fill instanceof String) {
+              newPaperItem.strokeColor = item.color.stroke
+            } else {
+              newPaperItem.strokeColor = new paper.Color({
+                hue: item.color.stroke.hue,
+                saturation: item.color.stroke.saturation,
+                lightness: item.color.stroke.lightness,
+                alpha: item.color.stroke.alpha
+              })
+            }
           } else {
             newPaperItem.strokeColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length].stroke
           }
