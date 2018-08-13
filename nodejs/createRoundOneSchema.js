@@ -66,31 +66,40 @@ function createMegaValidationSchema (predictedMegasPath) {
 
   // Merge the predicted Megas list with the default schema
   predictedMegas.map(mega => {
-    baseSchema.annotation.layers[0].items.push({
-      class: mega.class,
-      color: {
-        stroke: {
-          alpha: 1,
-          hue: 170,
-          lightness: 0.5,
-          saturation: 0.7
-        }
-      },
-      data: {
-        score: mega.score,
-        validations: [0]
-      },
-      from: {
-        x: mega.x_min,
-        y: mega.y_min
-      },
-      to: {
-        x: mega.x_max,
-        y: mega.y_max
-      },
-      type: 'rectangle'
-    })
+    if (mega.class === 'megakaryocyte' || (mega.class === 'negative' && mega.score < 0.6)) {
+      baseSchema.annotation.layers[0].items.push({
+        class: mega.class,
+        color: {
+          stroke: {
+            alpha: 1,
+            hue: 170,
+            lightness: 0.5,
+            saturation: 0.7
+          }
+        },
+        data: {
+          score: mega.score,
+          validations: [0]
+        },
+        from: {
+          x: mega.x_min,
+          y: mega.y_min
+        },
+        to: {
+          x: mega.x_max,
+          y: mega.y_max
+        },
+        type: 'rectangle'
+      })
+    }
   })
+
+  // let lowScoreNegative = baseSchema.annotation.layers[0].items.filter(item =>
+  //   item.class === 'negative' && item.data.score > 0.6
+  // )
+  // console.log(
+  //   lowScoreNegative.length
+  // )
 
   // Add the required image data
   let imageName = predictedMegasPath.split('\\').pop().split('/').pop().slice(0, -5)
