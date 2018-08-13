@@ -25,12 +25,24 @@
 
           <v-flex xs8>
             <v-layout align-center justify-center>
+              <v-flex xs4>
+                <span id="mega-title">
+                  Mega: {{ this.activeMegaIndex + 1  }} / {{ this.getMegas().length }}
+                </span>
+              </v-flex>
 
-              <!-- Number of megas -->
-              <span id="mega-title">
-                Mega: {{ this.activeMegaIndex + 1  }} / {{ this.getMegas().length }}
-                <!-- Score: {{ Math.round(this.getMegas()[this.activeMegaIndex].data.score * 100) / 100 }} -->
-              </span>
+              <v-flex xs4>
+                <span id="mega-title">
+                  Score: {{ Math.round(this.getMegas()[this.activeMegaIndex].data.score * 100) / 100 }}
+                </span>
+              </v-flex>
+
+              <v-flex xs4>
+                <span id="mega-title">
+                  Mega: {{ this.getMegas()[this.activeMegaIndex].class }}
+                </span>
+              </v-flex>
+
             </v-layout>
 
             <v-divider></v-divider>
