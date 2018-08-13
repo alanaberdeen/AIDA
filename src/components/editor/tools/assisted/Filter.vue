@@ -44,7 +44,7 @@
           </v-list-tile>
         </v-list> -->
 
-        <v-container fluid grid-list-sm>
+        <!-- <v-container fluid grid-list-sm>
           <v-layout row wrap>
             <v-flex xs9 offset-xs3>
               <v-btn-toggle v-model="toggle_multiple" multiple>
@@ -59,9 +59,9 @@
                 </v-btn>
               </v-btn-toggle>
             </v-flex>
-          </v-layout>
+          </v-layout> -->
 
-          <v-layout align-center row>
+          <!-- <v-layout align-center row>
             <v-flex xs3>
               Alan
             </v-flex>
@@ -98,7 +98,40 @@
                 <v-btn id='toggle-button' depressed color="error"/>
               </v-btn-toggle>
             </v-flex>
+          </v-layout> -->
+
+        <!-- </v-container> -->
+
+        <v-container>
+          <v-layout>
+            <v-flex xs12>
+              <v-text-field
+                label="Create class filter group"
+                box
+                @keyup.native.enter="createFilterGroup"
+              ></v-text-field>
+            </v-flex>
           </v-layout>
+
+           <v-list>
+              <v-list-tile
+                v-for="(item, index) in listOfFilters"
+                :key="item.class"
+                avatar
+                @click=""
+              >
+
+                <v-list-tile-content>
+                  <v-list-tile-title v-html="item.class"></v-list-tile-title>
+                </v-list-tile-content>
+
+                <v-list-tile-action>
+                  <v-btn flat icon color="pink" @click="popFilter(index)">
+                    <v-icon>close</v-icon>
+                  </v-btn>
+                </v-list-tile-action>
+              </v-list-tile>
+            </v-list>
 
         </v-container>
 
@@ -151,13 +184,26 @@ export default {
         alan: [0, 1, 2],
         gareth: [0, 1, 2],
         gabi: [0, 1, 2]
-      }
+      },
+      listOfFilters: []
     }
   },
 
   watch: {
     visiblePrediction: function (val) {
 
+    },
+
+    listOfFilters: function (filters) {
+      filters.map(filter => {
+        let filterGroup = paper.project.getItems({
+          data: {
+            class: filter.class
+          }
+        })
+
+        filterGroup.map(item => item.remove())
+      })
     },
 
     toggle_multiple: function (val) {
@@ -230,6 +276,17 @@ export default {
           'validations' in item.data.data &&
           item.data.data.validations[item.data.data.validations.length - 1].decision === 'incorrect'
       )
+    },
+
+    createFilterGroup (input) {
+      this.listOfFilters.push({
+        class: input.target.value,
+        active: false
+      })
+    },
+
+    popFilter (index) {
+      this.listOfFilters.splice(index, 1)
     }
   }
 
