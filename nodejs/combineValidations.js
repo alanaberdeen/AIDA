@@ -6,6 +6,8 @@ function combineValidations () {
 
   let validations = {}
 
+  console.log(directoryToMegaPredictions)
+
   fs.readdir(directoryToMegaPredictions, validations, (err, files) => {
     files.forEach(file => {
       validations = addValidationData((directoryToMegaPredictions + '/' + file), validations)
@@ -22,7 +24,7 @@ function combineValidations () {
     validations.editor.toolsDrawer = true
     validations.editor.steps[0].tools = ['pan', 'circle', 'rectangle', 'path', 'pencil', 'move', 'node', 'count', 'delete', 'megas', 'filter']
 
-    saveOutput(validations)
+    saveOutput(validations, directoryToMegaPredictions)
   })
 }
 
@@ -161,8 +163,8 @@ function addValidationData (newValidationPath, currentValidations) {
   }
 }
 
-function saveOutput (data) {
-  let outputFileName = 'combined_validation.json'
+function saveOutput (data, directory) {
+  let outputFileName = directory + '/combined_validations.json'
   fs.writeFile(outputFileName, JSON.stringify(data, null, 2), 'utf8', () => {
     console.log('Created: ' + outputFileName)
   })
