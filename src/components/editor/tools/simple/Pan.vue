@@ -30,8 +30,6 @@
 </template>
 
 <script>
-// TODO: Add a keyboard short cut that can be held down to activate
-// pan and zoom controls.
 export default {
   props: {
     active: {
@@ -56,7 +54,10 @@ export default {
       document
         .getElementById('annotation-canvas')
         .setAttribute('class', 'pointers-no')
+
+      document.getElementById('osd-canvas').style.cursor = 'grab'
     }
+
   }
 }
 </script>
