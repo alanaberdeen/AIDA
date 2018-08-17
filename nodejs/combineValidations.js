@@ -9,6 +9,9 @@ function combineValidations () {
   console.log(directoryToMegaPredictions)
 
   fs.readdir(directoryToMegaPredictions, validations, (err, files) => {
+    // Remove hidden files
+    files = files.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item))
+
     files.forEach(file => {
       validations = addValidationData((directoryToMegaPredictions + '/' + file), validations)
     })
