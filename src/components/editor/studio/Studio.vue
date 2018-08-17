@@ -16,6 +16,9 @@
     <!-- Display and control properties of the selected items -->
     <app-properties/>
 
+    <!-- Display the validation history of the selected item -->
+    <app-validations/>
+
   </div>
 
 </template>
@@ -26,13 +29,15 @@ import navigator from './Navigator.vue'
 import layers from './Layers.vue'
 import images from './Images.vue'
 import properties from './properties/Properties.vue'
+import validations from './Validations.vue'
 
 export default {
   components: {
     'app-navigator': navigator,
     'app-layers': layers,
     'app-images': images,
-    'app-properties': properties
+    'app-properties': properties,
+    'app-validations': validations
   }
 }
 </script>
