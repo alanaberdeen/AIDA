@@ -99,7 +99,7 @@ export default {
       this.toolRect.activate()
 
       // Set the default strokewidth relative to image size and zoom.
-      this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
+      this.strokeWidth = this.imageWidth / (this.viewportZoom * 100)
     }
   }
 }
