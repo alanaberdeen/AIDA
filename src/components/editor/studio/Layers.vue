@@ -156,19 +156,23 @@ export default {
       'setActiveStep'
     ]),
 
-    selectLayer (index) {
-      // First check to see if the editor configuration syncs the active step
-      // and layer. If so, change the step to the required index.
-      // This is a quick hack. Could do with a better method.
-      for (let i in this.steps) {
-        let step = this.steps[i]
+    ...mapActions('common', [
+      'saveProject'
+    ]),
 
+    selectLayer (index) {
+      this.steps.map(step => {
         if (step.specificLayer === index) {
           this.setActiveStep(step)
-        } else {
-          this.setActiveLayer(index)
         }
-      }
+      })
+
+      this.setActiveLayer(index)
+
+      // Triger an auto-save
+      this.saveProject({
+        notification: false
+      })
     }
   }
 }

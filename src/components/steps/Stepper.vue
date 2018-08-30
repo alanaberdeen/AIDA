@@ -13,7 +13,7 @@
             :key="index"
             :step="step.id"
             editable
-            @click.native="setActiveStep(step)"
+            @click.native="activateStep(step)"
           />
           <v-divider
             v-if="step.id !== steps.length"
@@ -53,8 +53,18 @@ export default {
 
   methods: {
     ...mapActions({
-      setActiveStep: 'editor/setActiveStep'
-    })
+      setActiveStep: 'editor/setActiveStep',
+      saveProject: 'common/saveProject'
+    }),
+
+    activateStep (step) {
+      this.setActiveStep(step)
+
+      // Trigger and auto-save
+      this.saveProject({
+        notification: false
+      })
+    }
   }
 }
 </script>
