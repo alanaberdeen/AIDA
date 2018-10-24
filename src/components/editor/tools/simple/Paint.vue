@@ -43,7 +43,9 @@ export default {
       strokeWidth: 2, // Default value, will be updated relative to view
       radius: 2000,
       brush: null,
-      path: null
+      overlap: null,
+      path: null,
+      combinedPath: null
     }
   },
 
@@ -58,9 +60,8 @@ export default {
 
   created () {
     const toolMove = event => {
-      // Set the default circle path
       this.brush = new paper.Path.Circle({
-        radius: this.radius * 1.5,
+        radius: this.radius,
         position: event.point,
         strokeWidth: this.strokeWidth,
         strokeColor: new paper.Color({
@@ -72,13 +73,65 @@ export default {
       })
 
       this.brush.removeOn({
-        move: true
+        move: true,
+        drag: true
       })
+    }
+
+    const toolDrag = event => {
+
+      this.path = new paper.Path.Circle({
+          radius: this.radius,
+          position: event.point,
+          strokeWidth: this.strokeWidth,
+          strokeColor: this.getColor().stroke,
+          fillColor: this.getColor().fill
+      }).removeOn({
+        drag: true,
+        up: true,
+        move: true
+        })
+      
+      let overlap = paper.project.getItem({
+        class: 'Path',
+        match: function (item) {
+          if (item.data.class !== 'megakaryocyte') { return true}
+        },
+        overlapping: this.path.bounds
+      })
+
+      console.log(overlap)
+
+      if (overlap) {        
+        if (event.modifiers.alt) {
+          this.combinedPath = overlap.subtract(this.path)
+        } else {
+          this.combinedPath = overlap.unite(this.path)
+        }
+        overlap.remove()
+      } 
+    }
+
+    const toolUp = event => {
+      this.path.remove()
+    }
+
+    const keyDown = event => {
+      if ( event.key === 'up' ) {
+        this.radius++
+      } else if ( event.key === 'down' ) {
+        this.radius--
+      }
+      console.log(event)
     }
 
     // Add the defined functions to the tool object.
     this.toolPaint = new paper.Tool()
     this.toolPaint.onMouseMove = toolMove
+    this.toolPaint.onMouseDrag = toolDrag
+    this.toolPaint.onKeyDown = keyDown
+    //this.toolPaint.onMouseUp = toolUp
+
   },
 
   methods: {
