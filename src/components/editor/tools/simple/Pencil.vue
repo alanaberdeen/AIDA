@@ -51,7 +51,7 @@ export default {
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      stokeScale: state => state.editor.strokeScale
+      strokeScale: state => state.editor.strokeScale
     })
   },
 
@@ -78,7 +78,9 @@ export default {
         this.path.fillColor = new paper.Color(this.getColor().fill)
       } else {
         this.path.closed = false
-        this.path.fillColor.alpha = 0
+        if (this.path.fillColor) {
+          this.path.fillColor.alpha = 0
+        }   
       }
     }
 
@@ -129,12 +131,12 @@ export default {
       this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
       this.hitOptions = {
         segments: true,
-        tolerance: this.strokeWidth * 5
+        tolerance: this.strokeWidth
       }
 
       // The distance the mouse has to be dragged before an event is fired
       // is dependent on the current zoom level
-      this.toolPencil.minDistance = this.strokeWidth * 5
+      this.toolPencil.minDistance = this.strokeWidth
     },
 
     newPath () {
