@@ -46,7 +46,8 @@ export default {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
-        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
+      strokeScale: state => state.editor.strokeScale
     })
   },
 
@@ -99,7 +100,7 @@ export default {
       this.toolRect.activate()
 
       // Set the default strokewidth relative to image size and zoom.
-      this.strokeWidth = this.imageWidth / (this.viewportZoom * 100)
+      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
     }
   }
 }

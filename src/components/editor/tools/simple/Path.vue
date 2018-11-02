@@ -48,7 +48,8 @@ export default {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
-        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
+      strokeScale: state => state.editor.strokeScale
     })
   },
 
@@ -137,7 +138,7 @@ export default {
       this.toolPen.activate()
 
       // Set tool stroke width and hitOptions settings.
-      this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
+      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
       this.hitOptions = {
         segments: true,
         tolerance: this.strokeWidth * 5

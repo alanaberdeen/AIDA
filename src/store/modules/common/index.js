@@ -45,6 +45,8 @@ const actions = {
         // Load the editor configuration
         dispatch('editor/loadConfig', config.editor, {
           root: true
+        }).then(() => {
+          dispatch('synchroniseAnnotationAndOSDCanvas')
         })
 
         // Load the images into the viewer
@@ -109,7 +111,10 @@ const actions = {
     commit,
     rootState
   }) => {
-    commit('synchroniseAnnotationAndOSDCanvas', rootState.image.OSDviewer)
+    commit('synchroniseAnnotationAndOSDCanvas', {
+      viewer: rootState.image.OSDviewer,
+      strokeScale: rootState.editor.strokeScale
+    })
   },
 
   setActiveStepAndLayer: ({
@@ -128,7 +133,10 @@ const mutations = {
   // would still fire this event and update the zoom. However, separating into
   // the individual parts led to a far less smooth experience. Leave it here
   // for now at least.
-  synchroniseAnnotationAndOSDCanvas: (state, viewer) => {
+  synchroniseAnnotationAndOSDCanvas: (state, payload) => {
+    let viewer = payload.viewer
+    let strokeScale = payload.strokeScale
+
     viewer.addHandler('update-viewport', function () {
       let viewportZoom = viewer.viewport.getZoom(true)
       let image1 = viewer.world.getItemAt(0)
@@ -141,12 +149,11 @@ const mutations = {
 
       // Update paths to have strokeWidth reactive to zoom level.
       // TODO: consider the computational expensive of this and find a more
-      // effectively method of handling it. Additionally, the hard coded 300
-      // is clearly a temporary fix here.
+      // effectively method of handling it.
       paper.project.getItems({
         class: paper.Path
       }).map(path => {
-        path.strokeWidth = image1.getContentSize().x / (viewportZoom * 300)
+        path.strokeWidth = (image1.getContentSize().x * strokeScale) / (viewportZoom * 1000)
       })
     })
   },

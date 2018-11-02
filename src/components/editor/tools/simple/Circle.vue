@@ -50,7 +50,8 @@ export default {
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      activeStep: state => state.editor.activeStep
+      activeStep: state => state.editor.activeStep,
+      strokeScale: state => state.editor.strokeScale
     })
   },
 
@@ -138,7 +139,7 @@ export default {
 
       // Set the default radius relative to image size and zoom level.
       this.radius = this.imageWidth / (this.viewportZoom * 100)
-      this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
+      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
     },
 
     // Helper function - calculate distance between 2 points:

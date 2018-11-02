@@ -16,7 +16,8 @@ const state = {
   'settingsFlag': false,
   'toolsDrawer': false,
   'studioDrawer': false,
-  'activeValidationIndex': 0
+  'activeValidationIndex': 0,
+  'strokeScale': 10
 }
 
 // Export all of the relevant logic so that it can be combined with the complete

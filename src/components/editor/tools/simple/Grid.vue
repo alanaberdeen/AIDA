@@ -103,7 +103,8 @@ export default {
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
       imageHeight: state =>
-        state.image.OSDviewer.world.getItemAt(0).getContentSize().y
+        state.image.OSDviewer.world.getItemAt(0).getContentSize().y,
+      strokeScale: state => state.editor.strokeScale
     })
   },
 
@@ -121,7 +122,7 @@ export default {
       this.prepareCanvas()
 
       // Set the default strokewidth relative to image size and zoom.
-      this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
+      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
 
       // If grid has no been initialised then create it.
       if (!this.gridLayer) {
