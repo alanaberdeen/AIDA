@@ -98,7 +98,7 @@ export default {
       }
 
       // Check if selected area overlaps image
-      if (this.overlapsImage({topLeft, bottomRight})) {
+      if (this.overlapsImage({ topLeft, bottomRight })) {
         let aspectRatio = this.tileSource.aspectRatio
 
         // Extract the part of the selection rectangle overlaps with the image

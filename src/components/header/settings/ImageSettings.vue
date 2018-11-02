@@ -69,7 +69,8 @@ export default {
     }),
 
     ...mapGetters({
-      getChannels: 'images/getChannels'})
+      getChannels: 'images/getChannels'
+    })
   },
 
   methods: {

@@ -118,7 +118,6 @@
                 v-for="(item, index) in listOfFilters"
                 :key="item.class"
                 avatar
-                @click=""
               >
 
                 <v-list-tile-content>

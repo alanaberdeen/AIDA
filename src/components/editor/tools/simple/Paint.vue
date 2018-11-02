@@ -79,47 +79,42 @@ export default {
     }
 
     const toolDrag = event => {
-
       this.path = new paper.Path.Circle({
-          radius: this.radius,
-          position: event.point,
-          strokeWidth: this.strokeWidth,
-          strokeColor: this.getColor().stroke,
-          fillColor: this.getColor().fill
+        radius: this.radius,
+        position: event.point,
+        strokeWidth: this.strokeWidth,
+        strokeColor: this.getColor().stroke,
+        fillColor: this.getColor().fill
       }).removeOn({
         drag: true,
         up: true,
         move: true
-        })
-      
+      })
+
       let overlap = paper.project.getItem({
         class: 'Path',
         match: function (item) {
-          if (item.data.class !== 'megakaryocyte') { return true}
+          if (item.data.class !== 'megakaryocyte') { return true }
         },
         overlapping: this.path.bounds
       })
 
       console.log(overlap)
 
-      if (overlap) {        
+      if (overlap) {
         if (event.modifiers.alt) {
           this.combinedPath = overlap.subtract(this.path)
         } else {
           this.combinedPath = overlap.unite(this.path)
         }
         overlap.remove()
-      } 
-    }
-
-    const toolUp = event => {
-      this.path.remove()
+      }
     }
 
     const keyDown = event => {
-      if ( event.key === 'up' ) {
+      if (event.key === 'up') {
         this.radius++
-      } else if ( event.key === 'down' ) {
+      } else if (event.key === 'down') {
         this.radius--
       }
       console.log(event)
@@ -130,8 +125,7 @@ export default {
     this.toolPaint.onMouseMove = toolMove
     this.toolPaint.onMouseDrag = toolDrag
     this.toolPaint.onKeyDown = keyDown
-    //this.toolPaint.onMouseUp = toolUp
-
+    // this.toolPaint.onMouseUp = toolUp
   },
 
   methods: {

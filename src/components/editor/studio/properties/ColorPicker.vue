@@ -58,7 +58,7 @@ export default {
   data () {
     return {
       dialog: false,
-      colorPick: {hsl: this.color.obj}
+      colorPick: { hsl: this.color.obj }
     }
   },
 
@@ -71,7 +71,7 @@ export default {
   watch: {
     dialog (colorPickerOpen) {
       if (colorPickerOpen) {
-        this.colorPick = {hsl: this.color.obj}
+        this.colorPick = { hsl: this.color.obj }
       } else if (!colorPickerOpen) {
         if (this.selectedItems.length > 0) {
           if (this.type === 'fill') {
