@@ -17,7 +17,7 @@ const state = {
   'toolsDrawer': false,
   'studioDrawer': false,
   'activeValidationIndex': 0,
-  'strokeScale': 10
+  'strokeScale': 3
 }
 
 // Export all of the relevant logic so that it can be combined with the complete
