@@ -52,6 +52,12 @@
       @click.native="activeTool = 'pencil'"
     />
 
+    <app-polygon
+      v-if="(getStepTools().includes('polygon'))"
+      :active="(activeTool === 'polygon')"
+      @click.native="activeTool = 'polygon'"
+    />
+
     <app-paint
       v-if="(getStepTools().includes('paint'))"
       :active="(activeTool === 'paint')"
@@ -111,6 +117,7 @@ import toolCount from './simple/Count.vue'
 import toolDelete from './simple/Delete.vue'
 import toolPaint from './simple/Paint.vue'
 import toolGrid from './simple/Grid.vue'
+import toolPolygon from './simple/Polygon.vue'
 
 // Assisted Tools:
 import toolFilter from './assisted/Filter.vue'
@@ -134,7 +141,8 @@ export default {
     'app-megas': toolMegas,
     'app-paint': toolPaint,
     'app-grid': toolGrid,
-    'app-filter': toolFilter
+    'app-filter': toolFilter,
+    'app-polygon': toolPolygon
   },
 
   data () {
