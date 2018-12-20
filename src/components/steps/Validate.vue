@@ -131,7 +131,6 @@ export default {
     }),
 
     goToNextItem () {
-      console.log(this.activeItemIndex)
       this.activeItemIndex === (this.getItemsForValidation().length - 1) ? this.activeItemIndex = 0 : this.activeItemIndex++
       this.goToItem(this.getItemsForValidation()[this.activeItemIndex])
       this.paperItem = this.findPaperItem(this.getItemsForValidation()[this.activeItemIndex])
