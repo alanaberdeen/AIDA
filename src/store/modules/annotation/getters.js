@@ -14,11 +14,11 @@ export default {
     }
   },
 
-  getItemsForValidation: (state) => {
-    let validationLayer = state.project.layers.filter(layer => layer.name === 'Validate')
+  getMegas: (state) => {
+    let megaLayer = state.project.layers.filter(layer => layer.name === 'Megas')
 
-    if (validationLayer.length > 0) {
-      return validationLayer[0].items
+    if (megaLayer.length > 0) {
+      return megaLayer[0].items
     } else {
       return -1
     }
