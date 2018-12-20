@@ -1,5 +1,4 @@
 <template>
-
   <div
     id="hint-card"
     class="elevation-1">
@@ -8,17 +7,17 @@
 
       {{ steps[activeStep].instruction }}
 
-      <v-divider></v-divider>
+      <v-divider/>
 
-      <div v-if="!this.begunValidation">
-        <v-btn small color="primary" @click="beginValidation"> Begin </v-btn>
+      <div v-if="!this.validationStarted">
+        <v-btn small color="primary" @click="startValidation"> Start </v-btn>
       </div>
 
       <v-container fluid id="validation-controls" v-else>
         <v-layout>
           <v-flex xs2>
 
-            <v-btn flat icon color="primary" @click="intialisePreviousMegaForValidation">
+            <v-btn flat icon color="primary" @click="goToPreviousItem">
               <v-icon> arrow_back </v-icon>
             </v-btn>
           </v-flex>
@@ -26,20 +25,20 @@
           <v-flex xs8>
             <v-layout align-center justify-center>
               <v-flex xs4>
-                <span id="mega-title">
-                  Mega: {{ this.activeMegaIndex + 1  }} / {{ this.getMegas().length }}
+                <span id="item-title">
+                  Item: {{ this.activeItemIndex + 1  }} / {{ this.getItemsForValidation().length }}
                 </span>
               </v-flex>
 
               <v-flex xs4>
-                <span id="mega-title">
-                  Score: {{ Math.round(this.getMegas()[this.activeMegaIndex].data.score * 100) / 100 }}
+                <span id="item-title">
+                  Class: {{ this.getItemsForValidation()[this.activeItemIndex].class }}
                 </span>
               </v-flex>
 
               <v-flex xs4>
-                <span id="mega-title">
-                  Mega: {{ this.getMegas()[this.activeMegaIndex].class }}
+                <span id="item-title">
+                  Score: {{ Math.round(this.getItemsForValidation()[this.activeItemIndex].predictionScore * 100) / 100 }}
                 </span>
               </v-flex>
 
@@ -52,7 +51,7 @@
               <v-btn small color="success"
               :outline="!(this.activeValidationButton === 'correct')"
               :depressed="this.activeValidationButton === 'correct'"
-              @click="validatePredictionAsCorrect"
+              @click="markCorrect"
               >
                 Correct
               </v-btn>
@@ -60,25 +59,25 @@
               <v-btn small color="warning"
               :outline="!(this.activeValidationButton === 'flag')"
               :depressed="this.activeValidationButton === 'flag'"
-              @click="flagPredictionForReview">
+              @click="flagForReview">
                 Flag for review
               </v-btn>
 
               <v-btn small color="error"
               :outline="!(this.activeValidationButton === 'incorrect')"
               :depressed="this.activeValidationButton === 'incorrect'"
-              @click="validatePredictionAsIncorrect">
+              @click="markIncorrect">
                 Incorrect
               </v-btn>
             </v-layout>
           </v-flex>
 
           <v-flex xs2 text-xs-right>
-
-            <v-btn flat icon color="primary" @click="intialiseNextMegaForValidation">
+            <v-btn flat icon color="primary" @click="goToNextItem">
               <v-icon> arrow_forward </v-icon>
             </v-btn>
           </v-flex>
+
         </v-layout>
       </v-container>
     </div>
@@ -104,17 +103,16 @@ export default {
 
   data () {
     return {
-      begunValidation: false,
-      activeMegaIndex: 0,
+      validationStarted: false,
+      activeItemIndex: 0,
       activeValidationButton: '',
-      paperMega: null,
-      timeBeganValidatingAtInMs: 0
+      paperItem: null,
+      validationStartTime: 0
     }
   },
 
   mounted () {
     window.addEventListener('keydown', this.keyDown)
-    window.addEventListener('keyup', this.keyUp)
   },
 
   destroyed () {
@@ -123,118 +121,72 @@ export default {
 
   methods: {
     ...mapGetters({
-      getMegas: 'annotation/getMegas'
+      getItemsForValidation: 'annotation/getItemsForValidation'
     }),
 
     ...mapActions({
       saveProject: 'common/saveProject',
-      setActiveValidationIndex: 'editor/setActiveValidationIndex'
+      setActiveValidationIndex: 'editor/setActiveValidationIndex',
+      refreshAnnotationState: 'annotation/refreshAnnotationState'
     }),
 
-    intialiseNextMegaForValidation () {
-      this.activeMegaIndex === (this.getMegas().length - 1) ? this.activeMegaIndex = 0 : this.activeMegaIndex++
-
-      this.goToMega(this.getMegas()[this.activeMegaIndex])
-      this.paperMega = this.findPaperMega(this.getMegas()[this.activeMegaIndex])
-      this.timeBeganValidatingAtInMs = Date.now()
+    goToNextItem () {
+      console.log(this.activeItemIndex)
+      this.activeItemIndex === (this.getItemsForValidation().length - 1) ? this.activeItemIndex = 0 : this.activeItemIndex++
+      this.goToItem(this.getItemsForValidation()[this.activeItemIndex])
+      this.paperItem = this.findPaperItem(this.getItemsForValidation()[this.activeItemIndex])
+      this.validationStartTime = Date.now()
     },
 
-    intialisePreviousMegaForValidation () {
-      this.activeMegaIndex === 0 ? (this.activeMegaIndex = this.getMegas().length - 1) : this.activeMegaIndex--
-
-      this.goToMega(this.getMegas()[this.activeMegaIndex])
-      this.paperMega = this.findPaperMega(this.getMegas()[this.activeMegaIndex])
-      this.timeBeganValidatingAtInMs = Date.now()
+    goToPreviousItem () {
+      this.activeItemIndex === 0 ? (this.activeItemIndex = this.getItemsForValidation().length - 1) : this.activeItemIndex--
+      this.goToItem(this.getItemsForValidation()[this.activeItemIndex])
+      this.paperItem = this.findPaperItem(this.getItemsForValidation()[this.activeItemIndex])
+      this.validationStartTime = Date.now()
     },
 
-    validatePredictionAsCorrect () {
-      this.paperMega.strokeColor = '#4CAF50'
-      this.paperMega.fillColor = '#4CAF50'
-
-      this.flashAndFadeFillColor(this.paperMega)
-
-      this.paperMega.data['data'].validations.push(
-        {
-          decision: 'correct',
-          timeStamp: Date.now(),
-          decisionTimeInMs: Date.now() - this.timeBeganValidatingAtInMs
-        }
-      )
-
-      setTimeout(() => {
-        this.intialiseNextMegaForValidation()
-        this.setActiveValidationIndex(this.activeMegaIndex)
-        this.saveProject({
-          notification: false
-        })
-      }, 500)
+    markCorrect () {
+      this.paperItem.strokeColor = '#4CAF50'
+      this.paperItem.fillColor = '#4CAF50'
+      this.flashAndFadeFillColor(this.paperItem)
+      this.saveDecisionAndGoToNext('correct')
     },
 
-    flagPredictionForReview () {
-      this.paperMega.strokeColor = '#FFC107'
-      this.paperMega.fillColor = '#FFC107'
-
-      this.flashAndFadeFillColor(this.paperMega)
-
-      this.paperMega.data['data'].validations.push(
-        {
-          decision: 'flag',
-          timeStamp: Date.now(),
-          decisionTimeInMs: Date.now() - this.timeBeganValidatingAtInMs
-        }
-      )
-
-      setTimeout(() => {
-        this.intialiseNextMegaForValidation()
-        this.setActiveValidationIndex(this.activeMegaIndex)
-        this.saveProject({
-          notification: false
-        })
-      }, 500)
+    flagForReview () {
+      this.paperItem.strokeColor = '#FFC107'
+      this.paperItem.fillColor = '#FFC107'
+      this.flashAndFadeFillColor(this.paperItem)
+      this.saveDecisionAndGoToNext('flag')
     },
 
-    validatePredictionAsIncorrect () {
-      this.paperMega.strokeColor = '#FF5252'
-      this.paperMega.fillColor = '#FF5252'
-
-      this.flashAndFadeFillColor(this.paperMega)
-
-      this.paperMega.data['data'].validations.push(
-        {
-          decision: 'incorrect',
-          timeStamp: Date.now(),
-          decisionTimeInMs: Date.now() - this.timeBeganValidatingAtInMs
-        }
-      )
-
-      setTimeout(() => {
-        this.intialiseNextMegaForValidation()
-        this.setActiveValidationIndex(this.activeMegaIndex)
-        this.saveProject({
-          notification: false
-        })
-      }, 500)
+    markIncorrect () {
+      this.paperItem.strokeColor = '#FF5252'
+      this.paperItem.fillColor = '#FF5252'
+      this.flashAndFadeFillColor(this.paperItem)
+      this.saveDecisionAndGoToNext('incorrect')
     },
 
-    goToMega (mega) {
+    goToItem (item) {
       this.viewport.fitBoundsWithConstraints(
         this.viewport.imageToViewportRectangle(
           new openseadragon.Rect(
-            mega.from.x,
-            mega.from.y,
-            mega.to.x - mega.from.x,
-            mega.to.y - mega.from.y
+            item.bounds.x - (0.1 * item.bounds.width),
+            item.bounds.y - (0.1 * item.bounds.height),
+            item.bounds.width * 1.2,
+            item.bounds.height * 1.2
           )
         ),
         true
       )
     },
 
-    findPaperMega (mega) {
+    findPaperItem (item) {
       return paper.project.getItem({
         inside: new paper.Rectangle(
-          mega.from,
-          mega.to
+          item.bounds.x,
+          item.bounds.y,
+          item.bounds.width,
+          item.bounds.height
         ),
         class: 'Path'
       })
@@ -243,19 +195,19 @@ export default {
     keyDown (e) {
       switch (e.keyCode) {
         case 39:
-          this.intialiseNextMegaForValidation()
+          this.goToNextItem()
           break
         case 37:
-          this.intialisePreviousMegaForValidation()
+          this.goToPreviousItem()
           break
         case 49:
-          if (!e.getModifierState('Meta')) { this.validatePredictionAsCorrect() }
+          if (!e.getModifierState('Meta')) { this.markCorrect() }
           break
         case 50:
-          if (!e.getModifierState('Meta')) { this.flagPredictionForReview() }
+          if (!e.getModifierState('Meta')) { this.flagForReview() }
           break
         case 51:
-          if (!e.getModifierState('Meta')) { this.validatePredictionAsIncorrect() }
+          if (!e.getModifierState('Meta')) { this.markIncorrect() }
       }
     },
 
@@ -270,14 +222,39 @@ export default {
       }, 800)
     },
 
-    beginValidation () {
-      if (this.activeValidationIndex === 0) {
-        this.activeMegaIndex = this.getMegas().length - 1
+    async startValidation () {
+      await this.refreshAnnotationState()
+
+      if (this.activeValidationIndex > this.getItemsForValidation().length || this.activeValidationIndex === 0) {
+        this.activeItemIndex = this.getItemsForValidation().length - 1
       } else {
-        this.activeMegaIndex = this.activeValidationIndex - 1
+        this.activeItemIndex = this.activeValidationIndex - 1
       }
-      this.intialiseNextMegaForValidation()
-      this.begunValidation = true
+      this.goToNextItem()
+      this.validationStarted = true
+    },
+
+    saveDecisionAndGoToNext (decision) {
+      if (!this.paperItem.data['data'] || !this.paperItem.data['data'].validations) {
+        this.paperItem.data['data'] = {}
+        this.paperItem.data['data'].validations = []
+      }
+
+      this.paperItem.data['data'].validations.push(
+        {
+          decision: decision,
+          timeStamp: Date.now(),
+          decisionTimeInMs: Date.now() - this.timeBeganValidatingAtInMs
+        }
+      )
+
+      setTimeout(() => {
+        this.goToNextItem()
+        this.setActiveValidationIndex(this.activeItemIndex)
+        this.saveProject({
+          notification: false
+        })
+      }, 500)
     }
   }
 
@@ -299,7 +276,7 @@ export default {
   padding: 0px;
 }
 
-#mega-title {
+#item-title {
   padding: 5px 0px;
 }
 </style>
