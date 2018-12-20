@@ -36,6 +36,12 @@ export default {
       .forEach(item => {
         if (item.data.type === 'circle') {
           state.project.layers[item.layer.index].items.push({
+            bounds: {
+              x: item.bounds.x,
+              y: item.bounds.y,
+              width: item.bounds.width,
+              height: item.bounds.height
+            },
             class: item.data.class,
             type: 'circle',
             color: helpers.getColor(item),
@@ -48,6 +54,12 @@ export default {
           })
         } else if (item.data.type === 'rectangle') {
           state.project.layers[item.layer.index].items.push({
+            bounds: {
+              x: item.bounds.x,
+              y: item.bounds.y,
+              width: item.bounds.width,
+              height: item.bounds.height
+            },
             class: item.data.class,
             type: 'rectangle',
             color: helpers.getColor(item),
@@ -63,6 +75,12 @@ export default {
           })
         } else {
           state.project.layers[item.layer.index].items.push({
+            bounds: {
+              x: item.bounds.x,
+              y: item.bounds.y,
+              width: item.bounds.width,
+              height: item.bounds.height
+            },
             class: item.data.class,
             type: 'path',
             color: helpers.getColor(item),
