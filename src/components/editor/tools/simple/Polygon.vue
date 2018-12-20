@@ -56,7 +56,6 @@ export default {
 
   created () {
     const toolDown = event => {
-      
       // If there is no current active path then create one.
       if (!this.path || !this.path.data.active) {
         this.path = this.newPath()
@@ -65,7 +64,7 @@ export default {
         this.path.data.type = 'path'
         this.path.closed = true
         this.path.add(event.point)
-      // If double clicked close the path 
+      // If double clicked close the path
       } else if (this.clickTime && Date.now() - this.clickTime < 200) {
         this.path.fillColor = new paper.Color(this.getColor().fill)
         this.path.selected = false

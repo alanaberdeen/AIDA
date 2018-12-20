@@ -80,7 +80,7 @@ export default {
         this.path.closed = false
         if (this.path.fillColor) {
           this.path.fillColor.alpha = 0
-        }   
+        }
       }
     }
 
