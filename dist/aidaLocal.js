@@ -8,11 +8,11 @@ async function checkForImages () {
   const writeFile = promisify(fs.writeFile)
   const images = await findImages()
   var json = JSON.stringify(images)
-  await writeFile('./public/data/images.json', json, 'utf8')
+  await writeFile('data/images.json', json, 'utf8')
 }
 
 async function findImages () {
-  const dirPath = './public/data/images'
+  const dirPath = 'data/images'
   const images = []
 
   const readdir = promisify(fs.readdir)
@@ -36,9 +36,7 @@ async function findImages () {
 async function saveAnnotation (data) {
   const writeFile = promisify(fs.writeFile)
   const imageName = data.imageName
-  console.log('Saving annotation data for ' + imageName)
-
-  const filePath = './public/data/annotations/' + imageName + '.json'
+  const filePath = 'data/annotations/' + imageName + '.json'
   const json = JSON.stringify(data.annotationData, null, 2)
   await writeFile(filePath, json, 'utf8')
 }
@@ -82,10 +80,10 @@ async function startServer () {
   })
 
   // Serve static files from the data directory
-  app.use('/data', express.static('public/data'))
+  app.use('/data', express.static('data'))
 
   // Serve the built application
-  app.use(express.static('dist'))
+  app.use(express.static('.'))
 
   // Listen to requests
   app.listen(port, () => {
