@@ -146,7 +146,7 @@ export default {
         // Read results and display results
         axios
           .get('https://aida-private.firebaseio.com/megas.json ')
-          // Update the editor.js state
+          // Update the app.js state
           .then((response) => {
             let megas = response.data
             console.log(megas)
@@ -186,7 +186,7 @@ export default {
       // Read results and display results
       axios
         .get('https://aida-private.firebaseio.com/megas.json ')
-      // Update the editor.js state
+      // Update the app.js state
         .then((response) => {
           let megas = response.data
           console.log(megas)

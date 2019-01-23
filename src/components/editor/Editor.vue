@@ -1,23 +1,25 @@
 <template>
   <div id="container">
+    <app-toolbar/>
+    <app-tools />
+    <app-studio />
 
     <div id="stepper-item">
       <app-stepper/>
     </div>
 
     <div id="view-item">
-      <app-view :type="type"/>
+      <app-view/>
     </div>
 
   </div>
+
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
-import Stepper from '../steps/Stepper.vue'
+import Stepper from '../instruction/Stepper.vue'
 import View from './view/View.vue'
 import Toolbar from '../header/Toolbar.vue'
 
@@ -28,62 +30,25 @@ export default {
     'app-stepper': Stepper,
     'app-view': View,
     'app-toolbar': Toolbar
-  },
-
-  props: {
-    type: {
-      type: String,
-      default: 'examples'
-    }
-  },
-
-  mounted () {
-    this.toolbarOn()
-
-    if (window.innerWidth > 800) {
-      this.toolsDrawerOn()
-    } else {
-      this.toolsDrawerOff()
-    }
-
-    if (window.innerWidth > 1000) {
-      this.studioDrawerOn()
-    } else {
-      this.studioDrawerOff()
-    }
-  },
-
-  destroyed () {
-    this.toolsDrawerOff()
-    this.studioDrawerOff()
-  },
-
-  methods: {
-    ...mapActions({
-      toolbarOn: 'app/toolbarOn',
-      toolsDrawerOn: 'editor/toolsDrawerOn',
-      studioDrawerOn: 'editor/studioDrawerOn',
-      toolsDrawerOff: 'editor/toolsDrawerOff',
-      studioDrawerOff: 'editor/studioDrawerOff'
-    })
   }
 }
 </script>
 
-<style media='screen' scoped>
+<style scoped>
 #container {
   display: flex;
-  flex-direction: column;
+  flex-flow: column;
   height: 100%;
 }
 
 #stepper-item {
+  flex: 0 1 auto;
   margin: 5px;
 }
 
 #view-item {
   display: flex;
-  flex: auto;
+  flex: 1 1 auto;
   margin: 0px 5px 5px 5px;
 }
 </style>

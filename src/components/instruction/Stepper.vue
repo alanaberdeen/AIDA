@@ -25,8 +25,10 @@
 
     <div
       id="hint-card"
-      class="elevation-1">
+      class="elevation-1"
+    >
       <app-validate v-if="steps[activeStep].type === 'validate'"></app-validate>
+
       <p id="hint" v-else>
         {{ steps[activeStep].instruction }}
       </p>
@@ -46,15 +48,15 @@ export default {
 
   computed: {
     ...mapState({
-      activeStep: state => state.editor.activeStep,
-      steps: state => state.editor.steps
+      activeStep: state => state.app.activeStep,
+      steps: state => state.app.steps
     })
   },
 
   methods: {
     ...mapActions({
-      setActiveStep: 'editor/setActiveStep',
-      saveProject: 'common/saveProject'
+      setActiveStep: 'app/setActiveStep',
+      saveProject: 'app/saveProject'
     }),
 
     activateStep (step) {

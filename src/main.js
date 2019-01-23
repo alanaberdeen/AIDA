@@ -1,20 +1,13 @@
 import Vue from 'vue'
+
+import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import './css/main.css' // Ensure you are using css-loader
-
-// Vuetify content
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-
-Vue.use(Vuetify)
+import './css/main.css' // Ensure using css-loader
 
 Vue.config.productionTip = false
-
-// Event bus to handle child-child communication
-export const eventBus = new Vue()
 
 new Vue({
   router,

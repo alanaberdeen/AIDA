@@ -50,8 +50,8 @@ export default {
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      activeStep: state => state.editor.activeStep,
-      strokeScale: state => state.editor.strokeScale
+      activeStep: state => state.app.activeStep,
+      strokeScale: state => state.app.strokeScale
     })
   },
 

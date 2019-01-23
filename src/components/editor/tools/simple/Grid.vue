@@ -104,7 +104,7 @@ export default {
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
       imageHeight: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().y,
-      strokeScale: state => state.editor.strokeScale
+      strokeScale: state => state.app.strokeScale
     })
   },
 

@@ -8,10 +8,8 @@
     id="view"
     class="elevation-2 pointers-please">
 
-    <!-- OpenSeadragon canvas -->
     <app-osd-canvas/>
 
-    <!-- Annotation canvas -->
     <app-annotation-canvas/>
 
   </div>
@@ -19,9 +17,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
-// Import child components
 import OSDCanvas from './OSDCanvas.vue'
 import AnnotationCanvas from './AnnotationCanvas.vue'
 
@@ -31,44 +28,38 @@ export default {
     'app-annotation-canvas': AnnotationCanvas
   },
 
-  props: {
-    type: {
-      type: String,
-      default: 'examples'
+  computed: {
+    ...mapState({
+      imageName: state => state.image.imageName
+    })
+  },
+
+  watch: {
+    imageName: function () {
+      this.loadProject()
     }
   },
 
   mounted () {
-    // Ensure the size of the PaperJS annotation view and the OpenSeaDragon
-    // viewer are always synchronised.
-    this.synchroniseAnnotationAndOSDCanvas()
-
-    // Load project data from the API, pass the type of project we are loading
-    // as a parameter. This can be either a 'dzi' or a 'standard' image.
-    this.loadProject(this.type)
-  },
-
-  // When the view element is removed from the app (ie. the user navigates away)
-  // apply all the cleaning functionality and reset the state.
-  destroyed () {
-    this.resetStateToDefault()
+    if (!this.imageName) {
+      this.$router.replace('/')
+    } else {
+      this.loadProject()
+    }
   },
 
   methods: {
     ...mapActions({
-      synchroniseAnnotationAndOSDCanvas: 'common/synchroniseAnnotationAndOSDCanvas',
-      loadProject: 'common/loadProject',
-      resetStateToDefault: 'common/resetStateToDefault'
+      loadProject: 'app/loadProject'
     })
   }
 }
 </script>
 
-<style lang='css' scoped>
+<style scoped>
 #view {
   position: relative;
-  display: inline-flex;
-  flex: 1;
-  flex-basis: auto;
+  display: flex;
+  flex: 1 1 auto;
 }
 </style>

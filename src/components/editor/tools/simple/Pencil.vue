@@ -51,7 +51,7 @@ export default {
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      strokeScale: state => state.editor.strokeScale
+      strokeScale: state => state.app.strokeScale
     })
   },
 
@@ -80,7 +80,7 @@ export default {
         this.path.closed = false
         if (this.path.fillColor) {
           this.path.fillColor.alpha = 0
-        }
+        }   
       }
     }
 

@@ -17,10 +17,10 @@
       <p class="label"> Tools required: </p>
 
       <v-btn
-        :flat="!editor.steps[step].tools.pan"
+        :flat="!app.steps[step].tools.pan"
         class="tool elevation-1"
         small
-        @click.native="editor.steps[step].tools.pan = !editor.steps[step].tools.pan"
+        @click.native="app.steps[step].tools.pan = !app.steps[step].tools.pan"
       >
         <i
           :class="{
@@ -32,10 +32,10 @@
       </v-btn>
 
       <v-btn
-        :flat="!editor.steps[step].tools.circle"
+        :flat="!app.steps[step].tools.circle"
         class="tool elevation-1"
         small
-        @click.native="editor.steps[step].tools.circle = !editor.steps[step].tools.circle"
+        @click.native="app.steps[step].tools.circle = !app.steps[step].tools.circle"
       >
         <i
           :class="{
@@ -47,10 +47,10 @@
       </v-btn>
 
       <v-btn
-        :flat="!editor.steps[step].tools.rectangle"
+        :flat="!app.steps[step].tools.rectangle"
         class="tool elevation-1"
         small
-        @click.native="editor.steps[step].tools.rectangle = !editor.steps[step].tools.rectangle"
+        @click.native="app.steps[step].tools.rectangle = !app.steps[step].tools.rectangle"
       >
         <v-icon>
           crop_landscape
@@ -58,10 +58,10 @@
       </v-btn>
 
       <v-btn
-        :flat="!editor.steps[step].tools.pen"
+        :flat="!app.steps[step].tools.pen"
         class="tool elevation-1"
         small
-        @click.native="editor.steps[step].tools.pen = !editor.steps[step].tools.pen"
+        @click.native="app.steps[step].tools.pen = !app.steps[step].tools.pen"
       >
         <v-icon>
           timeline
@@ -69,10 +69,10 @@
       </v-btn>
 
       <v-btn
-        :flat="!editor.steps[step].tools.pencil"
+        :flat="!app.steps[step].tools.pencil"
         class="tool elevation-1"
         small
-        @click.native="editor.steps[step].tools.pencil = !editor.steps[step].tools.pencil"
+        @click.native="app.steps[step].tools.pencil = !app.steps[step].tools.pencil"
       >
         <i
           :class="{
@@ -84,10 +84,10 @@
       </v-btn>
 
       <v-btn
-        :flat="!editor.steps[step].tools.move"
+        :flat="!app.steps[step].tools.move"
         class="tool elevation-1"
         small
-        @click.native="editor.steps[step].tools.move = !editor.steps[step].tools.move"
+        @click.native="app.steps[step].tools.move = !app.steps[step].tools.move"
       >
         <i
           :class="{
@@ -99,10 +99,10 @@
       </v-btn>
 
       <v-btn
-        :flat="!editor.steps[step].tools.node"
+        :flat="!app.steps[step].tools.node"
         class="tool elevation-1"
         small
-        @click.native="editor.steps[step].tools.node = !editor.steps[step].tools.node"
+        @click.native="app.steps[step].tools.node = !app.steps[step].tools.node"
       >
         <i
           :class="{

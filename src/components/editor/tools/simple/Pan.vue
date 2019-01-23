@@ -44,10 +44,6 @@ export default {
     }
   },
 
-  mounted () {
-    this.initialiseTool()
-  },
-
   methods: {
     initialiseTool () {
       // Relinquish control of PaperJS interface

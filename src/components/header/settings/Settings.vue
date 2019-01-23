@@ -185,7 +185,7 @@ export default {
 
   // computed: {
   //   ...mapState({
-  //     dialog: state => state.editor.settingsFlag
+  //     dialog: state => state.app.settingsFlag
   //   })
   // },
 

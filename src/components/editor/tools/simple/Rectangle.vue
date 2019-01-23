@@ -45,9 +45,8 @@ export default {
   computed: {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
-      imageWidth: state =>
-        state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      strokeScale: state => state.editor.strokeScale
+      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
+      strokeScale: state => state.app.strokeScale
     })
   },
 
@@ -70,7 +69,7 @@ export default {
     const toolUp = event => {
       let newRect = new paper.Path.Rectangle(event.downPoint, event.point)
       newRect.strokeColor = new paper.Color(this.getColor().stroke)
-      newRect.fillColor = new paper.Color(this.getColor().fill)
+      // newRect.fillColor = new paper.Color(this.getColor().fill)
       newRect.strokeWidth = this.strokeWidth
 
       // Custom data attribute:

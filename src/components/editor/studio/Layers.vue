@@ -134,9 +134,9 @@ export default {
   computed: {
     ...mapState({
       layers: state => state.annotation.project.layers,
-      activeLayer: state => state.editor.activeLayer,
-      steps: state => state.editor.steps,
-      activeStep: state => state.editor.activeStep
+      activeLayer: state => state.app.activeLayer,
+      steps: state => state.app.steps,
+      activeStep: state => state.app.activeStep
     })
   },
 

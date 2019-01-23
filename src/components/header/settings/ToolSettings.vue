@@ -9,7 +9,7 @@
       two-line
       subheader>
       <v-list-item
-        v-for="tool in editor.tools"
+        v-for="tool in app.tools"
         :key="tool.name">
         <v-list-tile avatar>
 

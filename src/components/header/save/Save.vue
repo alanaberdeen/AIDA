@@ -2,7 +2,7 @@
   <v-btn
     id='save-button'
     icon
-    @click.native="saveProject({notification: true})">
+    @click.native="saveAnnotation()">
     <v-icon>
       save
     </v-icon>
@@ -19,7 +19,7 @@ export default {
 
   methods: {
     ...mapActions({
-      saveProject: 'common/saveProject'
+      saveAnnotation: 'annotation/saveAnnotation'
     }),
 
     // Attach event listeners for the keyboard shortcuts
