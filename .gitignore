@@ -18,12 +18,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-
-# Local instance data 
-/public/data/annotations/*
-/public/data/images/*
-/public/data/images.json
-
-/dist/data/annotations/*
-/dist/data/images/*
-/dist/data/images.json
