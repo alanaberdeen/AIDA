@@ -10,7 +10,7 @@ The trial and annotation data can be accessed programmatically via a [documented
 
 ## See a demo
 
-Play with a live example [here](http://localhost:8080/#/example/dzi)
+Play with a live example [here](https://alanaberdeen.github.io/AIDA/#/example/dzi)
 
 ## How has it been implemented?
 
@@ -20,19 +20,34 @@ AIDA reads and writes data in a simple JSON structure over a web API. Login and 
 
 ## What's planned?
 
-The software is published as Open Source under the permissive [MIT license](https://github.com/alanaberdeen/AIDA/blob/master/LICENSE) and can be modified by anyone. The [API](https://aida.gitbook.io/docs/api-reference) will also be public.
+The software is published as Open Source under the permissive [MIT license](https://github.com/alanaberdeen/AIDA/blob/master/LICENSE). The [API](https://aida.gitbook.io/docs/api-reference) will also be public.
 
 The next stage of development will be to integrate intelligent tools that leverage the power of machine learning techniques. We hope to enhance the ability of the user to quickly and accurately mark up images through predictive assistance
 
-## Get going
+## Run Locally
 
-Requirement [Yarn](https://yarnpkg.com/en/)/[Npm](https://www.npmjs.com/) package managers and Node.js.
-Yarn example work-flow:
+You can use AIDA on your local machine. The only requirement [NodeJS](https://nodejs.org/en/). 
+
+A built and built version of the local application is included with the source code in the `/dist` directory. To begin using AIDA locally: 
+
+1. Clone the repository 
+2. `cd` to `/dist`
+3. Install dependencies via `npm install`
+4. Add the images you would like to annotate to the `/dist/data/images` directory. 
+5. Run the nodeJS local applicaiton via `node aidaLocal.js`
+6. Navigate to the localhost webserver specified in the console 
+7. Annotations are read and written to `/dist/data/annotations`
+
+
+## Develop
+
+Requirement [NodeJS](https://nodejs.org/en/).
+Example work-flow:
 
 1.  Clone the repository
-2.  Install dependencies via `yarn`
-3.  For development: start a hot-reloading dev server with `yarn serve`
-4.  For deployment: bundle together with `yarn build`
+2.  Install dependencies via `npm install`
+3.  For development: start a hot-reloading dev server with `npm run serve`
+4.  For deployment: bundle together with `npm run build`
 
 ## About
 
