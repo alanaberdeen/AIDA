@@ -33,10 +33,10 @@ A built and built version of the local application is included with the source c
 1. Clone the repository 
 2. `cd` to `/dist`
 3. Install dependencies via `npm install`
-4. Add the images you would like to annotate to the `/dist/data/images` directory. 
-5. Run the nodeJS local applicaiton via `node aidaLocal.js`
+4. Add the images you want to annotate to the `/dist/data/images` directory. 
+5. Run the nodeJS local application via `node aidaLocal.js`
 6. Navigate to the localhost webserver specified in the console 
-7. Annotations are read and written to `/dist/data/annotations`
+7. Annotations are read from and written to `/dist/data/annotations`
 
 
 ## Develop
