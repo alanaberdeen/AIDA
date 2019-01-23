@@ -1,41 +1,27 @@
 export default {
+  addImageToState: ({
+    commit
+  }, payload) => {
+    commit('addImageToState', payload)
+  },
+
+  setupOsdCanvas: ({
+    commit
+  }, payload) => {
+    commit('setupOsdCanvas', payload)
+  },
+
+  addImageToCanvas: ({
+    commit
+  }) => {
+    commit('addImageToCanvas')
+  },
+
   resetImageState: ({
     commit,
     rootState
   }) => {
     commit('resetImageState', rootState)
-  },
-
-  setupOSDCanvas: ({
-    commit
-  }, payload) => {
-    commit('setupOSDCanvas', payload)
-  },
-
-  // Load the images into the state and then add them to the appropriate OSDviewer
-  loadImages: ({
-    state,
-    dispatch
-  }, images) => {
-    // Add the new images to the state and the OSD
-    dispatch('addImagesToState', images).then(() => {
-      // Add each image to the OSD viewer
-      for (let i in images) {
-        dispatch('addOSDImage', images[i])
-      }
-    })
-  },
-
-  addImagesToState: ({
-    commit
-  }, images) => {
-    commit('addImagesToState', images)
-  },
-
-  addOSDImage: ({
-    commit
-  }, image) => {
-    commit('addOSDImage', image)
   },
 
   setActiveChannel: ({
@@ -56,14 +42,13 @@ export default {
   }, payload) => {
     commit('setChannelOpacity', {
       input: payload,
-      activeChannel: rootState.editor.activeChannel,
+      activeChannel: rootState.app.activeChannel,
       rootState: rootState
     })
   },
 
   setChannelName: ({
-    commit,
-    rootState
+    commit
   }, payload) => {
     commit('setChannelName', payload)
   },

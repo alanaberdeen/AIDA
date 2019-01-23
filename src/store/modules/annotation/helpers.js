@@ -1,7 +1,6 @@
-// Helper functions for managing annotation state
 export default {
-  // Function that, given a paperJS path item, return the segments in the
-  // format specified by the AIDA annotation schema
+  // Input: paperJS item
+  // Output: Segments in the format specified by the AIDA annotation schema
   getSegments (item) {
     let segments = []
     item.segments.forEach(segment => {
@@ -24,8 +23,8 @@ export default {
     return segments
   },
 
-  // Function that, given a paperJS path item, returns the stroke and fill color
-  // as an object
+  // Input: paperJS path item
+  // Output: the stroke and fill color as an object
   getColor (item) {
     return {
       fill: item.fillColor !== null ? {
@@ -43,7 +42,7 @@ export default {
     }
   },
 
-  // Function that returns default set of colors
+  // Default set of colors
   defaultColors () {
     return [{
       fill: {

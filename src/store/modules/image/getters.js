@@ -31,7 +31,7 @@ export default {
     }
   },
 
-  getChannels: (state, getters, rootState) => {
+  getChannels: state => {
     let channels = []
 
     if (state.OSDviewer) {
@@ -42,7 +42,7 @@ export default {
           channel: state.OSDviewer.world.getItemAt(i),
           id: i,
           opacity: state.OSDviewer.world.getItemAt(i).getOpacity(),
-          name: state.images[i].name,
+          name: state.imageName,
           visible: state.OSDviewer.world.getItemAt(i).getOpacity() > 0,
           opacityCache: 0
         })

@@ -1,4 +1,4 @@
-import './mutations'
+import axios from 'axios'
 
 export default {
   resetAnnotationState: ({
@@ -7,60 +7,16 @@ export default {
     commit('resetAnnotationState')
   },
 
-  refreshAnnotationState: ({
-    commit
-  }, payload) => {
-    commit('refreshAnnotationState', payload)
-  },
-
-  setupAnnotation: ({
-    commit
-  }, payload) => {
-    commit('setupAnnotation', payload)
-  },
-
-  loadAnnotation: ({
-    dispatch,
-    rootState
-  }, annotation) => {
-    // Handle both legacy string representation and new AIDA annotation schema
-    if (typeof annotation === 'object') {
-      dispatch('loadAidaAnnotation', {
-        annotation: annotation,
-        activeLayer: rootState.editor.activeLayer
-      })
-    } else if (typeof annotation === 'string') {
-      dispatch('loadPaperStringAnnotation', {
-        annotation: annotation,
-        activeLayer: rootState.editor.activeLayer
-      }).then(() => {
-        dispatch('refreshAnnotationState')
-      })
-    }
-  },
-
-  loadAidaAnnotation: ({
-    commit
-  }, payload) => {
-    commit('loadAidaAnnotation', payload)
-  },
-
-  loadPaperStringAnnotation: ({
-    commit
-  }, payload) => {
-    commit('loadPaperStringAnnotation', payload)
-  },
-
   prepareCanvas: ({
     commit,
     rootState
-  }, payload) => {
-    commit('prepareCanvas', rootState)
+  }) => {
+    commit('prepareCanvas', rootState.app.activeLayer)
   },
 
   newLayer: ({
     commit
-  }, payload) => {
+  }) => {
     commit('newLayer')
   },
 
@@ -69,9 +25,7 @@ export default {
     dispatch
   }, layerIndex) => {
     commit('setActiveLayer', layerIndex)
-
-    // Also, store the new active layer in the editor
-    dispatch('editor/setEditorActiveLayer', layerIndex, {
+    dispatch('app/setEditorActiveLayer', layerIndex, {
       root: true
     })
   },
@@ -104,5 +58,39 @@ export default {
     commit
   }, payload) => {
     commit('setSelectedItems', payload)
+  },
+
+  refreshAnnotationState: ({
+    commit
+  }) => {
+    commit('refreshAnnotationState')
+  },
+
+  async saveAnnotation ({
+    dispatch,
+    state,
+    rootState
+  }) {
+    await dispatch('refreshAnnotationState')
+    axios.post(
+      'http://localhost:3000/save',
+      {
+        imageName: rootState.image.imageName,
+        annotationData: state.project
+      }
+    )
+  },
+
+  async getAnnotation ({
+    commit,
+    rootState
+  }) {
+    const dataLocation = 'http://localhost:3000/data/annotations/' + rootState.image.imageName + '.json'
+    try {
+      const response = await axios.get(dataLocation)
+      commit('loadAnnotation', response.data)
+    } catch (err) {
+      console.log('No annotation data found')
+    }
   }
 }
