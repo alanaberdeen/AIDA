@@ -16,7 +16,7 @@ export default {
     }
   },
 
-  addImageToCanvas: (state, OSDviewer) => {
+  setOSDImageSource: (state, OSDviewer) => {
     if (state.imageType === 'dzi') {
       OSDviewer.addTiledImage({
         tileSource: 'http://localhost:3000/data/images/' + state.fileName

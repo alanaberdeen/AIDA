@@ -65,7 +65,7 @@ export default {
     dispatch
   }) => {
     await dispatch('backend/getAnnotation', null, { root: true })
-    await dispatch('backend/addImageToCanvas', null, { root: true })
+    await dispatch('backend/setOSDImageSource', null, { root: true })
     dispatch('synchroniseAnnotationAndOSDCanvas')
   },
 

@@ -28,12 +28,12 @@ export default {
     commit('setImageType', fileName)
   },
 
-  addImageToCanvas: ({
+  setOSDImageSource: ({
     commit,
     rootState
   }) => {
     const OSDviewer = rootState.image.OSDviewer
-    commit('addImageToCanvas', OSDviewer)
+    commit('setOSDImageSource', OSDviewer)
   },
 
   async saveAnnotation ({
