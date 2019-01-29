@@ -64,8 +64,9 @@ export default {
   loadProject: async ({
     dispatch
   }) => {
-    await dispatch('backend/getAnnotation', null, { root: true })
-    await dispatch('backend/setOSDImageSource', null, { root: true })
+    const getAnnotation = dispatch('backend/getAnnotation', null, { root: true })
+    const setOSDImageSource = dispatch('backend/setOSDImageSource', null, { root: true })
+    await Promise.all([getAnnotation, setOSDImageSource])
     dispatch('synchroniseAnnotationAndOSDCanvas')
   },
 
