@@ -5,7 +5,6 @@ import backend from './modules/backend/index'
 import app from './modules/app/index'
 import image from './modules/image/index'
 import annotation from './modules/annotation/index'
-import user from './modules/user/index'
 
 Vue.use(Vuex)
 
@@ -14,7 +13,6 @@ export default new Vuex.Store({
     backend,
     app,
     image,
-    annotation,
-    user
+    annotation
   }
 })
