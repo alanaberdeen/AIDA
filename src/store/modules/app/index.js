@@ -18,8 +18,7 @@ const state = {
   steps: null,
   settingsFlag: false,
   activeValidationIndex: 0,
-  strokeScale: 5,
-  images: []
+  strokeScale: 5
 }
 
 export default {
