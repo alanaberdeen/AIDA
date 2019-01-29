@@ -53,8 +53,7 @@ export default {
   computed: {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
-      imageWidth: state =>
-        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
+      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x
     })
   },
 
@@ -79,9 +78,13 @@ export default {
         if (hitResult.type === 'bounds') {
           this.toolMode = 'transform'
 
-          // If hit an item and shift key held then add to selection
-        } else if (event.modifiers.shift) {
+          // If hit an unselected item and shift key held then add to selection
+        } else if (event.modifiers.shift && !hitResult.item.selected) {
           hitResult.item.selected = true
+
+          // If hit an already selected item and shift key held remove from selection
+        } else if (event.modifiers.shift && hitResult.item.selected) {
+          hitResult.item.selected = false
 
           // If item is already selected, assume user is attempting to move
         } else if (hitResult.item.selected) {
