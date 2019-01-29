@@ -144,7 +144,7 @@ export default {
 
     ...mapActions('annotation', [
       'setLayerOpacity',
-      'newLayer',
+      'createLayer',
       'exportLayerJSON',
       'setActiveLayer',
       'setLayerOpacity',
@@ -156,23 +156,13 @@ export default {
       'setActiveStep'
     ]),
 
-    ...mapActions('common', [
-      'saveProject'
-    ]),
+    async newLayer (index) {
+      await this.createLayer()
+      this.setActiveLayer(this.layers.length - 1)
+    },
 
     selectLayer (index) {
-      this.steps.map(step => {
-        if (step.specificLayer === index) {
-          this.setActiveStep(step)
-        }
-      })
-
       this.setActiveLayer(index)
-
-      // Triger an auto-save
-      this.saveProject({
-        notification: false
-      })
     }
   }
 }
