@@ -19,7 +19,7 @@ export default {
 
   methods: {
     ...mapActions({
-      saveAnnotation: 'annotation/saveAnnotation'
+      saveAnnotation: 'backend/saveAnnotation'
     }),
 
     // Attach event listeners for the keyboard shortcuts
