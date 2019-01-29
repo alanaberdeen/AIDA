@@ -74,7 +74,7 @@ export default {
     }
   },
 
-  newLayer: state => {
+  createLayer: state => {
     let newLayer = new paper.Layer({ position: paper.view.center })
     newLayer.opacity = 1
 
@@ -142,6 +142,26 @@ export default {
 
   setSelectedItems: (state, selectedItems) => {
     state.selectedItems = selectedItems
+  },
+
+  drawBoundingBoxes: (state, boundingBoxes) => {
+    let newPaperLayer = new paper.Layer({ name: 'Validate' })
+    newPaperLayer.opacity = 1
+
+    boundingBoxes.forEach((box) => {
+      let newPaperItem = new paper.Path.Rectangle({
+        point: [box.boundingBox.x, box.boundingBox.y],
+        size: [box.boundingBox.width, box.boundingBox.height],
+        data: {
+          name: box.name,
+          type: 'rectangle',
+          predictionClass: box.class.predictionClass,
+          predictionScore: box.class.predictionScore,
+          validationScore: box.class.validationScore
+        }
+      })
+      newPaperItem.strokeColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length].stroke
+    })
   },
 
   // Load annotation data into both the state and the paperJS environment.
