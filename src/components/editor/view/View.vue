@@ -34,12 +34,6 @@ export default {
     })
   },
 
-  watch: {
-    imageName: function () {
-      this.loadProject()
-    }
-  },
-
   mounted () {
     if (!this.imageName) {
       this.$router.replace('/')
