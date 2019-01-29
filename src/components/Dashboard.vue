@@ -85,12 +85,12 @@ export default {
   },
 
   computed: mapState({
-    images: state => state.app.images
+    images: state => state.backend.images
   }),
 
   methods: {
     ...mapActions({
-      getData: 'app/getData'
+      getData: 'backend/getData'
     })
   }
 }

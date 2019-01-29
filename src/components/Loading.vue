@@ -29,7 +29,8 @@ export default {
 
   methods: {
     ...mapActions({
-      getImage: 'image/addImageToState'
+      setImageName: 'image/setImageName',
+      setFileName: 'backend/setFileName'
     })
   },
 
@@ -39,7 +40,8 @@ export default {
 
   async mounted () {
     try {
-      await this.getImage(this.$route.params.fileName)
+      await this.setImageName(this.$route.params.fileName.replace(/\.[^/.]+$/, ''))
+      await this.setFileName(this.$route.params.fileName)
       this.$router.replace('/' + this.imageName)
     } catch (error) {
       console.log('could not load the data into AIDA')

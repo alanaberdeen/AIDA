@@ -2,29 +2,26 @@ import Vue from 'vue'
 import openseadragon from 'openseadragon'
 
 export default {
-  addImageToState: (state, fileName) => {
-    state.fileName = fileName
-
-    // Set image name by removing extension
-    state.imageName = fileName.replace(/\.[^/.]+$/, '')
-
-    // Set image type by checking for .dzi
-    if (fileName.indexOf('.dzi') > -1) {
-      state.imageType = 'dzi'
-    } else {
-      state.imageType = 'simple'
-    }
+  setImageName: (state, imageName) => {
+    state.imageName = imageName
   },
 
   resetImageState: (state) => {
     state.OSDviewer.navigator.destroy()
     state.OSDviewer.destroy()
+
     state = {
       OSDviewer: null,
       OSDworld: null,
       activeChannel: 0,
-      imageName: '',
-      imageType: 'dzi'
+      view: {
+        viewSize: [null, null],
+        imageSize: [null, null],
+        imageCenter: [null, null],
+        imageZoom: null
+      },
+      image: '',
+      imageAccessToken: ''
     }
   },
 
@@ -35,24 +32,6 @@ export default {
       showNavigator: true,
       navigatorId: 'navigator'
     })
-  },
-
-  addImageToCanvas: (state) => {
-    if (state.imageType === 'dzi') {
-      state.OSDviewer.addTiledImage({
-        tileSource: 'http://localhost:3000/data/images/' + state.fileName,
-        x: 0,
-        y: 0,
-        opacity: 1
-      })
-    } else if (state.imageType === 'simple') {
-      state.OSDviewer.addSimpleImage({
-        x: 0,
-        y: 0,
-        opacity: 1,
-        url: 'http://localhost:3000/data/images/' + state.fileName
-      })
-    }
   },
 
   setActiveChannel: (state, payload) => {

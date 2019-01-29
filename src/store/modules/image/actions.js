@@ -1,20 +1,14 @@
 export default {
-  addImageToState: ({
+  setImageName: ({
     commit
-  }, payload) => {
-    commit('addImageToState', payload)
+  }, imageName) => {
+    commit('setImageName', imageName)
   },
 
   setupOsdCanvas: ({
     commit
   }, payload) => {
     commit('setupOsdCanvas', payload)
-  },
-
-  addImageToCanvas: ({
-    commit
-  }) => {
-    commit('addImageToCanvas')
   },
 
   resetImageState: ({

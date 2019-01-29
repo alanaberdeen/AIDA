@@ -1,10 +1,6 @@
 import paper from 'paper'
 
 export default {
-  async getData (state, images) {
-    state.images = images
-  },
-
   activateSnackbar: (state, payload) => {
     state.snackbar.active = true
     state.snackbar.text = payload.text ? payload.text : 'notification'
@@ -67,7 +63,7 @@ export default {
     state.activeStep = stepIndex
   },
 
-  setEditorActiveLayer: (state, layerIndex) => {
+  setActiveLayer: (state, layerIndex) => {
     state.activeLayer = layerIndex
   },
 
@@ -91,42 +87,6 @@ export default {
     ]
   },
 
-  updateValidation: async (state, payload) => {
-    const db = firebase.firestore()
-
-    if (payload.validation) {
-      // Add validation to history
-      const validationsRef = db.collection('/studies/' + payload.studyName + '/images/' + payload.imageName + '/megakaryocytes/' + payload.docName + '/validations')
-      validationsRef.add({
-        timestamp: payload.timestamp,
-        ...payload.validation
-      })
-
-      // If the boundingBox has not been changed then we simply assume is correct and call it validated
-      const itemRef = db.doc('/studies/' + payload.studyName + '/images/' + payload.imageName + '/megakaryocytes/' + payload.docName)
-      itemRef.update({ 'boundingBox.validated': true })
-    }
-
-    if (payload.boundingBox) {
-      // Add new bounding box to the items history
-      const boundingBoxesRef = db.collection('/studies/' + payload.studyName + '/images/' + payload.imageName + '/megakaryocytes/' + payload.docName + '/boundingBoxes')
-      boundingBoxesRef.add({
-        timestamp: payload.timestamp,
-        user: state.uid,
-        ...payload.boundingBox
-      })
-
-      // Update the image's default bounding box to also be the latest adjustment
-      const itemRef = db.doc('/studies/' + payload.studyName + '/images/' + payload.imageName + '/megakaryocytes/' + payload.docName)
-      itemRef.update({
-        boundingBox: {
-          ...payload.boundingBox,
-          validated: true
-        }
-      })
-    }
-  },
-
   toggleToolsDrawer: state => {
     state.toolsDrawer = !state.toolsDrawer
   },
@@ -141,46 +101,5 @@ export default {
 
   setStudioDrawerState: (state, payload) => {
     state.studioDrawer = payload
-  },
-
-  createNewItem: async (state, payload) => {
-    console.log('CreateNewItem mutation fired')
-    const db = firebase.firestore()
-
-    const itemsCollection = db.collection('/studies/' + payload.studyName + '/images/' + payload.imageName + '/megakaryocytes')
-    console.log(itemsCollection.path)
-    const newItemDocRef = await itemsCollection.add({
-      boundingBox: {
-        ...payload.boundingBox,
-        validated: true
-      },
-      class: {
-        label: 'megakaryocyte',
-        basicValidation: true,
-        expertValidation: false,
-        validationScore: 1
-      },
-      segmentation: {
-        cell: null,
-        nucleus: null,
-        validated: null
-      }
-    })
-    console.log('Created a new item document: ' + newItemDocRef.id)
-
-    const boundingBoxesRef = db.collection('/studies/' + payload.studyName + '/images/' + payload.imageName + '/megakaryocytes/' + newItemDocRef.id + '/boundingBoxes')
-    boundingBoxesRef.add({
-      timestamp: payload.timestamp,
-      uid: state.uid,
-      ...payload.boundingBox
-    })
-
-    const validationsRef = db.collection('/studies/' + payload.studyName + '/images/' + payload.imageName + '/megakaryocytes/' + newItemDocRef.id + '/validations')
-    validationsRef.add({
-      decisionTimeInMs: null,
-      label: 'megakaryocyte',
-      timestamp: payload.timestamp,
-      user: state.uid
-    })
   }
 }

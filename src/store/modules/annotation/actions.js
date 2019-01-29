@@ -1,10 +1,14 @@
-import axios from 'axios'
-
 export default {
   resetAnnotationState: ({
     commit
   }) => {
     commit('resetAnnotationState')
+  },
+
+  refreshAnnotationState: ({
+    commit
+  }, payload) => {
+    commit('refreshAnnotationState', payload)
   },
 
   prepareCanvas: ({
@@ -14,10 +18,10 @@ export default {
     commit('prepareCanvas', rootState.app.activeLayer)
   },
 
-  newLayer: ({
+  createLayer: ({
     commit
   }) => {
-    commit('newLayer')
+    commit('createLayer')
   },
 
   setActiveLayer: ({
@@ -25,7 +29,7 @@ export default {
     dispatch
   }, layerIndex) => {
     commit('setActiveLayer', layerIndex)
-    dispatch('app/setEditorActiveLayer', layerIndex, {
+    dispatch('app/setActiveLayer', layerIndex, {
       root: true
     })
   },
@@ -60,37 +64,9 @@ export default {
     commit('setSelectedItems', payload)
   },
 
-  refreshAnnotationState: ({
+  drawBoundingBoxes: ({
     commit
-  }) => {
-    commit('refreshAnnotationState')
-  },
-
-  async saveAnnotation ({
-    dispatch,
-    state,
-    rootState
-  }) {
-    await dispatch('refreshAnnotationState')
-    axios.post(
-      'http://localhost:3000/save',
-      {
-        imageName: rootState.image.imageName,
-        annotationData: state.project
-      }
-    )
-  },
-
-  async getAnnotation ({
-    commit,
-    rootState
-  }) {
-    const dataLocation = 'http://localhost:3000/data/annotations/' + rootState.image.imageName + '.json'
-    try {
-      const response = await axios.get(dataLocation)
-      commit('loadAnnotation', response.data)
-    } catch (err) {
-      console.log('No annotation data found')
-    }
+  }, payload) => {
+    commit('drawBoundingBoxes', payload)
   }
 }

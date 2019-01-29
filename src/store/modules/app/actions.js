@@ -1,19 +1,4 @@
-import axios from 'axios'
-
 export default {
-  async getData ({
-    commit
-  }) {
-    await axios.post('http://localhost:3000/checkForImages')
-    const dataLocation = 'http://localhost:3000/data/images.json'
-    try {
-      const response = await axios.get(dataLocation)
-      commit('getData', response.data)
-    } catch (err) {
-      console.log(err)
-    }
-  },
-
   dismissSnackbar: ({
     commit
   }) => {
@@ -55,7 +40,7 @@ export default {
   setActiveLayer: ({
     commit
   }, layerIndex) => {
-    commit('setEditorActiveLayer', layerIndex)
+    commit('setActiveLayer', layerIndex)
   },
 
   toggleSettings: ({
@@ -77,11 +62,10 @@ export default {
   },
 
   loadProject: async ({
-    dispatch,
-    commit
+    dispatch
   }) => {
-    await dispatch('annotation/getAnnotation', null, { root: true })
-    await dispatch('image/addImageToCanvas', null, { root: true })
+    await dispatch('backend/getAnnotation', null, { root: true })
+    await dispatch('backend/addImageToCanvas', null, { root: true })
     dispatch('synchroniseAnnotationAndOSDCanvas')
   },
 
@@ -107,5 +91,15 @@ export default {
     commit
   }, payload) => {
     commit('setStudioDrawerState', payload)
+  },
+
+  createNewItem: ({
+    state,
+    rootState,
+    commit
+  }, payload) => {
+    payload['studyName'] = state.studyName
+    payload['imageName'] = rootState.image.imageName
+    commit('createNewItem', payload)
   }
 }
