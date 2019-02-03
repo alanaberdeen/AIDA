@@ -6,7 +6,7 @@ AIDA is an attempt to bring an open source web-based work-flow to image annotati
 
 AIDA is a web interface that enables distributed teams of researchers to directly annotate images with easy to use on screen drawing tools. AIDA supports the creation of well defined annotation trials which include a series of high resolution images and a specific set of annotation tasks.
 
-The trial and annotation data can be accessed programmatically via a [documented API](https://aida.gitbook.io/docs/).
+For documentation and further information see the [Wiki](https://github.com/alanaberdeen/AIDA/wiki). 
 
 ## See a demo
 
