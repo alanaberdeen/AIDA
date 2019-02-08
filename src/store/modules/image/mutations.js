@@ -32,6 +32,15 @@ export default {
       showNavigator: true,
       navigatorId: 'navigator'
     })
+
+    // Prevent rotation and 'flipping' of the image through the default keybaord
+    // shortcuts, R and F. (these were conflicting with other annotation tool
+    // shortcuts when the image was open)
+    state.OSDviewer.addHandler('canvas-key', e => {
+      if (e.originalEvent.code === 'KeyR' || e.originalEvent.code === 'KeyF') {
+        e.preventDefaultAction = true
+      }
+    })
   },
 
   setActiveChannel: (state, payload) => {
