@@ -20,7 +20,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       savingInProgress: false
     }
@@ -35,7 +35,7 @@ export default {
       dispatchSave: 'backend/saveAnnotation'
     }),
 
-    async save() {
+    async save () {
       this.savingInProgress = true
       await this.dispatchSave()
       this.savingInProgress = false
