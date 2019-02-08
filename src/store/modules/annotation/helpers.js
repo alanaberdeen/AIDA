@@ -3,23 +3,32 @@ export default {
   // Output: Segments in the format specified by the AIDA annotation schema
   getSegments (item) {
     let segments = []
-    item.segments.forEach(segment => {
-      segments.push({
-        point: {
-          x: segment.point.x,
-          y: segment.point.y
-        },
-        handleIn: {
-          x: segment.handleIn.x,
-          y: segment.handleIn.y
-        },
-        handleOut: {
-          x: segment.handleOut.x,
-          y: segment.handleOut.y
-        }
-      })
-    })
-
+    for (let i = 0, len = item.segments.length; i < len; i++) {
+      const segment = item.segments[i]
+      if (segment.hasHandles()) {
+        segments.push({
+          point: {
+            x: segment.point.x,
+            y: segment.point.y
+          },
+          handleIn: {
+            x: segment.handleIn.x,
+            y: segment.handleIn.y
+          },
+          handleOut: {
+            x: segment.handleOut.x,
+            y: segment.handleOut.y
+          }
+        })
+      } else {
+        segments.push({
+          point: {
+            x: segment.point.x,
+            y: segment.point.y
+          }
+        })
+      }
+    }
     return segments
   },
 
