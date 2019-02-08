@@ -25,43 +25,41 @@ export default {
     // Gather all the Path items in the paperJS environment and store them in
     // the state appropriately. Convention follows AIDA annotation schema:
     // https://aida.gitbook.io/docs/annotation-schema
-    paper.project
-      .getItems({
-        className: 'Path'
-      })
-      .forEach(item => {
-        if (item.data.type === 'circle') {
-          state.project.layers[item.layer.index].items.push({
-            class: item.data.class,
-            type: 'circle',
-            color: helpers.getColor(item),
-            center: {
-              x: item.position.x,
-              y: item.position.y
-            },
-            radius: item.bounds.width / 2,
-            data: item.data.data
-          })
-        } else if (item.data.type === 'rectangle') {
-          state.project.layers[item.layer.index].items.push({
-            ...item.data,
-            color: helpers.getColor(item),
-            x: item.bounds.x,
-            y: item.bounds.y,
-            width: item.bounds.width,
-            height: item.bounds.height
-          })
-        } else {
-          state.project.layers[item.layer.index].items.push({
-            class: item.data.class,
-            type: 'path',
-            color: helpers.getColor(item),
-            segments: helpers.getSegments(item),
-            closed: item.closed,
-            data: item.data.data
-          })
-        }
-      })
+    const items = paper.project.getItems({ className: 'Path' })
+    for (let i = 0, len = items.length; i < len; i++) {
+      const item = items[i]
+      if (item.data.type === 'circle') {
+        state.project.layers[item.layer.index].items.push({
+          class: item.data.class,
+          type: 'circle',
+          color: helpers.getColor(item),
+          center: {
+            x: item.position.x,
+            y: item.position.y
+          },
+          radius: item.bounds.width / 2,
+          data: item.data.data
+        })
+      } else if (item.data.type === 'rectangle') {
+        state.project.layers[item.layer.index].items.push({
+          ...item.data,
+          color: helpers.getColor(item),
+          x: item.bounds.x,
+          y: item.bounds.y,
+          width: item.bounds.width,
+          height: item.bounds.height
+        })
+      } else {
+        state.project.layers[item.layer.index].items.push({
+          class: item.data.class,
+          type: 'path',
+          color: helpers.getColor(item),
+          segments: helpers.getSegments(item),
+          closed: item.closed,
+          data: item.data.data
+        })
+      }
+    }
   },
 
   prepareCanvas: (state, activeLayer) => {
