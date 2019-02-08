@@ -37,7 +37,7 @@ async function saveAnnotation (data) {
   const writeFile = promisify(fs.writeFile)
   const imageName = data.imageName
   const filePath = 'data/annotations/' + imageName + '.json'
-  const json = JSON.stringify(data.annotationData, null, 2)
+  const json = JSON.stringify(data.annotationData)
   await writeFile(filePath, json, 'utf8')
 }
 
