@@ -53,7 +53,9 @@ async function startServer () {
   })
 
   // Need to parse POST Body data (for parsing application/json)
-  app.use(bodyParser.json())
+  app.use(bodyParser.json({
+    limit: '100mb'
+  }))
 
   // Save annoation data
   app.post('/save', async function (req, res) {
