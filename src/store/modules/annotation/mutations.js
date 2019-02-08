@@ -15,7 +15,7 @@ export default {
   // Incorporate all of the paperJS annotation items in the Vuex state
   refreshAnnotationState: state => {
     paper.project.layers.forEach(layer => {
-      Vue.set(state.project.layers, [layer.index], {
+      Vue.set(state.project.layers, layer.index, {
         name: state.project.layers[layer.index] ? state.project.layers[layer.index].name : layer.name,
         opacity: layer.opacity,
         items: []
@@ -225,9 +225,6 @@ export default {
                     alpha: item.color.fill.alpha
                   })
                 }
-              } else {
-                newPaperItem.fillColor = 'blue'
-                newPaperItem.fillColor.alpha = 0
               }
             }
             if (item.color && item.color.stroke) {
