@@ -125,7 +125,7 @@ export default {
     paper.project.activeLayer.name = newName
     Vue.set(state.project.layers[paper.project.activeLayer.index], 'name', newName)
   },
-  
+
   deleteActiveLayer: (state) => {
     state.project.layers.splice(paper.project.activeLayer.index, 1)
     paper.project.activeLayer.remove()
