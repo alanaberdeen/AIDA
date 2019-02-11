@@ -11,7 +11,7 @@ export default {
     if (validationLayer.length > 0) {
       return validationLayer[0].items
     } else {
-      return -1
+      return 0
     }
   }
 }

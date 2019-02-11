@@ -9,7 +9,10 @@
       <v-divider/>
 
       <div v-if="!this.validationStarted">
-        <v-btn small color="primary" @click="startValidation"> Start </v-btn>
+        <v-btn small class="primary" :disabled="this.getItemsForValidation().length === 0" 
+          @click="startValidation"> 
+          Start 
+        </v-btn>
       </div>
 
       <v-container fluid id="validation-controls" v-else>
