@@ -4,7 +4,6 @@
     class="elevation-1">
 
     <div id="hint">
-
       {{ steps[activeStep].instruction }}
 
       <v-divider/>
@@ -16,38 +15,21 @@
       <v-container fluid id="validation-controls" v-else>
         <v-layout>
           <v-flex xs2>
-
-            <v-btn flat icon color="primary" @click="goToPreviousItem">
+            <v-btn flat icon color="primary" @click="incrementActiveItemBy(-1)">
               <v-icon> arrow_back </v-icon>
             </v-btn>
           </v-flex>
 
           <v-flex xs8>
             <v-layout align-center justify-center>
-              <v-flex xs4>
                 <span id="item-title">
-                  Item: {{ this.activeItemIndex + 1  }} / {{ this.getItemsForValidation().length }}
+                  {{ this.activeItemIndex + 1  }} / {{ this.getItemsForValidation().length }}
                 </span>
-              </v-flex>
-
-              <v-flex xs4>
-                <span id="item-title">
-                  Class: {{ this.paperItem.data.validationScore }}
-                </span>
-              </v-flex>
-
-              <v-flex xs4>
-                <span id="item-title">
-                  Score: {{ Math.round(this.getItemsForValidation()[this.activeItemIndex].predictionScore * 100) / 100 }}
-                </span>
-              </v-flex>
-
             </v-layout>
 
-            <v-divider></v-divider>
+            <v-divider/>
 
             <v-layout align-center justify-center>
-
               <v-btn small color="success"
                 :outline="!(this.activeValidationButton === 'correct')"
                 :depressed="this.activeValidationButton === 'correct'"
@@ -82,7 +64,7 @@
           </v-flex>
 
           <v-flex xs2 text-xs-right>
-            <v-btn flat icon color="primary" @click="goToNextItem">
+            <v-btn flat icon color="primary" @click="incrementActiveItemBy(1)">
               <v-icon> arrow_forward </v-icon>
             </v-btn>
           </v-flex>
@@ -107,7 +89,8 @@ export default {
       steps: state => state.app.steps,
       viewport: state => state.image.OSDviewer.viewport,
       activeValidationIndex: state => state.app.activeValidationIndex,
-      uid: state => state.app.uid
+      uid: state => state.backend.user.uid,
+      validatorRole: state => state.backend.user.validatorRole
     })
   },
 
@@ -119,7 +102,19 @@ export default {
       activeValidationButton: '',
       paperItem: null,
       validationStartTime: 0,
-      initialItemData: {}
+      initialItemData: {},
+      neutralColor: {
+        hue: 170,
+        saturation: 0.44,
+        lightness: 0.69,
+        alpha: 1
+      },
+      highlightColor: {
+        hue: 60,
+        saturation: 1,
+        lightness: 0.85,
+        alpha: 1
+      }
     }
   },
 
@@ -137,73 +132,50 @@ export default {
     }),
 
     ...mapActions({
-      saveProject: 'app/saveProject',
       setActiveValidationIndex: 'app/setActiveValidationIndex',
-      updateValidation: 'app/updateValidation',
-      createNewItemInDB: 'app/createNewItem'
+      saveClassValidation: 'backend/saveClassValidation',
+      saveBoundingBox: 'backend/saveBoundingBox',
+      validateItemsBoundingBox: 'backend/validateItemsBoundingBox',
+      createNewItemInDB: 'backend/createNewItem'
     }),
 
-    goToNextItem () {
-      if (this.validationStarted) {
-        this.saveValidation()
-        this.label = ''
-        // Reset the previously viewed paperJS item to neutral color
-        this.paperItem.strokeColor = {
-          hue: 170,
-          saturation: 0.44,
-          lightness: 0.69,
-          alpha: 1
-        }
-      } 
-      this.activeItemIndex === (this.getItemsForValidation().length - 1) ? this.activeItemIndex = 0 : this.activeItemIndex++
-      this.goToItem(this.getItemsForValidation()[this.activeItemIndex])
-
-      // Update the reference to the new paperJS item and then make the stroke visually distinctive
-      this.paperItem = this.findPaperItem(this.getItemsForValidation()[this.activeItemIndex])
-      this.paperItem.strokeColor = {
-        hue: 60,
-        saturation: 1,
-        lightness: 0.85,
-        alpha: 1
+    startValidation () {
+      if (this.activeValidationIndex === 0) {
+        this.activeItemIndex = this.getItemsForValidation().length - 1
+      } else {
+        this.activeItemIndex = this.activeValidationIndex - 1
       }
-
-      this.initialItemData = {
-        x: this.paperItem.bounds.x,
-        y: this.paperItem.bounds.y,
-        width: this.paperItem.bounds.width,
-        height: this.paperItem.bounds.height
-      }
-      this.validationStartTime = Date.now()
+      this.incrementActiveItemBy(1)
+      this.validationStarted = true
     },
 
-    goToPreviousItem () {
-      this.label = ''
-      this.activeItemIndex === 0 ? (this.activeItemIndex = this.getItemsForValidation().length - 1) : this.activeItemIndex--
+    incrementActiveItemBy (value) {
+      if (this.validationStarted) {
+        this.checkToSaveValidation()
+        this.label = ''
+        this.paperItem.strokeColor = this.neutralColor
+      }
+
+      if (this.activeItemIndex === (this.getItemsForValidation().length - 1) && value > 0) {
+        this.activeItemIndex = 0
+      } else if (this.activeItemIndex === 0 && value < 0) {
+        this.activeItemIndex = this.getItemsForValidation().length - 1
+      } else {
+        this.activeItemIndex = this.activeItemIndex + value
+      }
+
       this.goToItem(this.getItemsForValidation()[this.activeItemIndex])
 
-      // Reset the previously viewed paperJS item to neutral color
-      this.paperItem.strokeColor = {
-        hue: 170,
-        saturation: 0.44,
-        lightness: 0.69,
-        alpha: 1
-      }
-
-      // Update the reference to the new paperJS item and then make the stroke visually distinctive
       this.paperItem = this.findPaperItem(this.getItemsForValidation()[this.activeItemIndex])
-      this.paperItem.strokeColor = {
-        hue: 60,
-        saturation: 1,
-        lightness: 0.85,
-        alpha: 1
-      }
+      this.paperItem.strokeColor = this.highlightColor
+
+      this.validationStartTime = Date.now()
       this.initialItemData = {
         x: this.paperItem.bounds.x,
         y: this.paperItem.bounds.y,
         width: this.paperItem.bounds.width,
         height: this.paperItem.bounds.height
       }
-      this.validationStartTime = Date.now()
     },
 
     markCorrect () {
@@ -212,7 +184,7 @@ export default {
       this.paperItem.fillColor = '#4CAF50'
       this.flashAndFadeFillColor(this.paperItem)
       setTimeout(() => {
-        this.goToNextItem()
+        this.incrementActiveItemBy(1)
         this.setActiveValidationIndex(this.activeItemIndex)
       }, 500)
     },
@@ -223,7 +195,7 @@ export default {
       this.paperItem.fillColor = '#FFC107'
       this.flashAndFadeFillColor(this.paperItem)
       setTimeout(() => {
-        this.goToNextItem()
+        this.incrementActiveItemBy(1)
         this.setActiveValidationIndex(this.activeItemIndex)
       }, 500)
     },
@@ -234,9 +206,20 @@ export default {
       this.paperItem.fillColor = '#FF5252'
       this.flashAndFadeFillColor(this.paperItem)
       setTimeout(() => {
-        this.goToNextItem()
+        this.incrementActiveItemBy(1)
         this.setActiveValidationIndex(this.activeItemIndex)
       }, 500)
+    },
+
+    flashAndFadeFillColor (item) {
+      item.fillColor.alpha = 0.6
+      let fade = window.setInterval(() => {
+        item.fillColor.alpha = item.fillColor.alpha - 0.05
+      }, 100)
+
+      window.setTimeout(() => {
+        window.clearInterval(fade)
+      }, 800)
     },
 
     createNewItem () {
@@ -256,6 +239,7 @@ export default {
       })
     },
 
+    // TODO: remove item functionality is incomplete...
     // Remove the item from the paperJS rendering and also delete it from the database
     removeItem () {
       console.log('want to remove item')
@@ -297,10 +281,10 @@ export default {
     keyDown (e) {
       switch (e.keyCode) {
         case 39:
-          this.goToNextItem()
+          this.incrementActiveItemBy(1)
           break
         case 37:
-          this.goToPreviousItem()
+          this.incrementActiveItemBy(-1)
           break
         case 49:
           if (!e.getModifierState('Meta')) { this.markCorrect() }
@@ -317,46 +301,37 @@ export default {
       }
     },
 
-    flashAndFadeFillColor (item) {
-      item.fillColor.alpha = 0.6
-      let fade = window.setInterval(() => {
-        item.fillColor.alpha = item.fillColor.alpha - 0.05
-      }, 100)
-
-      window.setTimeout(() => {
-        window.clearInterval(fade)
-      }, 800)
-    },
-
-    startValidation () {
-      if (this.activeValidationIndex === 0) {
-        this.activeItemIndex = this.getItemsForValidation().length - 1
-      } else {
-        this.activeItemIndex = this.activeValidationIndex - 1
-      }
-      this.goToNextItem()
-      this.validationStarted = true
-    },
-
-    saveValidation () {
-      let adjustedBoundingBox = this.checkIfBoundingBoxAdjusted()
-      let labelAdded = this.checkIfLabelAdded()
-      let itemData = {
-        docName: this.paperItem.data.name,
-        timestamp: new Date(),
-        validation: labelAdded,
-        boundingBox: adjustedBoundingBox
+    checkToSaveValidation () {
+      const labelAdded = this.checkIfLabelAdded()
+      if (labelAdded) {
+        this.saveClassValidation({
+          validation: labelAdded,
+          docName: this.paperItem.data.name
+        })
       }
 
-      this.updateValidation(itemData)
+      if (this.validatorRole === 'basic') {
+        let adjustedBoundingBox = this.checkIfBoundingBoxAdjusted()
+        if (adjustedBoundingBox) {
+          this.saveBoundingBox({
+            boundingBox: adjustedBoundingBox,
+            docName: this.paperItem.data.name,
+            timestamp: new Date(),
+            uid: this.uid
+          })
+        } else {
+          this.validateItemsBoundingBox(this.paperItem.data.name)
+        }
+      }
     },
 
     checkIfLabelAdded () {
       if (this.label) {
         return {
           uid: this.uid,
-          label: this.label,
-          decisionTimeInMs: Date.now() - this.validationStartTime
+          class: this.label,
+          decisionTimeInMs: Date.now() - this.validationStartTime,
+          timestamp: new Date()
         }
       } else {
         return false
@@ -365,9 +340,9 @@ export default {
 
     checkIfBoundingBoxAdjusted () {
       let currentItemData = {
-        x: this.paperItem.bounds.x, 
-        y: this.paperItem.bounds.y, 
-        width: this.paperItem.bounds.width, 
+        x: this.paperItem.bounds.x,
+        y: this.paperItem.bounds.y,
+        width: this.paperItem.bounds.width,
         height: this.paperItem.bounds.height
       }
 
