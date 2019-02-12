@@ -3,6 +3,7 @@ import mutations from './mutations'
 import getters from './getters'
 
 const state = {
+  task: '',
   toolsDrawer: true,
   studioDrawer: true,
   snackbar: {

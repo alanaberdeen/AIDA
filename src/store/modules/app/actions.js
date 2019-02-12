@@ -1,4 +1,10 @@
 export default {
+  setAppTask: ({
+    commit
+  }, task) => {
+    commit('setAppTask', task)
+  },
+
   dismissSnackbar: ({
     commit
   }) => {
