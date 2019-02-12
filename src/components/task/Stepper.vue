@@ -14,6 +14,7 @@
             :step="step.id"
             editable
             @click.native="activateStep(step)"
+            class='step-icon'
           />
           <v-divider
             v-if="step.id !== steps.length"
@@ -83,6 +84,10 @@ export default {
 
 #stepper-header {
   height: 50px;
+}
+
+.step-icon {
+  padding-top: 13px;
 }
 
 #hint-card {
