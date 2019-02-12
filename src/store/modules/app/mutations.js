@@ -83,16 +83,13 @@ export default {
     state.toolsDrawer = false
     state.studioDrawer = false
     if (state.task === 'review') {
-      state.steps = [
-        {
-          id: 1,
-          instruction: 'Review the data',
-          type: 'review'
-        }
-      ]
+      state.steps = [{
+        id: 1,
+        instruction: 'Review the data',
+        type: 'review'
+      }]
     } else if (state.task === 'validate') {
       state.steps = [{
-      {
         id: 1,
         instruction: 'Cycle through each of the predicted Megakaryocyte classifications and verify whether the prediction is correct or incorrect. In cases where you are not certain, flag the prediction for review.',
         type: 'validate'
