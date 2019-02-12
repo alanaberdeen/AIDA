@@ -8,6 +8,7 @@ const state = {
     name: 'An AIDA project',
     layers: []
   },
+  projectStateRefreshIndex: 0,
   selectedItems: [],
   currentColor: null,
   defaultColors: helpers.defaultColors()

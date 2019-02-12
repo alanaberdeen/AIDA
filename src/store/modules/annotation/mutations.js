@@ -60,6 +60,12 @@ export default {
         })
       }
     }
+
+    // Increment a tally of the number of time the project state has been
+    // refreshed. This is used as a bit of a hack so that different Vue
+    // components can easily 'watch()' part of the state and trigger methods
+    // on updates
+    state.projectStateRefreshIndex = state.projectStateRefreshIndex + 1
   },
 
   prepareCanvas: (state, activeLayer) => {
@@ -156,6 +162,7 @@ export default {
           type: 'rectangle',
           predictionClass: box.class.predictionClass,
           predictionScore: box.class.predictionScore,
+          validationClass: box.class.validationClass,
           validationScore: box.class.validationScore
         }
       })
