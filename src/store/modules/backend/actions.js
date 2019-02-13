@@ -59,7 +59,7 @@ export default {
       const response = await axios.get(dataLocation)
       commit('annotation/loadAnnotation', response.data, { root: true })
     } catch (err) {
-      console.log('No annotation data found')
+      console.log('Annotation data either could not be found or could not be loaded')
     }
   }
 }
