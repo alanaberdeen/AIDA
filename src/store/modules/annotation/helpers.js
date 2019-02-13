@@ -1,56 +1,6 @@
+import paper from 'paper'
+
 export default {
-  // Input: paperJS item
-  // Output: Segments in the format specified by the AIDA annotation schema
-  getSegments (item) {
-    let segments = []
-    for (let i = 0, len = item.segments.length; i < len; i++) {
-      const segment = item.segments[i]
-      if (segment.hasHandles()) {
-        segments.push({
-          point: {
-            x: segment.point.x,
-            y: segment.point.y
-          },
-          handleIn: {
-            x: segment.handleIn.x,
-            y: segment.handleIn.y
-          },
-          handleOut: {
-            x: segment.handleOut.x,
-            y: segment.handleOut.y
-          }
-        })
-      } else {
-        segments.push({
-          point: {
-            x: segment.point.x,
-            y: segment.point.y
-          }
-        })
-      }
-    }
-    return segments
-  },
-
-  // Input: paperJS path item
-  // Output: the stroke and fill color as an object
-  getColor (item) {
-    return {
-      fill: item.fillColor !== null ? {
-        hue: item.fillColor.hue,
-        saturation: item.fillColor.saturation,
-        lightness: item.fillColor.lightness,
-        alpha: item.fillColor.alpha
-      } : null,
-      stroke: item.strokeColor !== null ? {
-        hue: item.strokeColor.hue,
-        saturation: item.strokeColor.saturation,
-        lightness: item.strokeColor.lightness,
-        alpha: item.strokeColor.alpha
-      } : null
-    }
-  },
-
   // Default set of colors
   defaultColors () {
     return [{
@@ -184,5 +134,148 @@ export default {
         alpha: 1
       }
     }]
+  },
+
+  // Input: state.project.layers
+  // Output: none (draws the items in the paperJS instance)
+  drawItems (items) {
+    if (items) {
+      items.forEach(item => {
+        let newPaperItem
+        if (item.type === 'circle') {
+          newPaperItem = new paper.Path.Circle({
+            center: item.center,
+            radius: item.radius,
+            data: {
+              type: 'circle',
+              countable: true,
+              class: item.class,
+              data: item.data
+            }
+          })
+          this.drawItemColor(newPaperItem, item)
+        } else if (item.type === 'rectangle') {
+          newPaperItem = new paper.Path.Rectangle({
+            point: [item.x, item.y],
+            size: [item.width, item.height],
+            data: {
+              type: 'rectangle',
+              class: item.class,
+              data: item.data
+            }
+          })
+          this.drawItemColor(newPaperItem, item)
+        } else if (item.type === 'path') {
+          newPaperItem = new paper.Path({
+            segments: item.segments,
+            closed: item.closed ? item.closed : false,
+            data: {
+              type: 'path',
+              class: item.class,
+              data: item.data
+            }
+          })
+          this.drawItemColor(newPaperItem, item)
+        } else if (item.type === 'raster') {
+          const itemPosition = item.hasOwnProperty('position') ? new paper.Point(item.position.x, item.position.y) : new paper.Point(0, 0)
+          newPaperItem = new paper.Raster({
+            crossOrigin: 'anonymous',
+            source: item.source,
+            position: itemPosition,
+            data: {
+              type: 'raster',
+              countable: false,
+              class: item.class,
+              data: item.data
+            }
+          })
+        }
+      })
+    }
+  },
+
+  // Input: paperJS item
+  // Output: Segments in the format specified by the AIDA annotation schema
+  getSegments (item) {
+    let segments = []
+    for (let i = 0, len = item.segments.length; i < len; i++) {
+      const segment = item.segments[i]
+      if (segment.hasHandles()) {
+        segments.push({
+          point: {
+            x: segment.point.x,
+            y: segment.point.y
+          },
+          handleIn: {
+            x: segment.handleIn.x,
+            y: segment.handleIn.y
+          },
+          handleOut: {
+            x: segment.handleOut.x,
+            y: segment.handleOut.y
+          }
+        })
+      } else {
+        segments.push({
+          point: {
+            x: segment.point.x,
+            y: segment.point.y
+          }
+        })
+      }
+    }
+    return segments
+  },
+
+  // Input: paperJS path item
+  // Output: the stroke and fill color as an object
+  getColor (item) {
+    return {
+      fill: item.fillColor !== null ? {
+        hue: item.fillColor.hue,
+        saturation: item.fillColor.saturation,
+        lightness: item.fillColor.lightness,
+        alpha: item.fillColor.alpha
+      } : null,
+      stroke: item.strokeColor !== null ? {
+        hue: item.strokeColor.hue,
+        saturation: item.strokeColor.saturation,
+        lightness: item.strokeColor.lightness,
+        alpha: item.strokeColor.alpha
+      } : null
+    }
+  },
+
+  drawItemColor (paperItem, stateItem) {
+    const defaultColors = this.defaultColors()
+    if (paperItem.closed) {
+      if (stateItem.color && stateItem.color.fill) {
+        if (typeof stateItem.color.fill === 'string') {
+          paperItem.fillColor = stateItem.color.fill
+          paperItem.fillColor.alpha = 0.2
+        } else {
+          paperItem.fillColor = new paper.Color({
+            hue: stateItem.color.fill.hue,
+            saturation: stateItem.color.fill.saturation,
+            lightness: stateItem.color.fill.lightness,
+            alpha: stateItem.color.fill.alpha
+          })
+        }
+      }
+    }
+    if (stateItem.color && stateItem.color.stroke) {
+      if (typeof stateItem.color.fill === 'string') {
+        paperItem.strokeColor = stateItem.color.stroke
+      } else {
+        paperItem.strokeColor = new paper.Color({
+          hue: stateItem.color.stroke.hue,
+          saturation: stateItem.color.stroke.saturation,
+          lightness: stateItem.color.stroke.lightness,
+          alpha: stateItem.color.stroke.alpha
+        })
+      }
+    } else {
+      paperItem.strokeColor = defaultColors[paperItem.layer.index % defaultColors.length].stroke
+    }
   }
 }

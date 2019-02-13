@@ -22,10 +22,14 @@ export default {
       })
     })
 
-    // Gather all the Path items in the paperJS environment and store them in
-    // the state appropriately. Convention follows AIDA annotation schema:
-    // https://aida.gitbook.io/docs/annotation-schema
-    const items = paper.project.getItems({ className: 'Path' })
+    // Gather all the Path/Raster items in the paperJS environment and store
+    // them in the state appropriately. Convention follows AIDA annotation
+    // schema: https://github.com/alanaberdeen/AIDA/wiki/Annotation-Schema
+    const items = paper.project.getItems({
+      className: function (className) {
+        return (className === 'Path' || className === 'Raster')
+      }
+    })
     for (let i = 0, len = items.length; i < len; i++) {
       const item = items[i]
       if (item.data.type === 'circle') {
@@ -49,13 +53,24 @@ export default {
           width: item.bounds.width,
           height: item.bounds.height
         })
-      } else {
+      } else if (item.data.type === 'path') {
         state.project.layers[item.layer.index].items.push({
           class: item.data.class,
           type: 'path',
           color: helpers.getColor(item),
           segments: helpers.getSegments(item),
           closed: item.closed,
+          data: item.data.data
+        })
+      } else if (item.data.type === 'raster') {
+        state.project.layers[item.layer.index].items.push({
+          class: item.data.class,
+          type: 'raster',
+          source: item.source,
+          position: {
+            x: item.position.x,
+            y: item.position.y
+          },
           data: item.data.data
         })
       }
@@ -173,88 +188,16 @@ export default {
   // Load annotation data into both the state and the paperJS environment.
   loadAnnotation: (state, payload) => {
     if (payload) {
-      // Save the loaded annotation data to the Vuex state
       state.project = payload
 
-      // Cycle through the layers
       state.project.layers.forEach(layer => {
-        // Create a new layer
-        let newPaperLayer = new paper.Layer()
+        const newPaperLayer = new paper.Layer()
         newPaperLayer.opacity = layer.opacity
-
-        // Draw each item
-        if (layer.items) {
-          layer.items.forEach(item => {
-            let newPaperItem
-            if (item.type === 'circle') {
-              newPaperItem = new paper.Path.Circle({
-                center: item.center,
-                radius: item.radius,
-                data: {
-                  type: 'circle',
-                  countable: true,
-                  class: item.class,
-                  data: item.data
-                }
-              })
-            } else if (item.type === 'rectangle') {
-              newPaperItem = new paper.Path.Rectangle({
-                point: [item.x, item.y],
-                size: [item.width, item.height],
-                data: {
-                  type: 'rectangle',
-                  class: item.class,
-                  data: item.data
-                }
-              })
-            } else {
-              newPaperItem = new paper.Path({
-                segments: item.segments,
-                closed: item.closed ? item.closed : false,
-                data: {
-                  type: 'path',
-                  class: item.class,
-                  data: item.data
-                }
-              })
-            }
-
-            // Set the path colors to the default for their layer.
-            if (newPaperItem.closed) {
-              if (item.color && item.color.fill) {
-                if (typeof item.color.fill === 'string' || item.color.fill instanceof String) {
-                  newPaperItem.fillColor = item.color.fill
-                  newPaperItem.fillColor.alpha = 0.2
-                } else {
-                  newPaperItem.fillColor = new paper.Color({
-                    hue: item.color.fill.hue,
-                    saturation: item.color.fill.saturation,
-                    lightness: item.color.fill.lightness,
-                    alpha: item.color.fill.alpha
-                  })
-                }
-              }
-            }
-            if (item.color && item.color.stroke) {
-              if (typeof item.color.fill === 'string' || item.color.fill instanceof String) {
-                newPaperItem.strokeColor = item.color.stroke
-              } else {
-                newPaperItem.strokeColor = new paper.Color({
-                  hue: item.color.stroke.hue,
-                  saturation: item.color.stroke.saturation,
-                  lightness: item.color.stroke.lightness,
-                  alpha: item.color.stroke.alpha
-                })
-              }
-            } else {
-              newPaperItem.strokeColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length].stroke
-            }
-          })
-        }
+        helpers.drawItems(layer.items)
       })
 
       // Active the correct layer as specified by editor state.
-      if (payload.activeLayer) { paper.project.layers[payload.activeLayer].activate() }
+      // if (payload.activeLayer) { paper.project.layers[payload.activeLayer].activate() }
     }
   }
 }
