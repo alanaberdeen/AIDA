@@ -1,7 +1,9 @@
 const { promisify } = require('util')
 const express = require('express')
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 const fs = require('fs')
+const os = require('os')
+const chalk = require('chalk')
 
 // Check for images in the directory and update the images.json file
 async function checkForImages () {
@@ -87,10 +89,13 @@ async function startServer () {
   // Serve the built application
   app.use(express.static('.'))
 
+  const networkIPAddress = os.networkInterfaces().en0[1].address
+
   // Listen to requests
   app.listen(port, () => {
-    console.log('\n')
-    console.log(`Running AIDA at http://localhost:${port}/`)
+    console.log(`  AIDA running at:`)
+    console.log('  - Local:   ' + chalk.cyan(`http://localhost:${port}/`))
+    console.log('  - Network: ' + chalk.cyan(`http://` + networkIPAddress + `:${port}/`))
   })
 }
 
