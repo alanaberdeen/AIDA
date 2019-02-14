@@ -19,11 +19,11 @@ export default {
   setOSDImageSource: (state, OSDviewer) => {
     if (state.imageType === 'dzi') {
       OSDviewer.addTiledImage({
-        tileSource: 'http://localhost:3000/data/images/' + state.fileName
+        tileSource: location.origin + '/data/images/' + state.fileName
       })
     } else if (state.imageType === 'simple') {
       OSDviewer.addSimpleImage({
-        url: 'http://localhost:3000/data/images/' + state.fileName
+        url: location.origin + '/data/images/' + state.fileName
       })
     }
   }

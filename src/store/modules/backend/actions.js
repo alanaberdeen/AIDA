@@ -5,8 +5,8 @@ export default {
     commit
   }) {
     try {
-      await axios.post('http://localhost:3000/checkForImages')
-      const dataLocation = 'http://localhost:3000/data/images.json'
+      await axios.post(location.origin + '/checkForImages')
+      const dataLocation = location.origin + '/data/images.json'
       const response = await axios.get(dataLocation)
       commit('getData', response.data)
     } catch (err) {
@@ -41,8 +41,9 @@ export default {
     rootState
   }) {
     await dispatch('annotation/refreshAnnotationState', null, { root: true })
+    const postUrl = location.origin + '/save'
     axios.post(
-      'http://localhost:3000/save',
+      postUrl,
       {
         imageName: rootState.image.imageName,
         annotationData: rootState.annotation.project
@@ -54,7 +55,7 @@ export default {
     commit,
     rootState
   }) {
-    const dataLocation = 'http://localhost:3000/data/annotations/' + rootState.image.imageName + '.json'
+    const dataLocation = location.origin + '/data/annotations/' + rootState.image.imageName + '.json'
     try {
       const response = await axios.get(dataLocation)
       commit('annotation/loadAnnotation', response.data, { root: true })
