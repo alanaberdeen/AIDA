@@ -70,10 +70,9 @@ export default {
   loadProject: async ({
     dispatch
   }) => {
-    const getAnnotation = dispatch('backend/getAnnotation', null, { root: true })
-    const setOSDImageSource = dispatch('backend/setOSDImageSource', null, { root: true })
-    await Promise.all([getAnnotation, setOSDImageSource])
-    dispatch('synchroniseAnnotationAndOSDCanvas')
+    await dispatch('synchroniseAnnotationAndOSDCanvas')
+    dispatch('backend/getAnnotation', null, { root: true })
+    dispatch('backend/setOSDImageSource', null, { root: true })
   },
 
   toggleToolsDrawer: ({
