@@ -1,5 +1,6 @@
 <template>
   <div id="container">
+    <app-snackbar/>
     <app-toolbar/>
     <app-tools />
     <app-studio />
@@ -22,6 +23,7 @@ import Studio from './studio/Studio.vue'
 import Stepper from '../task/Stepper.vue'
 import View from './view/View.vue'
 import Toolbar from '../header/Toolbar.vue'
+import Snackbar from '../notification/Snackbar.vue'
 
 export default {
   components: {
@@ -29,7 +31,8 @@ export default {
     'app-studio': Studio,
     'app-stepper': Stepper,
     'app-view': View,
-    'app-toolbar': Toolbar
+    'app-toolbar': Toolbar,
+    'app-snackbar': Snackbar
   }
 }
 </script>

@@ -40,15 +40,26 @@ export default {
     dispatch,
     rootState
   }) {
-    await dispatch('annotation/refreshAnnotationState', null, { root: true })
-    const postUrl = location.origin + '/save'
-    axios.post(
-      postUrl,
-      {
-        imageName: rootState.image.imageName,
-        annotationData: rootState.annotation.project
-      }
-    )
+    try {
+      await dispatch('annotation/refreshAnnotationState', null, { root: true })
+      const postUrl = location.origin + '/save'
+      await axios.post(
+        postUrl,
+        {
+          imageName: rootState.image.imageName,
+          annotationData: rootState.annotation.project
+        }
+      )
+      dispatch('app/activateSnackbar', {
+        text: 'Saved annotation data',
+        color: 'success'
+      }, { root: true })
+    } catch (err) {
+      dispatch('app/activateSnackbar', {
+        text: 'Annotation data could not be saved',
+        color: 'error'
+      }, { root: true })
+    }
   },
 
   async getAnnotation ({

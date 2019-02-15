@@ -9,7 +9,7 @@ export default {
     state.snackbar.active = true
     state.snackbar.text = payload.text ? payload.text : 'notification'
     state.snackbar.color = payload.color ? payload.color : 'info'
-    state.snackbar.timeout = payload.timeout ? payload.timeout : 2000
+    state.snackbar.timeout = payload.timeout ? payload.timeout : 4000
   },
 
   dismissSnackbar: state => {

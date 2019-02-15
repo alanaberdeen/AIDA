@@ -6,13 +6,6 @@
     top
   >
     {{ text }}
-    <v-btn
-      dark
-      flat
-      @click="dismissSnackbar"
-    >
-      Close
-    </v-btn>
   </v-snackbar>
 </template>
 

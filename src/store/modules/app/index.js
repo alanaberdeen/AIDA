@@ -10,7 +10,7 @@ const state = {
     active: false,
     text: 'this is a notification',
     color: 'info',
-    timeout: 3000
+    timeout: 4000
   },
   type: 'dzi',
   activeChannel: 0,
