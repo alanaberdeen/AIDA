@@ -64,20 +64,31 @@ export default {
         })
       // If the item is a raster, we need to incorporate edits to it.
       // Therefore, necessary to 'rasterise' this image and it's combined edits.
-      // Edits are find to be overlapping and 'locked' items. Then save this as
-      // a base64 encoded URL.
       } else if (item.data.type === 'raster') {
         const editItems = item.layer.getItems({
           match: item => { return item.locked },
           overlapping: item.bounds
         })
+
+        // Add the original raster item to the array. Make sure to include
+        // as the first child so that the edits are displayed above it in the
+        // project hierarchy
         editItems.unshift(item)
+
+        // When a new group is created the default behaviour is to place is at
+        // the top of the active layer. Avoid this by explicitly sending it to
+        // the back of the project hierarchy.
         const itemsToRaster = new paper.Group(editItems)
-        const rasterizedGroup = itemsToRaster.rasterize(item.resolution.height, false).toDataURL()
+        itemsToRaster.sendToBack()
+
+        // Rasterize the image and it's edits. Convert to a base64 encoded URL.
+        const rasterizedGroup = itemsToRaster.rasterize(item.resolution.height, false)
+        const rasterizedData = rasterizedGroup.toDataURL()
+
         state.project.layers[item.layer.index].items.push({
           class: item.data.class,
           type: 'raster',
-          source: rasterizedGroup,
+          source: rasterizedData,
           position: {
             x: item.position.x,
             y: item.position.y
