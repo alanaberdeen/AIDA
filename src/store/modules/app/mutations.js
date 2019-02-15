@@ -24,16 +24,16 @@ export default {
   // the individual parts led to a far less smooth experience. Leave it here
   // for now at least.
   synchroniseAnnotationAndOSDCanvas: (state, viewer) => {
-    let strokeScale = state.strokeScale
+    const strokeScale = state.strokeScale
 
     viewer.addHandler('update-viewport', function (e) {
       // Sync Zoom
-      let viewportZoom = viewer.viewport.getZoom(true)
-      let image1 = viewer.world.getItemAt(0)
+      const viewportZoom = viewer.viewport.getZoom(true)
+      const image1 = viewer.world.getItemAt(0)
       paper.view.zoom = image1.viewportToImageZoom(viewportZoom)
 
       // Sync Center
-      let center = image1.viewportToImageCoordinates(
+      const center = image1.viewportToImageCoordinates(
         viewer.viewport.getCenter(true)
       )
       paper.view.center = new paper.Point(center.x, center.y)
@@ -49,14 +49,14 @@ export default {
     })
 
     viewer.addHandler('resize', function (e) {
-      let image1 = viewer.world.getItemAt(0)
+      const image1 = viewer.world.getItemAt(0)
 
       // Sync Size
       paper.view.viewSize.width = e.newContainerSize.x
       paper.view.viewSize.height = e.newContainerSize.y
 
       // Sync Center
-      let center = image1.viewportToImageCoordinates(
+      const center = image1.viewportToImageCoordinates(
         viewer.viewport.getCenter(true)
       )
       paper.view.center = new paper.Point(center.x, center.y)
