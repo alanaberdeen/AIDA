@@ -5,31 +5,29 @@ const fs = require('fs')
 const os = require('os')
 const chalk = require('chalk')
 
-// Check for images in the directory and update the images.json file
+// Check for images in the data/images/
+// Write a file an array of the available images as reference.
 async function checkForImages () {
   const writeFile = promisify(fs.writeFile)
-  const images = await findImages()
+  const images = await findImages('data/images')
   var json = JSON.stringify(images)
   await writeFile('data/images.json', json, 'utf8')
 }
 
-async function findImages () {
-  const dirPath = 'data/images'
-  const images = []
-
+// Returns an array of avialable images in the specified directory.
+async function findImages (dirPath) {
   const readdir = promisify(fs.readdir)
   const stat = promisify(fs.stat)
 
   try {
-    const files = await readdir(dirPath)
-    for (const file of files) {
-      const fileStats = await stat(dirPath + '/' + file)
-      // Exclude hidden and directories
-      if (file[0] !== '.' && !fileStats.isDirectory()) {
-        images.push(file)
-      }
-    }
-    return images
+    // Get an array of **all items** at the path.
+    const items = await readdir(dirPath)
+
+    // Exclude hidden files and directories
+    return items.filter(async (item) => {
+      const fileStats = await stat(dirPath + '/' + item)
+      return item[0] !== '.' && !fileStats.isDirectory()
+    })
   } catch (err) {
     console.log(err)
   }
@@ -37,9 +35,11 @@ async function findImages () {
 
 async function saveAnnotation (data) {
   const writeFile = promisify(fs.writeFile)
-  const imageName = data.imageName
-  const filePath = 'data/annotations/' + imageName + '.json'
 
+  // Get the IP address of the current machine. If we need to write a new raster
+  // file we should save the link to it using the IP address. This ensures the
+  // API endpoint where the image can be found is referenced correctly even
+  // when using AIDA over a network connection.
   const networkIPAddress = os.networkInterfaces().en0[1].address
 
   // Check for raster image items and if found we need to save these as image
@@ -47,16 +47,27 @@ async function saveAnnotation (data) {
   data.annotationData.layers.forEach(layer => {
     layer.items.forEach(item => {
       if (item.type === 'raster' && item.source.substring(0, 4) === 'data') {
+        //
+        // Extract the base64 data
         const base64Data = item.source.replace(/^data:image\/(png|gif|jpeg);base64,/, '')
-        const imagePath = 'data/annotations/' + data.imageName + '_' + layer.name + '.png'
+
+        // Save to sub-directory for raster annotation items
+        const imagePath = 'data/annotations/raster/' + data.imageName + '_' + layer.name + '.png'
         fs.writeFileSync(imagePath, base64Data, 'base64')
-        item.source = 'http://' + networkIPAddress + ':3000/' + imagePath
+
+        // Edit the source link to correctly reference the API endpoint where
+        // the image is available.
+        const apiEndpoint = 'annotations/raster/' + data.imageName + '_' + layer.name + '.png'
+        item.source = 'http://' + networkIPAddress + ':3000/' + apiEndpoint
       }
     })
   })
 
+  // Write annotation data as JSON file.
+  const imageName = data.imageName
+  const annotationFilePath = 'data/annotations/' + imageName + '.json'
   const json = JSON.stringify(data.annotationData)
-  await writeFile(filePath, json, 'utf8')
+  await writeFile(annotationFilePath, json, 'utf8')
 }
 
 async function startServer () {
@@ -71,6 +82,8 @@ async function startServer () {
   })
 
   // Need to parse POST Body data (for parsing application/json)
+  // Increase the limit from the default (100kb) to enable large annotation JSON
+  // files
   app.use(bodyParser.json({
     limit: '100mb'
   }))
@@ -99,12 +112,24 @@ async function startServer () {
     }
   })
 
-  // Serve static files from the data directory
-  app.use('/data', express.static('data'))
+  // Serve image files
+  app.use('/images', express.static('data/images', {}))
+
+  // Serve static annotation data
+  // Always respond with headers that disable the cache. Specifically this is
+  // important when editing raster images. Without this, when the editor is
+  // reloaded the browser will serve the original, pre-edit, from the cache.
+  app.use('/annotations', express.static('data/annotations', {
+    setHeaders: function (res, path) {
+      res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
+    }
+  }))
 
   // Serve the built application
   app.use(express.static('.'))
 
+  // Get the IP address of the current machine. The application will also be
+  // usable over the network from this address.
   const networkIPAddress = os.networkInterfaces().en0[1].address
 
   // Listen to requests
