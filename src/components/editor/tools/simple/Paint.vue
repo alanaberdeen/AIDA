@@ -99,8 +99,6 @@ export default {
         overlapping: this.path.bounds
       })
 
-      console.log(overlap)
-
       if (overlap) {
         if (event.modifiers.alt) {
           this.combinedPath = overlap.subtract(this.path)
@@ -111,21 +109,10 @@ export default {
       }
     }
 
-    const keyDown = event => {
-      if (event.key === 'up') {
-        this.radius++
-      } else if (event.key === 'down') {
-        this.radius--
-      }
-      console.log(event)
-    }
-
     // Add the defined functions to the tool object.
     this.toolPaint = new paper.Tool()
     this.toolPaint.onMouseMove = toolMove
     this.toolPaint.onMouseDrag = toolDrag
-    this.toolPaint.onKeyDown = keyDown
-    // this.toolPaint.onMouseUp = toolUp
   },
 
   methods: {
