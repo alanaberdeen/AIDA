@@ -265,7 +265,8 @@ export default {
         handles: true,
         fill: true,
         tolerance: hitTolerance,
-        match: this.matchFilter
+        match: this.matchFilter,
+        class: paper.Path
       }
 
       // If first time using the tool then must initialise the selection group
@@ -279,7 +280,7 @@ export default {
       // When checking from project.getItems(), can check straight under layer
       } else if (itemToCheck.layer && itemToCheck.layer.name === 'guide') {
         return false
-      } else {
+      } else if (!itemToCheck.locked) {
         return true
       }
     }
