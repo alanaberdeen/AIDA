@@ -62,11 +62,22 @@ export default {
           closed: item.closed,
           data: item.data.data
         })
+      // If the item is a raster, we need to incorporate edits to it.
+      // Therefore, necessary to 'rasterise' this image and it's combined edits.
+      // Edits are find to be overlapping and 'locked' items. Then save this as
+      // a base64 encoded URL.
       } else if (item.data.type === 'raster') {
+        const editItems = item.layer.getItems({
+          match: item => { return item.locked },
+          overlapping: item.bounds
+        })
+        editItems.unshift(item)
+        const itemsToRaster = new paper.Group(editItems)
+        const rasterizedGroup = itemsToRaster.rasterize(item.resolution.height, false).toDataURL()
         state.project.layers[item.layer.index].items.push({
           class: item.data.class,
           type: 'raster',
-          source: item.source,
+          source: rasterizedGroup,
           position: {
             x: item.position.x,
             y: item.position.y

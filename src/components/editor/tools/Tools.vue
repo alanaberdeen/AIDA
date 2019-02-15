@@ -75,6 +75,12 @@
         @click.native="activeTool = 'paint'"
       />
 
+      <app-paste
+        v-if="(getStepTools().includes('paste'))"
+        :active="(activeTool === 'paste')"
+        @click.native="activeTool = 'paste'"
+      />
+
       <app-grid
         v-if="(getStepTools().includes('grid'))"
         :active="(activeTool === 'grid')"
@@ -129,6 +135,7 @@ import toolDelete from './simple/Delete.vue'
 import toolPaint from './simple/Paint.vue'
 import toolGrid from './simple/Grid.vue'
 import toolPolygon from './simple/Polygon.vue'
+import toolPaste from './simple/Paste.vue'
 
 // Assisted Tools:
 import toolFilter from './assisted/Filter.vue'
@@ -152,7 +159,8 @@ export default {
     'app-paint': toolPaint,
     'app-grid': toolGrid,
     'app-filter': toolFilter,
-    'app-polygon': toolPolygon
+    'app-polygon': toolPolygon,
+    'app-paste': toolPaste
   },
 
   data () {
