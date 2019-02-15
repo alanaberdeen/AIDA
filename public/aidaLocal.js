@@ -39,6 +39,22 @@ async function saveAnnotation (data) {
   const writeFile = promisify(fs.writeFile)
   const imageName = data.imageName
   const filePath = 'data/annotations/' + imageName + '.json'
+
+  const networkIPAddress = os.networkInterfaces().en0[1].address
+
+  // Check for raster image items and if found we need to save these as image
+  // files and replace the item.source with link to that file.
+  data.annotationData.layers.forEach(layer => {
+    layer.items.forEach(item => {
+      if (item.type === 'raster' && item.source.substring(0, 4) === 'data') {
+        const base64Data = item.source.replace(/^data:image\/(png|gif|jpeg);base64,/, '')
+        const imagePath = 'data/annotations/' + data.imageName + '_' + layer.name + '.png'
+        fs.writeFileSync(imagePath, base64Data, 'base64')
+        item.source = 'http://' + networkIPAddress + ':3000/' + imagePath
+      }
+    })
+  })
+
   const json = JSON.stringify(data.annotationData)
   await writeFile(filePath, json, 'utf8')
 }
