@@ -219,7 +219,7 @@ export default {
       })
 
       // Active the correct layer as specified by editor state.
-      // if (payload.activeLayer) { paper.project.layers[payload.activeLayer].activate() }
+      if (payload.activeLayer) { paper.project.layers[payload.activeLayer].activate() }
     }
   }
 }
