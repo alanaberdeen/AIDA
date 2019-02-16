@@ -16,14 +16,14 @@ export default {
     }
   },
 
-  setOSDImageSource: (state, OSDviewer) => {
-    if (state.imageType === 'dzi') {
-      OSDviewer.addTiledImage({
-        tileSource: location.origin + '/data/images/' + state.fileName
+  addOSDImage: (state, payload) => {
+    if (payload.type === 'dzi') {
+      payload.viewer.addTiledImage({
+        tileSource: payload.source
       })
-    } else if (state.imageType === 'simple') {
-      OSDviewer.addSimpleImage({
-        url: location.origin + '/data/images/' + state.fileName
+    } else if (payload.type === 'simple') {
+      payload.viewer.addSimpleImage({
+        url: payload.source
       })
     }
   }

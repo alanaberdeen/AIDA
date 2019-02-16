@@ -28,12 +28,21 @@ export default {
     commit('setImageType', fileName)
   },
 
-  setOSDImageSource: ({
+  addOSDImage: ({
+    state,
     commit,
     rootState
-  }) => {
-    const OSDviewer = rootState.image.OSDviewer
-    commit('setOSDImageSource', OSDviewer)
+  }, payload) => {
+    if (payload) {
+      payload.viewer = rootState.image.OSDviewer
+      commit('addOSDImage', payload)
+    } else {
+      commit('addOSDImage', {
+        viewer: rootState.image.OSDviewer,
+        type: state.imageType,
+        source: 'http://localhost:3000/' + '/data/images/' + state.fileName
+      })
+    }
   },
 
   async saveAnnotation ({
@@ -55,6 +64,7 @@ export default {
         color: 'success'
       }, { root: true })
     } catch (err) {
+      console.log(err)
       dispatch('app/activateSnackbar', {
         text: 'Annotation data could not be saved',
         color: 'error'
@@ -64,12 +74,24 @@ export default {
 
   async getAnnotation ({
     commit,
+    dispatch,
     rootState
   }) {
     const dataLocation = location.origin + '/data/annotations/' + rootState.image.imageName + '.json'
     try {
       const response = await axios.get(dataLocation)
       commit('annotation/loadAnnotation', response.data, { root: true })
+
+      // If there are overlay images specified then we need to trigger
+      // openseadragon to load these on top of the image.
+      if (response.data.overlays) {
+        response.data.overlays.forEach(overlay => {
+          dispatch('addOSDImage', {
+            type: overlay.type,
+            source: overlay.source
+          })
+        })
+      }
     } catch (err) {
       console.log('Annotation data either could not be found or could not be loaded')
     }
