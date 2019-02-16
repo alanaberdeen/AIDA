@@ -30,7 +30,8 @@ export default {
       id: payload,
       showNavigationControl: false,
       showNavigator: true,
-      navigatorId: 'navigator'
+      navigatorId: 'navigator',
+      maxZoomPixelRatio: 2
     })
 
     // Prevent rotation and 'flipping' of the image through the default keybaord
