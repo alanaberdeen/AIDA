@@ -35,14 +35,14 @@ export default {
   },
 
   computed: mapState({
-    setProjectImageName: state => state.image.setProjectImageName
+    projectImageName: state => state.image.projectImageName
   }),
 
   async mounted () {
     try {
       await this.setProjectImageName(this.$route.params.fileName.replace(/\.[^/.]+$/, ''))
       await this.setProjectFileName(this.$route.params.fileName)
-      this.$router.replace('/' + this.setProjectImageName)
+      this.$router.replace('/' + this.projectImageName)
     } catch (error) {
       console.log('could not load the data into AIDA')
       console.log(error)

@@ -105,7 +105,7 @@ export default {
     commit
   }, payload) => {
     payload['studyName'] = state.studyName
-    payload['imageName'] = rootState.image.imageName
+    payload['imageName'] = rootState.image.projectImageName
     commit('createNewItem', payload)
   }
 }

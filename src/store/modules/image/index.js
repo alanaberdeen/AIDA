@@ -6,7 +6,10 @@ const state = {
   OSDviewer: null,
   OSDworld: null,
   activeChannel: 0,
-  projectImageName: ''
+  // This refers to the main image of the project rather
+  // than any associated overlays
+  projectImageName: '',
+  images: []
 }
 
 export default {

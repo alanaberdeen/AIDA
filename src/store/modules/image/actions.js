@@ -5,7 +5,7 @@ export default {
     commit('addOSDImage', payload)
   },
 
-  projectImageName: ({
+  setProjectImageName: ({
     commit
   }, projectImageName) => {
     commit('setProjectImageName', projectImageName)

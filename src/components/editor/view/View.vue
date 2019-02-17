@@ -30,12 +30,12 @@ export default {
 
   computed: {
     ...mapState({
-      imageName: state => state.image.imageName
+      projectImageName: state => state.image.projectImageName
     })
   },
 
   mounted () {
-    if (!this.imageName) {
+    if (!this.projectImageName) {
       this.$router.replace('/')
     } else {
       this.loadProject()
