@@ -1,8 +1,14 @@
 export default {
-  setImageName: ({
+  addOSDImage: ({
     commit
-  }, imageName) => {
-    commit('setImageName', imageName)
+  }, payload) => {
+    commit('addOSDImage', payload)
+  },
+
+  projectImageName: ({
+    commit
+  }, projectImageName) => {
+    commit('setProjectImageName', projectImageName)
   },
 
   setupOsdCanvas: ({

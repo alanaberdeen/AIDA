@@ -2,9 +2,8 @@ import actions from './actions'
 import mutations from './mutations'
 
 const state = {
-  images: [],
-  fileName: '',
-  imageType: ''
+  availableImages: [],
+  projectFileName: ''
 }
 
 export default {

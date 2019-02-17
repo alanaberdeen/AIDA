@@ -6,7 +6,7 @@ const state = {
   OSDviewer: null,
   OSDworld: null,
   activeChannel: 0,
-  imageName: ''
+  projectImageName: ''
 }
 
 export default {

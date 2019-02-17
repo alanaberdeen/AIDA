@@ -1,47 +1,16 @@
 import axios from 'axios'
 
 export default {
-  async getData ({
+  async getArrayOfImages ({
     commit
   }) {
     try {
       await axios.post(location.origin + '/checkForImages')
-      const dataLocation = location.origin + '/data/images.json'
-      const response = await axios.get(dataLocation)
-      commit('getData', response.data)
+      const pathToArrayOfImagesFile = location.origin + '/data/images.json'
+      const arrayOfImagesFile = await axios.get(pathToArrayOfImagesFile)
+      commit('setAvailableImages', arrayOfImagesFile.data)
     } catch (err) {
       console.log(err)
-    }
-  },
-
-  setFileName: ({
-    commit,
-    dispatch
-  }, fileName) => {
-    commit('setFileName', fileName)
-    dispatch('setImageType', fileName)
-  },
-
-  setImageType: ({
-    commit
-  }, fileName) => {
-    commit('setImageType', fileName)
-  },
-
-  addOSDImage: ({
-    state,
-    commit,
-    rootState
-  }, payload) => {
-    if (payload) {
-      payload.viewer = rootState.image.OSDviewer
-      commit('addOSDImage', payload)
-    } else {
-      commit('addOSDImage', {
-        viewer: rootState.image.OSDviewer,
-        type: state.imageType,
-        source: 'http://localhost:3000/' + '/data/images/' + state.fileName
-      })
     }
   },
 
@@ -77,7 +46,7 @@ export default {
     dispatch,
     rootState
   }) {
-    const dataLocation = location.origin + '/data/annotations/' + rootState.image.imageName + '.json'
+    const dataLocation = location.origin + '/annotations/' + rootState.image.imageName + '.json'
     try {
       const response = await axios.get(dataLocation)
       commit('annotation/loadAnnotation', response.data, { root: true })
@@ -86,14 +55,41 @@ export default {
       // openseadragon to load these on top of the image.
       if (response.data.overlays) {
         response.data.overlays.forEach(overlay => {
-          dispatch('addOSDImage', {
+          dispatch('image/addOSDImage', {
             type: overlay.type,
-            source: overlay.source
-          })
+            source: overlay.source,
+            name: overlay.name
+          }, { root: true })
         })
       }
     } catch (err) {
       console.log('Annotation data either could not be found or could not be loaded')
+    }
+  },
+
+  setProjectFileName ({
+    commit
+  }, payload) {
+    commit('setProjectFileName', payload)
+  },
+
+  getProjectImage ({
+    state,
+    dispatch
+  }) {
+    // Set image type by checking for .dzi in the fileName
+    if (state.projectFileName.indexOf('.dzi') > -1) {
+      dispatch('image/addOSDImage', {
+        name: state.projectFileName,
+        type: 'dzi',
+        source: location.origin + '/images/' + state.projectFileName
+      }, { root: true })
+    } else {
+      dispatch('image/addOSDImage', {
+        name: state.projectFileName,
+        type: 'simple',
+        source: location.origin + '/images/' + state.projectFileName
+      }, { root: true })
     }
   }
 }

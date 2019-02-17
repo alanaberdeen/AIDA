@@ -2,8 +2,8 @@ import Vue from 'vue'
 import openseadragon from 'openseadragon'
 
 export default {
-  setImageName: (state, imageName) => {
-    state.imageName = imageName
+  setProjectImageName: (state, projectImageName) => {
+    state.projectImageName = projectImageName
   },
 
   resetImageState: (state) => {
@@ -97,5 +97,17 @@ export default {
     }
 
     if (newZoom > 0) { state.OSDviewer.viewport.zoomTo(newZoom) }
+  },
+
+  addOSDImage: (state, payload) => {
+    if (payload.type === 'dzi') {
+      state.OSDviewer.addTiledImage({
+        tileSource: payload.source
+      })
+    } else if (payload.type === 'simple') {
+      state.OSDviewer.addSimpleImage({
+        url: payload.source
+      })
+    }
   }
 }

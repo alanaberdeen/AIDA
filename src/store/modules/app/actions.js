@@ -72,7 +72,7 @@ export default {
   }) => {
     await dispatch('synchroniseAnnotationAndOSDCanvas')
     dispatch('backend/getAnnotation', null, { root: true })
-    dispatch('backend/addOSDImage', null, { root: true })
+    dispatch('backend/getProjectImage', null, { root: true })
   },
 
   toggleToolsDrawer: ({

@@ -37,7 +37,7 @@
           <h4 class="title mb-3"> Images </h4>
           <v-data-table
             :headers="headers"
-            :items="images"
+            :items="availableImages"
             hide-actions
             class="elevation-1"
           >
@@ -81,16 +81,16 @@ export default {
   },
 
   mounted() {
-    this.getData()
+    this.getArrayOfImages()
   },
 
   computed: mapState({
-    images: state => state.backend.images
+    availableImages: state => state.backend.availableImages
   }),
 
   methods: {
     ...mapActions({
-      getData: 'backend/getData'
+      getArrayOfImages: 'backend/getArrayOfImages'
     })
   }
 }
