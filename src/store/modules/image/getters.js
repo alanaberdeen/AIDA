@@ -43,7 +43,7 @@ export default {
           channel: image,
           id: i,
           opacity: image.getOpacity(),
-          name: state.imageName,
+          name: state.images[i].name,
           visible: image.getOpacity() > 0,
           opacityCache: 0
         })
