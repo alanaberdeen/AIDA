@@ -35,19 +35,19 @@ export default {
     const channels = []
 
     if (state.OSDviewer) {
-      const numChannels = state.OSDviewer.world.getItemCount()
-
-      for (let i = 0; i < numChannels; i++) {
-        const image = state.OSDviewer.world.getItemAt(i)
-        channels.push({
-          channel: image,
-          id: i,
-          opacity: image.getOpacity(),
-          name: state.images[i].name,
-          visible: image.getOpacity() > 0,
-          opacityCache: 0
-        })
-      }
+      state.images.forEach(imageDetails => {
+        const image = state.OSDviewer.world.getItemAt(imageDetails.index)
+        if (image) {
+          channels.push({
+            channel: image,
+            id: imageDetails.index,
+            opacity: image.getOpacity(),
+            name: imageDetails.name,
+            visible: image.getOpacity() > 0,
+            opacityCache: 0
+          })
+        }
+      })
     }
     return channels
   }
