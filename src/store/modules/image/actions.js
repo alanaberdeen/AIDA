@@ -5,6 +5,12 @@ export default {
     commit('addOSDImage', payload)
   },
 
+  clearImages: ({
+    commit
+  }) => {
+    commit('clearImages')
+  },
+
   setProjectImageName: ({
     commit
   }, projectImageName) => {
