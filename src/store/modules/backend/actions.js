@@ -71,13 +71,13 @@ export default {
     if (state.projectFileName.indexOf('.dzi') > -1) {
       dispatch('image/addOSDImage', {
         name: state.projectFileName,
-        type: 'dzi',
+        fileType: 'dzi',
         source: location.origin + '/images/' + state.projectFileName
       }, { root: true })
     } else {
       dispatch('image/addOSDImage', {
         name: state.projectFileName,
-        type: 'simple',
+        fileType: 'simple',
         source: location.origin + '/images/' + state.projectFileName
       }, { root: true })
     }
