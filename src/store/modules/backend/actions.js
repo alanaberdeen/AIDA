@@ -24,7 +24,7 @@ export default {
       await axios.post(
         postUrl,
         {
-          imageName: rootState.image.imageName,
+          projectImageName: rootState.image.projectImageName,
           annotationData: rootState.annotation.project
         }
       )
@@ -42,26 +42,13 @@ export default {
   },
 
   async getAnnotation ({
-    commit,
     dispatch,
     rootState
   }) {
-    const dataLocation = location.origin + '/annotations/' + rootState.image.imageName + '.json'
+    const dataLocation = location.origin + '/annotations/' + rootState.image.projectImageName + '.json'
     try {
       const response = await axios.get(dataLocation)
-      commit('annotation/loadAnnotation', response.data, { root: true })
-
-      // If there are overlay images specified then we need to trigger
-      // openseadragon to load these on top of the image.
-      if (response.data.overlays) {
-        response.data.overlays.forEach(overlay => {
-          dispatch('image/addOSDImage', {
-            type: overlay.type,
-            source: overlay.source,
-            name: overlay.name
-          }, { root: true })
-        })
-      }
+      dispatch('annotation/loadAnnotation', response.data, { root: true })
     } catch (err) {
       console.log('Annotation data either could not be found or could not be loaded')
     }
@@ -73,10 +60,13 @@ export default {
     commit('setProjectFileName', payload)
   },
 
-  getProjectImage ({
+  async getProjectImage ({
     state,
     dispatch
   }) {
+    // Clear any images in the current vuex state.
+    await dispatch('image/clearImages', null, { root: true })
+
     // Set image type by checking for .dzi in the fileName
     if (state.projectFileName.indexOf('.dzi') > -1) {
       dispatch('image/addOSDImage', {
