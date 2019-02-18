@@ -100,9 +100,6 @@ export default {
   },
 
   addOSDImage: (state, payload) => {
-    // Keep a record of the available images.
-    state.images.push(payload)
-
     // Add the image to the OSD viewer.
     // Require different API method calls for tiled/simple images.
     if (payload.type === 'dzi') {
@@ -114,5 +111,20 @@ export default {
         url: payload.source
       })
     }
+
+    // Keep a record of the available images.
+    // Don't include overlay images as these are considered part of the
+    // annotation data. Keep a record of the index they are assigned to in the
+    // OSD world.
+    if (!(payload.function && payload.function === 'overlay')) {
+      state.images.push({
+        ...payload,
+        index: state.OSDviewer.world.getItemCount()
+      })
+    }
+  },
+
+  clearImages: state => {
+    state.images = []
   }
 }
