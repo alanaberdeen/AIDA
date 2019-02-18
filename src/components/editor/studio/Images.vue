@@ -70,6 +70,7 @@
                           step="0"
                           max="1"
                           @input="setChannelOpacity"
+                          class='pad-slider-right'
                         />
                       </v-flex>
                       <v-flex xs3>
@@ -150,6 +151,10 @@ export default {
 </script>
 
 <style lang='css' scoped>
+.pad-slider-right {
+  padding-right: 15px;
+}
+
 .panel {
   margin-top: 7px;
   background-color: #eeeeee;
