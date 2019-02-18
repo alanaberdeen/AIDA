@@ -1,4 +1,40 @@
+import helpers from './helpers.js'
+
 export default {
+  loadAnnotation: async ({
+    dispatch,
+    commit
+  }, payload) => {
+    // Reset the project state to the empty defaults
+    commit('resetProjectState')
+    // If there are overlay images specified then trigger openseadragon to
+    // load these on top of the project image. Also create a new annotation
+    // layer for the overlay.
+    // if (payload.overlays) {
+    //   payload.overlays.forEach(overlay => {
+    //     dispatch('image/addOSDImage', {
+    //       function: 'overlay',
+    //       type: overlay.type,
+    //       source: overlay.source,
+    //       name: overlay.name
+    //     }, { root: true })
+    //   })
+    // }
+
+    // Draw the annotation layers
+    for (const layer of payload.layers) {
+      await dispatch('createLayer')
+      await dispatch('setLayerName', layer.name)
+      dispatch('setLayerOpacity', layer.opacity * 100)
+      layer.items.forEach(item => {
+        helpers.drawItem(item)
+      })
+    }
+
+    // Active the correct layer as specified by editor state.
+    if (payload.activeLayer) dispatch('setActiveLayer', payload.activeLayer)
+  },
+
   resetAnnotationState: ({
     commit
   }) => {

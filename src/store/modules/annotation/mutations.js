@@ -3,9 +3,8 @@ import paper from 'paper'
 import helpers from './helpers.js'
 
 export default {
-  resetAnnotationState: state => {
-    paper.project.remove()
-
+  // Reset vuex project State to the empty default.
+  resetProjectState: state => {
     Vue.set(state, 'project', {
       name: 'An AIDA project',
       layers: []
@@ -116,7 +115,8 @@ export default {
   },
 
   createLayer: state => {
-    let newLayer = new paper.Layer({ position: paper.view.center })
+    const newLayer = new paper.Layer({ position: paper.view.center })
+    newLayer.activate()
     newLayer.opacity = 1
 
     state.project.layers.push({
@@ -205,21 +205,5 @@ export default {
       })
       newPaperItem.strokeColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length].stroke
     })
-  },
-
-  // Load annotation data into both the state and the paperJS environment.
-  loadAnnotation: (state, payload) => {
-    if (payload) {
-      state.project = payload
-
-      state.project.layers.forEach(layer => {
-        const newPaperLayer = new paper.Layer()
-        newPaperLayer.opacity = layer.opacity
-        helpers.drawItems(layer.items)
-      })
-
-      // Active the correct layer as specified by editor state.
-      if (payload.activeLayer) { paper.project.layers[payload.activeLayer].activate() }
-    }
   }
 }
