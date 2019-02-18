@@ -136,61 +136,60 @@ export default {
     }]
   },
 
-  // Input: state.project.layers
-  // Output: none (draws the items in the paperJS instance)
-  drawItems (items) {
-    if (items) {
-      items.forEach(item => {
-        let newPaperItem
-        if (item.type === 'circle') {
-          newPaperItem = new paper.Path.Circle({
-            center: item.center,
-            radius: item.radius,
-            data: {
-              type: 'circle',
-              countable: true,
-              class: item.class,
-              data: item.data
-            }
-          })
-          this.drawItemColor(newPaperItem, item)
-        } else if (item.type === 'rectangle') {
-          newPaperItem = new paper.Path.Rectangle({
-            point: [item.x, item.y],
-            size: [item.width, item.height],
-            data: {
-              type: 'rectangle',
-              class: item.class,
-              data: item.data
-            }
-          })
-          this.drawItemColor(newPaperItem, item)
-        } else if (item.type === 'path') {
-          newPaperItem = new paper.Path({
-            segments: item.segments,
-            closed: item.closed ? item.closed : false,
-            data: {
-              type: 'path',
-              class: item.class,
-              data: item.data
-            }
-          })
-          this.drawItemColor(newPaperItem, item)
-        } else if (item.type === 'raster') {
-          const itemPosition = item.hasOwnProperty('position') ? new paper.Point(item.position.x, item.position.y) : new paper.Point(0, 0)
-          newPaperItem = new paper.Raster({
-            crossOrigin: 'anonymous',
-            source: item.source,
-            position: itemPosition,
-            data: {
-              type: 'raster',
-              countable: false,
-              class: item.class,
-              data: item.data
-            }
-          })
-        }
-      })
+  // Input:  an AIDA item
+  // Output: none (draws the item on the currently active layer in the paperJS
+  //         instance)
+  drawItem (item) {
+    if (item) {
+      let newPaperItem
+      if (item.type === 'circle') {
+        newPaperItem = new paper.Path.Circle({
+          center: item.center,
+          radius: item.radius,
+          data: {
+            type: 'circle',
+            countable: true,
+            class: item.class,
+            data: item.data
+          }
+        })
+        this.drawItemColor(newPaperItem, item)
+      } else if (item.type === 'rectangle') {
+        newPaperItem = new paper.Path.Rectangle({
+          point: [item.x, item.y],
+          size: [item.width, item.height],
+          data: {
+            type: 'rectangle',
+            class: item.class,
+            data: item.data
+          }
+        })
+        this.drawItemColor(newPaperItem, item)
+      } else if (item.type === 'path') {
+        newPaperItem = new paper.Path({
+          segments: item.segments,
+          closed: item.closed ? item.closed : false,
+          data: {
+            type: 'path',
+            class: item.class,
+            data: item.data
+          }
+        })
+        this.drawItemColor(newPaperItem, item)
+      } else if (item.type === 'raster') {
+        const itemPosition = item.hasOwnProperty('position') ? new paper.Point(item.position.x, item.position.y) : new paper.Point(0, 0)
+        newPaperItem = new paper.Raster({
+          crossOrigin: 'anonymous',
+          source: item.source,
+          position: itemPosition,
+          data: {
+            type: 'raster',
+            countable: false,
+            class: item.class,
+            data: item.data
+          }
+        })
+      }
     }
   },
 
