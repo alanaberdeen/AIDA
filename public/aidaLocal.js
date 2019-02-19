@@ -63,7 +63,7 @@ async function saveAnnotation (data) {
   })
 
   // Write annotation data as JSON file.
-  const imageName = data.imageName
+  const imageName = data.projectImageName
   const annotationFilePath = 'data/annotations/' + imageName + '.json'
   const json = JSON.stringify(data.annotationData)
   await writeFile(annotationFilePath, json, 'utf8')
