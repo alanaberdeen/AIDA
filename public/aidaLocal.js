@@ -17,15 +17,14 @@ async function checkForImages () {
 // Returns an array of avialable images in the specified directory.
 async function findImages (dirPath) {
   const readdir = promisify(fs.readdir)
-  const stat = promisify(fs.stat)
 
   try {
     // Get an array of **all items** at the path.
     const items = await readdir(dirPath)
 
     // Exclude hidden files and directories
-    return items.filter(async (item) => {
-      const fileStats = await stat(dirPath + '/' + item)
+    return items.filter(item => {
+      const fileStats = fs.statSync(dirPath + '/' + item)
       return item[0] !== '.' && !fileStats.isDirectory()
     })
   } catch (err) {
