@@ -64,13 +64,10 @@ export default {
 
   setActiveLayer: ({
     state,
-    commit,
     dispatch
   }, layerIndex) => {
-    commit('setActiveLayer', layerIndex)
-    dispatch('app/setActiveLayer', layerIndex, {
-      root: true
-    })
+    paper.project.layers[layerIndex].activate()
+    dispatch('app/setActiveLayer', layerIndex, { root: true })
 
     // For overlay layers it is necessary to also activate the associated
     // channel where OSD renders the overlay.

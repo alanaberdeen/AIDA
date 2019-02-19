@@ -104,42 +104,30 @@ export default {
     state.projectStateRefreshIndex = state.projectStateRefreshIndex + 1
   },
 
+  // Prepares the paperJS canvas for user interaction
   prepareCanvas: (state, activeLayer) => {
     if (paper.view.element.classList.contains('pointers-no')) {
       paper.view.element.classList.remove('pointers-no')
     }
 
-    if (activeLayer) {
-      paper.project.layers[activeLayer].activate()
-    }
+    if (activeLayer) paper.project.layers[activeLayer].activate()
   },
 
+  // Create a new layer in both the paperJS project and the vuex state
   createLayer: state => {
-    const newLayer = new paper.Layer({ position: paper.view.center })
-    newLayer.activate()
-    newLayer.opacity = 1
-
+    const newLayer = new paper.Layer()
     state.project.layers.push({
       name: 'Layer ' + (state.project.layers.length + 1),
-      opacity: 1,
+      opacity: newLayer.opacity,
       items: []
     })
-  },
-
-  setActiveLayer: (state, index) => {
-    paper.project.layers[index].activate()
   },
 
   setActiveLayerOpacity: (state, payload) => {
     // The opacity can be set by the 'enter' key-event or mouse interaction with
     // the UI slider. Where exactly the value is specified it dependent on how
     // this action was triggered.
-    let newOpacity
-    if (payload instanceof KeyboardEvent) {
-      newOpacity = payload.target.value / 100
-    } else {
-      newOpacity = payload / 100
-    }
+    let newOpacity = payload instanceof KeyboardEvent ? payload.target.value / 100 : payload / 100
 
     // Restrict value to between 0 and 1
     newOpacity = Math.min(Math.max(newOpacity, 0), 1)
@@ -158,14 +146,7 @@ export default {
   },
 
   setActiveLayerName: (state, payload) => {
-    let newName
-
-    if (payload instanceof KeyboardEvent) {
-      newName = payload.target.value
-    } else {
-      newName = payload
-    }
-
+    const newName = payload instanceof KeyboardEvent ? payload.target.value : payload
     paper.project.activeLayer.name = newName
     Vue.set(state.project.layers[paper.project.activeLayer.index], 'name', newName)
   },
@@ -192,11 +173,11 @@ export default {
   },
 
   drawBoundingBoxes: (state, boundingBoxes) => {
-    let newPaperLayer = new paper.Layer({ name: 'Validate' })
+    const newPaperLayer = new paper.Layer({ name: 'Validate' })
     newPaperLayer.opacity = 1
 
     boundingBoxes.forEach((box) => {
-      let newPaperItem = new paper.Path.Rectangle({
+      const newPaperItem = new paper.Path.Rectangle({
         point: [box.boundingBox.x, box.boundingBox.y],
         size: [box.boundingBox.width, box.boundingBox.height],
         data: {
