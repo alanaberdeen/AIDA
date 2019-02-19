@@ -15,7 +15,7 @@ export default {
   refreshAnnotationState: state => {
     paper.project.layers.forEach(layer => {
       Vue.set(state.project.layers, layer.index, {
-        name: state.project.layers[layer.index] ? state.project.layers[layer.index].name : layer.name,
+        name: state.project.layers[layer.index],
         opacity: layer.opacity,
         items: []
       })
