@@ -48,10 +48,10 @@ export default {
     commit('setActiveChannelOpacity', payload)
   },
 
-  setChannelName: ({
+  setActiveChannelName: ({
     commit
   }, payload) => {
-    commit('setChannelName', payload)
+    commit('setActiveChannelName', payload)
   },
 
   setZoom: ({

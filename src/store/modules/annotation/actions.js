@@ -12,8 +12,8 @@ export default {
     // Draw the annotation layers
     for (const layer of payload.layers) {
       await dispatch('createLayer')
-      await dispatch('setLayerName', layer.name)
-      await dispatch('setLayerType', layer.type)
+      await dispatch('setActiveLayerName', layer.name)
+      await dispatch('setActiveLayerType', layer.type)
       for (const item of layer.items) {
         // If the item has type 'overlay' trigger openseadragon to load the
         // overlay image on top of the project image.
@@ -95,16 +95,16 @@ export default {
     }
   },
 
-  setLayerName: ({
+  setActiveLayerName: ({
     commit
   }, payload) => {
-    commit('setLayerName', payload)
+    commit('setActiveLayerName', payload)
   },
 
-  setLayerType: ({
+  setActiveLayerType: ({
     commit
   }, payload) => {
-    commit('setLayerType', payload)
+    commit('setActiveLayerType', payload)
   },
 
   deleteActiveLayer: ({

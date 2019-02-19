@@ -157,7 +157,7 @@ export default {
     )
   },
 
-  setLayerName: (state, payload) => {
+  setActiveLayerName: (state, payload) => {
     let newName
 
     if (payload instanceof KeyboardEvent) {
@@ -170,7 +170,7 @@ export default {
     Vue.set(state.project.layers[paper.project.activeLayer.index], 'name', newName)
   },
 
-  setLayerType: (state, type) => {
+  setActiveLayerType: (state, type) => {
     Vue.set(state.project.layers[paper.project.activeLayer.index], 'type', type)
   },
 

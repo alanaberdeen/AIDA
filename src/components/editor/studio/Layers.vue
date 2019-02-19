@@ -93,8 +93,8 @@
                     <v-text-field
                       :value="layer.name ? layer.name : ('Layer ' + index)"
                       single-line
-                      @change="setLayerName"
-                      @keyup.native.enter="setLayerName"
+                      @change="setActiveLayerName"
+                      @keyup.native.enter="setActiveLayerName"
                     />
                   </div>
 
@@ -147,7 +147,7 @@ export default {
       'createLayer',
       'exportLayerJSON',
       'setActiveLayer',
-      'setLayerName',
+      'setActiveLayerName',
       'deleteActiveLayer'
     ]),
 

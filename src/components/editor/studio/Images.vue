@@ -90,8 +90,8 @@
                     <v-text-field
                       :value="channel.name ? channel.name : ('Channel ' + index)"
                       single-line
-                      @change="setChannelName"
-                      @keyup.native.enter="setChannelName"
+                      @change="setActiveChannelName"
+                      @keyup.native.enter="setActiveChannelName"
                     />
                   </div>
                 </v-tab-item>
@@ -141,7 +141,7 @@ export default {
     ...mapActions({
       setActiveChannelOpacity: 'image/setActiveChannelOpacity',
       setActiveChannel: 'image/setActiveChannel',
-      setChannelName: 'image/setChannelName',
+      setActiveChannelName: 'image/setActiveChannelName',
       deleteChannel: 'image/deleteChannel'
     })
   }

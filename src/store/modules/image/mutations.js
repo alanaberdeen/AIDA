@@ -85,7 +85,7 @@ export default {
     if (channel) channel.setOpacity(newOpacity)
   },
 
-  setChannelName: (state, payload) => {
+  setActiveChannelName: (state, payload) => {
     // Save changes to Vuex state, have to use Vue.set to get around the fact that vueJs
     // is not reactive to mutations of arrays.
     if (payload instanceof KeyboardEvent) {
