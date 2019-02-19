@@ -45,7 +45,14 @@ export default {
   },
 
   setActiveChannel: (state, payload) => {
-    state.activeChannel = payload
+    // Payload can be either the channel index or the channel name.
+    if (typeof payload === 'number') {
+      state.activeChannelIndex = payload
+    } else if (typeof payload === 'string') {
+      state.activeChannelIndex = state.images.findIndex(image => {
+        return image.name === payload
+      })
+    }
   },
 
   // Toggle the visibility of a channel.
@@ -60,31 +67,31 @@ export default {
     }
   },
 
-  setChannelOpacity: (state, payload) => {
-    let input = payload.input
-    let newOpacity = 1 // Default
-
-    // There are multiple ways to edit the opacity.
-    // Handle each of the different inputs.
-    // If passed an integer
-    if (typeof input === 'string') {
-      newOpacity = Number(input / 100)
-    } else if (input instanceof KeyboardEvent) {
+  setActiveChannelOpacity: (state, input) => {
+    // The opacity can be set by the 'enter' key-event or mouse interaction with
+    // the UI slider. Where exactly the value is specified it dependent on how
+    // this action was triggered.
+    let newOpacity
+    if (input instanceof KeyboardEvent) {
       newOpacity = input.target.value / 100
     } else {
-      newOpacity = input
+      newOpacity = input / 100
     }
 
-    state.OSDviewer.world.getItemAt(state.activeChannel).setOpacity(newOpacity)
+    // Restrict value to between 0 and 1
+    newOpacity = Math.min(Math.max(newOpacity, 0), 1)
+
+    const channel = state.OSDviewer.world.getItemAt(state.activeChannelIndex)
+    if (channel) channel.setOpacity(newOpacity)
   },
 
   setChannelName: (state, payload) => {
     // Save changes to Vuex state, have to use Vue.set to get around the fact that vueJs
     // is not reactive to mutations of arrays.
     if (payload instanceof KeyboardEvent) {
-      Vue.set(state.images[state.activeChannel], 'name', payload.target.value)
+      Vue.set(state.images[state.activeChannelIndex], 'name', payload.target.value)
     } else {
-      Vue.set(state.images[state.activeChannel], 'name', payload)
+      Vue.set(state.images[state.activeChannelIndex], 'name', payload)
     }
   },
 
@@ -104,24 +111,21 @@ export default {
     // Require different API method calls for tiled/simple images.
     if (payload.fileType === 'dzi') {
       state.OSDviewer.addTiledImage({
-        tileSource: payload.source
+        tileSource: payload.source,
+        opacity: payload.opacity
       })
     } else if (payload.fileType === 'simple') {
       state.OSDviewer.addSimpleImage({
-        url: payload.source
+        url: payload.source,
+        opacity: payload.opacity
       })
     }
 
     // Keep a record of the available images.
-    // Don't include overlay images as these are considered part of the
-    // annotation data. Keep a record of the index they are assigned to in the
-    // OSD world.
-    if (!(payload.function && payload.function === 'overlay')) {
-      state.images.push({
-        ...payload,
-        index: state.OSDviewer.world.getItemCount()
-      })
-    }
+    state.images.push({
+      ...payload,
+      index: state.OSDviewer.world.getItemCount()
+    })
   },
 
   clearImages: state => {

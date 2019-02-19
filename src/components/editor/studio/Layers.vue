@@ -62,7 +62,7 @@
               <v-tabs-items id="tab-items">
 
                 <!-- Opacity Slider -->
-                <v-tab-item>
+                <v-tab-item @mousedown="selectLayer(index)">
                   <div id="tab-item">
                     <v-layout
                       row
@@ -71,7 +71,7 @@
                         <v-slider
                           :value="(layer.opacity != null) ? layer.opacity*100 : 100"
                           max="100"
-                          @input="setLayerOpacity"
+                          @input="setActiveLayerOpacity"
                           class='pad-slider-right'
                         />
                       </v-flex>
@@ -81,15 +81,14 @@
                           suffix="%"
                           single-line
                           mask="###"
-                          @change="setLayerOpacity"
-                          @keyup.native.enter="setLayerOpacity"/>
+                          @keyup.native.enter="setActiveLayerOpacity"/>
                       </v-flex>
                     </v-layout>
                   </div>
                 </v-tab-item>
 
                 <!-- Rename List Item -->
-                <v-tab-item>
+                <v-tab-item @mousedown="selectLayer(index)">
                   <div id="tab-item">
                     <v-text-field
                       :value="layer.name ? layer.name : ('Layer ' + index)"
@@ -102,7 +101,7 @@
                 </v-tab-item>
 
                 <!-- Delete List item -->
-                <v-tab-item>
+                <v-tab-item @mousedown="selectLayer(index)">
                   <div id="tab-item">
                     <v-btn
                       id="deleteButton"
@@ -144,11 +143,10 @@ export default {
   methods: {
 
     ...mapActions('annotation', [
-      'setLayerOpacity',
+      'setActiveLayerOpacity',
       'createLayer',
       'exportLayerJSON',
       'setActiveLayer',
-      'setLayerOpacity',
       'setLayerName',
       'deleteActiveLayer'
     ]),

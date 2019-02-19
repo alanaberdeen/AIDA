@@ -31,7 +31,7 @@
           >
             <v-list-tile-content>
               <v-list-tile-title
-                class="faIcons">
+                :class="[(activeChannel === index) ? 'faIconsActive' : 'faIcons']">
                 {{ channel.name ? channel.name : ('Channel ' + index) }}
               </v-list-tile-title>
             </v-list-tile-content>
@@ -59,35 +59,33 @@
               <v-tabs-items id="tab-items">
 
                 <!-- Opacity Slider -->
-                <v-tab-item>
+                <v-tab-item @mousedown="setActiveChannel(index)">
                   <div id="tab-item">
                     <v-layout
                       row
                       wrap>
                       <v-flex xs9>
                         <v-slider
-                          v-model="channel.opacity"
-                          step="0"
-                          max="1"
-                          @input="setChannelOpacity"
+                          :value="(channel.opacity != null) ? channel.opacity*100 : 100"
+                          max="100"
+                          @input="setActiveChannelOpacity"
                           class='pad-slider-right'
                         />
                       </v-flex>
                       <v-flex xs3>
                         <v-text-field
-                          :value="(channel.opacity !== null) ? Math.round(channel.opacity*100) : 100"
+                          :value="channel.opacity ? Math.round(channel.opacity*100) : 100"
                           suffix="%"
                           single-line
                           mask="###"
-                          @change="setChannelOpacity"
-                          @keyup.native.enter="setChannelOpacity"/>
+                          @keyup.native.enter="setActiveChannelOpacity"/>
                       </v-flex>
                     </v-layout>
                   </div>
                 </v-tab-item>
 
                 <!-- Rename List Item -->
-                <v-tab-item>
+                <v-tab-item @mousedown="setActiveChannel(index)">
                   <div id="tab-item">
                     <v-text-field
                       :value="channel.name ? channel.name : ('Channel ' + index)"
@@ -99,7 +97,7 @@
                 </v-tab-item>
 
                 <!-- Delete List item -->
-                <v-tab-item>
+                <v-tab-item @mousedown="setActiveChannel(index)">
                   <div id="tab-item">
                     <v-btn
                       id="deleteButton"
@@ -126,12 +124,12 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   computed: {
     ...mapState({
-      viewer: state => state.image.OSDviewer
+      activeChannel: state => state.image.activeChannel
     }),
 
     ...mapGetters({
@@ -141,7 +139,7 @@ export default {
 
   methods: {
     ...mapActions({
-      setChannelOpacity: 'image/setChannelOpacity',
+      setActiveChannelOpacity: 'image/setActiveChannelOpacity',
       setActiveChannel: 'image/setActiveChannel',
       setChannelName: 'image/setChannelName',
       deleteChannel: 'image/deleteChannel'

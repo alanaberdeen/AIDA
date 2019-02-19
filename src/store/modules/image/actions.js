@@ -42,15 +42,10 @@ export default {
     commit('toggleChannelOpacity', payload)
   },
 
-  setChannelOpacity: ({
-    commit,
-    rootState
+  setActiveChannelOpacity: ({
+    commit
   }, payload) => {
-    commit('setChannelOpacity', {
-      input: payload,
-      activeChannel: rootState.app.activeChannel,
-      rootState: rootState
-    })
+    commit('setActiveChannelOpacity', payload)
   },
 
   setChannelName: ({

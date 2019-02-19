@@ -32,23 +32,30 @@ export default {
   },
 
   getChannels: state => {
-    const channels = []
+    // Filter out the overlay images as not interested in returning these.
+    const projectImages = state.images.filter(image => image.function !== 'overlay')
 
-    if (state.OSDviewer) {
-      state.images.forEach(imageDetails => {
+    // Check if a viewer has been instantiated and there is at minimum 1 project
+    // image in the OSD world and the image vuex state.
+    if (state.OSDviewer && state.OSDviewer.world.getItemCount() > 0 &&
+        projectImages.length > 0) {
+      //
+      // Reformat the array so that it includes more details.
+      return projectImages.map(imageDetails => {
         const image = state.OSDviewer.world.getItemAt(imageDetails.index)
         if (image) {
-          channels.push({
+          return {
             channel: image,
             id: imageDetails.index,
             opacity: image.getOpacity(),
             name: imageDetails.name,
             visible: image.getOpacity() > 0,
             opacityCache: 0
-          })
+          }
         }
       })
+    } else {
+      return []
     }
-    return channels
   }
 }

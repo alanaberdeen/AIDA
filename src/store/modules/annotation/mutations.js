@@ -130,7 +130,10 @@ export default {
     paper.project.layers[index].activate()
   },
 
-  setLayerOpacity: (state, payload) => {
+  setActiveLayerOpacity: (state, payload) => {
+    // The opacity can be set by the 'enter' key-event or mouse interaction with
+    // the UI slider. Where exactly the value is specified it dependent on how
+    // this action was triggered.
     let newOpacity
     if (payload instanceof KeyboardEvent) {
       newOpacity = payload.target.value / 100
@@ -138,12 +141,10 @@ export default {
       newOpacity = payload / 100
     }
 
-    if (newOpacity > 1) {
-      newOpacity = 1
-    } else if (payload < 0) {
-      newOpacity = 0
-    }
+    // Restrict value to between 0 and 1
+    newOpacity = Math.min(Math.max(newOpacity, 0), 1)
 
+    // Set paperJS opacity
     paper.project.activeLayer.opacity = newOpacity
 
     // Save changed opacity to the Vuex state.
@@ -167,6 +168,10 @@ export default {
 
     paper.project.activeLayer.name = newName
     Vue.set(state.project.layers[paper.project.activeLayer.index], 'name', newName)
+  },
+
+  setLayerType: (state, type) => {
+    Vue.set(state.project.layers[paper.project.activeLayer.index], 'type', type)
   },
 
   deleteActiveLayer: (state) => {

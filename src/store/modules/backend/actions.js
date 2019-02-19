@@ -72,13 +72,17 @@ export default {
       dispatch('image/addOSDImage', {
         name: state.projectFileName,
         fileType: 'dzi',
-        source: location.origin + '/images/' + state.projectFileName
+        source: location.origin + '/images/' + state.projectFileName,
+        function: 'project',
+        opacity: 1
       }, { root: true })
     } else {
       dispatch('image/addOSDImage', {
         name: state.projectFileName,
         fileType: 'simple',
-        source: location.origin + '/images/' + state.projectFileName
+        source: location.origin + '/images/' + state.projectFileName,
+        function: 'project',
+        opacity: 1
       }, { root: true })
     }
   }
