@@ -151,7 +151,8 @@ export default {
             countable: true,
             class: item.class,
             data: item.data
-          }
+          },
+          locked: item.locked
         })
         this.drawItemColor(newPaperItem, item)
       } else if (item.type === 'rectangle') {
@@ -162,7 +163,8 @@ export default {
             type: 'rectangle',
             class: item.class,
             data: item.data
-          }
+          },
+          locked: item.locked
         })
         this.drawItemColor(newPaperItem, item)
       } else if (item.type === 'path') {
@@ -173,7 +175,8 @@ export default {
             type: 'path',
             class: item.class,
             data: item.data
-          }
+          },
+          locked: item.locked
         })
         this.drawItemColor(newPaperItem, item)
       } else if (item.type === 'raster') {
@@ -187,7 +190,8 @@ export default {
             countable: false,
             class: item.class,
             data: item.data
-          }
+          },
+          locked: item.locked
         })
       }
     }
@@ -230,13 +234,13 @@ export default {
   // Output: the stroke and fill color as an object
   getColor (item) {
     return {
-      fill: item.fillColor !== null ? {
+      fill: item.fillColor ? {
         hue: item.fillColor.hue,
         saturation: item.fillColor.saturation,
         lightness: item.fillColor.lightness,
         alpha: item.fillColor.alpha
       } : null,
-      stroke: item.strokeColor !== null ? {
+      stroke: item.strokeColor ? {
         hue: item.strokeColor.hue,
         saturation: item.strokeColor.saturation,
         lightness: item.strokeColor.lightness,
@@ -262,8 +266,9 @@ export default {
         }
       }
     }
+
     if (stateItem.color && stateItem.color.stroke) {
-      if (typeof stateItem.color.fill === 'string') {
+      if (typeof stateItem.color.stroke === 'string') {
         paperItem.strokeColor = stateItem.color.stroke
       } else {
         paperItem.strokeColor = new paper.Color({

@@ -52,6 +52,7 @@ export default {
             y: item.position.y
           },
           radius: item.bounds.width / 2,
+          locked: item.locked,
           data: item.data.data
         })
       } else if (item.data.type === 'rectangle') {
@@ -61,7 +62,8 @@ export default {
           x: item.bounds.x,
           y: item.bounds.y,
           width: item.bounds.width,
-          height: item.bounds.height
+          height: item.bounds.height,
+          locked: item.locked
         })
       } else if (item.data.type === 'path') {
         state.project.layers[item.layer.index].items.push({
@@ -70,6 +72,7 @@ export default {
           color: helpers.getColor(item),
           segments: helpers.getSegments(item),
           closed: item.closed,
+          locked: item.locked,
           data: item.data.data
         })
       // If the item is a raster, we need to incorporate edits to it.
