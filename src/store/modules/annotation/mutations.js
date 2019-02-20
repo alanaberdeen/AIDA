@@ -11,26 +11,37 @@ export default {
     })
   },
 
+  // Add an item to the active layer.
+  // Used for items that are not automatically kept in the paperJS project and
+  // therefore need to be manually added.
+  addItemToActiveLayer: (state, item) => {
+    const activeLayer = state.project.layers[paper.project.activeLayer.index]
+    activeLayer.items.push(item)
+  },
+
   // Incorporate all of the paperJS annotation items in the Vuex state
   refreshAnnotationState: state => {
     paper.project.layers.forEach(layer => {
+      const currentStateLayer = state.project.layers[layer.index]
       Vue.set(state.project.layers, layer.index, {
-        name: state.project.layers[layer.index],
+        name: currentStateLayer.name,
         opacity: layer.opacity,
-        items: []
+        type: currentStateLayer.type,
+        // Clear the all but the overlay items currently in the state.
+        items: currentStateLayer.items.filter(item => item.type === 'overlay')
       })
     })
 
-    // Gather all the Path/Raster items in the paperJS environment and store
-    // them in the state appropriately. Convention follows AIDA annotation
-    // schema: https://github.com/alanaberdeen/AIDA/wiki/Annotation-Schema
+    // Gather all the Path/Raster items in the paperJS environment
     const items = paper.project.getItems({
       className: function (className) {
         return (className === 'Path' || className === 'Raster')
       }
     })
-    for (let i = 0, len = items.length; i < len; i++) {
-      const item = items[i]
+
+    // Store them in the state appropriately. Convention follows AIDA annotation
+    // schema: https://github.com/alanaberdeen/AIDA/wiki/Annotation-Schema
+    for (const item of items) {
       if (item.data.type === 'circle') {
         state.project.layers[item.layer.index].items.push({
           class: item.data.class,

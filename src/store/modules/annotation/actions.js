@@ -26,6 +26,10 @@ export default {
             opacity: layer.opacity
           }, { root: true })
           await dispatch('image/setActiveChannel', layer.name, { root: true })
+
+          // The overlay isn't present in the paperJS project. Therefore, it
+          // needs to be manually added to the state.
+          commit('addItemToLayer', item)
         } else {
           helpers.drawItem(item)
         }
