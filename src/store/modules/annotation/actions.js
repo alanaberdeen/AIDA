@@ -29,7 +29,7 @@ export default {
 
           // The overlay isn't present in the paperJS project. Therefore, it
           // needs to be manually added to the state.
-          commit('addItemToLayer', item)
+          commit('addItemToActiveLayer', item)
         } else {
           helpers.drawItem(item)
         }
