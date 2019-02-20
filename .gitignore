@@ -20,5 +20,5 @@ yarn-error.log*
 *.sw*
 
 # Local instance data 
-public/data/*
+local_backend/data/*
 dist/data/*
