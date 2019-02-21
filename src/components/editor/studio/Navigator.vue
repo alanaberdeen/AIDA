@@ -26,16 +26,17 @@
           wrap
           justify-space-between
         >
-          <v-flex xs8>
+          <v-flex xs10>
             <v-slider
               :value="getZoom"
               :max="getMaxZoom"
               min="0"
               step="0"
               @input="setZoom"
+              class='pad-slider-right'
             />
           </v-flex>
-          <v-flex xs3>
+          <v-flex xs2>
             <v-text-field
               :value="getZoom"
               suffix="x"
@@ -72,6 +73,10 @@ export default {
 </script>
 
 <style lang='css' scoped>
+.pad-slider-right {
+  padding-right: 15px;
+}
+
 .panel {
   margin-top: 7px;
   background-color: #eeeeee;
