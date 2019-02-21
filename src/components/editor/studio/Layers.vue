@@ -48,7 +48,7 @@
               color="transparent"
             >
               <v-tab>
-                <v-icon> visibility </v-icon>
+                <v-icon> opacity </v-icon>
               </v-tab>
 
               <v-tab>
@@ -67,17 +67,19 @@
                     <v-layout
                       row
                       wrap>
-                      <v-flex xs9>
+                      <v-flex xs10>
                         <v-slider
-                          :value="(layer.opacity != null) ? layer.opacity*100 : 100"
+                          :value="layer.opacity * 100"
                           max="100"
                           @input="setActiveLayerOpacity"
                           class='pad-slider-right'
+                          :prepend-icon="layer.opacity > 0 ? 'visibility' : 'visibility_off'"
+                          @click:prepend="toggleOpacity(layer.opacity)"
                         />
                       </v-flex>
-                      <v-flex xs3>
+                      <v-flex xs2>
                         <v-text-field
-                          :value="layer.opacity ? Math.round(layer.opacity*100) : 100"
+                          :value="Math.round(layer.opacity * 100)"
                           suffix="%"
                           single-line
                           mask="###"
@@ -131,6 +133,12 @@
 import { mapActions, mapState } from 'vuex'
 
 export default {
+  data() {
+    return {
+      opacityCache: 1
+    }
+  },
+
   computed: {
     ...mapState({
       layers: state => state.annotation.project.layers,
@@ -141,7 +149,6 @@ export default {
   },
 
   methods: {
-
     ...mapActions('annotation', [
       'setActiveLayerOpacity',
       'createLayer',
@@ -162,6 +169,15 @@ export default {
 
     selectLayer (index) {
       this.setActiveLayer(index)
+    },
+
+    toggleOpacity (currentOpacity) {
+      if (currentOpacity > 0) {
+        this.opacityCache = currentOpacity
+        this.setActiveLayerOpacity(0)
+      } else {
+        this.setActiveLayerOpacity(this.opacityCache * 100)
+      }
     }
   }
 }

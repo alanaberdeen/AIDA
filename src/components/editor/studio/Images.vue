@@ -45,7 +45,7 @@
               color="transparent"
             >
               <v-tab>
-                <v-icon> visibility </v-icon>
+                <v-icon> opacity </v-icon>
               </v-tab>
 
               <v-tab>
@@ -64,17 +64,19 @@
                     <v-layout
                       row
                       wrap>
-                      <v-flex xs9>
+                      <v-flex xs10>
                         <v-slider
-                          :value="(channel.opacity != null) ? channel.opacity*100 : 100"
+                          :value="channel.opacity * 100"
                           max="100"
                           @input="setActiveChannelOpacity"
                           class='pad-slider-right'
+                          :prepend-icon="channel.opacity > 0 ? 'visibility' : 'visibility_off'"
+                          @click:prepend="toggleOpacity(channel.opacity)"
                         />
                       </v-flex>
-                      <v-flex xs3>
+                      <v-flex xs2>
                         <v-text-field
-                          :value="channel.opacity ? Math.round(channel.opacity*100) : 100"
+                          :value="Math.round(channel.opacity*100)"
                           suffix="%"
                           single-line
                           mask="###"
@@ -127,6 +129,12 @@
 import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
+  data () {
+    return {
+      opacityCache: 1
+    }
+  },
+
   computed: {
     ...mapState({
       activeChannel: state => state.image.activeChannel
@@ -143,7 +151,16 @@ export default {
       setActiveChannel: 'image/setActiveChannel',
       setActiveChannelName: 'image/setActiveChannelName',
       deleteChannel: 'image/deleteChannel'
-    })
+    }),
+
+    toggleOpacity (currentOpacity) {
+      if (currentOpacity > 0) {
+        this.opacityCache = currentOpacity
+        this.setActiveChannelOpacity(0)
+      } else {
+        this.setActiveChannelOpacity(this.opacityCache * 100)
+      }
+    }
   }
 }
 </script>
