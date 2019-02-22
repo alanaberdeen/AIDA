@@ -26,7 +26,7 @@
       <!-- Link to Docs -->
       <v-btn
         icon
-        href="https://aida.gitbook.io/docs/" >
+        href="https://github.com/alanaberdeen/AIDA/wiki" >
         <v-icon small> fa-book </v-icon>
       </v-btn>
       
