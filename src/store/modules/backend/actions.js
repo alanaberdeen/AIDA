@@ -19,7 +19,10 @@ export default {
     rootState
   }) {
     try {
+      // Ensure all the paperJS items are included in the vuex state
       await dispatch('annotation/refreshAnnotationState', null, { root: true })
+
+      // Post API request.
       const postUrl = location.origin + '/save'
       await axios.post(
         postUrl,
@@ -28,10 +31,14 @@ export default {
           annotationData: rootState.annotation.project
         }
       )
+
+      // Activate notification
       dispatch('app/activateSnackbar', {
         text: 'Saved annotation data',
         color: 'success'
       }, { root: true })
+
+    // Handle errors
     } catch (err) {
       console.log(err)
       dispatch('app/activateSnackbar', {
