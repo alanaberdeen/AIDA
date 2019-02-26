@@ -1,8 +1,8 @@
 export default {
-  setAppTask: ({
+  setTask: ({
     commit
   }, task) => {
-    commit('setAppTask', task)
+    commit('setTask', task)
   },
 
   dismissSnackbar: ({

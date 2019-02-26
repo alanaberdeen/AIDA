@@ -1,7 +1,7 @@
 import paper from 'paper'
 
 export default {
-  setAppTask: (state, task) => {
+  setTask: (state, task) => {
     state.task = task
   },
 
