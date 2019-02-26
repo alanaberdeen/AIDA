@@ -47,8 +47,8 @@ export default {
   computed: {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
-      imageWidth: state =>
-        state.image.OSDviewer.world.getItemAt(0).getContentSize().x
+      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
+      saveState: state => state.annotation.saveState
     })
   },
 
@@ -102,22 +102,27 @@ export default {
 
     // On mouseDrag functionality
     const toolDrag = event => {
-      if (hitResult && toolStatus === 'adjusting-segment') {
-        hitResult.segment.point = hitResult.segment.point.add(event.delta)
-      } else if (
-        hitResult &&
-        hitResult.type === 'handle-out' &&
-        toolStatus === 'adjusting-handle'
-      ) {
-        hitResult.segment.handleOut = hitResult.segment.handleOut.add(
-          event.delta
-        )
-      } else if (
-        hitResult &&
-        hitResult.type === 'handle-in' &&
-        toolStatus === 'adjusting-handle'
-      ) {
-        hitResult.segment.handleIn = hitResult.segment.handleIn.add(event.delta)
+      if (hitResult) {
+        if (toolStatus === 'adjusting-segment') {
+          hitResult.segment.point = hitResult.segment.point.add(event.delta)
+        } else if (
+          hitResult.type === 'handle-out' &&
+          toolStatus === 'adjusting-handle'
+        ) {
+          hitResult.segment.handleOut = hitResult.segment.handleOut.add(
+            event.delta
+          )
+        } else if (
+          hitResult.type === 'handle-in' &&
+          toolStatus === 'adjusting-handle'
+        ) {
+          hitResult.segment.handleIn = hitResult.segment.handleIn.add(event.delta)
+        }
+
+        if (this.saveState.changesSaved) {
+          // Flag the annotation has been edited and the changes are not saved
+          this.flagAnnotationEdits()
+        }
       }
     }
 
@@ -128,7 +133,8 @@ export default {
 
   methods: {
     ...mapActions({
-      prepareCanvas: 'annotation/prepareCanvas'
+      prepareCanvas: 'annotation/prepareCanvas',
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
     initialiseTool () {

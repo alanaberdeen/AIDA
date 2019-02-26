@@ -110,6 +110,9 @@ export default {
       newCircle.data.countable = true
       newCircle.data.type = 'circle'
       newCircle.data.class = ''
+
+      // Flag the annotation has been edited and the changes are not saved
+      this.flagAnnotationEdits()
     }
 
     // Add the defined functions to the tool object.
@@ -118,12 +121,13 @@ export default {
     this.toolCircle = new paper.Tool()
     this.toolCircle.onMouseDown = toolDown
     this.toolCircle.onMouseDrag = toolDrag
-    this.toolCircle.onMouseUp = toolUp
+    this.toolCircle.onMouseUp = toolUp  
   },
 
   methods: {
     ...mapActions({
-      prepareCanvas: 'annotation/prepareCanvas'
+      prepareCanvas: 'annotation/prepareCanvas',
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
     ...mapGetters({

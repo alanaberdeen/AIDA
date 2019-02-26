@@ -161,6 +161,9 @@ export default {
       if (selectedGroup) {
         selectedGroup.remove()
       }
+      
+      // Flag the annotation has been edited and the changes are not saved
+      this.flagAnnotationEdits()
     }
 
     // Assign tool to paper instance.
@@ -172,7 +175,8 @@ export default {
 
   methods: {
     ...mapActions({
-      prepareCanvas: 'annotation/prepareCanvas'
+      prepareCanvas: 'annotation/prepareCanvas',
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
     initialiseTool () {

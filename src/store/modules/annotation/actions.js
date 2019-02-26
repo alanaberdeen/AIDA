@@ -9,36 +9,38 @@ export default {
     // Reset the project state to the empty defaults
     commit('resetProjectState')
 
-    // Draw the annotation layers
-    for (const layer of payload.layers) {
-      await dispatch('createLayer')
-      await dispatch('setActiveLayerName', layer.name)
-      await dispatch('setActiveLayerType', layer.type)
-      for (const item of layer.items) {
-        // If the item has type 'overlay' trigger openseadragon to load the
-        // overlay image on top of the project image.
-        if (item.type === 'overlay') {
-          await dispatch('image/addOSDImage', {
-            function: 'overlay',
-            fileType: item.fileType,
-            source: item.source,
-            name: layer.name,
-            opacity: layer.opacity
-          }, { root: true })
-          await dispatch('image/setActiveChannel', layer.name, { root: true })
+    if (payload) {
+      // Draw the annotation layers
+      for (const layer of payload.layers) {
+        await dispatch('createLayer')
+        await dispatch('setActiveLayerName', layer.name)
+        await dispatch('setActiveLayerType', layer.type)
+        for (const item of layer.items) {
+          // If the item has type 'overlay' trigger openseadragon to load the
+          // overlay image on top of the project image.
+          if (item.type === 'overlay') {
+            await dispatch('image/addOSDImage', {
+              function: 'overlay',
+              fileType: item.fileType,
+              source: item.source,
+              name: layer.name,
+              opacity: layer.opacity
+            }, { root: true })
+            await dispatch('image/setActiveChannel', layer.name, { root: true })
 
-          // The overlay isn't present in the paperJS project. Therefore, it
-          // needs to be manually added to the state.
-          commit('addItemToActiveLayer', item)
-        } else {
-          helpers.drawItem(item)
+            // The overlay isn't present in the paperJS project. Therefore, it
+            // needs to be manually added to the state.
+            commit('addItemToActiveLayer', item)
+          } else {
+            helpers.drawItem(item)
+          }
         }
+        dispatch('setActiveLayerOpacity', layer.opacity * 100)
       }
-      dispatch('setActiveLayerOpacity', layer.opacity * 100)
-    }
 
-    // Active the correct layer as specified by editor state.
-    if (payload.activeLayer) dispatch('setActiveLayer', payload.activeLayer)
+      // Active the correct layer as specified by editor state.
+      if (payload.activeLayer) dispatch('setActiveLayer', payload.activeLayer)
+    }
   },
 
   resetAnnotationState: ({
@@ -130,5 +132,20 @@ export default {
     commit
   }, payload) => {
     commit('drawBoundingBoxes', payload)
+  },
+
+  setSaveState: ({
+    commit
+  }, payload) => {
+    commit('setSaveState', payload)
+  },
+
+  flagAnnotationEdits: ({
+    commit
+  }) => {
+    console.log('flagAnnotationEdits is being called')
+    commit('setSaveState', {
+      changesSaved: false
+    })
   }
 }

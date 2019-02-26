@@ -11,7 +11,11 @@ const state = {
   projectStateRefreshIndex: 0,
   selectedItems: [],
   currentColor: null,
-  defaultColors: helpers.defaultColors()
+  defaultColors: helpers.defaultColors(),
+  saveState: {
+    changesSaved: true,
+    lastSaveTimeStamp: null
+  }
 }
 
 export default {

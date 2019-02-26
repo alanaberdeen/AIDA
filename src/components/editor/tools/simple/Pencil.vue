@@ -103,6 +103,9 @@ export default {
 
       // Ensure this path is no longer the active path to be edited.
       this.path.data.active = false
+
+      // Flag the annotation has been edited and the changes are not saved
+      this.flagAnnotationEdits()
     }
 
     this.toolPencil = new paper.Tool()
@@ -113,7 +116,8 @@ export default {
 
   methods: {
     ...mapActions({
-      prepareCanvas: 'annotation/prepareCanvas'
+      prepareCanvas: 'annotation/prepareCanvas',
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
     ...mapGetters({

@@ -53,7 +53,8 @@ export default {
   computed: {
     ...mapState({
       viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
-      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x
+      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
+      saveState: state => state.annotation.saveState
     })
   },
 
@@ -143,6 +144,11 @@ export default {
           hitResult.item.position = hitResult.item.position.add(event.delta)
         }
 
+        if (this.saveState.changesSaved) {
+          // Flag the annotation has been edited and the changes are not saved
+          this.flagAnnotationEdits()
+        }
+
         // Transfrom mode: scales the selected group
       } else if (this.toolMode === 'transform') {
         let newWidth = null
@@ -174,6 +180,11 @@ export default {
 
         // Scale group
         this.selectionGroup.scale(horizScaleFactor, vertScaleFactor, transfromCenter)
+
+        if (this.saveState.changesSaved) {
+          // Flag the annotation has been edited and the changes are not saved
+          this.flagAnnotationEdits()
+        }
       }
     }
 
@@ -215,7 +226,7 @@ export default {
       if (this.active) {
         // Remove items
         if (event.key === 'backspace' || event.key === 'delete') {
-        // Check for current selection
+          // Check for current selection
           if (paper.project.selectedItems) {
           // Remove current selection group bounds
             this.selectionGroup.bounds.selected = false
@@ -226,6 +237,9 @@ export default {
                 item.remove()
               }
             })
+
+            // Flag the annotation has been edited and the changes are not saved
+            this.flagAnnotationEdits()
           }
         }
       }
@@ -243,7 +257,8 @@ export default {
   methods: {
     ...mapActions({
       prepareCanvas: 'annotation/prepareCanvas',
-      setSelectedItems: 'annotation/setSelectedItems'
+      setSelectedItems: 'annotation/setSelectedItems',
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
     initialiseTool () {

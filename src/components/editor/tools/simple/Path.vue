@@ -116,14 +116,21 @@ export default {
       }
     }
 
+    const toolUp = event => {
+      // Flag the annotation has been edited and the changes are not saved
+      this.flagAnnotationEdits()
+    }
+
     this.toolPen = new paper.Tool()
     this.toolPen.onMouseDown = toolDown
     this.toolPen.onMouseMove = toolMove
+    this.toolPen.onMouseUp = toolUp
   },
 
   methods: {
     ...mapActions({
-      prepareCanvas: 'annotation/prepareCanvas'
+      prepareCanvas: 'annotation/prepareCanvas',
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
     ...mapGetters({

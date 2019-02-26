@@ -76,6 +76,9 @@ export default {
       // Custom data attribute:
       newRect.data.type = 'rectangle'
       newRect.data.class = ''
+
+      // Flag the annotation has been edited and the changes are not saved
+      this.flagAnnotationEdits()
     }
 
     this.toolRect = new paper.Tool()
@@ -85,7 +88,8 @@ export default {
 
   methods: {
     ...mapActions({
-      prepareCanvas: 'annotation/prepareCanvas'
+      prepareCanvas: 'annotation/prepareCanvas',
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
     ...mapGetters({
