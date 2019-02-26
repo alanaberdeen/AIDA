@@ -141,7 +141,7 @@ export default {
       this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
       this.hitOptions = {
         segments: true,
-        tolerance: this.strokeWidth * 5
+        tolerance: this.strokeWidth
       }
     },
 
