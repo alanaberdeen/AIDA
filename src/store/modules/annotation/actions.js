@@ -40,6 +40,10 @@ export default {
 
       // Active the correct layer as specified by editor state.
       if (payload.activeLayer) dispatch('setActiveLayer', payload.activeLayer)
+    } else {
+      await dispatch('createLayer')
+      dispatch('setActiveLayerName', 'Layer 1')
+      dispatch('setActiveLayerType', 'paths')
     }
   },
 
