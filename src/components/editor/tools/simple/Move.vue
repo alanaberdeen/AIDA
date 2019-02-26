@@ -280,8 +280,7 @@ export default {
         handles: true,
         fill: true,
         tolerance: hitTolerance,
-        match: this.matchFilter,
-        class: paper.Path
+        match: this.matchFilter
       }
 
       // If first time using the tool then must initialise the selection group
