@@ -2,9 +2,7 @@ const { promisify } = require('util')
 const express = require('express')
 const bodyParser = require('body-parser')
 const fs = require('fs')
-const os = require('os')
 const chalk = require('chalk')
-const sharp = require('sharp')
 const ip = require('ip')
 
 // Check for images in the data/images/
