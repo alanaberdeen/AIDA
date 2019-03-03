@@ -38,6 +38,12 @@ export default {
         color: 'success'
       }, { root: true })
 
+      // Set annotation save state
+      dispatch('annotation/setSaveState', {
+        changesSaved: true,
+        lastSaveTimeStamp: new Date()
+      }, { root: true })
+
     // Handle errors
     } catch (err) {
       console.log(err)
@@ -58,6 +64,8 @@ export default {
       dispatch('annotation/loadAnnotation', response.data, { root: true })
     } catch (err) {
       console.log('Annotation data either could not be found or could not be loaded')
+      console.log('Loading the default empty project')
+      dispatch('annotation/loadAnnotation', null, { root: true })
     }
   },
 

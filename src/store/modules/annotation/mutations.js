@@ -75,6 +75,23 @@ export default {
           locked: item.locked,
           data: item.data.data
         })
+      // Check if the item is meant to represent an edit to an image. For
+      // example when editing a segmentation mask that is tiled and overlayed
+      // on the project image.
+      } else if (item.data.type === 'imageEdit') {
+        const rasterizedItem = item.rasterize()
+        const itemDataURL = rasterizedItem.toDataURL()
+
+        state.project.layers[item.layer.index].items.push({
+          class: item.data.class,
+          type: 'raster',
+          source: itemDataURL,
+          position: {
+            x: item.position.x,
+            y: item.position.y
+          },
+          data: item.data.data
+        })
       // If the item is a raster, we need to incorporate edits to it.
       // Therefore, necessary to 'rasterise' this image and it's combined edits.
       } else if (item.data.type === 'raster') {
@@ -205,5 +222,12 @@ export default {
       })
       newPaperItem.strokeColor = state.defaultColors[newPaperItem.layer.index % state.defaultColors.length].stroke
     })
+  },
+
+  setSaveState: (state, payload) => {
+    state.saveState.changesSaved = payload.changesSaved
+    if (payload.lastSaveTimeStamp) {
+      state.saveState.lastSaveTimeStamp = payload.lastSaveTimeStamp
+    }
   }
 }
