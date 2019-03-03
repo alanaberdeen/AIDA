@@ -2,8 +2,8 @@ const { promisify } = require('util')
 const express = require('express')
 const bodyParser = require('body-parser')
 const fs = require('fs')
-const os = require('os')
 const chalk = require('chalk')
+const ip = require('ip')
 
 // Check for images in the data/images/
 // Write a file an array of the available images as reference.
@@ -39,24 +39,19 @@ async function saveAnnotation (data) {
   // file we should save the link to it using the IP address. This ensures the
   // API endpoint where the image can be found is referenced correctly even
   // when using AIDA over a network connection.
-  const networkIPAddress = os.networkInterfaces().en0[1].address
+  const networkIPAddress = ip.address()
 
   // Check for raster image items and if found we need to save these as image
   // files and replace the item.source with link to that file.
   data.annotationData.layers.forEach(layer => {
-    layer.items.forEach(item => {
+    layer.items.forEach((item, index) => {
       if (item.type === 'raster' && item.source.substring(0, 4) === 'data') {
-        //
-        // Extract the base64 data
-        const base64Data = item.source.replace(/^data:image\/(png|gif|jpeg);base64,/, '')
-
-        // Save to sub-directory for raster annotation items
-        const imagePath = 'data/annotations/raster/' + data.imageName + '_' + layer.name + '.png'
-        fs.writeFileSync(imagePath, base64Data, 'base64')
+        const imagePath = 'data/annotations/raster/' + index + '_' + layer.name + '.png'
+        saveRaster(item.source, imagePath)
 
         // Edit the source link to correctly reference the API endpoint where
         // the image is available.
-        const apiEndpoint = 'annotations/raster/' + data.imageName + '_' + layer.name + '.png'
+        const apiEndpoint = 'annotations/raster/' + index + '_' + layer.name + '.png'
         item.source = 'http://' + networkIPAddress + ':3000/' + apiEndpoint
       }
     })
@@ -67,6 +62,11 @@ async function saveAnnotation (data) {
   const annotationFilePath = 'data/annotations/' + imageName + '.json'
   const json = JSON.stringify(data.annotationData)
   await writeFile(annotationFilePath, json, 'utf8')
+}
+
+function saveRaster (dataURL, path) {
+  const base64Data = dataURL.replace(/^data:image\/(png|gif|jpeg);base64,/, '')
+  fs.writeFileSync(path, base64Data, 'base64')
 }
 
 async function startServer () {
@@ -129,7 +129,7 @@ async function startServer () {
 
   // Get the IP address of the current machine. The application will also be
   // usable over the network from this address.
-  const networkIPAddress = os.networkInterfaces().en0[1].address
+  const networkIPAddress = ip.address()
 
   // Listen to requests
   app.listen(port, () => {
