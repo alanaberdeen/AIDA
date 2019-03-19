@@ -1,4 +1,5 @@
 import axios from 'axios'
+import convert from 'xml-js'
 
 export default {
   async getArrayOfImages ({
@@ -91,6 +92,8 @@ export default {
         function: 'project',
         opacity: 1
       }, { root: true })
+
+      dispatch('getProjectImageProperties')
     } else {
       dispatch('image/addOSDImage', {
         name: state.projectFileName,
@@ -100,5 +103,42 @@ export default {
         opacity: 1
       }, { root: true })
     }
+  },
+
+  // Check for a properites file. These files can be created by libvips when
+  // building deepZoom images and contain useful metadata about the image.
+  async getProjectImageProperties ({
+    state,
+    dispatch
+  }) {
+    // Construct path to file
+    const location = location.origin + '/images/' +
+                      state.projectFileName.slice(0, -4) +
+                      '_files/vips-properties.xml'
+
+    // Fetch data and convert to jsObject
+    const propertiesFile = await fetch(location)
+    const data = JSON.parse(convert.xml2json(
+      await propertiesFile.text(),
+      { ignoreDeclaration: true,
+        compact: true,
+        ignoreComment: true,
+        alwaysChildren: true,
+        attributesKey: 'attributes',
+        textKey: 'text'
+      }
+    ))
+
+    // Extract relevant metrics
+    const mppX = Number(data.image.properties.property.find(ele => {
+      return ele.name.text === 'openslide.mpp-x'
+    }).value.text)
+
+    const mppY = Number(data.image.properties.property.find(ele => {
+      return ele.name.text === 'openslide.mpp-y'
+    }).value.text)
+
+    // Dispatch methods for saving the scale
+    dispatch('image/setPixelScaleFactor', { mppX, mppY }, { root: true })
   }
 }

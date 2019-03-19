@@ -130,5 +130,10 @@ export default {
 
   clearImages: state => {
     state.images = []
+  },
+
+  setPixelScaleFactor: (state, payload) => {
+    state.pixelScaleFactor.mppX = payload.mppX
+    state.pixelScaleFactor.mppY = payload.mppY
   }
 }

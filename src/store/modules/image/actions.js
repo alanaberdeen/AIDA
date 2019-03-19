@@ -58,5 +58,11 @@ export default {
     commit
   }, payload) => {
     commit('setZoom', payload)
+  },
+
+  setPixelScaleFactor: ({
+    commit
+  }, payload) => {
+    commit('setPixelScaleFactor', payload)
   }
 }
