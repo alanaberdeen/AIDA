@@ -125,7 +125,6 @@ export default {
 
       // Get items inside the selection rectangle.
       toBeDeleted = paper.project.getItems({
-        class: 'Path',
         inside: selectionRect.bounds,
         match: this.matchFilter
       })
