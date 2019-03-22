@@ -1,7 +1,8 @@
 {
   "name": "aida",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -11,24 +12,25 @@
     "core-js": "^2.6.5",
     "openseadragon": "^2.4.0",
     "paper": "^0.12.0",
-    "vue": "^2.6.6",
+    "vue": "^2.6.10",
     "vue-color": "^2.7.0",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.5.2",
-    "vuex": "^3.0.1"
+    "vuetify": "^1.5.7",
+    "vuex": "^3.0.1",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.4.0",
-    "@vue/cli-plugin-eslint": "^3.4.0",
-    "@vue/cli-service": "^3.4.0",
+    "@vue/cli-plugin-babel": "^3.5.1",
+    "@vue/cli-plugin-eslint": "^3.5.1",
+    "@vue/cli-service": "^3.5.1",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.14.1",
+    "eslint": "^5.15.3",
     "eslint-plugin-vue": "^5.2.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "vue-cli-plugin-vuetify": "^0.4.6",
-    "vue-template-compiler": "^2.6.6",
+    "vue-template-compiler": "^2.6.10",
     "vuetify-loader": "^1.2.1"
   }
 }
