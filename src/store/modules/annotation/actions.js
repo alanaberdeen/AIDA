@@ -147,7 +147,6 @@ export default {
   flagAnnotationEdits: ({
     commit
   }) => {
-    console.log('flagAnnotationEdits is being called')
     commit('setSaveState', {
       changesSaved: false
     })
