@@ -46,7 +46,8 @@ export default {
       hitOptions: null,
       strokeWidth: 2,
       selectionGroup: null,
-      toolMode: ''
+      toolMode: '',
+      selectedItemsCache: []
     }
   },
 
@@ -91,15 +92,28 @@ export default {
         } else if (hitResult.item.selected) {
           this.toolMode = 'move'
 
-          // If hit an unselected item with no modifer then deselct all but this
+          // If hit an unselected item with no modifer then only select this
         } else {
           paper.project.deselectAll()
           hitResult.item.selected = true
-          this.toolMode = 'move'
+          this.toolMode = 'moveSingle'
         }
 
         // If no hitresult, assume use is attempting to make a new selection
+        // and cancel the current selection
       } else {
+
+        // As the selected items have been moved to a group for easy
+        // manipulation they may not longer be in the 'right' place. Move them 
+        // back to the layer the originated on which should be stored in the 
+        // cache.
+        if (this.selectedItemsCache.length > 0) {
+          paper.project.selectedItems.forEach((item, index) => {
+            const cachedItemLayerIndex = this.selectedItemsCache[index]
+            paper.project.layers[cachedItemLayerIndex].addChild(item)
+          })
+        }
+        
         paper.project.deselectAll()
         this.toolMode = 'select'
       }
@@ -137,7 +151,7 @@ export default {
         })
 
       // Move mode: adjusts the position of the selected group
-      } else if (this.toolMode === 'move') {
+      } else if (this.toolMode === 'move' || this.toolMode === 'moveSingle') {
         if (this.selectionGroup.children.length > 0) {
           this.selectionGroup.position = this.selectionGroup.position.add(event.delta)
         } else {
@@ -189,7 +203,19 @@ export default {
     }
 
     const toolUp = event => {
-      this.selectionGroup = new paper.Group(paper.project.selectedItems)
+      // Store a cache of what layer each item was on. This is necessary
+      // because adding them to a group moves them to the group's layer.
+      // We will have to manually move them back. Bit unsatisfactory this!
+      if (this.toolMode !== 'move' && this.toolMode !== 'transform') {
+        this.selectedItemsCache = paper.project.getItems({
+          class: 'Path', 
+          selected: true
+        }).map(item => 
+          item.layer.index
+        )
+      } 
+
+      this.selectionGroup = new paper.Group(paper.project.selectedItems)      
       if (!this.selectionGroup.isEmpty()) {
         this.selectionGroup.bounds.selected = true
       }
