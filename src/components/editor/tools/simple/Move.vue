@@ -95,6 +95,7 @@ export default {
           // If hit an unselected item with no modifer then only select this
         } else {
           paper.project.deselectAll()
+          this.selectedItemsCache = []
           hitResult.item.selected = true
           this.toolMode = 'moveSingle'
         }
@@ -102,17 +103,17 @@ export default {
         // If no hitresult, assume use is attempting to make a new selection
         // and cancel the current selection
       } else {
-
         // As the selected items have been moved to a group for easy
         // manipulation they may not longer be in the 'right' place. Move them 
         // back to the layer the originated on which should be stored in the 
         // cache.
         if (this.selectedItemsCache.length > 0) {
-          paper.project.selectedItems.forEach((item, index) => {
-            const cachedItemLayerIndex = this.selectedItemsCache[index]
-            paper.project.layers[cachedItemLayerIndex].addChild(item)
+          this.selectedItemsCache.forEach(item => {
+            const cachedItem = paper.project.getItem({ id: item.id })
+            paper.project.layers[item.layerIndex].addChild(cachedItem)
           })
         }
+        this.selectedItemsCache = []
         
         paper.project.deselectAll()
         this.toolMode = 'select'
@@ -207,12 +208,17 @@ export default {
       // because adding them to a group moves them to the group's layer.
       // We will have to manually move them back. Bit unsatisfactory this!
       if (this.toolMode !== 'move' && this.toolMode !== 'transform') {
-        this.selectedItemsCache = paper.project.getItems({
+        paper.project.getItems({
           class: 'Path', 
           selected: true
-        }).map(item => 
-          item.layer.index
-        )
+        }).forEach(item => {
+          if (!this.selectedItemsCache.some(e => e.id === item.id)) {
+            this.selectedItemsCache.push({
+              id: item.id, 
+              layerIndex: item.layer.index
+            })
+          }
+        })
       } 
 
       this.selectionGroup = new paper.Group(paper.project.selectedItems)      
