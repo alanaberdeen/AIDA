@@ -39,7 +39,7 @@
 import { mapState, mapActions } from 'vuex'
 
 import navigator from './Navigator.vue'
-import layers from './Layers.vue'
+import layers from './layers/Layers.vue'
 import images from './Images.vue'
 import properties from './properties/Properties.vue'
 import validations from './Validations.vue'
