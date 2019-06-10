@@ -326,7 +326,9 @@ export default {
       // When checking from project.getItems(), can check straight under layer
       } else if (itemToCheck.layer && itemToCheck.layer.name === 'guide') {
         return false
-      } else if (!itemToCheck.locked) {
+      } else if (itemToCheck.locked) {
+        return false
+      } else {
         return true
       }
     }
