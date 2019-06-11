@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Editor from './components/editor/Editor.vue'
-import Dashboard from './components/Dashboard.vue'
+import Dashboard from './components/dashboard/Dashboard.vue'
 import Loading from './components/Loading.vue'
 
 Vue.use(Router)

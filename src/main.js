@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 
 import './css/main.css' // Ensure using css-loader
+import '@mdi/font/css/materialdesignicons.css'
 
 Vue.config.productionTip = false
 

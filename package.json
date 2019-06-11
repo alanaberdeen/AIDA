@@ -20,6 +20,7 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
+    "@mdi/font": "^3.6.95",
     "@vue/cli-plugin-babel": "^3.5.1",
     "@vue/cli-plugin-eslint": "^3.5.1",
     "@vue/cli-service": "^3.5.1",
