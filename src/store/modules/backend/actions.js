@@ -112,12 +112,12 @@ export default {
     dispatch
   }) {
     // Construct path to file
-    const location = location.origin + '/images/' +
+    const propsLocation = location.origin + '/images/' +
                       state.projectFileName.slice(0, -4) +
                       '_files/vips-properties.xml'
 
     // Fetch data and convert to jsObject
-    const propertiesFile = await fetch(location)
+    const propertiesFile = await fetch(propsLocation)
     const data = JSON.parse(convert.xml2json(
       await propertiesFile.text(),
       { ignoreDeclaration: true,
