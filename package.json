@@ -20,6 +20,7 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.9.0",
     "@mdi/font": "^3.6.95",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
