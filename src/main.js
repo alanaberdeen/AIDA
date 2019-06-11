@@ -7,6 +7,7 @@ import store from './store'
 
 import './css/main.css' // Ensure using css-loader
 import '@mdi/font/css/materialdesignicons.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.config.productionTip = false
 
