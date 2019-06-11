@@ -41,10 +41,11 @@ export default {
       // Update paths to have strokeWidth reactive to zoom level.
       // TODO: consider the computational expensive of this and find a more
       // effectively method of handling it.
-      paper.project.getItems({
-        class: paper.Path
-      }).map(path => {
+      paper.project.getItems({ class: paper.Path }).forEach(path => {
         path.strokeWidth = (image1.getContentSize().x * strokeScale) / (viewportZoom * 1000)
+
+        // Ruler items need special treatment to re-draw the labels
+        if (path.hasOwnProperty('drawLabel')) path.drawLabel()
       })
     })
 
