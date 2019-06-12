@@ -1,40 +1,46 @@
-const { promisify } = require('util')
 const express = require('express')
 const bodyParser = require('body-parser')
-const fs = require('fs')
+const fsp = require('fs').promises
+const path = require('path')
 const chalk = require('chalk')
 const ip = require('ip')
 
 // Check for images in the data/images/
 // Write a file an array of the available images as reference.
 async function checkForImages () {
-  const writeFile = promisify(fs.writeFile)
-  const images = await findImages('data/images')
-  var json = JSON.stringify(images)
-  await writeFile('data/images.json', json, 'utf8')
+  const images = await walk('data/images')
+  const json = JSON.stringify(images)
+  await fsp.writeFile('data/images.json', json, 'utf8')
 }
 
-// Returns an array of avialable images in the specified directory.
-async function findImages (dirPath) {
-  const readdir = promisify(fs.readdir)
+// Recursively build the filetree by searching through all directories
+// Do not search inside DZI file directories (too many irrelevant files)
+// ignore .DS_store files
+async function walk (dir, fileList = []) {
+  const files = await fsp.readdir(dir)
+  for (const file of files) {
+    const stat = await fsp.stat(path.join(dir, file))
 
-  try {
-    // Get an array of **all items** at the path.
-    const items = await readdir(dirPath)
+    if (stat.isDirectory() && !file.endsWith('_files')) {
+      fileList.push({
+        name: path.basename(file),
+        children: []
+      })
 
-    // Exclude hidden files and directories
-    return items.filter(item => {
-      const fileStats = fs.statSync(dirPath + '/' + item)
-      return item[0] !== '.' && !fileStats.isDirectory()
-    })
-  } catch (err) {
-    console.log(err)
+      const children = fileList[fileList.length - 1].children
+      await walk(path.join(dir, file), children)
+    } else if (file !== '.DS_Store' && !file.endsWith('_files')) {
+      fileList.push({
+        name: file,
+        ext: path.extname(file),
+        path: path.join(dir, file).split('data/images/')[1]
+      })
+    }
   }
+  return fileList
 }
 
 async function saveAnnotation (data) {
-  const writeFile = promisify(fs.writeFile)
-
   // Get the IP address of the current machine. If we need to write a new raster
   // file we should save the link to it using the IP address. This ensures the
   // API endpoint where the image can be found is referenced correctly even
@@ -58,15 +64,28 @@ async function saveAnnotation (data) {
   })
 
   // Write annotation data as JSON file.
-  const imageName = data.projectImageName
-  const annotationFilePath = 'data/annotations/' + imageName + '.json'
+  const ext = path.extname(data.projectFilePath)
+  const annotationFilePath = 'data/annotations/' + data.projectFilePath.split(ext)[0] + '.json'
   const json = JSON.stringify(data.annotationData)
-  await writeFile(annotationFilePath, json, 'utf8')
+
+  try {
+    await fsp.writeFile(annotationFilePath, json, 'utf8')
+  } catch (err) {
+    // If the error was because the directory did no extist then make it first
+    if (err.code === 'ENOENT') {
+      try {
+        await fsp.mkdir(path.dirname(annotationFilePath), { recursive: true })
+        await fsp.writeFile(annotationFilePath, json, 'utf8')
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
 }
 
 function saveRaster (dataURL, path) {
   const base64Data = dataURL.replace(/^data:image\/(png|gif|jpeg);base64,/, '')
-  fs.writeFileSync(path, base64Data, 'base64')
+  fsp.writeFileSync(path, base64Data, 'base64')
 }
 
 async function startServer () {
