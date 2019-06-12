@@ -85,7 +85,7 @@ export default {
       // secrets in the client code...
       axios
         .post(
-          'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAeCFXV_oK3QjGQdypK_2hVTH_ck2mshFw',
+          // INSERT API KEY,
           {
             requests: [
               {
