@@ -3,7 +3,7 @@ import mutations from './mutations'
 
 const state = {
   availableImages: [],
-  projectFileName: ''
+  projectFilePath: ''
 }
 
 export default {

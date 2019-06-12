@@ -31,8 +31,9 @@ async function walk (dir, fileList = []) {
       await walk(path.join(dir, file), children)
     } else if (file !== '.DS_Store' && !file.endsWith('_files')) {
       fileList.push({
-        name: path.basename(file),
-        ext: path.extname(file)
+        name: file,
+        ext: path.extname(file),
+        path: path.join(dir, file).split('data/images/')[1]
       })
     }
   }
@@ -63,10 +64,23 @@ async function saveAnnotation (data) {
   })
 
   // Write annotation data as JSON file.
-  const imageName = data.projectImageName
-  const annotationFilePath = 'data/annotations/' + imageName + '.json'
+  const ext = path.extname(data.projectFilePath)
+  const annotationFilePath = 'data/annotations/' + data.projectFilePath.split(ext)[0] + '.json'
   const json = JSON.stringify(data.annotationData)
-  await fsp.writeFile(annotationFilePath, json, 'utf8')
+
+  try {
+    await fsp.writeFile(annotationFilePath, json, 'utf8')
+  } catch (err) {
+    // If the error was because the directory did no extist then make it first
+    if (err.code === 'ENOENT') {
+      try {
+        await fsp.mkdir(path.dirname(annotationFilePath), { recursive: true })
+        await fsp.writeFile(annotationFilePath, json, 'utf8')
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
 }
 
 function saveRaster (dataURL, path) {

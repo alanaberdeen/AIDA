@@ -17,12 +17,13 @@ export default new Router({
       component: Dashboard
     },
     {
-      path: '/:image',
+      path: '/edit',
       name: 'editor',
-      component: Editor
+      component: Editor,
+      props: (route) => ({ query: route.query.q })
     },
     {
-      path: '/loading/:fileName',
+      path: '/loading/:filePath',
       name: 'loading',
       component: Loading
     }

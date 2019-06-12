@@ -37,11 +37,12 @@
         </template>
 
         <template slot="label" slot-scope="{ item }">
-          <a 
+          <router-link 
             v-if="!item.children && loadableImageTypes.includes(item.ext)" 
-            :href="'/loading/' + item.name">
-            {{ item.name }}
-          </a>
+            :to="{ name: 'loading', params: { filePath: item.path }}"
+          >
+            {{item.name}}
+          </router-link>
           <span 
             v-else-if="!item.children && !loadableImageTypes.includes(item.ext)"
             class='grey--text'

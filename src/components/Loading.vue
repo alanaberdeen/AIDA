@@ -18,6 +18,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import path from 'path'
 
 export default {
   props: {
@@ -30,7 +31,7 @@ export default {
   methods: {
     ...mapActions({
       setProjectImageName: 'image/setProjectImageName',
-      setProjectFileName: 'backend/setProjectFileName'
+      setProjectFilePath: 'backend/setProjectFilePath'
     })
   },
 
@@ -40,9 +41,10 @@ export default {
 
   async mounted () {
     try {
-      await this.setProjectImageName(this.$route.params.fileName.replace(/\.[^/.]+$/, ''))
-      await this.setProjectFileName(this.$route.params.fileName)
-      this.$router.replace('/' + this.projectImageName)
+      const ext = path.extname(this.$route.params.filePath)
+      await this.setProjectImageName(path.basename(this.$route.params.filePath, ext))
+      await this.setProjectFilePath(this.$route.params.filePath)
+      this.$router.replace('/edit?q=' + this.$route.params.filePath)
     } catch (error) {
       console.log('could not load the data into AIDA')
       console.log(error)

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import convert from 'xml-js'
+import path from 'path'
 
 export default {
   async getArrayOfImages ({
@@ -7,15 +8,16 @@ export default {
   }) {
     try {
       await axios.post(location.origin + '/checkForImages')
-      const pathToArrayOfImagesFile = location.origin + '/data/images.json'
-      const arrayOfImagesFile = await axios.get(pathToArrayOfImagesFile)
-      commit('setAvailableImages', arrayOfImagesFile.data)
+      const pathToImagesFile = location.origin + '/data/images.json'
+      const imagesFile = await axios.get(pathToImagesFile)
+      commit('setAvailableImages', imagesFile.data)
     } catch (err) {
       console.log(err)
     }
   },
 
   async saveAnnotation ({
+    state,
     dispatch,
     rootState
   }) {
@@ -28,7 +30,7 @@ export default {
       await axios.post(
         postUrl,
         {
-          projectImageName: rootState.image.projectImageName,
+          projectFilePath: state.projectFilePath,
           annotationData: rootState.annotation.project
         }
       )
@@ -56,10 +58,13 @@ export default {
   },
 
   async getAnnotation ({
+    state,
     dispatch,
     rootState
   }) {
-    const dataLocation = location.origin + '/annotations/' + rootState.image.projectImageName + '.json'
+    const ext = path.extname(state.projectFilePath)
+    const filePath = state.projectFilePath.split(ext)[0]
+    const dataLocation = location.origin + '/annotations/' + filePath + '.json'
     try {
       const response = await axios.get(dataLocation)
       dispatch('annotation/loadAnnotation', response.data, { root: true })
@@ -70,25 +75,26 @@ export default {
     }
   },
 
-  setProjectFileName ({
+  setProjectFilePath ({
     commit
   }, payload) {
-    commit('setProjectFileName', payload)
+    commit('setProjectFilePath', payload)
   },
 
   async getProjectImage ({
     state,
+    rootState,
     dispatch
   }) {
     // Clear any images in the current vuex state.
     await dispatch('image/clearImages', null, { root: true })
 
     // Set image type by checking for .dzi in the fileName
-    if (state.projectFileName.indexOf('.dzi') > -1) {
+    if (state.projectFilePath.indexOf('.dzi') > -1) {
       dispatch('image/addOSDImage', {
-        name: state.projectFileName,
+        name: rootState.image.projectImageName,
         fileType: 'dzi',
-        source: location.origin + '/images/' + state.projectFileName,
+        source: location.origin + '/images/' + state.projectFilePath,
         function: 'project',
         opacity: 1
       }, { root: true })
@@ -96,9 +102,9 @@ export default {
       dispatch('getProjectImageProperties')
     } else {
       dispatch('image/addOSDImage', {
-        name: state.projectFileName,
+        name: rootState.image.projectImageName,
         fileType: 'simple',
-        source: location.origin + '/images/' + state.projectFileName,
+        source: location.origin + '/images/' + state.projectFilePath,
         function: 'project',
         opacity: 1
       }, { root: true })
@@ -113,7 +119,7 @@ export default {
   }) {
     // Construct path to file
     const propsLocation = location.origin + '/images/' +
-                      state.projectFileName.slice(0, -4) +
+                      state.projectFilePath.slice(0, -4) +
                       '_files/vips-properties.xml'
 
     // Fetch data and convert to jsObject

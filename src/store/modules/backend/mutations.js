@@ -3,7 +3,7 @@ export default {
     state.availableImages = availableImages
   },
 
-  setProjectFileName (state, projectFileName) {
-    state.projectFileName = projectFileName
+  setProjectFilePath (state, projectFilePath) {
+    state.projectFilePath = projectFilePath
   }
 }
