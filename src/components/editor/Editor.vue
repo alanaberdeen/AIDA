@@ -22,7 +22,7 @@ import Tools from './tools/Tools.vue'
 import Studio from './studio/Studio.vue'
 import Stepper from '../task/Stepper.vue'
 import View from './view/View.vue'
-import Toolbar from '../header/Toolbar.vue'
+import Toolbar from '../toolbar/Toolbar.vue'
 import Snackbar from '../notification/Snackbar.vue'
 
 export default {

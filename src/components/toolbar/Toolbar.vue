@@ -14,7 +14,7 @@
       <v-toolbar-side-icon @click="toggleToolsDrawer()"/>
     </div>
 
-    <v-toolbar-title class="white--text">
+    <v-toolbar-title class="white--text" to='/'>
       AIDA
     </v-toolbar-title>
 
@@ -28,12 +28,12 @@
 
     <!-- Link to Dashboard -->
     <v-btn
-        icon
-        to="/">
-        <v-icon>
-          apps
-        </v-icon>
-      </v-btn>
+      icon
+      to="/dashboard">
+      <v-icon>
+        apps
+      </v-icon>
+    </v-btn>
 
     <!-- Link to Docs -->
     <v-btn

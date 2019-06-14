@@ -8,7 +8,7 @@
       class="primary pointers-please"
       >
 
-      <v-toolbar-title class="white--text">
+      <v-toolbar-title class="white--text" to='/'>
         AIDA
       </v-toolbar-title>
 
@@ -17,7 +17,7 @@
       <!-- Link to Dashboard -->
       <v-btn
         icon
-        to="/">
+        to="/dashboard">
         <v-icon>
           apps
         </v-icon>
