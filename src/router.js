@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Editor from './components/editor/Editor.vue'
 import Dashboard from './components/dashboard/Dashboard.vue'
 import Loading from './components/Loading.vue'
+import Landing from './components/Landing.vue'
 
 Vue.use(Router)
 
@@ -11,6 +12,11 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    {
+      path: '/',
+      name: 'Landing',
+      component: Landing
+    },
     {
       path: '/dashboard',
       name: 'Dashboard',

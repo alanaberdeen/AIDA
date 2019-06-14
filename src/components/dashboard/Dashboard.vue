@@ -7,10 +7,11 @@
       app
       class="primary pointers-please"
       >
-
-      <v-toolbar-title class="white--text" to='/'>
-        AIDA
-      </v-toolbar-title>
+      <router-link to='/'>
+        <v-toolbar-title class="white--text">
+          AIDA
+        </v-toolbar-title>
+      </router-link>
 
       <v-spacer/>
 
