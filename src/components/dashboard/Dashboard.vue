@@ -3,6 +3,7 @@
     <v-toolbar
       fixed
       dark
+      flat
       dense
       app
       class="primary pointers-please"
@@ -34,7 +35,7 @@
     </v-toolbar>
     <v-container fluid>
       <v-layout row wrap>
-        <v-flex xs10 offset-xs1>
+        <v-flex xs12 sm10 offset-sm1>
           <Treeview />
         </v-flex>
       </v-layout>
