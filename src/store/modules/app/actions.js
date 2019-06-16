@@ -71,7 +71,19 @@ export default {
     dispatch
   }) => {
     await dispatch('synchroniseAnnotationAndOSDCanvas')
-    dispatch('annotation/loadAnnotation', null, { root: true })
+
+    // Demo data isn't saved on a server but locally in the browser so check
+    // for it when openning the demo project and load if found.
+    const savedAnnotation = window.localStorage.annotation
+    if (savedAnnotation) {
+      dispatch('annotation/loadAnnotation',
+        JSON.parse(savedAnnotation),
+        { root: true }
+      )
+    } else {
+      dispatch('annotation/loadAnnotation', null, { root: true })
+    }
+
     await dispatch('image/clearImages', null, { root: true })
     dispatch('image/addOSDImage', {
       name: 'Example image',

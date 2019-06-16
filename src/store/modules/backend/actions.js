@@ -49,18 +49,33 @@ export default {
 
     // Handle errors
     } catch (err) {
-      console.log(err)
-      dispatch('app/activateSnackbar', {
-        text: 'Annotation data could not be saved',
-        color: 'error'
-      }, { root: true })
+      try {
+        // Save to local browser storage
+        window.localStorage.setItem('annotation', JSON.stringify(rootState.annotation.project))
+
+        // Activate notification
+        dispatch('app/activateSnackbar', {
+          text: 'Could not reach server, data saved in browser',
+          color: 'warning'
+        }, { root: true })
+
+        // Set annotation save state
+        dispatch('annotation/setSaveState', {
+          changesSaved: true,
+          lastSaveTimeStamp: new Date()
+        }, { root: true })
+      } catch (err) {
+        dispatch('app/activateSnackbar', {
+          text: 'Annotation data could not be saved',
+          color: 'error'
+        }, { root: true })
+      }
     }
   },
 
   async getAnnotation ({
     state,
-    dispatch,
-    rootState
+    dispatch
   }) {
     const ext = path.extname(state.projectFilePath)
     const filePath = state.projectFilePath.split(ext)[0]
