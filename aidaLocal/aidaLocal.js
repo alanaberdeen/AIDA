@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const history = require('connect-history-api-fallback')
 const fsp = require('fs').promises
 const path = require('path')
 const chalk = require('chalk')
@@ -98,6 +99,9 @@ async function startServer () {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     next()
   })
+
+  // Use history proxy middleware to handle 404 routes in SPA
+  app.use(history())
 
   // Need to parse POST Body data (for parsing application/json)
   // Increase the limit from the default (100kb) to enable large annotation JSON
