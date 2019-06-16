@@ -44,7 +44,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import Toolbar from '../header/Toolbar.vue'
+import Toolbar from '../toolbar/Toolbar.vue'
 import Treeview from './Treeview.vue'
 
 export default {
