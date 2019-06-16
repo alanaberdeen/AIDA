@@ -5,6 +5,7 @@ import Editor from './components/editor/Editor.vue'
 import Dashboard from './components/dashboard/Dashboard.vue'
 import Loading from './components/Loading.vue'
 import Landing from './components/Landing.vue'
+import Demo from './components/Demo.vue'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ export default new Router({
       path: '/loading/:filePath',
       name: 'loading',
       component: Loading
+    },
+    {
+      path: '/demo',
+      name: 'demo',
+      component: Demo
     }
   ]
 })

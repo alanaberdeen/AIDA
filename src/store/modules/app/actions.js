@@ -67,6 +67,20 @@ export default {
     commit('setupForValidation')
   },
 
+  loadDemo: async ({
+    dispatch
+  }) => {
+    await dispatch('synchroniseAnnotationAndOSDCanvas')
+    dispatch('annotation/loadAnnotation', null, { root: true })
+    dispatch('image/addOSDImage', {
+      name: 'Example image',
+      fileType: 'dzi',
+      source: 'https://s3-eu-west-1.amazonaws.com/aida-example/SampleKi67.dzi',
+      function: 'project',
+      opacity: 1
+    }, { root: true })
+  },
+
   loadProject: async ({
     dispatch
   }) => {

@@ -34,8 +34,12 @@ export default {
     })
   },
 
-  mounted () {
-    if (!this.projectImageName) {
+  async mounted () {
+    if (this.$router.currentRoute.name === 'demo') {
+      await this.setProjectImageName('demo')
+      this.loadDemo()
+    }
+    else if (!this.projectImageName) {
       this.$router.replace('/')
     } else {
       this.loadProject()
@@ -44,6 +48,8 @@ export default {
 
   methods: {
     ...mapActions({
+      setProjectImageName: 'image/setProjectImageName',
+      loadDemo: 'app/loadDemo',
       loadProject: 'app/loadProject'
     })
   }

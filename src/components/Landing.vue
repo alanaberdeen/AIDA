@@ -10,7 +10,7 @@
 
   <v-layout justify-center row wrap my-3>
     <v-flex xs8 sm3 md2 mx-2>
-      <v-btn dark block>
+      <v-btn dark block to='/demo'>
         <v-icon left> play_arrow </v-icon>
         try it out
       </v-btn>
@@ -90,11 +90,11 @@ export default {
 </script>
 
 <style scoped>
-a {
+p a {
   text-decoration: none;
 }
 
-a:hover {
+p a:hover {
   text-decoration: underline;
 }
 </style>
