@@ -26,7 +26,7 @@ The next stage of development will be to integrate intelligent tools that levera
 
 ## Run Locally
 
-You can use AIDA on your local machine. The only requirement [NodeJS](https://nodejs.org/en/). 
+You can use AIDA on your local machine. The only requirement [NodeJS >v11](https://nodejs.org/en/). 
 
 A built and built version of the local application is included with the source code in the `/dist` directory. To begin using AIDA locally: 
 
