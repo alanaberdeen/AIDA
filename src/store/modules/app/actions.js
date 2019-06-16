@@ -72,6 +72,7 @@ export default {
   }) => {
     await dispatch('synchroniseAnnotationAndOSDCanvas')
     dispatch('annotation/loadAnnotation', null, { root: true })
+    await dispatch('image/clearImages', null, { root: true })
     dispatch('image/addOSDImage', {
       name: 'Example image',
       fileType: 'dzi',
