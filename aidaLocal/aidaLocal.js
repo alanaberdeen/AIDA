@@ -153,8 +153,8 @@ async function startServer () {
   // Listen to requests
   app.listen(port, () => {
     console.log(`  AIDA running at:`)
-    console.log('  - Local:   ' + chalk.cyan(`http://localhost:${port}/`))
-    console.log('  - Network: ' + chalk.cyan(`http://` + networkIPAddress + `:${port}/`))
+    console.log('  - Local:   ' + chalk.cyan(`http://localhost:${port}/dashboard`))
+    console.log('  - Network: ' + chalk.cyan(`http://` + networkIPAddress + `:${port}/dashboard`))
   })
 }
 
