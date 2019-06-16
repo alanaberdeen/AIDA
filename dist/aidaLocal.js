@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const history = require('connect-history-api-fallback')
 const fsp = require('fs').promises
 const path = require('path')
 const chalk = require('chalk')
@@ -99,6 +100,9 @@ async function startServer () {
     next()
   })
 
+  // Use history proxy middleware to handle 404 routes in SPA
+  app.use(history())
+
   // Need to parse POST Body data (for parsing application/json)
   // Increase the limit from the default (100kb) to enable large annotation JSON
   // files
@@ -153,8 +157,8 @@ async function startServer () {
   // Listen to requests
   app.listen(port, () => {
     console.log(`  AIDA running at:`)
-    console.log('  - Local:   ' + chalk.cyan(`http://localhost:${port}/`))
-    console.log('  - Network: ' + chalk.cyan(`http://` + networkIPAddress + `:${port}/`))
+    console.log('  - Local:   ' + chalk.cyan(`http://localhost:${port}/dashboard`))
+    console.log('  - Network: ' + chalk.cyan(`http://` + networkIPAddress + `:${port}/dashboard`))
   })
 }
 
