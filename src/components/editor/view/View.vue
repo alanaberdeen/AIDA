@@ -40,7 +40,7 @@ export default {
       this.loadDemo()
     }
     else if (!this.projectImageName) {
-      this.$router.replace('/')
+      this.$router.replace('/dashboard')
     } else {
       this.loadProject()
     }
