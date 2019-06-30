@@ -16,48 +16,45 @@ export default {
     state.snackbar.active = false
   },
 
-  // Add a handler function that will run when osd-viewport is updated.
-  // This will synchronously update the paperJS viewport.
-  // This is an expensive operation as it ensures all parameters are in sync
-  // on every viewport update. For example, zoom may not have changed but it
-  // would still fire this event and update the zoom. However, separating into
-  // the individual parts led to a far less smooth experience. Leave it here
-  // for now at least.
+  // Synchronise the position and scale of both the openseadragon image and the
+  // annotation project.
   synchroniseAnnotationAndOSDCanvas: (state, viewer) => {
-    const strokeScale = state.strokeScale
-
-    viewer.addHandler('update-viewport', function (e) {
+    viewer.addHandler('animation', () => {
       // Sync Zoom
-      const viewportZoom = viewer.viewport.getZoom(true)
-      const image1 = viewer.world.getItemAt(0)
-      paper.view.zoom = image1.viewportToImageZoom(viewportZoom)
+      const currentZoom = viewer.viewport.getZoom(true)
+      const baseImage = viewer.world.getItemAt(0)
+      paper.view.zoom = baseImage.viewportToImageZoom(currentZoom)
 
       // Sync Center
-      const center = image1.viewportToImageCoordinates(
+      const center = baseImage.viewportToImageCoordinates(
         viewer.viewport.getCenter(true)
       )
       paper.view.center = new paper.Point(center.x, center.y)
 
-      // Update paths to have strokeWidth reactive to zoom level.
-      // TODO: consider the computational expensive of this and find a more
-      // effectively method of handling it.
-      paper.project.getItems({ class: paper.Path }).forEach(path => {
-        path.strokeWidth = (image1.getContentSize().x * strokeScale) / (viewportZoom * 1000)
+      // Update path stroke widths.
+      // If the current zoom level does not equal the target zoom level then we
+      // need to scale the paths in the project to match the zoom changes.
+      if (viewer.viewport.getZoom(true) !== viewer.viewport.getZoom()) {
+        // Update paths to have strokeWidth reactive to zoom level.
+        const strokeScale = state.strokeScale
+        paper.project.getItems({ class: paper.Path }).forEach(path => {
+          path.strokeWidth = (baseImage.getContentSize().x * strokeScale) / (currentZoom * 1000)
 
-        // Ruler items need special treatment to re-draw the labels
-        if (path.hasOwnProperty('drawLabel')) path.drawLabel()
-      })
+          // Ruler items need special treatment to re-draw the labels
+          if (path.hasOwnProperty('drawLabel')) path.drawLabel()
+        })
+      }
     })
 
     viewer.addHandler('resize', function (e) {
-      const image1 = viewer.world.getItemAt(0)
+      const baseImage = viewer.world.getItemAt(0)
 
       // Sync Size
       paper.view.viewSize.width = e.newContainerSize.x
       paper.view.viewSize.height = e.newContainerSize.y
 
       // Sync Center
-      const center = image1.viewportToImageCoordinates(
+      const center = baseImage.viewportToImageCoordinates(
         viewer.viewport.getCenter(true)
       )
       paper.view.center = new paper.Point(center.x, center.y)
