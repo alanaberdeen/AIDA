@@ -28,7 +28,11 @@
       id="hint-card"
       class="elevation-1"
     >
-      <app-validate v-if="steps[activeStep].type === 'validate'"></app-validate>
+      <app-validate 
+        v-if="steps &&
+              steps[activeStep].hasOwnProperty('type') && 
+              steps[activeStep].type === 'validate'" 
+      />
 
       <p id="hint" v-else>
         {{ steps[activeStep].instruction }}
