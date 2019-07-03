@@ -3,6 +3,55 @@ import convert from 'xml-js'
 import path from 'path'
 
 export default {
+  loadProject: async ({
+    dispatch
+  }) => {
+    // Clear any images in the current vuex state.
+    await dispatch('image/clearImages', null, { root: true })
+
+    // Sync
+    await dispatch('app/synchroniseAnnotationAndOSDCanvas', null, { root: true })
+
+    // Get project
+    const response = await window.fetch('http://localhost:3000/data/projects/nasullah.json')
+    const project = await response.json()
+
+    // Load project annotation
+    if (project.hasOwnProperty('annotation')) {
+      dispatch('annotation/loadAnnotation', project.annotation, { root: true })
+    }
+
+    // Load project images
+    if (project.hasOwnProperty('images')) {
+      project.images.forEach(image => {
+        if (image.source.indexOf('.dzi') > -1) {
+          dispatch('image/addOSDImage', {
+            name: image.name,
+            fileType: 'dzi',
+            source: image.source,
+            function: 'project',
+            opacity: 1
+          }, { root: true })
+
+          // dispatch('getProjectImageProperties')
+        } else {
+          dispatch('image/addOSDImage', {
+            name: image.name,
+            fileType: 'simple',
+            source: image.source,
+            function: 'project',
+            opacity: 1
+          }, { root: true })
+        }
+      })
+    }
+
+    // Load project editor configuration
+    if (project.hasOwnProperty('editor')) {
+      dispatch('app/loadEditorConfig', project.editor, { root: true })
+    }
+  },
+
   async getArrayOfImages ({
     commit
   }) {
@@ -13,6 +62,69 @@ export default {
       commit('setAvailableImages', imagesFile.data)
     } catch (err) {
       console.log(err)
+    }
+  },
+
+  async saveProject ({
+    dispatch,
+    rootState
+  }) {
+    try {
+      // Ensure all the paperJS items are included in the vuex state
+      await dispatch('annotation/refreshAnnotationState', null, { root: true })
+
+      // Post API request.
+      const postUrl = location.origin + '/save'
+      await axios.post(
+        postUrl,
+        {
+          editor: {
+            activeChannel: rootState.image.activeChannelIndex,
+            activeStep: rootState.app.activeStep,
+            activeLayer: rootState.app.activeLayer,
+            type: rootState.app.type,
+            steps: rootState.app.setps
+          },
+          annotation: rootState.annotation.project,
+          images: rootState.image.images
+        }
+      )
+
+      // Activate notification
+      dispatch('app/activateSnackbar', {
+        text: 'Saved annotation data',
+        color: 'success'
+      }, { root: true })
+
+      // Set annotation save state
+      dispatch('annotation/setSaveState', {
+        changesSaved: true,
+        lastSaveTimeStamp: new Date()
+      }, { root: true })
+
+    // Handle errors
+    } catch (err) {
+      try {
+        // Save to local browser storage
+        window.localStorage.setItem('annotation', JSON.stringify(rootState.annotation.project))
+
+        // Activate notification
+        dispatch('app/activateSnackbar', {
+          text: 'Could not reach server, data saved in browser',
+          color: 'warning'
+        }, { root: true })
+
+        // Set annotation save state
+        dispatch('annotation/setSaveState', {
+          changesSaved: true,
+          lastSaveTimeStamp: new Date()
+        }, { root: true })
+      } catch (err) {
+        dispatch('app/activateSnackbar', {
+          text: 'Annotation data could not be saved',
+          color: 'error'
+        }, { root: true })
+      }
     }
   },
 
@@ -114,7 +226,7 @@ export default {
         opacity: 1
       }, { root: true })
 
-      dispatch('getProjectImageProperties')
+      // dispatch('getProjectImageProperties')
     } else {
       dispatch('image/addOSDImage', {
         name: rootState.image.projectImageName,

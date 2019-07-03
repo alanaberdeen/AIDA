@@ -1,4 +1,30 @@
 export default {
+  loadEditorConfig: ({
+    dispatch
+  }, config) => {
+    if (config.hasOwnProperty('activeLayer')) {
+      dispatch('setActiveLayer', config.activeLayer)
+    }
+
+    if (config.hasOwnProperty('activeChannel')) {
+      dispatch('image/setActiveChannel', config.activeChannel, { root: true })
+    }
+
+    if (config.hasOwnProperty('steps')) {
+      dispatch('setSteps', config.steps)
+    }
+
+    if (config.hasOwnProperty('activeStep')) {
+      dispatch('setActiveStep', config.steps[config.activeStep])
+    }
+  },
+
+  setSteps: ({
+    commit
+  }, steps) => {
+    commit('setSteps', steps)
+  },
+
   setTask: ({
     commit
   }, task) => {
@@ -92,14 +118,6 @@ export default {
       function: 'project',
       opacity: 1
     }, { root: true })
-  },
-
-  loadProject: async ({
-    dispatch
-  }) => {
-    await dispatch('synchroniseAnnotationAndOSDCanvas')
-    dispatch('backend/getAnnotation', null, { root: true })
-    dispatch('backend/getProjectImage', null, { root: true })
   },
 
   toggleToolsDrawer: ({

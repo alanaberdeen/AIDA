@@ -55,7 +55,7 @@ export default {
 
   methods: {
     ...mapActions({
-      dispatchSave: 'backend/saveAnnotation'
+      dispatchSave: 'backend/saveProject'
     }),
 
     async save () {
