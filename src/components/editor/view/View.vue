@@ -50,7 +50,7 @@ export default {
     ...mapActions({
       setProjectImageName: 'image/setProjectImageName',
       loadDemo: 'app/loadDemo',
-      loadProject: 'app/loadProject'
+      loadProject: 'backend/loadProject'
     })
   }
 }
