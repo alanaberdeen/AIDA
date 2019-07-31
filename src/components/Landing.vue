@@ -30,7 +30,7 @@
       href="https://github.com/alanaberdeen/AIDA/wiki" >
       <v-icon small> fa-book </v-icon>
     </v-btn>
-    
+
   </v-toolbar>
   <v-container>
     <v-layout justify-center row>
@@ -49,13 +49,13 @@
         </v-btn>
       </v-flex>
       <v-flex xs8 sm3 md2>
-        <v-btn block>
+        <v-btn block href='https://github.com/alanaberdeen/AIDA'>
           <v-icon left> mdi-github-circle </v-icon>
           Github
         </v-btn>
       </v-flex>
       <v-flex xs8 sm3 md2 mx-2>
-        <v-btn block>
+        <v-btn block href='https://github.com/alanaberdeen/AIDA/wiki'>
           <v-icon left> fa-book </v-icon>
           Docs
         </v-btn>
@@ -119,7 +119,6 @@
 
 <script>
 export default {
-  
 }
 </script>
 
@@ -132,6 +131,3 @@ p a:hover {
   text-decoration: underline;
 }
 </style>
-
-
-
