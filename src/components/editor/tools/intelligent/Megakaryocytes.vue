@@ -6,27 +6,27 @@
 // 5. The reviewed data is returned to the classifier and this data is
 //    incorporated in the next classification iteration.
 <template lang="html">
-  <v-list-tile id="tool-tile">
-    <v-tooltip
-      id="tooltip"
-      right
-      open-delay="700">
-      <v-btn
-        id="tool"
-        slot="activator"
-        flat
-        block
-        @click.native="initialiseTool"
-      >
-        <v-icon
-          :class="{'grey--text text--darken-2': !active,
-                   'blue--text text--darken-1': active}">
-          youtube_searched_for
-        </v-icon>
-      </v-btn>
+  <v-list-item id="tool-tile">
+    <v-tooltip right open-delay=700>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          id="tool"
+          v-on="on"
+          block
+          text
+          @click.native="initialiseTool"
+        >
+          <v-icon
+            small
+            :class="{'grey--text text--darken-2': !active,
+                    'blue--text text--darken-1': active}">
+            mdi-magnify
+          </v-icon>
+        </v-btn>
+      </template>
       <span> Megakaryocyte Classifier </span>
     </v-tooltip>
-  </v-list-tile>
+  </v-list-item>
 
 </template>
 
@@ -256,9 +256,6 @@ export default {
 </script>
 
 <style lang='css' scoped>
-#tooltip {
-  width: 100%;
-}
 
 #tool {
   min-width: 0px;

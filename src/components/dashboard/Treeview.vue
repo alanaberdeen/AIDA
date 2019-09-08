@@ -37,17 +37,17 @@
         </template>
 
         <template slot="label" slot-scope="{ item }">
-          <router-link 
-            v-if="!item.children && loadableImageTypes.includes(item.ext)" 
+          <router-link
+            v-if="!item.children && loadableImageTypes.includes(item.ext)"
             :to="{ name: 'loading', params: { filePath: item.path }}"
           >
             {{item.name}}
           </router-link>
-          <span 
+          <span
             v-else-if="!item.children && !loadableImageTypes.includes(item.ext)"
             class='grey--text'
-          > 
-            {{ item.name }} 
+          >
+            {{ item.name }}
           </span>
           <span v-else> {{ item.name }} </span>
         </template>
@@ -72,11 +72,11 @@ export default {
       '.txt': 'mdi-file-document-outline',
       '.xls': 'mdi-file-excel',
       '.dzi': 'image_search',
-      '.jpg': 'mdi-image-outline',
-      '.png': 'mdi-image-outline',
+      '.jpg': 'mdi-file-image',
+      '.jpeg': 'mdi-file-image',
       '.ndpi': 'mdi-image-off'
     },
-    loadableImageTypes: ['.dzi', '.png', '.jpg'],
+    loadableImageTypes: ['.dzi', '.png', '.jpg', '.jpeg'],
     tree: [],
     open: ['public'],
     search: null,
@@ -90,7 +90,7 @@ export default {
     ...mapState({
       items: state => state.backend.availableImages
     })
-  } 
+  }
 }
 </script>
 
@@ -99,4 +99,3 @@ a {
   text-decoration: none;
 }
 </style>
-

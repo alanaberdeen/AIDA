@@ -4,7 +4,7 @@ export default {
     if (state.steps && state.steps[state.activeStep].tools) {
       return state.steps[state.activeStep].tools
     } else {
-      return ['pan', 'circle', 'rectangle', 'path', 'pencil', 'polygon', 'paint', 'paste', 'move', 'node', 'count', 'delete', 'megas', 'filter']
+      return ['pan', 'circle', 'rectangle', 'path', 'pencil', 'polygon', 'paint', 'paste', 'edit', 'move', 'node', 'count', 'delete', 'megas', 'filter', 'super-pixel', 'ruler']
     }
   }
 }

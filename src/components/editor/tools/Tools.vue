@@ -1,21 +1,17 @@
 <template lang="html">
   <v-navigation-drawer
-    id="tools-drawer"
     fixed
     clipped
+    app
     @input="updateToolsDrawerState"
     :value="this.toolsDrawer"
     mini-variant
-    mini-variant-width="60"
-    app
+    mini-variant-width="52"
     mobile-break-point="800"
+    class='mt-12'
     v-if="['loading'].indexOf($route.name) === -1"
   >
-    <v-list
-      id="toolList"
-      class="pointers-please"
-      dense
-    >
+    <v-list dense>
 
       <app-pan
         v-if="(getStepTools().includes('pan'))"
@@ -115,6 +111,24 @@
         @click.native="activeTool = 'filter'"
       />
 
+      <app-edit
+        v-if="(getStepTools().includes('edit'))"
+        :active="(activeTool === 'edit')"
+        @click.native="activeTool = 'edit'"
+      />
+
+      <app-super-pixel
+        v-if="(getStepTools().includes('super-pixel'))"
+        :active="(activeTool === 'super-pixel')"
+        @click.native="activeTool = 'super-pixel'"
+      />
+
+      <app-ruler
+        v-if="(getStepTools().includes('ruler'))"
+        :active="(activeTool === 'ruler')"
+        @click.native="activeTool = 'ruler'"
+      />
+
     </v-list>
   </v-navigation-drawer>
 
@@ -136,6 +150,8 @@ import toolPaint from './simple/Paint.vue'
 import toolGrid from './simple/Grid.vue'
 import toolPolygon from './simple/Polygon.vue'
 import toolPaste from './simple/Paste.vue'
+import toolEdit from './simple/Edit.vue'
+import toolRuler from './simple/Ruler.vue'
 
 // Assisted Tools:
 import toolFilter from './assisted/Filter.vue'
@@ -143,6 +159,7 @@ import toolFilter from './assisted/Filter.vue'
 // Intelligent Tools:
 import toolFaces from './intelligent/Faces.vue'
 import toolMegas from './intelligent/Megakaryocytes'
+import toolSuperPixel from './intelligent/SuperPixel'
 
 export default {
   components: {
@@ -160,7 +177,10 @@ export default {
     'app-grid': toolGrid,
     'app-filter': toolFilter,
     'app-polygon': toolPolygon,
-    'app-paste': toolPaste
+    'app-paste': toolPaste,
+    'app-edit': toolEdit,
+    'app-super-pixel': toolSuperPixel,
+    'app-ruler': toolRuler
   },
 
   data () {
@@ -225,13 +245,3 @@ export default {
   }
 }
 </script>
-
-<style lang='css' scoped>
-#toolList {
-  background: #eeeeee;
-}
-
-#tools-drawer {
-  background-color: #eeeeee;
-}
-</style>

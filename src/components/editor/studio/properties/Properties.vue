@@ -15,75 +15,75 @@
       <v-list id="list" >
 
         <!-- Number of selected items -->
-        <v-list-tile>
+        <v-list-item>
 
-          <v-list-tile-content>
-            <v-list-tile-title class="faIcons">
+          <v-list-item-content>
+            <v-list-item-title class="faIcons">
               No. selected items:
-            </v-list-tile-title>
-          </v-list-tile-content>
+            </v-list-item-title>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             {{ selectedItems.length }}
-          </v-list-tile-action>
-        </v-list-tile>
+          </v-list-item-action>
+        </v-list-item>
 
         <!-- Fill color -->
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-title class="faIcons">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="faIcons">
               Fill colour:
-            </v-list-tile-title>
-          </v-list-tile-content>
+            </v-list-item-title>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-btn
               icon
               class="action pointers-no">
               <colour-picker
                 :color="selectedFillColor"
                 :type="'fill'"
-                class="pointers-please"/>
+              />
             </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
+          </v-list-item-action>
+        </v-list-item>
 
         <!-- Stroke color -->
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-title class="faIcons">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="faIcons">
               Stroke colour:
-            </v-list-tile-title>
-          </v-list-tile-content>
+            </v-list-item-title>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-btn
               icon
               class="action pointers-no">
               <colour-picker
                 :color="selectedStrokeColor"
                 :type="'stroke'"
-                class="pointers-please"/>
+              />
             </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
+          </v-list-item-action>
+        </v-list-item>
 
         <!-- Class
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-title class="faIcons">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="faIcons">
               Class:
-            </v-list-tile-title>
-          </v-list-tile-content>
+            </v-list-item-title>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-text-field
               :value="groupClass"
               name="input-3-4"
               single-line
             />
-          </v-list-tile-action>
-        </v-list-tile> -->
+          </v-list-item-action>
+        </v-list-item> -->
 
       </v-list>
     </v-card>
@@ -118,15 +118,14 @@ export default {
           value.fillColor.alpha === array[0].fillColor.alpha
         )
       )) {
-        let color = {
-          h: this.selectedItems[0].fillColor.hue,
-          s: this.selectedItems[0].fillColor.saturation,
-          l: this.selectedItems[0].fillColor.lightness,
-          a: this.selectedItems[0].fillColor.alpha
-        }
         return {
           style: this.selectedItems[0].fillColor.toCSS(),
-          obj: color
+          obj: {
+            h: this.selectedItems[0].fillColor.hue,
+            s: this.selectedItems[0].fillColor.saturation,
+            l: this.selectedItems[0].fillColor.lightness,
+            a: this.selectedItems[0].fillColor.alpha
+          }
         }
       } else {
         return {

@@ -1,19 +1,14 @@
 // View.vue
-// Component creates a view. This is a combination of an image canvas (either
-// deepZoom or standard) and an annotation canvas. When the components are
-// mounted they are setup with the appropriate librarys.
+// Component creates a view. This is a combination of an openseadragon image canvas
+// and an annotation canvas.
 <template lang="html">
-
   <div
     id="view"
-    class="elevation-2 pointers-please">
-
+    class="elevation-2"
+  >
     <app-osd-canvas/>
-
     <app-annotation-canvas/>
-
   </div>
-
 </template>
 
 <script>
@@ -38,8 +33,7 @@ export default {
     if (this.$router.currentRoute.name === 'demo') {
       await this.setProjectImageName('demo')
       this.loadDemo()
-    }
-    else if (!this.projectImageName) {
+    } else if (!this.projectImageName) {
       this.$router.replace('/dashboard')
     } else {
       this.loadProject()

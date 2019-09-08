@@ -35,7 +35,6 @@ export default {
       // If the current zoom level does not equal the target zoom level then we
       // need to scale the paths in the project to match the zoom changes.
       if (viewer.viewport.getZoom(true) !== viewer.viewport.getZoom()) {
-        // Update paths to have strokeWidth reactive to zoom level.
         const strokeScale = state.strokeScale
         paper.project.getItems({ class: paper.Path }).forEach(path => {
           path.strokeWidth = (baseImage.getContentSize().x * strokeScale) / (currentZoom * 1000)
@@ -58,6 +57,18 @@ export default {
         viewer.viewport.getCenter(true)
       )
       paper.view.center = new paper.Point(center.x, center.y)
+    })
+
+    // When an item (image) is added to the world sync the path stroke widths
+    viewer.world.addHandler('add-item', function (e) {
+      const strokeScale = state.strokeScale
+      const baseImage = viewer.world.getItemAt(0)
+      paper.project.getItems({ class: paper.Path }).forEach(path => {
+        path.strokeWidth = (baseImage.getContentSize().x * strokeScale) / (1 * 1000)
+
+        // Ruler items need special treatment to re-draw the labels
+        if (path.hasOwnProperty('drawLabel')) path.drawLabel()
+      })
     })
   },
 

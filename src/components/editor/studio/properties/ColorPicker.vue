@@ -1,37 +1,26 @@
 <template lang="html">
   <v-dialog
     v-model="dialog"
-    width="225px"
+    width="300px"
   >
+    <template v-slot:activator="{ on }">
+      <v-btn text icon absolute v-on="on">
+        <div
+          :style="{ 'background-color': color.style }"
+          class="color-tile"
+        />
+      </v-btn>
+    </template>
 
-    <a slot="activator">
-      <div
-        :style="{ 'background-color': color.style }"
-        class="color-tile"
-      />
-    </a>
-
-    <v-card>
-      <colour-picker
-        id="picker"
-         v-model="colorPick"
-      />
-    </v-card>
-
+    <v-color-picker v-model="colorPick"/>
   </v-dialog>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
-import { Chrome } from 'vue-color'
+import { mapState, mapActions } from 'vuex'
 import paper from 'paper'
 
 export default {
-  components: {
-    'colour-picker': Chrome
-  },
-
   props: {
     color: {
       type: Object,
@@ -58,7 +47,7 @@ export default {
   data () {
     return {
       dialog: false,
-      colorPick: { hsl: this.color.obj }
+      colorPick: { hsla: this.color.obj }
     }
   },
 
@@ -71,13 +60,15 @@ export default {
   watch: {
     dialog (colorPickerOpen) {
       if (colorPickerOpen) {
-        this.colorPick = { hsl: this.color.obj }
+        this.colorPick = this.color.obj
       } else if (!colorPickerOpen) {
         if (this.selectedItems.length > 0) {
           if (this.type === 'fill') {
             this.changeItemsFillColor(this.selectedItems)
+            this.flagAnnotationEdits()
           } else if (this.type === 'stroke') {
             this.changeItemsStrokeColor(this.selectedItems)
+            this.flagAnnotationEdits()
           }
         }
       }
@@ -85,13 +76,17 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
+    }),
+
     changeItemsFillColor (items) {
       items.map(item => {
         item.fillColor = new paper.Color({
-          hue: this.colorPick.hsl.h,
-          saturation: this.colorPick.hsl.s,
-          lightness: this.colorPick.hsl.l,
-          alpha: this.colorPick.hsl.a
+          hue: this.colorPick.h,
+          saturation: this.colorPick.s,
+          lightness: this.colorPick.l,
+          alpha: this.colorPick.a
         })
       })
     },
@@ -99,10 +94,10 @@ export default {
     changeItemsStrokeColor (items) {
       items.map(item => {
         item.strokeColor = new paper.Color({
-          hue: this.colorPick.hsl.h,
-          saturation: this.colorPick.hsl.s,
-          lightness: this.colorPick.hsl.l,
-          alpha: this.colorPick.hsl.a
+          hue: this.colorPick.h,
+          saturation: this.colorPick.s,
+          lightness: this.colorPick.l,
+          alpha: this.colorPick.a
         })
       })
     }

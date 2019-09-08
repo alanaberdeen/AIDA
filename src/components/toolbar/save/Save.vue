@@ -1,6 +1,6 @@
 <template lang="html">
-  <v-layout style="height: 48px" row shrink>
-    <v-layout align-center justify-center column fill-height caption v-if="!saveState.changesSaved"> 
+  <v-layout style="height: 48px" shrink>
+    <v-layout align-center justify-center column fill-height caption v-if="!saveState.changesSaved">
       <div>
         Unsaved changes.
       </div>
@@ -21,7 +21,7 @@
         ></v-progress-circular>
 
         <v-icon v-else>
-          save
+          mdi-content-save
         </v-icon>
       </v-btn>
     </v-layout>
@@ -40,7 +40,7 @@ export default {
 
   computed: {
     ...mapState({
-      saveState: state => state.annotation.saveState,
+      saveState: state => state.annotation.saveState
     })
   },
 
@@ -48,7 +48,7 @@ export default {
     // Add ctrl+s keyboard shortcut for saving data
     window.addEventListener('keydown', this.keyDown)
 
-    // On closing the tab/window, if the annotation data is not saved warn the 
+    // On closing the tab/window, if the annotation data is not saved warn the
     // user and prevent closing.
     window.addEventListener('beforeunload', this.checkForUnsavedChanges)
   },
@@ -65,7 +65,7 @@ export default {
     },
 
     // Prevent window unloading when annotation data has unsaved changes.
-    checkForUnsavedChanges(e) {
+    checkForUnsavedChanges (e) {
       if (!this.saveState.changesSaved) {
         // Cancel the event
         e.preventDefault()

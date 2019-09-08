@@ -10,7 +10,7 @@
       This site uses cookies to function optimally.
       <v-btn
         dark
-        flat
+        text
         @click="acceptCookies()"
       >
         OK
@@ -29,8 +29,8 @@ export default {
     }
   },
 
-  methods:  {
-    acceptCookies() {
+  methods: {
+    acceptCookies () {
       this.snackbar = false
       window.localStorage.setItem('acceptCookies', 'false')
     }

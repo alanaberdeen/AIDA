@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="pointers-please tools-container">
+  <div tools-container">
     <v-card>
       <v-toolbar>
         <v-toolbar-title>Image</v-toolbar-title>

@@ -1,5 +1,5 @@
 <template>
-  <v-list-tile id="tool-tile">
+  <v-list-item id="tool-tile">
     <v-menu
       id="menu"
       :close-on-content-click="false"
@@ -9,27 +9,31 @@
       v-model="menu"
       offset-x
     >
-      <v-btn
-        id="filter"
-        slot="activator"
-        flat
-        block
-        @click.native="initialiseTool"
-      >
-        <i
-          :class="{
-            'fa': true,
-            'fa-filter': !loading,
-            'fa-spinner': loading,
-            'fa-pulse': loading,
-            'faIcons': !active,
-            'faIconsActive': active
-        }"/>
-      </v-btn>
+      <template v-slot:activator="{ on: menu }">
+        <v-tooltip right open-delay="700">
+          <template v-slot:activator="{ on: tooltip }">
+            <v-btn
+              id="filter"
+              v-on="{ ...tooltip, ...menu }"
+              text
+              block
+              @click.native="initialiseTool"
+            >
+              <v-icon
+                small
+                :class="{'grey--text text--darken-2': !active,
+                        'blue--text text--darken-1': active}">
+                mdi-filter
+              </v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+      </template>
+      <span>Filter tool</span>
 
       <v-card>
         <!-- <v-list>
-          <v-list-tile>
+          <v-list-item>
             <v-btn-toggle v-model="toggle_multiple" multiple>
               <v-btn flat color="success">
                 <v-icon>check_circle</v-icon>
@@ -41,7 +45,7 @@
                 <v-icon>cancel</v-icon>
               </v-btn>
             </v-btn-toggle>
-          </v-list-tile>
+          </v-list-item>
         </v-list> -->
 
         <!-- <v-container fluid grid-list-sm>
@@ -114,30 +118,27 @@
           </v-layout>
 
            <v-list>
-              <v-list-tile
+              <v-list-item
                 v-for="(item, index) in listOfFilters"
                 :key="item.class"
                 avatar
               >
 
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="item.class"></v-list-tile-title>
-                </v-list-tile-content>
+                <v-list-item-content>
+                  <v-list-item-title v-html="item.class"></v-list-item-title>
+                </v-list-item-content>
 
-                <v-list-tile-action>
+                <v-list-item-action>
                   <v-btn flat icon color="pink" @click="popFilter(index)">
                     <v-icon>close</v-icon>
                   </v-btn>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </v-list>
-
         </v-container>
-
       </v-card>
     </v-menu>
-  </v-list-tile>
-
+  </v-list-item>
 </template>
 
 <script>
@@ -293,10 +294,6 @@ export default {
 </script>
 
 <style lang='css' scoped>
-#tooltip {
-  width: 100%;
-}
-
 #menu {
   width: 100%;
 }

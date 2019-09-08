@@ -1,26 +1,25 @@
 <template lang="html">
-  <v-list-tile id="tool-tile">
-    <v-tooltip
-      id="tooltip"
-      right
-      open-delay="700"
-    >
-      <v-btn
-        id="polygon"
-        slot="activator"
-        flat
-        block
-        @click.native="initialiseTool"
-      >
-        <v-icon
-          :class="{'grey--text text--darken-2': !active,
-                   'blue--text text--darken-1': active}">
-          straighten
-        </v-icon>
-      </v-btn>
+  <v-list-item id="tool-tile">
+    <v-tooltip right open-delay=700>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          id="polygon"
+          v-on="on"
+          block
+          text
+          @click.native="initialiseTool"
+        >
+          <v-icon
+            small
+            :class="{'grey--text text--darken-2': !active,
+                    'blue--text text--darken-1': active}">
+            mdi-ruler
+          </v-icon>
+        </v-btn>
+      </template>
       <span> Ruler Tool </span>
     </v-tooltip>
-  </v-list-tile>
+  </v-list-item>
 </template>
 
 <script>
@@ -51,8 +50,7 @@ export default {
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
       strokeScale: state => state.app.strokeScale,
-      pixelScaleFactor: state => (state.image.pixelScaleFactor.mppX * 
-        state.image.pixelScaleFactor.mppY)/2
+      pixelScaleFactor: state => (state.image.pixelScaleFactor.mppX * state.image.pixelScaleFactor.mppY) / 2
     })
   },
 
@@ -79,14 +77,14 @@ export default {
         justification: 'center',
         fontSize: this.strokeWidth * 3
       })
-      
+
       let textBackground = new paper.Path.Rectangle({
-          from: text.bounds.topLeft,
-          to: text.bounds.bottomRight,
-          fillColor: '#2661D8',
-          strokeWidth: this.strokeWidth,
-          strokeColor: '#2661D8',
-          radius: this.strokeWidth/10     
+        from: text.bounds.topLeft,
+        to: text.bounds.bottomRight,
+        fillColor: '#2661D8',
+        strokeWidth: this.strokeWidth,
+        strokeColor: '#2661D8',
+        radius: this.strokeWidth / 10
       }).insertBelow(text)
 
       text.rotate(textAngle, textPoint)
@@ -110,12 +108,12 @@ export default {
           pixelScaleFactor: this.pixelScaleFactor
         },
         // Add a method for drawing the label to this line
-        // TODO: this is a rough sketch of something that could be implemented. 
-        // Needs a thorough re-work later on. The method should definitely be 
-        // attached to the prototype for example. Perhaps building a whole new 
+        // TODO: this is a rough sketch of something that could be implemented.
+        // Needs a thorough re-work later on. The method should definitely be
+        // attached to the prototype for example. Perhaps building a whole new
         // paperItem class thingy.
-        drawLabel: function() {
-          // If there is currently a label attached to the line it must first be 
+        drawLabel: function () {
+          // If there is currently a label attached to the line it must first be
           // removed.
           if (this.data.label) {
             this.data.label.text.remove()
@@ -146,8 +144,8 @@ export default {
             fillColor: '#2661D8',
             strokeWidth: this.strokeWidth,
             strokeColor: '#2661D8',
-            radius: this.strokeWidth/10,
-            locked: true    
+            radius: this.strokeWidth / 10,
+            locked: true
           }).insertBelow(text)
 
           // Rotate the items to be at the same angle as the line
@@ -209,9 +207,6 @@ export default {
 </script>
 
 <style lang='css'>
-#tooltip {
-  width: 100%;
-}
 
 #polygon {
   min-width: 0px;

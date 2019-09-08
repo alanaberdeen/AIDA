@@ -1,21 +1,18 @@
 <template lang="html">
-  <v-toolbar
+  <v-app-bar
     fixed
     dark
     dense
-    app
     clipped-right
     clipped-left
-    class="primary pointers-please"
+    class="primary"
     v-if="['loading'].indexOf($route.name) === -1"
     >
 
-    <div id="toolbar-toggle">
-      <v-toolbar-side-icon @click="toggleToolsDrawer()"/>
-    </div>
+    <v-app-bar-nav-icon @click="toggleToolsDrawer()"/>
 
     <router-link to='/'>
-      <v-toolbar-title class="white--text">
+      <v-toolbar-title class="white--text pl-1">
         AIDA
       </v-toolbar-title>
     </router-link>
@@ -33,7 +30,7 @@
       icon
       to="/dashboard">
       <v-icon>
-        apps
+        mdi-apps
       </v-icon>
     </v-btn>
 
@@ -41,28 +38,24 @@
     <v-btn
       icon
       href="https://github.com/alanaberdeen/AIDA/wiki" >
-      <v-icon small> fa-book </v-icon>
+      <v-icon> mdi-book-open-outline </v-icon>
     </v-btn>
 
-    <div>
-      <v-toolbar-side-icon @click="toggleStudioDrawer()"/>
-    </div>
+    <v-app-bar-nav-icon @click="toggleStudioDrawer()"/>
 
-  </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 
-import Settings from './settings/Settings.vue'
+// import Settings from './settings/Settings.vue'
 import Save from './save/Save.vue'
-import Export from './export/Export.vue'
+// import Export from './export/Export.vue'
 
 export default {
   components: {
-    'app-settings': Settings,
-    'app-save': Save,
-    'app-export': Export
+    'app-save': Save
   },
 
   methods: {
@@ -73,10 +66,3 @@ export default {
   }
 }
 </script>
-
-<style lang='css' scoped>
-#toolbar-side-icon-spacer {
-  height: 36px;
-  width: 36px;
-}
-</style>

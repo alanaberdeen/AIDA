@@ -135,15 +135,6 @@ export default {
     state.projectStateRefreshIndex = state.projectStateRefreshIndex + 1
   },
 
-  // Prepares the paperJS canvas for user interaction
-  prepareCanvas: (state, activeLayer) => {
-    if (paper.view.element.classList.contains('pointers-no')) {
-      paper.view.element.classList.remove('pointers-no')
-    }
-
-    if (activeLayer) paper.project.layers[activeLayer].activate()
-  },
-
   // Create a new layer in both the paperJS project and the vuex state
   createLayer: state => {
     const newLayer = new paper.Layer()

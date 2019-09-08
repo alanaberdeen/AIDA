@@ -1,11 +1,11 @@
 <template>
-  <v-layout align-center justify-center row fill-height>
+  <v-layout align-center justify-center fill-height class='tab-item'>
     <v-flex xs2>
-      <v-btn flat icon color="primary" 
+      <v-btn text icon color="primary"
         @click="incrementActiveItemBy(-1)"
         :disabled="this.totalItems === 0"
       >
-        <v-icon> arrow_back </v-icon>
+        <v-icon> mdi-arrow-left </v-icon>
       </v-btn>
     </v-flex>
 
@@ -21,11 +21,11 @@
     </v-flex>
 
     <v-flex xs2>
-      <v-btn flat icon color="primary" 
+      <v-btn text icon color="primary"
         @click="incrementActiveItemBy(1)"
         :disabled="this.totalItems === 0"
       >
-        <v-icon> arrow_forward </v-icon>
+        <v-icon> mdi-arrow-right </v-icon>
       </v-btn>
     </v-flex>
   </v-layout>
@@ -39,7 +39,7 @@ import openseadragon from 'openseadragon'
 export default {
   props: ['cycleTabEvent', 'layerIndex'],
 
-  data() {
+  data () {
     return {
       totalItems: null,
       activeItemIndex: 0
@@ -63,7 +63,6 @@ export default {
 
   methods: {
     incrementActiveItemBy (value) {
-      
       if (this.activeItemIndex === (this.totalItems - 1) && value > 0) {
         this.activeItemIndex = 0
       } else if (this.activeItemIndex === 0 && value < 0) {
@@ -71,8 +70,8 @@ export default {
       } else {
         this.activeItemIndex = this.activeItemIndex + value
       }
-      
-      // On increment just do a check to make sure we have all the items as 
+
+      // On increment just do a check to make sure we have all the items as
       // some may have been added/removed between increments.
       const items = paper.project.layers[this.layerIndex].getItems({
         class: 'Path'
@@ -80,7 +79,6 @@ export default {
       this.totalItems = items.length
 
       this.goToItem(items[this.activeItemIndex].bounds)
-
     },
 
     goToItem (item) {
@@ -100,3 +98,11 @@ export default {
 }
 </script>
 
+<style lang='css' scoped>
+.tab-item {
+  background-color: #f5f5f5;
+  height: 54px;
+  padding: 4px 0px;
+  margin: 0px;
+}
+</style>

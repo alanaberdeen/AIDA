@@ -11,18 +11,18 @@
       <v-list-item
         v-for="tool in app.tools"
         :key="tool.name">
-        <v-list-tile avatar>
+        <v-list-item avatar>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-checkbox v-model="tool.include"/>
-          </v-list-tile-action>
+          </v-list-item-action>
 
-          <v-list-tile-content>
-            <v-list-tile-title> {{ tool.name }} </v-list-tile-title>
-            <v-list-tile-sub-title> {{ tool.caption }}</v-list-tile-sub-title>
-          </v-list-tile-content>
+          <v-list-item-content>
+            <v-list-item-title> {{ tool.name }} </v-list-item-title>
+            <v-list-item-sub-title> {{ tool.caption }}</v-list-item-sub-title>
+          </v-list-item-content>
 
-        </v-list-tile>
+        </v-list-item>
       </v-list-item>
     </v-list>
 

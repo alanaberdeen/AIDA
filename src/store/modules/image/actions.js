@@ -36,16 +36,17 @@ export default {
     commit('setActiveChannel', payload)
   },
 
-  toggleChannelOpacity: ({
-    commit
-  }, payload) => {
-    commit('toggleChannelOpacity', payload)
-  },
-
   setActiveChannelOpacity: ({
-    commit
+    state
   }, payload) => {
-    commit('setActiveChannelOpacity', payload)
+    // The opacity can be set by the 'enter' key-event or mouse interaction with
+    // the UI slider. Where exactly the value is specified it dependent on how
+    // this action was triggered.
+    let newOpacity = payload instanceof KeyboardEvent ? payload.target.value / 100 : payload / 100
+    newOpacity = Math.min(Math.max(newOpacity, 0), 1)
+
+    const channel = state.OSDviewer.world.getItemAt(state.activeChannelIndex)
+    if (channel) channel.setOpacity(newOpacity)
   },
 
   setActiveChannelName: ({
@@ -55,9 +56,10 @@ export default {
   },
 
   setZoom: ({
-    commit
+    state
   }, payload) => {
-    commit('setZoom', payload)
+    let newZoom = payload instanceof KeyboardEvent ? Number(payload.target.value) : Number(payload)
+    if (newZoom > 0) { state.OSDviewer.viewport.zoomTo(newZoom) }
   },
 
   setPixelScaleFactor: ({

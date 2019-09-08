@@ -1,26 +1,25 @@
 <template lang="html">
-  <v-list-tile id="tool-tile">
-    <v-tooltip
-      id="tooltip"
-      right
-      open-delay="700">
-      <v-btn
-        id="tool"
-        slot="activator"
-        flat
-        block
-        @click.native="initialiseTool"
-      >
-        <v-icon
-          :class="{'grey--text text--darken-2': !active,
-                   'blue--text text--darken-1': active}">
-          format_paint
-        </v-icon>
-      </v-btn>
+  <v-list-item id="tool-tile">
+    <v-tooltip right open-delay=700>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          id="tool"
+          v-on="on"
+          block
+          text
+          @click.native="initialiseTool"
+        >
+          <v-icon
+            small
+            :class="{'grey--text text--darken-2': !active,
+                    'blue--text text--darken-1': active}">
+            mdi-spray
+          </v-icon>
+        </v-btn>
+      </template>
       <span> Paste Tool </span>
     </v-tooltip>
-  </v-list-tile>
-
+  </v-list-item>
 </template>
 
 <script>
@@ -106,7 +105,8 @@ export default {
 
         let overlap = paper.project.getItem({
           fillColor: this.currentColor,
-          match: item => { return item.locked }
+          match: item => { return item.locked },
+          overlapping: newPath.bounds
         })
 
         if (overlap) {
@@ -118,6 +118,11 @@ export default {
           newPath.remove()
         }
       }
+    }
+
+    const toolUp = event => {
+      // Flag the annotation has been edited and the changes are not saved
+      this.flagAnnotationEdits()
     }
 
     const keyDown = event => {
@@ -139,12 +144,13 @@ export default {
     this.toolPaste.onMouseDrag = toolDrag
     this.toolPaste.onKeyDown = keyDown
     this.toolPaste.onKeyUp = keyUp
-    // this.toolPaste.onMouseUp = toolUp
+    this.toolPaste.onMouseUp = toolUp
   },
 
   methods: {
     ...mapActions({
-      prepareCanvas: 'annotation/prepareCanvas'
+      prepareCanvas: 'annotation/prepareCanvas',
+      flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
     initialiseTool () {
@@ -163,10 +169,6 @@ export default {
 </script>
 
 <style lang='css' scoped>
-#tooltip {
-  width: 100%;
-}
-
 #tool {
   min-width: 0px;
 }

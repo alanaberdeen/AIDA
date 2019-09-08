@@ -1,27 +1,27 @@
 <template lang="html">
-  <v-list-tile id="tool-tile">
-    <v-tooltip
-      id="tooltip"
-      right
-      open-delay="700">
-      <v-btn
-        id="circle"
-        slot="activator"
-        flat
-        block
-        @click.native="initialiseTool"
-      >
-        <i
-          :class="{
-            'fa': true,
-            'fa-circle': true,
-            'faIcons': !active,
-            'faIconsActive': active
-        }"/>
-      </v-btn>
+  <v-list-item id="tool-tile">
+     <v-tooltip right open-delay=700>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          id="circle"
+          v-on="on"
+          block
+          text
+          active-class=''
+          @click.native="initialiseTool"
+        >
+          <v-icon
+            :class="{'grey--text text--darken-2': !active,
+                    'blue--text text--darken-1': active}"
+            small
+          >
+            mdi-circle
+          </v-icon>
+        </v-btn>
+      </template>
       <span> Circle Tool [c] </span>
     </v-tooltip>
-  </v-list-tile>
+  </v-list-item>
 
 </template>
 
@@ -121,7 +121,7 @@ export default {
     this.toolCircle = new paper.Tool()
     this.toolCircle.onMouseDown = toolDown
     this.toolCircle.onMouseDrag = toolDrag
-    this.toolCircle.onMouseUp = toolUp  
+    this.toolCircle.onMouseUp = toolUp
   },
 
   methods: {
@@ -161,9 +161,6 @@ export default {
 </script>
 
 <style lang='css' scoped>
-#tooltip {
-  width: 100%;
-}
 
 #circle {
   min-width: 0px;

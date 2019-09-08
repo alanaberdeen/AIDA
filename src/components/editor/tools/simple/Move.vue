@@ -1,31 +1,27 @@
 <template lang="html">
-  <v-list-tile id="tool-tile">
-    <v-tooltip
-      id="tooltip"
-      right
-      open-delay="700"
-    >
-      <v-btn
-        id="move"
-        slot="activator"
-        flat
-        block
-        @click.native="initialiseTool"
-      >
+  <v-list-item id="tool-tile">
+    <v-tooltip right open-delay=700>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          id="move"
+          v-on="on"
+          block
+          text
+          @click.native="initialiseTool"
+        >
 
-        <i
-          :class="{
-            'fa': true,
-            'fa-mouse-pointer': true,
-            'faIcons': !active,
-            'faIconsActive': active
-          }"
-        />
-
-      </v-btn>
+          <v-icon
+            :class="{'grey--text text--darken-2': !active,
+                    'blue--text text--darken-1': active}"
+            small
+          >
+            mdi-cursor-default
+          </v-icon>
+        </v-btn>
+      </template>
       <span> Move Tool [v]</span>
     </v-tooltip>
-  </v-list-tile>
+  </v-list-item>
 </template>
 
 <script>
@@ -104,8 +100,8 @@ export default {
         // and cancel the current selection
       } else {
         // As the selected items have been moved to a group for easy
-        // manipulation they may not longer be in the 'right' place. Move them 
-        // back to the layer the originated on which should be stored in the 
+        // manipulation they may not longer be in the 'right' place. Move them
+        // back to the layer the originated on which should be stored in the
         // cache.
         if (this.selectedItemsCache.length > 0) {
           this.selectedItemsCache.forEach(item => {
@@ -114,7 +110,7 @@ export default {
           })
         }
         this.selectedItemsCache = []
-        
+
         paper.project.deselectAll()
         this.toolMode = 'select'
       }
@@ -209,19 +205,19 @@ export default {
       // We will have to manually move them back. Bit unsatisfactory this!
       if (this.toolMode !== 'move' && this.toolMode !== 'transform') {
         paper.project.getItems({
-          class: 'Path', 
+          class: 'Path',
           selected: true
         }).forEach(item => {
           if (!this.selectedItemsCache.some(e => e.id === item.id)) {
             this.selectedItemsCache.push({
-              id: item.id, 
+              id: item.id,
               layerIndex: item.layer.index
             })
           }
         })
-      } 
+      }
 
-      this.selectionGroup = new paper.Group(paper.project.selectedItems)      
+      this.selectionGroup = new paper.Group(paper.project.selectedItems)
       if (!this.selectionGroup.isEmpty()) {
         this.selectionGroup.bounds.selected = true
       }
@@ -337,9 +333,6 @@ export default {
 </script>
 
 <style lang='css' >
-#tooltip {
-  width: 100%;
-}
 
 #move {
   min-width: 0px;

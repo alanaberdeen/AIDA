@@ -2,7 +2,7 @@
 // The grid should be locked when annotating the image but adjustable when this
 // tool is active.
 <template lang="html">
-  <v-list-tile id="tool-tile">
+  <v-list-item id="tool-tile">
     <v-menu
       id="menu"
       :close-on-content-click="false"
@@ -15,7 +15,6 @@
       <v-btn
         id="tool"
         slot="activator"
-        flat
         block
         @click.native="initialiseTool"
       >
@@ -27,7 +26,7 @@
       </v-btn>
       <v-card>
         <v-list>
-          <v-list-tile>
+          <v-list-item>
             <v-flex xs5 justify-space-around>
               <div id='switch'>
                 <v-switch
@@ -39,8 +38,8 @@
             <v-flex xs6 offset-xs1>
               Visibility
             </v-flex>
-          </v-list-tile>
-          <v-list-tile>
+          </v-list-item>
+          <v-list-item>
             <v-flex xs5>
               <v-text-field
               :value="gridWidth"
@@ -52,8 +51,8 @@
             <v-flex xs6 offset-xs1>
               Width
             </v-flex>
-          </v-list-tile>
-          <v-list-tile>
+          </v-list-item>
+          <v-list-item>
             <v-flex xs5>
               <v-text-field
               :value="gridHeight"
@@ -65,12 +64,11 @@
             <v-flex xs6 offset-xs1>
               Height
             </v-flex>
-          </v-list-tile>
+          </v-list-item>
         </v-list>
       </v-card>
     </v-menu>
-  </v-list-tile>
-
+  </v-list-item>
 </template>
 
 <script>
@@ -212,9 +210,6 @@ export default {
 </script>
 
 <style lang='css'>
-#tooltip {
-  width: 100%;
-}
 
 #menu {
   width: 100%;

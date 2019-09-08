@@ -10,7 +10,6 @@
 
     <v-dialog
       v-model="dialog"
-      class="pointers-please"
       max-width="900">
 
       <v-btn
@@ -32,89 +31,89 @@
                 flat
                 class="transparent">
                 <v-list class="pa-0">
-                  <v-list-tile avatar>
-                    <v-list-tile-avatar>
+                  <v-list-item avatar>
+                    <v-list-item-avatar>
                       <v-icon> settings </v-icon>
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                      <v-list-tile-title>Settings</v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>Settings</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
                 </v-list>
               </v-toolbar>
 
               <v-list>
                 <v-divider/>
 
-                <v-list-tile
+                <v-list-item
                   :class="[(settings === 'project') ? 'faIconsActive' : 'faIcons']"
                   @click="settings = 'project'">
 
-                  <v-list-tile-action>
+                  <v-list-item-action>
                     <v-icon/>
-                  </v-list-tile-action>
+                  </v-list-item-action>
 
-                  <v-list-tile-content>
-                    <v-list-tile-title> Project </v-list-tile-title>
-                  </v-list-tile-content>
+                  <v-list-item-content>
+                    <v-list-item-title> Project </v-list-item-title>
+                  </v-list-item-content>
 
-                </v-list-tile>
+                </v-list-item>
 
-                <v-list-tile
+                <v-list-item
                   :class="[(settings === 'annotation') ? 'faIconsActive' : 'faIcons']"
                   @click="settings = 'annotation'">
 
-                  <v-list-tile-action>
+                  <v-list-item-action>
                     <v-icon/>
-                  </v-list-tile-action>
+                  </v-list-item-action>
 
-                  <v-list-tile-content>
-                    <v-list-tile-title> Upload Annotation </v-list-tile-title>
-                  </v-list-tile-content>
+                  <v-list-item-content>
+                    <v-list-item-title> Upload Annotation </v-list-item-title>
+                  </v-list-item-content>
 
-                </v-list-tile>
+                </v-list-item>
 
-                <v-list-tile
+                <v-list-item
                   :class="[(settings === 'image') ? 'faIconsActive' : 'faIcons']"
                   @click="settings = 'image'">
 
-                  <v-list-tile-action>
+                  <v-list-item-action>
                     <v-icon/>
-                  </v-list-tile-action>
+                  </v-list-item-action>
 
-                  <v-list-tile-content>
-                    <v-list-tile-title> Add an Image </v-list-tile-title>
-                  </v-list-tile-content>
+                  <v-list-item-content>
+                    <v-list-item-title> Add an Image </v-list-item-title>
+                  </v-list-item-content>
 
-                </v-list-tile>
+                </v-list-item>
 
-                <v-list-tile
+                <v-list-item
                   :class="[(settings === 'steps') ? 'faIconsActive' : 'faIcons']"
                   @click="settings = 'steps'">
 
-                  <v-list-tile-action>
+                  <v-list-item-action>
                     <v-icon/>
-                  </v-list-tile-action>
+                  </v-list-item-action>
 
-                  <v-list-tile-content>
-                    <v-list-tile-title> Steps </v-list-tile-title>
-                  </v-list-tile-content>
+                  <v-list-item-content>
+                    <v-list-item-title> Steps </v-list-item-title>
+                  </v-list-item-content>
 
-                </v-list-tile>
+                </v-list-item>
 
-                <v-list-tile
+                <v-list-item
                   :class="[(settings === 'tools') ? 'faIconsActive' : 'faIcons']"
                   @click="settings = 'tools'">
 
-                  <v-list-tile-action>
+                  <v-list-item-action>
                     <v-icon/>
-                  </v-list-tile-action>
+                  </v-list-item-action>
 
-                  <v-list-tile-content>
-                    <v-list-tile-title> Tools </v-list-tile-title>
-                  </v-list-tile-content>
+                  <v-list-item-content>
+                    <v-list-item-title> Tools </v-list-item-title>
+                  </v-list-item-content>
 
-                </v-list-tile>
+                </v-list-item>
 
               </v-list>
             </v-navigation-drawer>

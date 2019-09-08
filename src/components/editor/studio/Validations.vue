@@ -14,82 +14,82 @@
       <v-list id="list" >
 
         <!-- Number of selected items -->
-        <v-list-tile>
+        <v-list-item>
 
-          <v-list-tile-content>
-            <v-list-tile-title class="faIcons">
+          <v-list-item-content>
+            <v-list-item-title class="faIcons">
               Prediction:
-            </v-list-tile-title>
-          </v-list-tile-content>
+            </v-list-item-title>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             {{ this.prediction }}
-          </v-list-tile-action>
+          </v-list-item-action>
 
-        </v-list-tile>
+        </v-list-item>
 
         <!-- Fill color -->
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-title class="faIcons">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="faIcons">
               Score:
-            </v-list-tile-title>
-          </v-list-tile-content>
+            </v-list-item-title>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             {{ this.score }}
-          </v-list-tile-action>
+          </v-list-item-action>
 
-        </v-list-tile>
+        </v-list-item>
 
         <!-- Stroke color -->
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-title class="faIcons">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="faIcons">
               Weight:
-            </v-list-tile-title>
-          </v-list-tile-content>
+            </v-list-item-title>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             {{ this.weight }}
-          </v-list-tile-action>
+          </v-list-item-action>
 
-        </v-list-tile>
+        </v-list-item>
 
           <v-list-group no-action>
-            <v-list-tile
+            <v-list-item
               class="list-hotfix"
               slot="activator"
               no-action
             >
-              <v-list-tile-content>
-                <v-list-tile-title
+              <v-list-item-content>
+                <v-list-item-title
                   class="faIcons">
                   Validation labels
-                </v-list-tile-title>
-              </v-list-tile-content>
+                </v-list-item-title>
+              </v-list-item-content>
 
-            </v-list-tile>
+            </v-list-item>
 
-            <v-list-tile
+            <v-list-item
               v-for="(user, index) in users"
               :key="index"
               id="tab-item"
             >
-               <v-list-tile-content>
-                <v-list-tile-title
+               <v-list-item-content>
+                <v-list-item-title
                   class="faIcons">
 
                   {{user}}
 
-                </v-list-tile-title>
-              </v-list-tile-content>
+                </v-list-item-title>
+              </v-list-item-content>
 
-              <!-- <v-list-tile-action>
+              <!-- <v-list-item-action>
                 {{ this.userValidations[user].length }}
-              </v-list-tile-action> -->
+              </v-list-item-action> -->
 
-            </v-list-tile>
+            </v-list-item>
 
           </v-list-group>
 

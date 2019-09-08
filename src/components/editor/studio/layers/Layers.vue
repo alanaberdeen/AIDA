@@ -1,143 +1,113 @@
 <template lang="html">
-  <div class="elevation-1">
-    <v-card class="panel">
+  <v-card
+    class="mt-2"
+    color='#eeeeee'
+  >
+    <v-toolbar
+      color='#e0e0e0'
+      dense
+    >
+      <v-toolbar-title>
+        Layers
+      </v-toolbar-title>
 
-      <v-toolbar
-        id="toolbar"
-        dense
+      <v-spacer/>
+
+      <v-btn
+        icon
+        @click.native="newLayer"
       >
-        <v-toolbar-title class="toolBarTitle">
-          Layers
-        </v-toolbar-title>
-        <v-spacer/>
-        <v-btn
-          icon
-          @click.native="newLayer">
-          <v-icon id="iconButton">
-            add
-          </v-icon>
-        </v-btn>
-      </v-toolbar>
+        <v-icon>
+          mdi-plus
+        </v-icon>
+      </v-btn>
 
-      <v-list
-        id="list"
+    </v-toolbar>
+
+    <v-list>
+      <v-list-group
+        v-for="(layer, index) in layers"
+        :key="index"
+        no-action
+        @click.native="selectLayer(index)"
       >
-        <v-list-group
-          v-for="(layer, index) in layers"
-          :key="index"
-          no-action
-        >
-          <v-list-tile
-            slot="activator"
-            no-action
-            @click.native="selectLayer(index)"
-          >
-            <v-list-tile-content>
-              <v-list-tile-title
-                :class="[(activeLayer === index) ? 'faIconsActive' : 'faIcons']">
-                {{ layer.name ? layer.name : ('Layer ' + index) }}
-              </v-list-tile-title>
-            </v-list-tile-content>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title
+              :class="{'blue--text text--darken-1': (activeLayer === index)}">
+              {{ layer.name ? layer.name : ('Layer ' + index) }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
 
-          </v-list-tile>
+        <v-list-item style='padding: 0px;'>
+          <v-list-item-content>
+            <div id="controls">
+              <v-tabs grow background-color="transparent">
+                <v-tab style='min-width: 48px;'><v-icon> mdi-opacity </v-icon></v-tab>
+                <v-tab style='min-width: 48px;'><v-icon> mdi-format-color-text </v-icon></v-tab>
+                <v-tab @click='cycleTabEvent = !cycleTabEvent' style='min-width: 48px;'><v-icon> mdi-swap-horizontal </v-icon></v-tab>
+                <v-tab style='min-width: 48px;'><v-icon> mdi-delete </v-icon></v-tab>
 
-          <!-- Layer Controls -->
-          <div id="controls">
-            <v-tabs
-              left
-              color="transparent"
-            >
-              <v-tab>
-                <v-icon> opacity </v-icon>
-              </v-tab>
-
-              <v-tab>
-                <v-icon> text_format </v-icon>
-              </v-tab>
-
-              <v-tab @click='cycleTabEvent = !cycleTabEvent'>
-                <v-icon> swap_horiz </v-icon>
-              </v-tab>
-
-              <v-tab>
-                <v-icon> delete </v-icon>
-              </v-tab>
-
-              <v-tabs-items id="tab-items">
-
-                <!-- Opacity Slider -->
                 <v-tab-item>
-                  <div id="tab-item">
-                    <v-layout
-                      row
-                      wrap>
-                      <v-flex xs10>
-                        <v-slider
-                          :value="layer.opacity * 100"
-                          max="100"
-                          @input="setActiveLayerOpacity"
-                          class='pad-slider-right'
-                          :prepend-icon="layer.opacity > 0 ? 'visibility' : 'visibility_off'"
-                          @click:prepend="toggleOpacity(layer.opacity)"
-                        />
-                      </v-flex>
-                      <v-flex xs2>
-                        <v-text-field
-                          :value="Math.round(layer.opacity * 100)"
-                          suffix="%"
-                          single-line
-                          mask="###"
-                          @keyup.native.enter="setActiveLayerOpacity"/>
-                      </v-flex>
-                    </v-layout>
-                  </div>
+                  <v-slider
+                    :value="layer.opacity * 100"
+                    @input="setActiveLayerOpacity"
+                    class="align-center tab-item"
+                    max=100
+                    min=0
+                    hide-details
+                    :prepend-icon="layer.opacity > 0 ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:prepend="toggleOpacity(layer.opacity)"
+                  >
+                    <template v-slot:append>
+                      <v-text-field
+                        :value="layer.opacity * 100"
+                        class="mt-0 pt-0"
+                        suffix="%"
+                        hide-details
+                        single-line
+                        type="number"
+                        style="width: 60px"
+                        @keyup.native.enter="setActiveLayerOpacity"
+                      ></v-text-field>
+                    </template>
+                  </v-slider>
                 </v-tab-item>
 
-                <!-- Rename List Item -->
                 <v-tab-item>
-                  <div id="tab-item">
-                    <v-text-field
-                      :value="layer.name ? layer.name : ('Layer ' + index)"
-                      single-line
-                      @change="setActiveLayerName"
-                      @keyup.native.enter="setActiveLayerName"
-                    />
-                  </div>
-
+                  <v-text-field
+                    :value="layer.name ? layer.name : ('Layer ' + index)"
+                    single-line
+                    class="tab-item"
+                    @change="setActiveLayerName"
+                    @keyup.native.enter="setActiveLayerName"
+                  />
                 </v-tab-item>
 
-                <!-- Cycle List item -->
                 <v-tab-item>
-                  <div id="tab-item">
-                    <app-cycle :cycleTabEvent="cycleTabEvent" :layerIndex="index"/>
-                  </div>
+                  <app-cycle :cycleTabEvent="cycleTabEvent" :layerIndex="index"/>
                 </v-tab-item>
 
-                <!-- Delete List item -->
                 <v-tab-item>
-                  <div id="tab-item">
+                  <div class="d-flex justify-center align-center tab-item">
                     <v-btn
-                      id="deleteButton"
                       small
                       color="error"
                       dark
-                      flat
-                      outline
+                      outlined
                       @click="deleteActiveLayer().then(() => {setActiveLayer(0)})">
                       Delete
                     </v-btn>
                   </div>
                 </v-tab-item>
-
-              </v-tabs-items>
-            </v-tabs>
-          </div>
-
-        </v-list-group>
-      </v-list>
-
-    </v-card>
-  </div>
+              </v-tabs>
+            </div>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
+    </v-list>
+  </v-card>
 </template>
 
 <script>
@@ -151,8 +121,9 @@ export default {
     'app-cycle': cycle
   },
 
-  data() {
+  data () {
     return {
+      slider: 0,
       opacityCache: 1,
       cycleTabEvent: false // Variable used to indicate cycleTab has be toggled
     }
@@ -189,7 +160,7 @@ export default {
     selectLayer (index) {
       this.setActiveLayer(index)
 
-      // Also toggle the cycletab variable. This will trigger an update in the 
+      // Also toggle the cycletab variable. This will trigger an update in the
       // tab component and is necessary when changing layers.
       this.cycleTab = !this.cycleTab
     },
@@ -207,46 +178,21 @@ export default {
 </script>
 
 <style lang='css' scoped>
-.pad-slider-right {
-  padding-right: 15px;
-}
-
-.panel {
-  margin-top: 7px;
-  background-color: #eeeeee;
-}
-
-.toolBarTitle {
-  color: #424242;
-}
-
-#toolbar {
-  background-color: #e0e0e0;
-}
-
-#iconButton {
-  color: #616161;
-}
-
-#list {
-  background-color: #eeeeee;
-}
-
 #controls {
   background-color: #f5f5f5;
   border-top: 1px solid #e0e0e0;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 #tab-items {
   background-color: #fafafa;
 }
 
-#tab-item {
-  height: 74px;
-  padding: 0px 16px;
-}
-
-#deleteButton {
-  margin: 18px 0 0;
+.tab-item {
+  background-color: #f5f5f5;
+  height: 54px;
+  padding: 4px 0px;
+  margin: 0px;
 }
 </style>

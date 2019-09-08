@@ -1,26 +1,26 @@
 <!-- Repurposed the move tool to act as a graphical delete tool -->
 <template lang="html">
-  <v-list-tile id="tool-delete">
-    <v-tooltip
-      id="tooltip"
-      right
-      open-delay="700">
-      <v-btn
-        id="tool"
-        slot="activator"
-        flat
-        block
-        @click.native="initialiseTool"
-      >
-        <v-icon
-          :class="{'grey--text text--darken-2': !active,
-                   'blue--text text--darken-1': active}">
-          delete
-        </v-icon>
-      </v-btn>
+  <v-list-item id="tool-delete">
+    <v-tooltip right open-delay=700>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          id="tool"
+          v-on="on"
+          block
+          text
+          @click.native="initialiseTool"
+        >
+          <v-icon
+            small
+            :class="{'grey--text text--darken-2': !active,
+                    'blue--text text--darken-1': active}">
+            mdi-delete
+          </v-icon>
+        </v-btn>
+      </template>
       <span> Delete Tool </span>
     </v-tooltip>
-  </v-list-tile>
+  </v-list-item>
 </template>
 
 <script>
@@ -160,7 +160,7 @@ export default {
       if (selectedGroup) {
         selectedGroup.remove()
       }
-      
+
       // Flag the annotation has been edited and the changes are not saved
       this.flagAnnotationEdits()
     }
@@ -217,9 +217,6 @@ export default {
 </script>
 
 <style lang='css'>
-#tooltip {
-  width: 100%;
-}
 
 #tool {
   min-width: 0px;

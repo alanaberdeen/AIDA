@@ -2,31 +2,29 @@
 // Example of calling an API to tigger algorithm assisted annotation.
 // This example calls the Google Faces api.
 <template lang="html">
-  <v-list-tile id="tool-tile">
-    <v-tooltip
-      id="tooltip"
-      right
-      open-delay="700">
-      <v-btn
-        id="tool"
-        slot="activator"
-        flat
-        block
-        @click.native="activate"
-      >
-        <i
-          :class="{
-            'fa': true,
-            'fa-user-tag': !loading,
-            'fa-spinner': loading,
-            'fa-pulse': loading,
-            'faIcons': !active,
-            'faIconsActive': active
-        }"/>
-      </v-btn>
+  <v-list-item id="tool-tile">
+    <v-tooltip right open-delay=700>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          id="tool"
+          v-on="on"
+          block
+          @click.native="activate"
+        >
+          <i
+            :class="{
+              'fa': true,
+              'fa-user-tag': !loading,
+              'fa-spinner': loading,
+              'fa-pulse': loading,
+              'faIcons': !active,
+              'faIconsActive': active
+          }"/>
+        </v-btn>
+      </template>
       <span> Faces Tool </span>
     </v-tooltip>
-  </v-list-tile>
+  </v-list-item>
 
 </template>
 
@@ -155,9 +153,6 @@ export default {
 </script>
 
 <style lang='css' scoped>
-#tooltip {
-  width: 100%;
-}
 
 #tool {
   min-width: 0px;

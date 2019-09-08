@@ -30,8 +30,7 @@ export default {
       id: payload,
       showNavigationControl: false,
       showNavigator: true,
-      navigatorId: 'navigator',
-      maxZoomPixelRatio: 2
+      navigatorId: 'navigator'
     })
 
     // Prevent rotation and 'flipping' of the image through the default keybaord
@@ -55,36 +54,6 @@ export default {
     }
   },
 
-  // Toggle the visibility of a channel.
-  // TODO: build in some kind of cache of opacity so that when it is toggled
-  // from not-visible to visible it can easily return to the state it was.
-  toggleChannelOpacity: (state, payload) => {
-    // Payload should be a Channel object as defined by getChannels().
-    if (payload.opacity > 0) {
-      payload.channel.setOpacity(0)
-    } else {
-      payload.channel.setOpacity(0.7)
-    }
-  },
-
-  setActiveChannelOpacity: (state, input) => {
-    // The opacity can be set by the 'enter' key-event or mouse interaction with
-    // the UI slider. Where exactly the value is specified it dependent on how
-    // this action was triggered.
-    let newOpacity
-    if (input instanceof KeyboardEvent) {
-      newOpacity = input.target.value / 100
-    } else {
-      newOpacity = input / 100
-    }
-
-    // Restrict value to between 0 and 1
-    newOpacity = Math.min(Math.max(newOpacity, 0), 1)
-
-    const channel = state.OSDviewer.world.getItemAt(state.activeChannelIndex)
-    if (channel) channel.setOpacity(newOpacity)
-  },
-
   setActiveChannelName: (state, payload) => {
     // Save changes to Vuex state, have to use Vue.set to get around the fact that vueJs
     // is not reactive to mutations of arrays.
@@ -93,17 +62,6 @@ export default {
     } else {
       Vue.set(state.images[state.activeChannelIndex], 'name', payload)
     }
-  },
-
-  setZoom: (state, payload) => {
-    let newZoom
-    if (payload instanceof KeyboardEvent) {
-      newZoom = Number(payload.target.value)
-    } else {
-      newZoom = Number(payload)
-    }
-
-    if (newZoom > 0) { state.OSDviewer.viewport.zoomTo(newZoom) }
   },
 
   addOSDImage: (state, payload) => {

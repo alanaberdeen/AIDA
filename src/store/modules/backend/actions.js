@@ -12,43 +12,51 @@ export default {
     // Sync
     await dispatch('app/synchroniseAnnotationAndOSDCanvas', null, { root: true })
 
-    // Get project
-    const response = await window.fetch('http://localhost:3000/data/projects/nasullah.json')
-    const project = await response.json()
+    // Check for project file, if found then load that project
+    try {
+      const ext = path.extname(state.projectFilePath)
+      const filePath = state.projectFilePath.split(ext)[0]
+      const dataLocation = location.origin + '/annotations/' + filePath + '.json'
+      const response = await window.fetch(dataLocation)
+      const project = await response.json()
 
-    // Load project annotation
-    if (project.hasOwnProperty('annotation')) {
-      dispatch('annotation/loadAnnotation', project.annotation, { root: true })
-    }
+      // Load project annotation
+      if (project.hasOwnProperty('annotation')) {
+        dispatch('annotation/loadAnnotation', project.annotation, { root: true })
+      }
 
-    // Load project images
-    if (project.hasOwnProperty('images')) {
-      project.images.forEach(image => {
-        if (image.source.indexOf('.dzi') > -1) {
-          dispatch('image/addOSDImage', {
-            name: image.name,
-            fileType: 'dzi',
-            source: image.source,
-            function: 'project',
-            opacity: 1
-          }, { root: true })
+      // Load project images
+      if (project.hasOwnProperty('images')) {
+        project.images.forEach(image => {
+          if (image.source.indexOf('.dzi') > -1) {
+            dispatch('image/addOSDImage', {
+              name: image.name,
+              fileType: 'dzi',
+              source: image.source,
+              function: 'project',
+              opacity: 1
+            }, { root: true })
 
-          // dispatch('getProjectImageProperties')
-        } else {
-          dispatch('image/addOSDImage', {
-            name: image.name,
-            fileType: 'simple',
-            source: image.source,
-            function: 'project',
-            opacity: 1
-          }, { root: true })
-        }
-      })
-    }
+            // dispatch('getProjectImageProperties')
+          } else {
+            dispatch('image/addOSDImage', {
+              name: image.name,
+              fileType: 'simple',
+              source: image.source,
+              function: 'project',
+              opacity: 1
+            }, { root: true })
+          }
+        })
+      }
 
-    // Load project editor configuration
-    if (project.hasOwnProperty('editor')) {
-      dispatch('app/loadEditorConfig', project.editor, { root: true })
+      // Load project editor configuration
+      if (project.hasOwnProperty('editor')) {
+        dispatch('app/loadEditorConfig', project.editor, { root: true })
+      }
+    } catch (err) {
+      dispatch('getAnnotation')
+      dispatch('getProjectImage')
     }
   },
 

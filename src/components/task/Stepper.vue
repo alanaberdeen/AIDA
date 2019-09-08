@@ -3,7 +3,6 @@
     <v-stepper
       id="stepper"
       :value="(activeStep + 1)"
-      class="pointers-please"
       non-linear
     >
       <v-stepper-header id="stepper-header">
@@ -28,10 +27,10 @@
       id="hint-card"
       class="elevation-1"
     >
-      <app-validate 
+      <app-validate
         v-if="steps &&
-              steps[activeStep].hasOwnProperty('type') && 
-              steps[activeStep].type === 'validate'" 
+              steps[activeStep].hasOwnProperty('type') &&
+              steps[activeStep].type === 'validate'"
       />
 
       <p id="hint" v-else>

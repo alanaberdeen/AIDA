@@ -1,26 +1,25 @@
 <template lang="html">
-  <v-list-tile id="tool-tile">
-    <v-tooltip
-      id="tooltip"
-      right
-      open-delay="700"
-    >
-      <v-btn
-        id="rectangle"
-        slot="activator"
-        flat
-        block
-        @click.native="initialiseTool"
-      >
-        <v-icon
-          :class="{'grey--text text--darken-2': !active,
-                   'blue--text text--darken-1': active}">
-          crop_landscape
-        </v-icon>
-      </v-btn>
+  <v-list-item id="tool-tile">
+    <v-tooltip right open-delay=700>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          id="rectangle"
+          v-on="on"
+          block
+          text
+          @click.native="initialiseTool"
+        >
+          <v-icon
+            small
+            :class="{'grey--text text--darken-2': !active,
+                    'blue--text text--darken-1': active}">
+            mdi-crop-landscape
+          </v-icon>
+        </v-btn>
+      </template>
       <span> Rectangel Tool [r] </span>
     </v-tooltip>
-  </v-list-tile>
+  </v-list-item>
 </template>
 
 <script>
@@ -111,9 +110,6 @@ export default {
 </script>
 
 <style lang='css'>
-#tooltip {
-  width: 100%;
-}
 
 #rectangle {
   min-width: 0px;

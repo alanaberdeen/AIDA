@@ -8,7 +8,6 @@ export default {
   }, payload) => {
     // Reset the project state to the empty defaults
     commit('resetProjectState')
-
     if (payload) {
       // Draw the annotation layers
       for (const layer of payload.layers) {
@@ -60,10 +59,12 @@ export default {
   },
 
   prepareCanvas: ({
-    commit,
     rootState
   }) => {
-    commit('prepareCanvas', rootState.app.activeLayer)
+    paper.view.element.style.pointerEvents = 'auto'
+    if (rootState.app.activeLayer) {
+      paper.project.layers[rootState.app.activeLayer].activate()
+    }
   },
 
   createLayer: ({

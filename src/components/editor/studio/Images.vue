@@ -1,128 +1,97 @@
 <template lang="html">
-  <div class="elevation-1">
-    <v-card class="panel">
+  <v-card
+    class="mt-2"
+    color='#eeeeee'
+  >
+    <v-toolbar
+      color='#e0e0e0'
+      dense
+    >
+      <v-toolbar-title>
+        Channels
+      </v-toolbar-title>
+    </v-toolbar>
 
-      <v-toolbar
-        id="toolbar"
-        dense
+    <v-list>
+      <v-list-group
+        v-for="(channel, index) in getChannels"
+        :key="index"
+        no-action
+        @click.native="setActiveChannel(index)"
       >
-        <v-toolbar-title class="toolBarTitle">
-          Channels
-        </v-toolbar-title>
-        <!-- <v-spacer/>
-        <v-btn icon>
-          <v-icon id="iconButton">
-            add
-          </v-icon>
-        </v-btn> -->
-      </v-toolbar>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title
+              :class="{'blue--text text--darken-1': (activeChannel === index)}">
+              {{ channel.name ? channel.name : ('Channel ' + index) }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
 
-      <v-list id="list" >
-        <v-list-group
-          v-for="(channel, index) in getChannels"
-          :key="index"
-          no-action
-        >
-          <v-list-tile
-            class="list-hotfix"
-            slot="activator"
-            no-action
-            @click.native="setActiveChannel(index)"
-          >
-            <v-list-tile-content>
-              <v-list-tile-title
-                :class="[(activeChannel === index) ? 'faIconsActive' : 'faIcons']">
-                {{ channel.name ? channel.name : ('Channel ' + index) }}
-              </v-list-tile-title>
-            </v-list-tile-content>
+        <v-list-item style='padding: 0px;'>
+          <v-list-item-content>
+            <div id="controls">
+              <v-tabs grow background-color="transparent">
+                <v-tab style='min-width: 48px;'><v-icon> mdi-opacity </v-icon></v-tab>
+                <v-tab style='min-width: 48px;'><v-icon> mdi-format-color-text </v-icon></v-tab>
+                <v-tab style='min-width: 48px;'><v-icon> mdi-delete </v-icon></v-tab>
 
-          </v-list-tile>
-
-          <!-- Layer Controls -->
-          <div id="controls">
-            <v-tabs
-              left
-              color="transparent"
-            >
-              <v-tab>
-                <v-icon> opacity </v-icon>
-              </v-tab>
-
-              <v-tab>
-                <v-icon> text_format </v-icon>
-              </v-tab>
-
-              <v-tab>
-                <v-icon> delete </v-icon>
-              </v-tab>
-
-              <v-tabs-items id="tab-items">
-
-                <!-- Opacity Slider -->
-                <v-tab-item @mousedown="setActiveChannel(index)">
-                  <div id="tab-item">
-                    <v-layout
-                      row
-                      wrap>
-                      <v-flex xs10>
-                        <v-slider
-                          :value="channel.opacity * 100"
-                          max="100"
-                          @input="setActiveChannelOpacity"
-                          class='pad-slider-right'
-                          :prepend-icon="channel.opacity > 0 ? 'visibility' : 'visibility_off'"
-                          @click:prepend="toggleOpacity(channel.opacity)"
-                        />
-                      </v-flex>
-                      <v-flex xs2>
-                        <v-text-field
-                          :value="Math.round(channel.opacity*100)"
-                          suffix="%"
-                          single-line
-                          mask="###"
-                          @keyup.native.enter="setActiveChannelOpacity"/>
-                      </v-flex>
-                    </v-layout>
-                  </div>
+                <v-tab-item>
+                  <v-slider
+                    :value="channel.opacity * 100"
+                    @input="setActiveChannelOpacity"
+                    class="align-center tab-item"
+                    max=100
+                    min=0
+                    hide-details
+                    :prepend-icon="channel.opacity > 0 ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:prepend="toggleOpacity(channel.opacity)"
+                  >
+                    <template v-slot:append>
+                      <v-text-field
+                        :value="channel.opacity * 100"
+                        class="mt-0 pt-0"
+                        suffix="%"
+                        hide-details
+                        single-line
+                        type="number"
+                        style="width: 60px"
+                        @keyup.native.enter="setActiveChannelOpacity"
+                      ></v-text-field>
+                    </template>
+                  </v-slider>
                 </v-tab-item>
 
-                <!-- Rename List Item -->
-                <v-tab-item @mousedown="setActiveChannel(index)">
-                  <div id="tab-item">
-                    <v-text-field
-                      :value="channel.name ? channel.name : ('Channel ' + index)"
-                      single-line
-                      @change="setActiveChannelName"
-                      @keyup.native.enter="setActiveChannelName"
-                    />
-                  </div>
+                <v-tab-item>
+                  <v-text-field
+                    :value="channel.name ? channel.name : ('Channel ' + index)"
+                    single-line
+                    class="tab-item"
+                    @change="setActiveChannelName"
+                    @keyup.native.enter="setActiveChannelName"
+                  />
                 </v-tab-item>
 
-                <!-- Delete List item -->
-                <v-tab-item @mousedown="setActiveChannel(index)">
-                  <div id="tab-item">
+                <v-tab-item>
+                  <div class="d-flex justify-center align-center tab-item">
                     <v-btn
-                      id="deleteButton"
                       small
+                      disabled
                       color="error"
                       dark
-                      flat
-                      outline
-                      @click="deleteChannel">
+                      outlined
+                      @click="deleteChannel().then(() => {setActiveChannel(0)})">
                       Delete
                     </v-btn>
                   </div>
                 </v-tab-item>
-
-              </v-tabs-items>
-            </v-tabs>
-          </div>
-
-        </v-list-group>
-      </v-list>
-
-    </v-card>
-  </div>
+              </v-tabs>
+            </div>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
+    </v-list>
+  </v-card>
 </template>
 
 <script>
@@ -166,51 +135,21 @@ export default {
 </script>
 
 <style lang='css' scoped>
-.pad-slider-right {
-  padding-right: 15px;
-}
-
-.panel {
-  margin-top: 7px;
-  background-color: #eeeeee;
-}
-
-.toolBarTitle {
-  color: #424242;
-}
-
-#toolbar {
-  background-color: #e0e0e0;
-}
-
-#iconButton {
-  color: #616161;
-}
-
-#list {
-  background-color: #eeeeee;
-}
-
-.list-hotfix {
-  flex: 1 1 auto !important;
-  overflow: hidden;
-}
-
 #controls {
   background-color: #f5f5f5;
   border-top: 1px solid #e0e0e0;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 #tab-items {
   background-color: #fafafa;
 }
 
-#tab-item {
-  height: 74px;
-  padding: 0px 16px;
-}
-
-#deleteButton {
-  margin: 18px 0 0;
+.tab-item {
+  background-color: #f5f5f5;
+  height: 54px;
+  padding: 4px 0px;
+  margin: 0px;
 }
 </style>

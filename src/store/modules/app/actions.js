@@ -102,7 +102,7 @@ export default {
     // for it when openning the demo project and load if found.
     const savedAnnotation = window.localStorage.annotation
     if (savedAnnotation) {
-      dispatch('annotation/loadAnnotation',
+      await dispatch('annotation/loadAnnotation',
         JSON.parse(savedAnnotation),
         { root: true }
       )
@@ -111,7 +111,7 @@ export default {
     }
 
     await dispatch('image/clearImages', null, { root: true })
-    dispatch('image/addOSDImage', {
+    await dispatch('image/addOSDImage', {
       name: 'Example image',
       fileType: 'dzi',
       source: 'https://s3-eu-west-1.amazonaws.com/aida-example/SampleKi67.dzi',
