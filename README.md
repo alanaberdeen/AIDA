@@ -10,7 +10,7 @@ For documentation and further information see the [Wiki](https://github.com/alan
 
 ## See a demo
 
-Play with a live example [here](https://alanaberdeen.github.io/AIDA/#/example/dzi)
+Play with a live example [here](https://alanaberdeen.github.io/AIDA/#/demo)
 
 ## How has it been implemented?
 
