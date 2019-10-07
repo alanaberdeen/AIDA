@@ -6,7 +6,7 @@ AIDA is an attempt to bring an open source web-based work-flow to image annotati
 
 AIDA is a web interface that enables distributed teams of researchers to directly annotate images with easy to use on screen drawing tools. AIDA supports the creation of well defined annotation trials which include a series of high resolution images and a specific set of annotation tasks.
 
-For documentation and further information see the [Wiki](https://github.com/alanaberdeen/AIDA/wiki). 
+For documentation and further information see the [Wiki](https://github.com/alanaberdeen/AIDA/wiki).
 
 ## See a demo
 
@@ -26,18 +26,17 @@ The next stage of development will be to integrate intelligent tools that levera
 
 ## Run Locally
 
-You can use AIDA on your local machine. The only requirement [NodeJS >v11](https://nodejs.org/en/). 
+You can use AIDA on your local machine. The only requirement [NodeJS >v11](https://nodejs.org/en/).
 
-A built and built version of the local application is included with the source code in the `/dist` directory. To begin using AIDA locally: 
+A built and built version of the local application is included with the source code in the `/dist` directory. To begin using AIDA locally:
 
-1. Clone the repository 
+1. Clone the repository
 2. `cd` to `/dist`
 3. Install dependencies via `npm install`
-4. Add the images you want to annotate to the `/dist/data/images` directory. 
+4. Add the images you want to annotate to the `/dist/data/images` directory.
 5. Run the nodeJS local application via `node aidaLocal.js`
-6. Navigate to the localhost webserver specified in the console 
+6. Navigate to the localhost webserver specified in the console
 7. Annotations are read from and written to `/dist/data/annotations`
-
 
 ## Develop
 
