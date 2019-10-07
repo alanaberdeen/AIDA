@@ -4,6 +4,7 @@ import path from 'path'
 
 export default {
   loadProject: async ({
+    state,
     dispatch
   }) => {
     // Clear any images in the current vuex state.
@@ -16,7 +17,7 @@ export default {
     try {
       const ext = path.extname(state.projectFilePath)
       const filePath = state.projectFilePath.split(ext)[0]
-      const dataLocation = location.origin + '/annotations/' + filePath + '.json'
+      const dataLocation = location.origin + '/projects/' + filePath + '.json'
       const response = await window.fetch(dataLocation)
       const project = await response.json()
 
