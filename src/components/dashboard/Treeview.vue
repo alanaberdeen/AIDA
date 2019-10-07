@@ -71,7 +71,7 @@ export default {
       '.png': 'mdi-file-image',
       '.txt': 'mdi-file-document-outline',
       '.xls': 'mdi-file-excel',
-      '.dzi': 'image_search',
+      '.dzi': 'mdi-layers-triple',
       '.jpg': 'mdi-file-image',
       '.jpeg': 'mdi-file-image',
       '.ndpi': 'mdi-image-off'
