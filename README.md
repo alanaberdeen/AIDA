@@ -48,6 +48,12 @@ Example work-flow:
 3.  For development: start a hot-reloading dev server with `npm run serve`
 4.  For deployment: bundle together with `npm run build`
 
+## Support for tiled images
+
+To display tiled images deploy Cantaloupe IIIF server as described [here](https://cantaloupe-project.github.io/).
+Edit the Cantaloupe configuration file so that `FilesystemSource.BasicLookupStrategy.path_prefix` points to `/dist/data/images/`.
+Currently only TIFF files are supported.
+
 ## About
 
 This interface was built by Alan Aberdeen. It is a project of Jens Rittscher, Nasullah Khalid Alham and Alan Aberdeen at the University of Oxford, specifically the [Quantitative Biological Imaging Group](http://www.ludwig.ox.ac.uk/jens-rittscher-group-page).
