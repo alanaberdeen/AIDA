@@ -48,11 +48,13 @@ Example work-flow:
 3.  For development: start a hot-reloading dev server with `npm run serve`
 4.  For deployment: bundle together with `npm run build`
 
-## Support for tiled images
+## Support for tiled images, International Image Interoperability Framework (IIIF)
+This removes the requirement for DZI file formats and replaces it with a web-server. At this point it is still a bit experimental. 
 
-To display tiled images deploy Cantaloupe IIIF server as described [here](https://cantaloupe-project.github.io/).
-Edit the Cantaloupe configuration file so that `FilesystemSource.BasicLookupStrategy.path_prefix` points to `/dist/data/images/`.
-Currently only TIFF files are supported.
+- Deploy Cantaloupe IIIF server as described [here](https://cantaloupe-project.github.io/).
+- Edit the Cantaloupe configuration file so that `FilesystemSource.BasicLookupStrategy.path_prefix` points to `/dist/data/images/`.
+- Cataloupe server must be running at 'localhost:8182'
+- Currently only TIFF files are supported.
 
 ## About
 
