@@ -67,7 +67,12 @@ export default {
   addOSDImage: (state, payload) => {
     // Add the image to the OSD viewer.
     // Require different API method calls for tiled/simple images.
-    if (payload.fileType === 'dzi') {
+    if (payload.fileType === 'tiled') {
+      state.OSDviewer.addTiledImage({
+        tileSource: 'http://localhost:8182/iiif/2/' + encodeURIComponent(payload.source) + '/info.json',
+        opacity: payload.opacity
+      })
+    } else if (payload.fileType === 'dzi') {
       state.OSDviewer.addTiledImage({
         tileSource: payload.source,
         opacity: payload.opacity

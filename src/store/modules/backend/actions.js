@@ -29,7 +29,15 @@ export default {
       // Load project images
       if (project.hasOwnProperty('images')) {
         project.images.forEach(image => {
-          if (image.source.indexOf('.dzi') > -1) {
+          if (image.source.endsWith('.tif') || image.source.endsWith('.tiff')) {
+            dispatch('image/addOSDImage', {
+              name: image.name,
+              fileType: 'tiled',
+              source: image.source,
+              function: 'project',
+              opacity: 1
+            }, { root: true })
+          } else if (image.source.endsWith('.dzi')) {
             dispatch('image/addOSDImage', {
               name: image.name,
               fileType: 'dzi',
@@ -224,9 +232,16 @@ export default {
   }) {
     // Clear any images in the current vuex state.
     await dispatch('image/clearImages', null, { root: true })
-
-    // Set image type by checking for .dzi in the fileName
-    if (state.projectFilePath.indexOf('.dzi') > -1) {
+    if (state.projectFilePath.endsWith('.tif') || state.projectFilePath.endsWith('.tiff')) {
+      dispatch('image/addOSDImage', {
+        name: rootState.image.projectImageName,
+        fileType: 'tiled',
+        source: state.projectFilePath,
+        function: 'project',
+        opacity: 1
+      }, { root: true })
+    } else if (state.projectFilePath.endsWith('.dzi')) {
+      // Set image type by checking for .dzi in the fileName
       dispatch('image/addOSDImage', {
         name: rootState.image.projectImageName,
         fileType: 'dzi',
@@ -234,7 +249,6 @@ export default {
         function: 'project',
         opacity: 1
       }, { root: true })
-
       // dispatch('getProjectImageProperties')
     } else {
       dispatch('image/addOSDImage', {
