@@ -5,19 +5,29 @@ const fsp = require('fs').promises
 const path = require('path')
 const chalk = require('chalk')
 const ip = require('ip')
+const fs = require('fs');
+const ini = require('ini');
 
 // Check for images in the data/images/
 // Write a file an array of the available images as reference.
+
+const config = ini.parse(fs.readFileSync(path.join(__dirname, 'config.ini'), 'utf-8'));
+const imagesDir = path.isAbsolute(config.images_dir) ? config.images_dir : path.join(__dirname, config.images_dir);
+const annotationsDir = path.isAbsolute(config.annotations_dir) ? config.annotations_dir : path.join(__dirname, config.annotations_dir);
+const iiifHostname = config['IIIF'].hostname.toString();
+const iiifPort = parseInt(config['IIIF'].port.toString(), 10);
+const iiifHttps = (config['IIIF'].https.toString().toLowerCase() == 'true');
+
 async function checkForImages () {
-  const images = await walk('data/images')
+  const images = await walk(imagesDir, imagesDir)
   const json = JSON.stringify(images)
-  await fsp.writeFile('data/images.json', json, 'utf8')
+  await fsp.writeFile(path.join(__dirname,'data', 'images.json'), json, 'utf8')
 }
 
 // Recursively build the filetree by searching through all directories
 // Do not search inside DZI file directories (too many irrelevant files)
 // ignore .DS_store files
-async function walk (dir, fileList = []) {
+async function walk (dir, rootDir, fileList = []) {
   const files = await fsp.readdir(dir)
   for (const file of files) {
     const stat = await fsp.stat(path.join(dir, file))
@@ -29,12 +39,12 @@ async function walk (dir, fileList = []) {
       })
 
       const children = fileList[fileList.length - 1].children
-      await walk(path.join(dir, file), children)
+      await walk(path.join(dir, file), rootDir, children)
     } else if (file !== '.DS_Store' && !file.endsWith('_files')) {
       fileList.push({
         name: file,
         ext: path.extname(file),
-        path: path.join(dir, file).split('data/images/')[1]
+        path: path.relative(rootDir, path.join(dir, file))
       })
     }
   }
@@ -53,7 +63,7 @@ async function saveAnnotation (data) {
   data.annotation.layers.forEach(layer => {
     layer.items.forEach((item, index) => {
       if (item.type === 'raster' && item.source.substring(0, 4) === 'data') {
-        const imagePath = 'data/annotations/raster/' + index + '_' + layer.name + '.png'
+        const imagePath = path.join(annotationsDir, 'raster', index + '_' + layer.name + '.png')
         saveRaster(item.source, imagePath)
 
         // Edit the source link to correctly reference the API endpoint where
@@ -65,7 +75,7 @@ async function saveAnnotation (data) {
   })
 
   // Write annotation data as JSON file.
-  const annotationFilePath = 'data/annotations/' + data.images[0].name + '.json'
+  const annotationFilePath = path.join(annotationsDir, data.images[0].name + '.json')
   const json = JSON.stringify(data.annotation)
 
   try {
@@ -134,20 +144,25 @@ async function startServer () {
   })
 
   // Serve image files
-  app.use('/images', express.static('data/images', {}))
+  app.use('/images', express.static(imagesDir, {}))
 
   // Serve static annotation data
   // Always respond with headers that disable the cache. Specifically this is
   // important when editing raster images. Without this, when the editor is
   // reloaded the browser will serve the original, pre-edit, from the cache.
-  app.use('/annotations', express.static('data/annotations', {
+  app.use('/annotations', express.static(annotationsDir, {
     setHeaders: function (res, path) {
       res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
     }
   }))
+  
+  app.get('/iiif', function (req, res) {
+    protocol = iiifHttps ? 'https' : 'http'
+    res.send(new URL('/iiif/2/', protocol + '://' + iiifHostname + ':' + iiifPort).toString())
+  })
 
   // Serve the built application
-  app.use(express.static('.'))
+  app.use(express.static(__dirname))
 
   // Get the IP address of the current machine. The application will also be
   // usable over the network from this address.
