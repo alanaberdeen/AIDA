@@ -194,6 +194,8 @@ export default {
           locked: item.locked
         })
       }
+      newPaperItem.strokeScaling = false
+      return newPaperItem
     }
   },
 

@@ -101,6 +101,11 @@ export default {
 
       // Ensure this path is no longer the active path to be edited.
       this.path.data.active = false
+      
+      paper.view.itemsTree.remove(this.path)
+      const bounds = this.path.bounds
+      const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: this.path }
+      paper.view.itemsTree.insert(treeNode)
 
       // Flag the annotation has been edited and the changes are not saved
       this.flagAnnotationEdits()

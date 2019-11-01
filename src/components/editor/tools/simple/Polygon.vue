@@ -47,7 +47,8 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
+      currentZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
       strokeScale: state => state.app.strokeScale
@@ -67,6 +68,9 @@ export default {
       // If double clicked close the path
       } else if (this.clickTime && Date.now() - this.clickTime < 200) {
         this.path.fillColor = new paper.Color(this.getColor().fill)
+        const bounds = this.path.bounds
+        const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: this.path }
+        paper.view.itemsTree.insert(treeNode)
         this.path.selected = false
         this.path.data.active = false
       } else {
@@ -112,16 +116,17 @@ export default {
       this.toolPolygon.activate()
 
       // Set tool stroke width and hitOptions settings.
-      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
+      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.maxZoom * 1000)
       this.hitOptions = {
         segments: true,
-        tolerance: this.strokeWidth * 5
+        tolerance: (this.imageWidth * this.strokeScale) / (this.currentZoom * 1000) * 5
       }
     },
 
     newPath () {
       let newPath = new paper.Path()
       newPath.strokeColor = new paper.Color(this.getColor().stroke)
+      newPath.strokeScaling = false
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true
 
