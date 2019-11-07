@@ -30,7 +30,8 @@ export default {
       id: payload,
       showNavigationControl: false,
       showNavigator: true,
-      navigatorId: 'navigator'
+      navigatorId: 'navigator',
+      navigatorAutoResize: false
     })
 
     // Prevent rotation and 'flipping' of the image through the default keybaord
