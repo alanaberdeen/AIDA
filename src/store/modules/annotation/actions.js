@@ -6,9 +6,11 @@ export default {
     dispatch,
     commit
   }, payload) => {
+    paper.view.autoUpdate = 
     // Reset the project state to the empty defaults
     commit('resetProjectState')
     if (payload) {
+      let treeNodes = []
       // Draw the annotation layers
       for (const layer of payload.layers) {
         await dispatch('createLayer')
@@ -31,12 +33,16 @@ export default {
             // needs to be manually added to the state.
             commit('addItemToActiveLayer', item)
           } else {
-            helpers.drawItem(item)
+            const paperItem = helpers.drawItem(item)
+            const bounds = paperItem.bounds
+            const treeNode =  { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: paperItem }
+            treeNodes.push(treeNode)
           }
         }
         dispatch('setActiveLayerOpacity', layer.opacity * 100)
       }
-
+      paper.view.itemsTree.load(treeNodes)
+      
       // Active the correct layer as specified by editor state.
       if (payload.activeLayer) dispatch('setActiveLayer', payload.activeLayer)
     } else {
@@ -44,6 +50,8 @@ export default {
       dispatch('setActiveLayerName', 'Layer 1')
       dispatch('setActiveLayerType', 'paths')
     }
+    paper.view.autoUpdate = true
+    paper.view.update()
   },
 
   resetAnnotationState: ({

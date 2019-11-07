@@ -43,10 +43,10 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      strokeScale: state => state.app.strokeScale
+        strokeScale: state => state.app.strokeScale
     })
   },
 
@@ -56,6 +56,7 @@ export default {
       let trackingRect = new paper.Path.Rectangle(event.downPoint, event.point)
       trackingRect.strokeColor = new paper.Color('#2661D8')
       trackingRect.strokeColor.alpha = 0.7
+      trackingRect.strokeScaling = false
       trackingRect.strokeWidth = this.strokeWidth
 
       // Constantly update tracking rect by removing it and re-drawing.
@@ -70,11 +71,17 @@ export default {
       let newRect = new paper.Path.Rectangle(event.downPoint, event.point)
       newRect.strokeColor = new paper.Color(this.getColor().stroke)
       newRect.fillColor = new paper.Color(this.getColor().fill)
+      newRect.strokeScaling = false
+      newRect.strokeScaling = false
       newRect.strokeWidth = this.strokeWidth
 
       // Custom data attribute:
       newRect.data.type = 'rectangle'
       newRect.data.class = ''
+      
+      const bounds = newRect.bounds
+      const treeNode =  { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: newRect }
+      paper.view.itemsTree.insert(treeNode)
 
       // Flag the annotation has been edited and the changes are not saved
       this.flagAnnotationEdits()
@@ -103,7 +110,7 @@ export default {
       this.toolRect.activate()
 
       // Set the default strokewidth relative to image size and zoom.
-      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
+      this.strokeWidth = Math.ceil((this.imageWidth * this.strokeScale) / (this.maxZoom * 1000))
     }
   }
 }

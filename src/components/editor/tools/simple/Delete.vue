@@ -45,7 +45,8 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
+      currentZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x
     })
@@ -114,6 +115,7 @@ export default {
       selectionRect.strokeColor = '#4D88D4'
       selectionRect.fillColor = '#A3C5E8'
       selectionRect.opacity = 0.3
+      selectionRect.strokeScaling = false
       selectionRect.strokeWidth = this.strokeWidth
 
       // Constantly update tracking rect by removing it and re-drawing.
@@ -158,6 +160,7 @@ export default {
     // Select the group and provide housekeeping/emit events.
     const toolUp = event => {
       if (selectedGroup) {
+        selectedGroup.children.forEach(item => {paper.view.itemsTree.remove(item)} )
         selectedGroup.remove()
       }
 
@@ -186,8 +189,8 @@ export default {
       this.toolDelete.activate()
 
       // Set tool stroke width and hitTolerance settings.
-      this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
-      let hitTolerance = this.strokeWidth * 3
+      this.strokeWidth = Math.ceil((this.imageWidth * this.strokeScale) / (this.maxZoom * 1000))
+      let hitTolerance = Math.ceil((this.imageWidth * this.strokeScale) / (this.currentZoom * 1000)) * 3
 
       // Selection options
       this.selectOptions = {

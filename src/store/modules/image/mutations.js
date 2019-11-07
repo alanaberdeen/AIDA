@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import openseadragon from 'openseadragon'
+import axios from 'axios'
 
 export default {
   setProjectImageName: (state, projectImageName) => {
@@ -69,10 +70,13 @@ export default {
     // Add the image to the OSD viewer.
     // Require different API method calls for tiled/simple images.
     if (payload.fileType === 'tiled') {
-      state.OSDviewer.addTiledImage({
-        tileSource: 'http://localhost:8182/iiif/2/' + encodeURIComponent(payload.source) + '/info.json',
-        opacity: payload.opacity
-      })
+      axios.get(location.origin + '/iiif')
+        .then((response) => {
+          state.OSDviewer.addTiledImage({
+            tileSource: new URL(encodeURIComponent(payload.source) + '/info.json', response.data.toString()).toString(),
+            opacity: payload.opacity
+          })
+        })
     } else if (payload.fileType === 'dzi') {
       state.OSDviewer.addTiledImage({
         tileSource: payload.source,

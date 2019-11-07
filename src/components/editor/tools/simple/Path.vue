@@ -46,7 +46,8 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
+      currentZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
       strokeScale: state => state.app.strokeScale
@@ -56,6 +57,7 @@ export default {
   created () {
     const toolDown = event => {
       // If there is no current active path then create one.
+      console.log('toolDown event')
       if (!this.path || !this.path.data.active) {
         this.path = this.newPath()
         this.path.data.active = true
@@ -94,6 +96,7 @@ export default {
 
     // Feedfoward information on mouseMove
     const toolMove = event => {
+      console.log('toolMove event')
       let hitResult = paper.project.hitTest(event.point, this.hitOptions)
 
       // If hovering over first/last segment then remove the selected
@@ -102,6 +105,9 @@ export default {
         if (hitResult.segment === hitResult.item.firstSegment) {
           this.path.closed = true
           this.path.selected = false
+          const bounds = this.path.bounds
+          const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: this.path }
+          paper.view.itemsTree.insert(treeNode)
         } else if (
           hitResult.segment === hitResult.item.firstSegment ||
           hitResult.segment === hitResult.item.lastSegment
@@ -117,6 +123,7 @@ export default {
     }
 
     const toolUp = event => {
+      console.log('toolUp event')
       // Flag the annotation has been edited and the changes are not saved
       this.flagAnnotationEdits()
     }
@@ -145,16 +152,18 @@ export default {
       this.toolPen.activate()
 
       // Set tool stroke width and hitOptions settings.
-      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
+      this.strokeWidth = Math.ceil((this.imageWidth * this.strokeScale) / (this.maxZoom * 1000))
+      
       this.hitOptions = {
         segments: true,
-        tolerance: this.strokeWidth
+        tolerance: Math.ceil((this.imageWidth * this.strokeScale) / (this.currentZoom * 1000))
       }
     },
 
     newPath () {
       let newPath = new paper.Path()
       newPath.strokeColor = new paper.Color(this.getColor().stroke)
+      newPath.strokeScaling = false
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true
 
