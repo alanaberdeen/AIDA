@@ -47,11 +47,11 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      activeStep: state => state.app.activeStep,
-      strokeScale: state => state.app.strokeScale
+        activeStep: state => state.app.activeStep,
+        strokeScale: state => state.app.strokeScale
     })
   },
 
@@ -76,6 +76,7 @@ export default {
       let trackingPath = new paper.Path.Line(event.downPoint, event.point)
       trackingPath.strokeColor = new paper.Color('#2661D8')
       trackingPath.strokeColor.alpha = 0.7
+      trackingPath.strokeScaling = false
       trackingPath.strokeWidth = this.strokeWidth
       trackingPath.add(event.point)
       trackingPath.removeOn({
@@ -89,6 +90,7 @@ export default {
       let trackingCircle = new paper.Path.Circle(event.downPoint, this.radius)
       trackingCircle.strokeColor = new paper.Color('#2661D8')
       trackingCircle.strokeColor.alpha = 0.7
+      trackingCircle.strokeScaling = false
       trackingCircle.strokeWidth = this.strokeWidth
       trackingCircle.removeOn({
         drag: true,
@@ -103,14 +105,19 @@ export default {
       // distance between the point of mouseDown and mouseUp.
       let newCircle = new paper.Path.Circle(event.downPoint, this.radius)
       newCircle.strokeColor = new paper.Color(this.getColor().stroke)
+      newCircle.strokeScaling = false
       newCircle.strokeWidth = this.strokeWidth
       newCircle.fillColor = new paper.Color(this.getColor().fill)
 
       // Custom data attribute:
       newCircle.data.countable = true
       newCircle.data.type = 'circle'
-      newCircle.data.class = ''
-
+      newCircle.data.class = ''      
+      
+      const bounds = newCircle.bounds
+      const treeNode =  { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: newCircle }
+      paper.view.itemsTree.insert(treeNode)
+      
       // Flag the annotation has been edited and the changes are not saved
       this.flagAnnotationEdits()
     }
@@ -142,8 +149,8 @@ export default {
       this.toolCircle.activate()
 
       // Set the default radius relative to image size and zoom level.
-      this.radius = this.imageWidth / (this.viewportZoom * 100)
-      this.strokeWidth = (this.imageWidth * this.strokeScale) / (this.viewportZoom * 1000)
+      this.radius = this.imageWidth / (this.maxZoom * 100)
+      this.strokeWidth = Math.ceil((this.imageWidth * this.strokeScale) / (this.maxZoom * 1000))
     },
 
     // Helper function - calculate distance between 2 points:

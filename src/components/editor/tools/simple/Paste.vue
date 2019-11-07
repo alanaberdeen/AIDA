@@ -47,7 +47,7 @@ export default {
 
   computed: {
     ...mapState({
-      viewportZoom: state => state.image.OSDviewer.viewport.getZoom(true),
+      maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
       imageWidth: state =>
         state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
       activeStep: state => state.app.activeStep
@@ -59,6 +59,7 @@ export default {
       this.pasteBrush = new paper.Path.Circle({
         radius: this.radius,
         position: event.point,
+        strokeScaling: false,
         strokeWidth: this.strokeWidth,
         strokeColor: new paper.Color({
           hue: 220,
@@ -161,8 +162,8 @@ export default {
       this.toolPaste.activate()
 
       // Set the default radius relative to image size and zoom level.
-      this.radius = this.imageWidth / (this.viewportZoom * 100)
-      this.strokeWidth = this.imageWidth / (this.viewportZoom * 500)
+      this.radius = this.imageWidth / (this.maxZoom * 100)
+      this.strokeWidth = Math.ceil((this.imageWidth * this.strokeScale) / (this.maxZoom * 1000))
     }
   }
 }

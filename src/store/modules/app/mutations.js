@@ -20,55 +20,76 @@ export default {
   // annotation project.
   synchroniseAnnotationAndOSDCanvas: (state, viewer) => {
     viewer.addHandler('animation', () => {
+      paper.view.autoUpdate = false
+      paper.project.layers.forEach(layer => { layer.getItems({ }).forEach(item => {item.visible = false}) })
+      const baseImage = viewer.world.getItemAt(0)
+      const center = baseImage.viewportToImageCoordinates(viewer.viewport.getCenter(true))
       // Sync Zoom
       const currentZoom = viewer.viewport.getZoom(true)
-      const baseImage = viewer.world.getItemAt(0)
       paper.view.zoom = baseImage.viewportToImageZoom(currentZoom)
-
       // Sync Center
-      const center = baseImage.viewportToImageCoordinates(
-        viewer.viewport.getCenter(true)
-      )
       paper.view.center = new paper.Point(center.x, center.y)
-
-      // Update path stroke widths.
-      // If the current zoom level does not equal the target zoom level then we
-      // need to scale the paths in the project to match the zoom changes.
-      if (viewer.viewport.getZoom(true) !== viewer.viewport.getZoom()) {
-        const strokeScale = state.strokeScale
-        paper.project.getItems({ class: paper.Path }).forEach(path => {
-          path.strokeWidth = (baseImage.getContentSize().x * strokeScale) / (currentZoom * 1000)
-
-          // Ruler items need special treatment to re-draw the labels
-          if (path.hasOwnProperty('drawLabel')) path.drawLabel()
-        })
-      }
+      const bounds = paper.view.bounds
+      paper.view.itemsTree.search({ minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height}).forEach(treeNode => {treeNode.item.visible = true})
+      paper.view.autoUpdate = true
+      paper.view.update()
     })
-
+    
     viewer.addHandler('resize', function (e) {
+      paper.view.autoUpdate = false
+      paper.project.layers.forEach(layer => { layer.getItems({ }).forEach(item => {item.visible = false}) })
       const baseImage = viewer.world.getItemAt(0)
 
       // Sync Size
       paper.view.viewSize.width = e.newContainerSize.x
       paper.view.viewSize.height = e.newContainerSize.y
-
+      
       // Sync Center
       const center = baseImage.viewportToImageCoordinates(
         viewer.viewport.getCenter(true)
       )
       paper.view.center = new paper.Point(center.x, center.y)
+      const bounds = paper.view.bounds
+      paper.view.itemsTree.search({ minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height}).forEach(treeNode => {treeNode.item.visible = true})
+      
+      const strokeWidth = Math.ceil(paper.view.viewSize.width * state.strokeScale / (viewer.viewport.getMaxZoom() * 1000))
+      paper.project.getItems({ }).forEach(item => {
+        item.strokeWidth = strokeWidth
+        // Ruler items need special treatment to re-draw the labels
+        if (item.hasOwnProperty('drawLabel')) path.drawLabel()
+      })
+      
+      paper.view.autoUpdate = true
+      paper.view.update()
     })
 
     // When an item (image) is added to the world sync the path stroke widths
     viewer.world.addHandler('add-item', function (e) {
-      const strokeScale = state.strokeScale
-      const baseImage = viewer.world.getItemAt(0)
-      paper.project.getItems({ class: paper.Path }).forEach(path => {
-        path.strokeWidth = (baseImage.getContentSize().x * strokeScale) / (1 * 1000)
-
+      paper.view.autoUpdate = false
+      const baseImage = viewer.world.getItemAt(0)    
+      const container = document.getElementById('view')
+      
+      // Sync Size
+      paper.view.viewSize.width = container.offsetWidth
+      paper.view.viewSize.height = container.offsetHeight
+      
+      // Sync Zoom
+      const currentZoom = viewer.viewport.getZoom(true)
+      paper.view.zoom = baseImage.viewportToImageZoom(currentZoom)
+      
+      // Sync Center
+      const center = baseImage.viewportToImageCoordinates(viewer.viewport.getCenter(true))
+      paper.view.center = new paper.Point(center.x, center.y)
+      
+      const strokeWidth = Math.ceil(paper.view.viewSize.width * state.strokeScale / (viewer.viewport.getMaxZoom() * 1000))
+      paper.project.getItems({ }).forEach(item => {
+        item.strokeWidth = strokeWidth
         // Ruler items need special treatment to re-draw the labels
-        if (path.hasOwnProperty('drawLabel')) path.drawLabel()
+        if (item.hasOwnProperty('drawLabel')) path.drawLabel()
       })
+      
+      paper.view.autoUpdate = true
+      paper.view.update()
     })
   },
 
