@@ -99,12 +99,6 @@
         @click.native="activeTool = 'faces'"
       />
 
-      <app-megas
-        v-if="(getStepTools().includes('megas'))"
-        :active="(activeTool === 'megas')"
-        @click.native="activeTool = 'megas'"
-      />
-
       <app-filter
         v-if="(getStepTools().includes('filter'))"
         :active="(activeTool === 'filter')"
@@ -115,12 +109,6 @@
         v-if="(getStepTools().includes('edit'))"
         :active="(activeTool === 'edit')"
         @click.native="activeTool = 'edit'"
-      />
-
-      <app-super-pixel
-        v-if="(getStepTools().includes('super-pixel'))"
-        :active="(activeTool === 'super-pixel')"
-        @click.native="activeTool = 'super-pixel'"
       />
 
       <app-ruler
