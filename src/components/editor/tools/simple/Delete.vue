@@ -160,7 +160,7 @@ export default {
     // Select the group and provide housekeeping/emit events.
     const toolUp = event => {
       if (selectedGroup) {
-        selectedGroup.children.forEach(item => {paper.view.itemsTree.remove(item)} )
+        selectedGroup.children.forEach(item => { paper.view.itemsTree.remove(item) })
         selectedGroup.remove()
       }
 

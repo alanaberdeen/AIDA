@@ -116,7 +116,7 @@ export default {
         ) {
           hitResult.segment.handleIn = hitResult.segment.handleIn.add(event.delta)
         }
-        
+
         paper.view.itemsTree.remove(hitResult.item)
         const bounds = hitResult.item.bounds
         const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: hitResult.item }

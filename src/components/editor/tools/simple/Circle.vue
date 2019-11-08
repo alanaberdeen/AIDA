@@ -48,10 +48,9 @@ export default {
   computed: {
     ...mapState({
       maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
-      imageWidth: state =>
-        state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-        activeStep: state => state.app.activeStep,
-        strokeScale: state => state.app.strokeScale
+      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
+      activeStep: state => state.app.activeStep,
+      strokeScale: state => state.app.strokeScale
     })
   },
 
@@ -112,12 +111,12 @@ export default {
       // Custom data attribute:
       newCircle.data.countable = true
       newCircle.data.type = 'circle'
-      newCircle.data.class = ''      
-      
+      newCircle.data.class = ''
+
       const bounds = newCircle.bounds
-      const treeNode =  { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: newCircle }
+      const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: newCircle }
       paper.view.itemsTree.insert(treeNode)
-      
+
       // Flag the annotation has been edited and the changes are not saved
       this.flagAnnotationEdits()
     }

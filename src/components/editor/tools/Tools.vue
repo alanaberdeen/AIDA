@@ -158,8 +158,6 @@ import toolFilter from './assisted/Filter.vue'
 
 // Intelligent Tools:
 import toolFaces from './intelligent/Faces.vue'
-import toolMegas from './intelligent/Megakaryocytes'
-import toolSuperPixel from './intelligent/SuperPixel'
 
 export default {
   components: {
@@ -172,14 +170,12 @@ export default {
     'app-pencil': toolPencil,
     'app-delete': toolDelete,
     'app-faces': toolFaces,
-    'app-megas': toolMegas,
     'app-paint': toolPaint,
     'app-grid': toolGrid,
     'app-filter': toolFilter,
     'app-polygon': toolPolygon,
     'app-paste': toolPaste,
     'app-edit': toolEdit,
-    'app-super-pixel': toolSuperPixel,
     'app-ruler': toolRuler
   },
 

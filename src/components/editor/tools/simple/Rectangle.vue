@@ -44,9 +44,8 @@ export default {
   computed: {
     ...mapState({
       maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
-      imageWidth: state =>
-        state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-        strokeScale: state => state.app.strokeScale
+      imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
+      strokeScale: state => state.app.strokeScale
     })
   },
 
@@ -78,9 +77,9 @@ export default {
       // Custom data attribute:
       newRect.data.type = 'rectangle'
       newRect.data.class = ''
-      
+
       const bounds = newRect.bounds
-      const treeNode =  { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: newRect }
+      const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: newRect }
       paper.view.itemsTree.insert(treeNode)
 
       // Flag the annotation has been edited and the changes are not saved
