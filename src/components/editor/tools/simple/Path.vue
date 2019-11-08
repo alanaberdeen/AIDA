@@ -153,7 +153,7 @@ export default {
 
       // Set tool stroke width and hitOptions settings.
       this.strokeWidth = Math.ceil((this.imageWidth * this.strokeScale) / (this.maxZoom * 1000))
-      
+
       this.hitOptions = {
         segments: true,
         tolerance: Math.ceil((this.imageWidth * this.strokeScale) / (this.currentZoom * 1000))

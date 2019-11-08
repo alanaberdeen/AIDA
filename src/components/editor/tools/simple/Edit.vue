@@ -26,7 +26,6 @@
 
 <script>
 import paper from 'paper'
-import osd from 'openseadragon'
 import { mapActions, mapState } from 'vuex'
 
 export default {

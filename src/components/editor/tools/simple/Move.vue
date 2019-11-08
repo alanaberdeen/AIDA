@@ -156,14 +156,14 @@ export default {
           this.selectionGroup.position = this.selectionGroup.position.add(event.delta)
           this.selectionGroup.children.forEach(item => {
             paper.view.itemsTree.remove(item)
-            const bounds =  item.bounds
+            const bounds = item.bounds
             const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: item }
             paper.view.itemsTree.insert(treeNode)
           })
         } else {
           hitResult.item.position = hitResult.item.position.add(event.delta)
           paper.view.itemsTree.remove(hitResult.item)
-          const bounds =  hitResult.item.bounds
+          const bounds = hitResult.item.bounds
           const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: hitResult.item }
           paper.view.itemsTree.insert(treeNode)
         }
@@ -204,14 +204,14 @@ export default {
 
         // Scale group
         this.selectionGroup.scale(horizScaleFactor, vertScaleFactor, transfromCenter)
-        
+
         this.selectionGroup.children.forEach(item => {
           paper.view.itemsTree.remove(item)
-          const bounds =  item.bounds
+          const bounds = item.bounds
           const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: item }
           paper.view.itemsTree.insert(treeNode)
         })
-        
+
         if (this.saveState.changesSaved) {
           // Flag the annotation has been edited and the changes are not saved
           this.flagAnnotationEdits()

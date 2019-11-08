@@ -12,7 +12,7 @@ export default {
     // canvas DOM element: 'annotation-canvas'
     paper.setup('annotation-canvas')
     paper.view.itemsTree = new RBush()
-    
+
     // HACK:
     // By default activate the pan tool once the annotation canvas has loaded.
     // This hacky method assumes that the HTML element for the pan tool button has already been loaded
