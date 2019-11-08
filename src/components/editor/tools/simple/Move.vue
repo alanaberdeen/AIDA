@@ -52,7 +52,8 @@ export default {
       maxZoom: state => state.image.OSDviewer.viewport.getMaxZoom(),
       currentZoom: state => state.image.OSDviewer.viewport.getZoom(true),
       imageWidth: state => state.image.OSDviewer.world.getItemAt(0).getContentSize().x,
-      saveState: state => state.annotation.saveState
+      saveState: state => state.annotation.saveState,
+      strokeScale: state => state.app.strokeScale
     })
   },
 
