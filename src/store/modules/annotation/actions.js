@@ -6,7 +6,7 @@ export default {
     dispatch,
     commit
   }, payload) => {
-    paper.view.autoUpdate = 
+    paper.view.autoUpdate = false
     // Reset the project state to the empty defaults
     commit('resetProjectState')
     if (payload) {
@@ -35,14 +35,14 @@ export default {
           } else {
             const paperItem = helpers.drawItem(item)
             const bounds = paperItem.bounds
-            const treeNode =  { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: paperItem }
+            const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: paperItem }
             treeNodes.push(treeNode)
           }
         }
         dispatch('setActiveLayerOpacity', layer.opacity * 100)
       }
       paper.view.itemsTree.load(treeNodes)
-      
+
       // Active the correct layer as specified by editor state.
       if (payload.activeLayer) dispatch('setActiveLayer', payload.activeLayer)
     } else {
