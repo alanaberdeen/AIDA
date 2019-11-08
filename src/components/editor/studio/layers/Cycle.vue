@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import paper from 'paper'
 import openseadragon from 'openseadragon'
 

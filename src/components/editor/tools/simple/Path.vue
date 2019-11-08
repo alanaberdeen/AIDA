@@ -57,7 +57,6 @@ export default {
   created () {
     const toolDown = event => {
       // If there is no current active path then create one.
-      console.log('toolDown event')
       if (!this.path || !this.path.data.active) {
         this.path = this.newPath()
         this.path.data.active = true
@@ -96,7 +95,6 @@ export default {
 
     // Feedfoward information on mouseMove
     const toolMove = event => {
-      console.log('toolMove event')
       let hitResult = paper.project.hitTest(event.point, this.hitOptions)
 
       // If hovering over first/last segment then remove the selected
@@ -123,7 +121,6 @@ export default {
     }
 
     const toolUp = event => {
-      console.log('toolUp event')
       // Flag the annotation has been edited and the changes are not saved
       this.flagAnnotationEdits()
     }

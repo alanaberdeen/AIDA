@@ -245,14 +245,10 @@ export default {
     // TODO: remove item functionality is incomplete...
     // Remove the item from the paperJS rendering and also delete it from the database
     removeItem () {
-      console.log('want to remove item')
-
       let item = paper.project.getItems({
         selected: true,
         class: paper.Path
       })[0]
-
-      console.log(item)
     },
 
     goToItem (item) {

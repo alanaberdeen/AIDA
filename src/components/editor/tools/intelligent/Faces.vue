@@ -108,8 +108,6 @@ export default {
           // Log the repsonse to the console.
           // As this is experimental leave here for now, useful for
           // investigating issues
-          console.log(response)
-
           let faceAnnotations = response.data.responses[0].faceAnnotations
 
           // Draw a rectangle around each of the detected faces.
@@ -139,11 +137,6 @@ export default {
           // Change icon back from a loading spinner to default tag by adjusting
           // the indicating data variable.
           this.loading = false
-
-          console.log(
-            'could not apply face detection, returned the following error: \n \n' +
-              error
-          )
         })
     },
 

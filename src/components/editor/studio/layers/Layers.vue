@@ -111,7 +111,6 @@
 </template>
 
 <script>
-import paper from 'paper'
 import { mapActions, mapState } from 'vuex'
 
 import cycle from './Cycle.vue'
