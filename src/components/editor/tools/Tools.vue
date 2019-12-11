@@ -144,9 +144,6 @@ import toolRuler from './simple/Ruler.vue'
 // Assisted Tools:
 import toolFilter from './assisted/Filter.vue'
 
-// Intelligent Tools:
-import toolFaces from './intelligent/Faces.vue'
-
 export default {
   components: {
     'app-circle': toolCircle,
@@ -157,7 +154,6 @@ export default {
     'app-node': toolNode,
     'app-pencil': toolPencil,
     'app-delete': toolDelete,
-    'app-faces': toolFaces,
     'app-paint': toolPaint,
     'app-grid': toolGrid,
     'app-filter': toolFilter,
