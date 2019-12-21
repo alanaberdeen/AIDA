@@ -20,7 +20,6 @@
 <script>
 import Tools from '../components/editor/tools/Tools.vue'
 import Studio from '../components/editor/studio/Studio.vue'
-import Stepper from '../components/task/Stepper.vue'
 import View from '../components/editor/view/View.vue'
 import Toolbar from '../components/toolbar/Toolbar.vue'
 import Snackbar from '../components/notification/Snackbar.vue'
@@ -29,7 +28,6 @@ export default {
   components: {
     'app-tools': Tools,
     'app-studio': Studio,
-    'app-stepper': Stepper,
     'app-view': View,
     'app-toolbar': Toolbar,
     'app-snackbar': Snackbar
