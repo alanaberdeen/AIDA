@@ -143,7 +143,7 @@ export default {
     if (item) {
       let newPaperItem
       if (item.type === 'circle') {
-        newPaperItem = new paper.Path.Circle({
+        newPaperItem = new paper.Shape.Circle({
           center: item.center,
           radius: item.radius,
           data: {
@@ -156,7 +156,7 @@ export default {
         })
         this.drawItemColor(newPaperItem, item)
       } else if (item.type === 'rectangle') {
-        newPaperItem = new paper.Path.Rectangle({
+        newPaperItem = new paper.Shape.Rectangle({
           point: [item.x, item.y],
           size: [item.width, item.height],
           data: {

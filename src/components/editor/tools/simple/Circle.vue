@@ -86,7 +86,7 @@ export default {
 
       // Create a circle positioned at point where mousedown was, with radius
       // the distance between mousedown/mouseup
-      let trackingCircle = new paper.Path.Circle(event.downPoint, this.radius)
+      let trackingCircle = new paper.Shape.Circle(event.downPoint, this.radius)
       trackingCircle.strokeColor = new paper.Color('#2661D8')
       trackingCircle.strokeColor.alpha = 0.7
       trackingCircle.strokeScaling = false
@@ -102,7 +102,7 @@ export default {
       // Create a circle marker positioned on the point where mousedown was,
       // with either the default radius or the new radius as set by the
       // distance between the point of mouseDown and mouseUp.
-      let newCircle = new paper.Path.Circle(event.downPoint, this.radius)
+      let newCircle = new paper.Shape.Circle(event.downPoint, this.radius)
       newCircle.strokeColor = new paper.Color(this.getColor().stroke)
       newCircle.strokeScaling = false
       newCircle.strokeWidth = this.strokeWidth

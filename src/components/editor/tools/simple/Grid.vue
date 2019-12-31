@@ -3,6 +3,7 @@
 // tool is active.
 <template lang="html">
   <v-list-item id="tool-tile">
+    <template v-slot:activator="{ on }">
     <v-menu
       id="menu"
       :close-on-content-click="false"
@@ -68,6 +69,7 @@
         </v-list>
       </v-card>
     </v-menu>
+    </template>
   </v-list-item>
 </template>
 
