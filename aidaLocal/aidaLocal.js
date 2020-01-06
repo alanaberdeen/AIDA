@@ -109,9 +109,6 @@ async function startServer () {
     next()
   })
 
-  // Use history proxy middleware to handle 404 routes in SPA
-  app.use(history())
-
   // Need to parse POST Body data (for parsing application/json)
   // Increase the limit from the default (100kb) to enable large annotation JSON
   // files
@@ -163,6 +160,11 @@ async function startServer () {
 
   // Serve the built application
   app.use(express.static(__dirname))
+
+  app.route('/*')
+    .get(function(req, res) {
+      res.sendFile(path.join(__dirname, 'index.html'));
+    });
 
   // Get the IP address of the current machine. The application will also be
   // usable over the network from this address.
