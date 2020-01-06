@@ -21,6 +21,12 @@
 
       <v-divider></v-divider>
 
+      <app-reshape
+        v-if="(getStepTools().includes('reshape'))"
+        :active="(activeTool === 'reshape')"
+        @click.native="activeTool = 'reshape'"
+      />
+
       <app-move
         v-if="(getStepTools().includes('move'))"
         :active="(activeTool === 'move')"
@@ -140,6 +146,7 @@ import toolPolygon from './simple/Polygon.vue'
 import toolPaste from './simple/Paste.vue'
 import toolEdit from './simple/Edit.vue'
 import toolRuler from './simple/Ruler.vue'
+import toolReshape from './simple/Reshape.vue'
 
 // Assisted Tools:
 import toolFilter from './assisted/Filter.vue'
@@ -160,7 +167,8 @@ export default {
     'app-polygon': toolPolygon,
     'app-paste': toolPaste,
     'app-edit': toolEdit,
-    'app-ruler': toolRuler
+    'app-ruler': toolRuler,
+    'app-reshape': toolReshape
   },
 
   data () {

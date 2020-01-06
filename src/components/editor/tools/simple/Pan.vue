@@ -33,6 +33,7 @@
 
 <script>
 export default {
+  name: 'toolPan',
   props: {
     active: {
       type: Boolean,
