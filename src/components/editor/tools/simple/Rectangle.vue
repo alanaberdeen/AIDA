@@ -1,25 +1,20 @@
 <template lang="html">
-  <v-list-item id="tool-tile">
-    <v-tooltip right open-delay=700>
-      <template v-slot:activator="{ on }">
-        <v-btn
-          id="rectangle"
-          v-on="on"
-          block
-          text
-          @click.native="initialiseTool"
-        >
-          <v-icon
-            small
-            :class="{'grey--text text--darken-2': !active,
-                    'blue--text text--darken-1': active}">
-            mdi-crop-landscape
-          </v-icon>
-        </v-btn>
-      </template>
-      <span> Rectangel Tool [r] </span>
-    </v-tooltip>
-  </v-list-item>
+  <v-tooltip right open-delay=700>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        id="rectangle"
+        v-on="on"
+        block
+        text
+        @click.native="initialiseTool"
+      >
+        <v-icon small>
+          mdi-crop-landscape
+        </v-icon>
+      </v-btn>
+    </template>
+    <span> Rectangel Tool [r] </span>
+  </v-tooltip>
 </template>
 
 <script>
@@ -27,13 +22,6 @@ import paper from 'paper'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
-  props: {
-    active: {
-      type: Boolean,
-      default: false
-    }
-  },
-
   data () {
     return {
       toolRect: null,
@@ -114,14 +102,3 @@ export default {
   }
 }
 </script>
-
-<style lang='css'>
-
-#rectangle {
-  min-width: 0px;
-}
-
-#tool-tile {
-  padding: 0px;
-}
-</style>

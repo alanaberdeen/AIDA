@@ -1,26 +1,21 @@
 <!-- Repurposed the move tool to act as a graphical delete tool -->
 <template lang="html">
-  <v-list-item id="tool-delete">
-    <v-tooltip right open-delay=700>
-      <template v-slot:activator="{ on }">
-        <v-btn
-          id="tool"
-          v-on="on"
-          block
-          text
-          @click.native="initialiseTool"
-        >
-          <v-icon
-            small
-            :class="{'grey--text text--darken-2': !active,
-                    'blue--text text--darken-1': active}">
-            mdi-delete
-          </v-icon>
-        </v-btn>
-      </template>
-      <span> Delete Tool </span>
-    </v-tooltip>
-  </v-list-item>
+  <v-tooltip right open-delay=700>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        id="tool"
+        v-on="on"
+        block
+        text
+        @click.native="initialiseTool"
+      >
+        <v-icon small>
+          mdi-delete
+        </v-icon>
+      </v-btn>
+    </template>
+    <span> Delete Tool </span>
+  </v-tooltip>
 </template>
 
 <script>
@@ -218,14 +213,3 @@ export default {
   }
 }
 </script>
-
-<style lang='css'>
-
-#tool {
-  min-width: 0px;
-}
-
-#tool-delete {
-  padding: 0px;
-}
-</style>

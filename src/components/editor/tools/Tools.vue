@@ -11,121 +11,45 @@
     class='mt-12'
     v-if="['loading'].indexOf($route.name) === -1"
   >
-    <v-list dense>
+    <v-btn-toggle
+      v-model="toggle_exclusive"
+      mandatory
+      borderless
+      group
+      color="primary"
+    >
 
-      <app-pan
-        v-if="(getStepTools().includes('pan'))"
-        :active="(activeTool === 'pan')"
-        @click.native="activeTool = 'pan'"
-      />
+      <app-pan v-if="(getStepTools().includes('pan'))" />
 
-      <v-divider></v-divider>
+      <v-divider class="ma-1"/>
 
-      <app-reshape
-        v-if="(getStepTools().includes('reshape'))"
-        :active="(activeTool === 'reshape')"
-        @click.native="activeTool = 'reshape'"
-      />
+      <app-reshape v-if="(getStepTools().includes('reshape'))" />
+      <app-move v-if="(getStepTools().includes('move'))" />
+      <app-node v-if="(getStepTools().includes('node'))" />
 
-      <app-move
-        v-if="(getStepTools().includes('move'))"
-        :active="(activeTool === 'move')"
-        @click.native="activeTool = 'move'"
-      />
+      <v-divider class="ma-1"/>
 
-      <app-node
-        v-if="(getStepTools().includes('node'))"
-        :active="(activeTool === 'node')"
-        @click.native="activeTool = 'node'"
-      />
+      <app-circle v-if="(getStepTools().includes('circle'))" />
+      <app-rectangle v-if="(getStepTools().includes('rectangle'))" />
+      <app-path v-if="(getStepTools().includes('path'))" />
+      <app-pencil v-if="(getStepTools().includes('pencil'))" />
+      <app-polygon v-if="(getStepTools().includes('polygon'))" />
+      <app-paint v-if="(getStepTools().includes('paint'))" />
+      <app-paste v-if="(getStepTools().includes('paste'))" />
 
-      <v-divider/>
+      <v-divider class="ma-1"/>
 
-      <app-circle
-        v-if="(getStepTools().includes('circle'))"
-        :active="(activeTool === 'circle')"
-        @click.native="activeTool = 'circle'"
-      />
+      <app-delete v-if="(getStepTools().includes('delete'))" />
 
-      <app-rectangle
-        v-if="(getStepTools().includes('rectangle'))"
-        :active="(activeTool === 'rectangle')"
-        @click.native="activeTool = 'rectangle'"
-      />
+      <v-divider class="ma-1"/>
 
-      <app-path
-        v-if="(getStepTools().includes('path'))"
-        :active="(activeTool === 'path')"
-        @click.native="activeTool = 'path'"
-      />
+      <app-grid v-if="(getStepTools().includes('grid'))" />
+      <app-filter v-if="(getStepTools().includes('filter'))" />
+      <app-edit v-if="(getStepTools().includes('edit'))" />
+      <app-ruler v-if="(getStepTools().includes('ruler'))" />
 
-      <app-pencil
-        v-if="(getStepTools().includes('pencil'))"
-        :active="(activeTool === 'pencil')"
-        @click.native="activeTool = 'pencil'"
-      />
-
-      <app-polygon
-        v-if="(getStepTools().includes('polygon'))"
-        :active="(activeTool === 'polygon')"
-        @click.native="activeTool = 'polygon'"
-      />
-
-      <app-paint
-        v-if="(getStepTools().includes('paint'))"
-        :active="(activeTool === 'paint')"
-        @click.native="activeTool = 'paint'"
-      />
-
-      <app-paste
-        v-if="(getStepTools().includes('paste'))"
-        :active="(activeTool === 'paste')"
-        @click.native="activeTool = 'paste'"
-      />
-
-      <app-grid
-        v-if="(getStepTools().includes('grid'))"
-        :active="(activeTool === 'grid')"
-        @click.native="activeTool = 'grid'"
-      />
-
-      <v-divider/>
-
-      <app-delete
-        v-if="(getStepTools().includes('delete'))"
-        :active="(activeTool === 'delete')"
-        @click.native="activeTool = 'delete'"
-      />
-
-      <v-divider/>
-
-      <app-faces
-        v-if="(getStepTools().includes('faces'))"
-        :active="(activeTool === 'faces')"
-        @click.native="activeTool = 'faces'"
-      />
-
-      <app-filter
-        v-if="(getStepTools().includes('filter'))"
-        :active="(activeTool === 'filter')"
-        @click.native="activeTool = 'filter'"
-      />
-
-      <app-edit
-        v-if="(getStepTools().includes('edit'))"
-        :active="(activeTool === 'edit')"
-        @click.native="activeTool = 'edit'"
-      />
-
-      <app-ruler
-        v-if="(getStepTools().includes('ruler'))"
-        :active="(activeTool === 'ruler')"
-        @click.native="activeTool = 'ruler'"
-      />
-
-    </v-list>
+    </v-btn-toggle>
   </v-navigation-drawer>
-
 </template>
 
 <script>
@@ -173,6 +97,7 @@ export default {
 
   data () {
     return {
+      toggle_exclusive: undefined,
       activeTool: 'pan'
     }
   },
@@ -233,3 +158,9 @@ export default {
   }
 }
 </script>
+
+<style lang="css">
+.v-btn-toggle {
+  flex-direction: column
+}
+</style>

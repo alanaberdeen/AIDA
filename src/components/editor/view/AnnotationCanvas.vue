@@ -13,11 +13,11 @@ export default {
     paper.setup('annotation-canvas')
     paper.view.itemsTree = new RBush()
 
-    // HACK:
-    // By default activate the pan tool once the annotation canvas has loaded.
-    // This hacky method assumes that the HTML element for the pan tool button has already been loaded
-    // and can easily be grabbed and clicked.
-    document.getElementById('pan').click()
+    // By default once the annotation canvas has loaded we remove pointer events
+    // from the paperJS canvas. This allows interaction with the OSD canvas
+    // through the pan tool.
+    document.getElementById('annotation-canvas').style.pointerEvents = 'none'
+    document.getElementById('osd-canvas').style.cursor = 'grab'
   }
 }
 </script>

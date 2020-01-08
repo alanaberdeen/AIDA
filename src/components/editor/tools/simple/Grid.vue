@@ -2,75 +2,72 @@
 // The grid should be locked when annotating the image but adjustable when this
 // tool is active.
 <template lang="html">
-  <v-list-item id="tool-tile">
+  <v-menu
+    id="menu"
+    :close-on-content-click="false"
+    :nudge-width="150"
+    :nudge-right="10"
+    transition="slide-x-transition"
+    v-model="menu"
+    offset-x
+  >
     <template v-slot:activator="{ on }">
-    <v-menu
-      id="menu"
-      :close-on-content-click="false"
-      :nudge-width="150"
-      :nudge-right="10"
-      transition="slide-x-transition"
-      v-model="menu"
-      offset-x
-    >
       <v-btn
         id="tool"
         slot="activator"
         block
         @click.native="initialiseTool"
+        v-on="on"
       >
-        <v-icon
-          :class="{'grey--text text--darken-2': !active,
-                   'blue--text text--darken-1': active}">
+        <v-icon small>
           grid_on
         </v-icon>
       </v-btn>
-      <v-card>
-        <v-list>
-          <v-list-item>
-            <v-flex xs5 justify-space-around>
-              <div id='switch'>
-                <v-switch
-                :input-value="visible"
-                @change="toggleLayerVisibility">
-                </v-switch>
-              </div>
-            </v-flex>
-            <v-flex xs6 offset-xs1>
-              Visibility
-            </v-flex>
-          </v-list-item>
-          <v-list-item>
-            <v-flex xs5>
-              <v-text-field
-              :value="gridWidth"
-              suffix="px"
-              single-line
-              @change="setGridWidth"
-              @keyup.native.enter="setGridWidth"/>
-            </v-flex>
-            <v-flex xs6 offset-xs1>
-              Width
-            </v-flex>
-          </v-list-item>
-          <v-list-item>
-            <v-flex xs5>
-              <v-text-field
-              :value="gridHeight"
-              suffix="px"
-              single-line
-              @change="setGridHeight"
-              @keyup.native.enter="setGridHeight"/>
-            </v-flex>
-            <v-flex xs6 offset-xs1>
-              Height
-            </v-flex>
-          </v-list-item>
-        </v-list>
-      </v-card>
-    </v-menu>
     </template>
-  </v-list-item>
+    <v-card>
+      <v-list>
+        <v-list-item>
+          <v-flex xs5 justify-space-around>
+            <div id='switch'>
+              <v-switch
+              :input-value="visible"
+              @change="toggleLayerVisibility">
+              </v-switch>
+            </div>
+          </v-flex>
+          <v-flex xs6 offset-xs1>
+            Visibility
+          </v-flex>
+        </v-list-item>
+        <v-list-item>
+          <v-flex xs5>
+            <v-text-field
+            :value="gridWidth"
+            suffix="px"
+            single-line
+            @change="setGridWidth"
+            @keyup.native.enter="setGridWidth"/>
+          </v-flex>
+          <v-flex xs6 offset-xs1>
+            Width
+          </v-flex>
+        </v-list-item>
+        <v-list-item>
+          <v-flex xs5>
+            <v-text-field
+            :value="gridHeight"
+            suffix="px"
+            single-line
+            @change="setGridHeight"
+            @keyup.native.enter="setGridHeight"/>
+          </v-flex>
+          <v-flex xs6 offset-xs1>
+            Height
+          </v-flex>
+        </v-list-item>
+      </v-list>
+    </v-card>
+  </v-menu>
 </template>
 
 <script>
@@ -78,13 +75,6 @@ import paper from 'paper'
 import { mapActions, mapState } from 'vuex'
 
 export default {
-  props: {
-    active: {
-      type: Boolean,
-      default: false
-    }
-  },
-
   data () {
     return {
       toolGrid: null,
@@ -212,17 +202,8 @@ export default {
 </script>
 
 <style lang='css'>
-
 #menu {
   width: 100%;
-}
-
-#tool {
-  min-width: 0px;
-}
-
-#tool-tile {
-  padding: 0px;
 }
 
 #switch {
