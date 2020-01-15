@@ -50,9 +50,6 @@ export default {
         this.path.data.class = ''
         this.path.data.type = 'path'
       }
-
-      let hitResult = this.path.hitTest(event.point, this.hitOptions)
-
       // If option key is held down then close the path.
       if (event.modifiers.option) {
         this.path.closed = true
@@ -60,20 +57,20 @@ export default {
         this.path.selected = false
         this.path.data.active = false
 
-        // If first segment clicked, close path.
-      } else if (hitResult && hitResult.segment === this.path.firstSegment) {
+      // If first segment clicked, close path.
+      } else if (this.path.firstSegment && event.point.isClose(this.path.firstSegment.point, this.hitOptions.tolerance)) {
         this.path.closed = true
         this.path.fillColor = new paper.Color(this.getColor().fill)
         this.path.smooth()
         this.path.selected = false
         this.path.data.active = false
 
-        // If last segment clicked close path.
-      } else if (hitResult && hitResult.segment === this.path.lastSegment) {
+      // If last segment clicked close path.
+      } else if (this.path.lastSegment && event.point.isClose(this.path.lastSegment.point, this.hitOptions.tolerance)) {
         this.path.selected = false
         this.path.data.active = false
 
-        // Else add new point
+      // Else add new point
       } else {
         this.path.add(event.point)
         this.path.smooth()
@@ -82,28 +79,19 @@ export default {
 
     // Feedfoward information on mouseMove
     const toolMove = event => {
-      let hitResult = paper.project.hitTest(event.point, this.hitOptions)
-
       // If hovering over first/last segment then remove the selected
       // highlighting to indicate path will be finsihed.
-      if (hitResult) {
-        if (hitResult.segment === hitResult.item.firstSegment) {
-          this.path.closed = true
-          this.path.selected = false
-          const bounds = this.path.bounds
-          const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: this.path }
-          paper.view.itemsTree.insert(treeNode)
-        } else if (
-          hitResult.segment === hitResult.item.firstSegment ||
-          hitResult.segment === hitResult.item.lastSegment
-        ) {
-          this.path.selected = false
-        }
-      } else {
-        if (this.path && this.path.data.active) {
-          this.path.selected = true
-          this.path.closed = false
-        }
+      if (this.path && this.path.firstSegment && event.point.isClose(this.path.firstSegment.point, this.hitOptions.tolerance)) {
+        this.path.closed = true
+        this.path.selected = false
+        const bounds = this.path.bounds
+        const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: this.path }
+        paper.view.itemsTree.insert(treeNode)
+      } else if (this.path && this.path.lastSegment && event.point.isClose(this.path.lastSegment.point, this.hitOptions.tolerance)) {
+        this.path.selected = false
+      } else if (this.path && this.path.data.active) {
+        this.path.selected = true
+        this.path.closed = false
       }
     }
 
