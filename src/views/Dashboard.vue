@@ -42,22 +42,11 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import Treeview from '../components/dashboard/Treeview.vue'
 
 export default {
   components: {
     Treeview
-  },
-
-  mounted () {
-    this.getArrayOfImages()
-  },
-
-  methods: {
-    ...mapActions({
-      getArrayOfImages: 'backend/getArrayOfImages'
-    })
   }
 }
 </script>

@@ -22,17 +22,18 @@
       <v-treeview
         v-model="tree"
         :open="open"
-        :items="items"
+        :items="loadItems"
+        :load-children="readDir"
         :search="search"
         :filter="filter"
         item-key="name"
       >
         <template v-slot:prepend="{ item, open }">
-          <v-icon v-if="!item.ext">
+          <v-icon v-if="item.children">
             {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
           </v-icon>
           <v-icon v-else>
-            {{ files[item.ext] }}
+            {{ files[item.ext] || filesDefault }}
           </v-icon>
         </template>
 
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+// import { mapState } from 'vuex'
 
 export default {
   data: () => ({
@@ -78,20 +79,53 @@ export default {
       '.jpeg': 'mdi-file-image',
       '.ndpi': 'mdi-image-off'
     },
+    filesDefault: 'mdi-file-document-outline',
     loadableImageTypes: ['.tif', '.tiff', '.dzi', '.png', '.jpg', '.jpeg'],
     tree: [],
     open: ['public'],
     search: null,
-    caseSensitive: false
+    caseSensitive: false,
+    items: []
   }),
+
+  created () {
+    fetch(location.origin + '/checkForImages', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'text/plain'
+      },
+      body: ''
+    })
+      .then(res => res.json())
+      .then(json => { this.items = json })
+  },
 
   computed: {
     filter () {
       return this.caseSensitive ? (item, search, textKey) => item[textKey].indexOf(search) > -1 : undefined
     },
-    ...mapState({
-      items: state => state.backend.availableImages
-    })
+    loadItems () {
+      return this.items
+    }
+    // ...mapState({
+    //   items: state => state.backend.availableImages
+    // })
+  },
+
+  methods: {
+    async readDir (item) {
+      return fetch(location.origin + '/checkForImages', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'text/plain'
+        },
+        body: item.path
+      })
+        .then(res => res.json())
+        .then(json => (item.children.push(...json)))
+    }
   }
 }
 </script>

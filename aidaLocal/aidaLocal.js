@@ -24,29 +24,22 @@ async function checkForImages () {
   await fsp.writeFile(path.join(__dirname,'data', 'images.json'), json, 'utf8')
 }
 
-// Recursively build the filetree by searching through all directories
-// Do not search inside DZI file directories (too many irrelevant files)
-// ignore .DS_store files
-async function walk (dir, rootDir, fileList = []) {
+async function walk (dir, rootDir) {
+  const fileList = []
   const files = await fsp.readdir(dir)
-  for (const file of files) {
-    const stat = await fsp.stat(path.join(dir, file))
-
-    if (stat.isDirectory() && !file.endsWith('_files')) {
-      fileList.push({
-        name: path.basename(file),
-        children: []
-      })
-
-      const children = fileList[fileList.length - 1].children
-      await walk(path.join(dir, file), rootDir, children)
-    } else if (file !== '.DS_Store' && !file.endsWith('_files')) {
-      fileList.push({
-        name: file,
-        ext: path.extname(file),
-        path: path.relative(rootDir, path.join(dir, file))
-      })
+  for (const fileName of files) {
+    const filePath = path.join(dir, fileName)
+    const fileInfo =  {
+      name: fileName,
+      path: path.relative(rootDir, filePath)
     }
+    const fileStat = await fsp.stat(filePath)
+    if (fileStat.isDirectory()) {
+      fileInfo['children'] = []
+    } else if (fileStat.isFile()) {
+      fileInfo['ext'] = path.extname(fileName)
+    }
+    fileList.push(fileInfo)
   }
   return fileList
 }
@@ -115,6 +108,7 @@ async function startServer () {
   app.use(bodyParser.json({
     limit: '100mb'
   }))
+  app.use(bodyParser.text())
 
   // Save annoation data
   app.post('/save', async function (req, res) {
@@ -131,8 +125,9 @@ async function startServer () {
   // Check for images that may have been added to the directory
   app.post('/checkForImages', async function (req, res) {
     try {
-      await checkForImages()
-      res.send('Success, found images')
+      const dirPath = req.body
+      const images = await walk(path.join(imagesDir, dirPath), imagesDir)
+      res.send(images)
     } catch (err) {
       console.log('Could not check for images')
       console.log(err)
