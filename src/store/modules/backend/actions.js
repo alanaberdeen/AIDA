@@ -69,19 +69,6 @@ export default {
     }
   },
 
-  async getArrayOfImages ({
-    commit
-  }) {
-    try {
-      await axios.post(location.origin + '/checkForImages')
-      const pathToImagesFile = location.origin + '/data/images.json'
-      const imagesFile = await axios.get(pathToImagesFile)
-      commit('setAvailableImages', imagesFile.data)
-    } catch (err) {
-      console.log(err)
-    }
-  },
-
   async saveProject ({
     dispatch,
     rootState
