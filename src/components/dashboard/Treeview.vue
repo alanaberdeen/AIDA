@@ -92,7 +92,7 @@ export default {
     fetch(location.origin + '/checkForImages', {
       method: 'post',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'text/plain'
       },
       body: ''
@@ -118,7 +118,7 @@ export default {
       return fetch(location.origin + '/checkForImages', {
         method: 'post',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'text/plain'
         },
         body: item.path

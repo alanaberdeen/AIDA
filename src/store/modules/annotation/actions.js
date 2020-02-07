@@ -10,7 +10,7 @@ export default {
     // Reset the project state to the empty defaults
     commit('resetProjectState')
     if (payload) {
-      let treeNodes = []
+      const treeNodes = []
       // Draw the annotation layers
       for (const layer of payload.layers) {
         await dispatch('createLayer')

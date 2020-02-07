@@ -154,7 +154,7 @@ export default {
             value.strokeColor.alpha === array[0].strokeColor.alpha
         )
       )) {
-        let color = {
+        const color = {
           h: this.selectedItems[0].strokeColor.hue,
           s: this.selectedItems[0].strokeColor.saturation,
           l: this.selectedItems[0].strokeColor.lightness,

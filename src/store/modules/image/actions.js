@@ -58,7 +58,7 @@ export default {
   setZoom: ({
     state
   }, payload) => {
-    let newZoom = payload instanceof KeyboardEvent ? Number(payload.target.value) : Number(payload)
+    const newZoom = payload instanceof KeyboardEvent ? Number(payload.target.value) : Number(payload)
     if (newZoom > 0) { state.OSDviewer.viewport.zoomTo(newZoom) }
   },
 

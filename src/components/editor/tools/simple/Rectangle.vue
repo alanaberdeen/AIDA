@@ -40,7 +40,7 @@ export default {
   created () {
     // On drag draw feedforward shadow rectangle in realtime.
     const toolDrag = event => {
-      let trackingRect = new paper.Shape.Rectangle(event.downPoint, event.point)
+      const trackingRect = new paper.Shape.Rectangle(event.downPoint, event.point)
       trackingRect.strokeColor = new paper.Color('#2661D8')
       trackingRect.strokeColor.alpha = 0.7
       trackingRect.strokeScaling = false
@@ -55,7 +55,7 @@ export default {
 
     // Finalise rectangle properties and draw.
     const toolUp = event => {
-      let newRect = new paper.Shape.Rectangle(event.downPoint, event.point)
+      const newRect = new paper.Shape.Rectangle(event.downPoint, event.point)
       newRect.strokeColor = new paper.Color(this.getColor().stroke)
       newRect.fillColor = new paper.Color(this.getColor().fill)
       newRect.strokeScaling = false

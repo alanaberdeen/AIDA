@@ -22,12 +22,12 @@ export default {
       const project = await response.json()
 
       // Load project annotation
-      if (project.hasOwnProperty('annotation')) {
+      if (Object.prototype.hasOwnProperty.call(project, 'annotation')) {
         dispatch('annotation/loadAnnotation', project.annotation, { root: true })
       }
 
       // Load project images
-      if (project.hasOwnProperty('images')) {
+      if (Object.prototype.hasOwnProperty.call(project, 'images')) {
         project.images.forEach(image => {
           if (image.source.endsWith('.tif') || image.source.endsWith('.tiff')) {
             dispatch('image/addOSDImage', {
@@ -60,7 +60,7 @@ export default {
       }
 
       // Load project editor configuration
-      if (project.hasOwnProperty('editor')) {
+      if (Object.prototype.hasOwnProperty.call(project, 'editor')) {
         dispatch('app/loadEditorConfig', project.editor, { root: true })
       }
     } catch (err) {
@@ -263,7 +263,8 @@ export default {
     const propertiesFile = await fetch(propsLocation)
     const data = JSON.parse(convert.xml2json(
       await propertiesFile.text(),
-      { ignoreDeclaration: true,
+      {
+        ignoreDeclaration: true,
         compact: true,
         ignoreComment: true,
         alwaysChildren: true,

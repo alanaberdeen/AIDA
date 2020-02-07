@@ -180,7 +180,7 @@ export default {
         })
         this.drawItemColor(newPaperItem, item)
       } else if (item.type === 'raster') {
-        const itemPosition = item.hasOwnProperty('position') ? new paper.Point(item.position.x, item.position.y) : new paper.Point(0, 0)
+        const itemPosition = Object.prototype.hasOwnProperty.call(item, 'position') ? new paper.Point(item.position.x, item.position.y) : new paper.Point(0, 0)
         newPaperItem = new paper.Raster({
           crossOrigin: 'anonymous',
           source: item.source,
@@ -202,7 +202,7 @@ export default {
   // Input: paperJS item
   // Output: Segments in the format specified by the AIDA annotation schema
   getSegments (item) {
-    let segments = []
+    const segments = []
     for (let i = 0, len = item.segments.length; i < len; i++) {
       const segment = item.segments[i]
       if (segment.hasHandles()) {

@@ -109,7 +109,7 @@ export default {
     const toolDrag = event => {
       // Select mode: creates a draggable selection box.
       if (this.toolMode === 'select') {
-        let selectionRect = new paper.Shape.Rectangle(
+        const selectionRect = new paper.Shape.Rectangle(
           event.downPoint,
           event.point
         )
@@ -185,8 +185,8 @@ export default {
         }
 
         // Set scale factors.
-        let horizScaleFactor = Math.abs(newWidth / this.selectionGroup.bounds.width)
-        let vertScaleFactor = Math.abs(newHeight / this.selectionGroup.bounds.height)
+        const horizScaleFactor = Math.abs(newWidth / this.selectionGroup.bounds.width)
+        const vertScaleFactor = Math.abs(newHeight / this.selectionGroup.bounds.height)
 
         // Scale group
         this.selectionGroup.scale(horizScaleFactor, vertScaleFactor, transfromCenter)
@@ -240,7 +240,7 @@ export default {
         this.selectionGroup &&
         this.selectionGroup.hitTest(event.point, this.hitOptions)
       ) {
-        let hit = this.selectionGroup.hitTest(event.point, this.hitOptions)
+        const hit = this.selectionGroup.hitTest(event.point, this.hitOptions)
         if (hit.name === 'bottom-right' || hit.name === 'top-left') {
           paper.view.element.style.cursor = 'nwse-resize'
         } else if (hit.name === 'bottom-left' || hit.name === 'top-right') {
@@ -249,7 +249,7 @@ export default {
           paper.view.element.style.cursor = 'move'
         }
       } else {
-        let canvas = document.getElementById('annotation-canvas')
+        const canvas = document.getElementById('annotation-canvas')
         canvas.style.cursor = 'auto'
       }
     }
@@ -305,7 +305,7 @@ export default {
 
       // Set tool stroke width and hitTolerance settings.
       this.strokeWidth = Math.ceil((this.imageWidth * this.strokeScale) / (this.maxZoom * 1000))
-      let hitTolerance = Math.ceil((this.imageWidth * this.strokeScale) / (this.currentZoom * 1000)) * 3
+      const hitTolerance = Math.ceil((this.imageWidth * this.strokeScale) / (this.currentZoom * 1000)) * 3
 
       // Selection options
       this.hitOptions = {

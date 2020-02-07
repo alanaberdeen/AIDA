@@ -2,19 +2,19 @@ export default {
   loadEditorConfig: ({
     dispatch
   }, config) => {
-    if (config.hasOwnProperty('activeLayer')) {
+    if (Object.prototype.hasOwnProperty.call(config, 'activeLayer')) {
       dispatch('setActiveLayer', config.activeLayer)
     }
 
-    if (config.hasOwnProperty('activeChannel')) {
+    if (Object.prototype.hasOwnProperty.call(config, 'activeChannel')) {
       dispatch('image/setActiveChannel', config.activeChannel, { root: true })
     }
 
-    if (config.hasOwnProperty('steps')) {
+    if (Object.prototype.hasOwnProperty.call(config, 'steps')) {
       dispatch('setSteps', config.steps)
     }
 
-    if (config.hasOwnProperty('activeStep')) {
+    if (Object.prototype.hasOwnProperty.call(config, 'activeStep')) {
       dispatch('setActiveStep', config.steps[config.activeStep])
     }
   },
@@ -149,8 +149,8 @@ export default {
     rootState,
     commit
   }, payload) => {
-    payload['studyName'] = state.studyName
-    payload['imageName'] = rootState.image.projectImageName
+    payload.studyName = state.studyName
+    payload.imageName = rootState.image.projectImageName
     commit('createNewItem', payload)
   }
 }

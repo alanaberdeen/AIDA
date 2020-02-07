@@ -57,7 +57,7 @@ export default {
       // If the user if sufficiently clost to the intial point that the
       // draw area will be closed upon releasing the mouse then indicate
       // this by drawing the filled colour.
-      let hitResult = this.path.hitTest(event.point, this.hitOptions)
+      const hitResult = this.path.hitTest(event.point, this.hitOptions)
       if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
         this.path.fillColor = new paper.Color(this.getColor().fill)
@@ -72,7 +72,7 @@ export default {
     const toolUp = event => {
       // If user releases mouse near the first segment then close path
       // and set fill.
-      let hitResult = this.path.hitTest(event.point, this.hitOptions)
+      const hitResult = this.path.hitTest(event.point, this.hitOptions)
       if (hitResult && hitResult.segment === this.path.firstSegment) {
         this.path.closed = true
         this.path.fillColor = new paper.Color(this.getColor().fill)
@@ -134,7 +134,7 @@ export default {
     },
 
     newPath () {
-      let newPath = new paper.Path()
+      const newPath = new paper.Path()
       newPath.strokeColor = new paper.Color(this.getColor().stroke)
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true

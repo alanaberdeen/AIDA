@@ -60,7 +60,7 @@ export default {
       paper.project.getItems().forEach(item => {
         item.strokeWidth = strokeWidth
         // Ruler items need special treatment to re-draw the labels
-        if (item.hasOwnProperty('drawLabel')) item.drawLabel()
+        if (Object.prototype.hasOwnProperty.call(item, 'drawLabel')) item.drawLabel()
       })
 
       paper.view.autoUpdate = true
@@ -89,7 +89,7 @@ export default {
       paper.project.getItems().forEach(item => {
         item.strokeWidth = strokeWidth
         // Ruler items need special treatment to re-draw the labels
-        if (item.hasOwnProperty('drawLabel')) item.drawLabel()
+        if (Object.prototype.hasOwnProperty.call(item, 'drawLabel')) item.drawLabel()
       })
 
       paper.view.autoUpdate = true

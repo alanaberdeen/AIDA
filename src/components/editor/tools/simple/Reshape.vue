@@ -354,7 +354,7 @@ export default {
       this.toolReshape.activate()
 
       // Selection options
-      let hitTolerance = this.imageWidth / (this.viewportZoom * 300)
+      const hitTolerance = this.imageWidth / (this.viewportZoom * 300)
       this.hitOptions = {
         segments: true,
         stroke: true,

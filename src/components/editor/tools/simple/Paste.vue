@@ -81,7 +81,7 @@ export default {
 
     const toolDrag = event => {
       if (!event.modifiers.alt) {
-        let newPath = new paper.Path.Circle({
+        const newPath = new paper.Path.Circle({
           radius: this.radius,
           position: event.point,
           fillColor: this.currentColor,
@@ -92,7 +92,7 @@ export default {
           move: true
         })
 
-        let overlap = paper.project.getItem({
+        const overlap = paper.project.getItem({
           fillColor: this.currentColor,
           match: item => { return item.locked },
           overlapping: newPath.bounds

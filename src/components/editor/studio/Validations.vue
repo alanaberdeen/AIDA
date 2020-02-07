@@ -146,7 +146,7 @@ export default {
 
     users: function () {
       if (this.selected) {
-        let users = []
+        const users = []
         this.selected.data.data.validations.map(validation => {
           if (!(users.indexOf(validation.user) > -1)) {
             users.push(validation.user)
@@ -161,7 +161,7 @@ export default {
 
     userValidations: function () {
       if (this.selected) {
-        let userValidations = {}
+        const userValidations = {}
         this.selected.data.data.validations.map(validation => {
           userValidations[validation.user] = validation
         })

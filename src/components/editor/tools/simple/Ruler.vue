@@ -45,7 +45,7 @@ export default {
   created () {
     const toolDrag = event => {
       // Draw line
-      let trackingLine = new paper.Path.Line({
+      const trackingLine = new paper.Path.Line({
         from: event.downPoint,
         to: event.point,
         strokeColor: '#2661D8',
@@ -53,12 +53,12 @@ export default {
       })
 
       // Draw length label
-      let vector = event.point.subtract(event.downPoint)
-      let sign = Math.abs(vector.angle) > 90 ? 1 : -1
-      let orthVector = vector.rotate(90 * sign).normalize()
-      let textPoint = event.downPoint.add(vector.divide(2)).add(orthVector.multiply(this.strokeWidth))
-      let textAngle = Math.abs(vector.angle) > 90 ? 180 + vector.angle : vector.angle
-      let text = new paper.PointText({
+      const vector = event.point.subtract(event.downPoint)
+      const sign = Math.abs(vector.angle) > 90 ? 1 : -1
+      const orthVector = vector.rotate(90 * sign).normalize()
+      const textPoint = event.downPoint.add(vector.divide(2)).add(orthVector.multiply(this.strokeWidth))
+      const textAngle = Math.abs(vector.angle) > 90 ? 180 + vector.angle : vector.angle
+      const text = new paper.PointText({
         point: textPoint,
         content: Math.round(vector.length * this.pixelScaleFactor) + '\u03bcm',
         fillColor: 'white',
@@ -66,7 +66,7 @@ export default {
         fontSize: this.strokeWidth * 3
       })
 
-      let textBackground = new paper.Path.Rectangle({
+      const textBackground = new paper.Path.Rectangle({
         from: text.bounds.topLeft,
         to: text.bounds.bottomRight,
         fillColor: '#2661D8',
@@ -86,7 +86,7 @@ export default {
 
     const toolUp = event => {
       // Draw line
-      let line = new paper.Path.Line({
+      const line = new paper.Path.Line({
         from: event.downPoint,
         to: event.point,
         strokeColor: '#2661D8',
@@ -109,14 +109,14 @@ export default {
           }
 
           // Draw length label
-          let vector = this.lastSegment.point.subtract(this.firstSegment.point)
-          let sign = Math.abs(vector.angle) > 90 ? 1 : -1
-          let orthVector = vector.rotate(90 * sign).normalize()
-          let textPoint = this.firstSegment.point
+          const vector = this.lastSegment.point.subtract(this.firstSegment.point)
+          const sign = Math.abs(vector.angle) > 90 ? 1 : -1
+          const orthVector = vector.rotate(90 * sign).normalize()
+          const textPoint = this.firstSegment.point
             .add(vector.divide(2))
             .add(orthVector.multiply(this.strokeWidth))
-          let textAngle = Math.abs(vector.angle) > 90 ? 180 + vector.angle : vector.angle
-          let text = new paper.PointText({
+          const textAngle = Math.abs(vector.angle) > 90 ? 180 + vector.angle : vector.angle
+          const text = new paper.PointText({
             point: textPoint,
             content: Math.round(vector.length * this.data.pixelScaleFactor) + '\u03bcm',
             fillColor: 'white',
@@ -126,7 +126,7 @@ export default {
           })
 
           // Fill the background behind the text to make it more clear.
-          let textBackground = new paper.Path.Rectangle({
+          const textBackground = new paper.Path.Rectangle({
             from: text.bounds.topLeft,
             to: text.bounds.bottomRight,
             fillColor: '#2661D8',
@@ -183,7 +183,7 @@ export default {
     },
 
     newPath () {
-      let newPath = new paper.Path()
+      const newPath = new paper.Path()
       newPath.strokeColor = new paper.Color(this.getColor().stroke)
       newPath.strokeWidth = this.strokeWidth
       newPath.selected = true

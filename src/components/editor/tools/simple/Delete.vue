@@ -87,9 +87,9 @@ export default {
         // items. For example in the case of the
         // counting rectanlge tool need to select the number, tag
         // and rectangle path.
-        for (let item in toBeDeleted) {
+        for (const item in toBeDeleted) {
           if (toBeDeleted[item].data.selectWith) {
-            for (let extraItem in toBeDeleted[item].data.selectWith) {
+            for (const extraItem in toBeDeleted[item].data.selectWith) {
               toBeDeleted.push(toBeDeleted[item].data.selectWith[extraItem])
             }
           }
@@ -103,7 +103,7 @@ export default {
     // Functionality for user dragging select/move tool.
     // Specified action should have been set on the mouseDown event.
     const toolDrag = event => {
-      let selectionRect = new paper.Shape.Rectangle(
+      const selectionRect = new paper.Shape.Rectangle(
         event.downPoint,
         event.point
       )
@@ -139,9 +139,9 @@ export default {
         // items. For example in the case of the
         // counting rectanlge tool need to select the number, tag
         // and rectangle path.
-        for (let item in toBeDeleted) {
+        for (const item in toBeDeleted) {
           if (toBeDeleted[item].data.selectWith) {
-            for (let extraItem in toBeDeleted[item].data.selectWith) {
+            for (const extraItem in toBeDeleted[item].data.selectWith) {
               toBeDeleted.push(toBeDeleted[item].data.selectWith[extraItem])
             }
           }
@@ -185,7 +185,7 @@ export default {
 
       // Set tool stroke width and hitTolerance settings.
       this.strokeWidth = Math.ceil((this.imageWidth * this.strokeScale) / (this.maxZoom * 1000))
-      let hitTolerance = Math.ceil((this.imageWidth * this.strokeScale) / (this.currentZoom * 1000)) * 3
+      const hitTolerance = Math.ceil((this.imageWidth * this.strokeScale) / (this.currentZoom * 1000)) * 3
 
       // Selection options
       this.selectOptions = {

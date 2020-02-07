@@ -30,13 +30,13 @@ export default {
       this.refreshAnnotationState()
 
       // Build the data into a properly encoded string
-      let dataStr = 'data:text/json;charset=utf-8,' +
+      const dataStr = 'data:text/json;charset=utf-8,' +
       encodeURIComponent(JSON.stringify(this.dataToExport, null, 2))
 
       // Create an anchor node that triggers a download of the annotation.json
       // briefly attach it to the window, trigger it being clicked and then
       // remove it from the window once done.
-      let downloadAnchorNode = document.createElement('a')
+      const downloadAnchorNode = document.createElement('a')
       downloadAnchorNode.setAttribute('href', dataStr)
       downloadAnchorNode.setAttribute('download', 'AIDA_annotation.json')
       document.body.appendChild(downloadAnchorNode) // required for firefox

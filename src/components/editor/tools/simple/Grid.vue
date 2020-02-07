@@ -144,13 +144,13 @@ export default {
       this.gridLayer.removeChildren()
 
       // Calculate the required rows and cols
-      let rows = Math.ceil(this.imageHeight / this.gridHeight)
-      let cols = Math.ceil(this.imageWidth / this.gridWidth)
+      const rows = Math.ceil(this.imageHeight / this.gridHeight)
+      const cols = Math.ceil(this.imageWidth / this.gridWidth)
 
       // Draw a rectangle for each part
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-          let gridRect = new paper.Path.Rectangle({
+          const gridRect = new paper.Path.Rectangle({
             from: [this.gridWidth * j, this.gridHeight * i],
             to: [(this.gridWidth * j) + this.gridWidth, (this.gridHeight * i) + this.gridHeight],
             strokeColor: 'grey',

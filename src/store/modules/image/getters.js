@@ -9,7 +9,7 @@ export default {
 
   getZoom: state => {
     if (state.OSDviewer) {
-      let zoom = state.OSDviewer.viewport.getZoom()
+      const zoom = state.OSDviewer.viewport.getZoom()
 
       if (zoom < 100) {
         return Math.round(zoom * 10) / 10

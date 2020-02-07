@@ -133,7 +133,7 @@ export default {
     },
 
     newPath () {
-      let newPath = new paper.Path()
+      const newPath = new paper.Path()
       newPath.strokeColor = new paper.Color(this.getColor().stroke)
       newPath.strokeScaling = false
       newPath.strokeWidth = this.strokeWidth

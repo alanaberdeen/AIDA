@@ -196,7 +196,7 @@ export default {
 
     listOfFilters: function (filters) {
       filters.map(filter => {
-        let filterGroup = paper.project.getItems({
+        const filterGroup = paper.project.getItems({
           data: {
             class: filter.class
           }
@@ -253,7 +253,7 @@ export default {
 
   methods: {
     initialiseTool () {
-      let allPredictions = paper.project.getItems({
+      const allPredictions = paper.project.getItems({
         data: {
           class: 'megakaryocyte'
         }

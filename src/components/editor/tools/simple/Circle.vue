@@ -57,7 +57,7 @@ export default {
       this.radius = this.calculateDistance(event.downPoint, event.point)
 
       // Draw the tracking path
-      let trackingPath = new paper.Path.Line(event.downPoint, event.point)
+      const trackingPath = new paper.Path.Line(event.downPoint, event.point)
       trackingPath.strokeColor = new paper.Color('#2661D8')
       trackingPath.strokeColor.alpha = 0.7
       trackingPath.strokeScaling = false
@@ -71,7 +71,7 @@ export default {
 
       // Create a circle positioned at point where mousedown was, with radius
       // the distance between mousedown/mouseup
-      let trackingCircle = new paper.Shape.Circle(event.downPoint, this.radius)
+      const trackingCircle = new paper.Shape.Circle(event.downPoint, this.radius)
       trackingCircle.strokeColor = new paper.Color('#2661D8')
       trackingCircle.strokeColor.alpha = 0.7
       trackingCircle.strokeScaling = false
@@ -87,7 +87,7 @@ export default {
       // Create a circle marker positioned on the point where mousedown was,
       // with either the default radius or the new radius as set by the
       // distance between the point of mouseDown and mouseUp.
-      let newCircle = new paper.Shape.Circle(event.downPoint, this.radius)
+      const newCircle = new paper.Shape.Circle(event.downPoint, this.radius)
       newCircle.strokeColor = new paper.Color(this.getColor().stroke)
       newCircle.strokeScaling = false
       newCircle.strokeWidth = this.strokeWidth
@@ -139,12 +139,12 @@ export default {
 
     // Helper function - calculate distance between 2 points:
     calculateDistance (firstPoint, secondPoint) {
-      let x1 = firstPoint.x
-      let y1 = firstPoint.y
-      let x2 = secondPoint.x
-      let y2 = secondPoint.y
+      const x1 = firstPoint.x
+      const y1 = firstPoint.y
+      const x2 = secondPoint.x
+      const y2 = secondPoint.y
 
-      let distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+      const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
       return distance
     }
   }

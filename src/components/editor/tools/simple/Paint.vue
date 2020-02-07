@@ -76,7 +76,7 @@ export default {
         move: true
       })
 
-      let overlap = paper.project.getItem({
+      const overlap = paper.project.getItem({
         class: 'Path',
         match: function (item) {
           if (item.data.class !== 'megakaryocyte') { return true }
@@ -130,12 +130,12 @@ export default {
 
     // Helper function - calculate distance between 2 points:
     calculateDistance (firstPoint, secondPoint) {
-      let x1 = firstPoint.x
-      let y1 = firstPoint.y
-      let x2 = secondPoint.x
-      let y2 = secondPoint.y
+      const x1 = firstPoint.x
+      const y1 = firstPoint.y
+      const x2 = secondPoint.x
+      const y2 = secondPoint.y
 
-      let distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+      const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
       return distance
     }
   }
