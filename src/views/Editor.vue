@@ -5,10 +5,6 @@
     <app-tools />
     <app-studio />
 
-    <div id="stepper-item">
-      <app-stepper/>
-    </div>
-
     <div id="view-item">
       <app-view/>
     </div>
