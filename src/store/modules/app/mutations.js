@@ -43,7 +43,7 @@ export default {
       // Sync Size
       paper.view.viewSize.width = e.newContainerSize.x
       paper.view.viewSize.height = e.newContainerSize.y
-      
+
       // Sync Zoom
       const currentZoom = viewer.viewport.getZoom(true)
       paper.view.zoom = baseImage.viewportToImageZoom(currentZoom)

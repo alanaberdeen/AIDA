@@ -1,5 +1,5 @@
 <template lang="html">
-  <div tools-container">
+  <div id="tools-container">
     <v-card>
       <v-toolbar>
         <v-toolbar-title>Image</v-toolbar-title>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     chooseFile () {
-      this.$refs['uploadFile'].click()
+      this.$refs.uploadFile.click()
     },
 
     onFileChange (e) {
