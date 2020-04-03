@@ -5,23 +5,23 @@ const fsp = require('fs').promises
 const path = require('path')
 const chalk = require('chalk')
 const ip = require('ip')
-const fs = require('fs');
-const ini = require('ini');
+const fs = require('fs')
+const ini = require('ini')
 
 // Check for images in the data/images/
 // Write a file an array of the available images as reference.
 
-const config = ini.parse(fs.readFileSync(path.join(__dirname, 'config.ini'), 'utf-8'));
-const imagesDir = path.isAbsolute(config.images_dir) ? config.images_dir : path.join(__dirname, config.images_dir);
-const annotationsDir = path.isAbsolute(config.annotations_dir) ? config.annotations_dir : path.join(__dirname, config.annotations_dir);
-const iiifHostname = config['IIIF'].hostname.toString();
-const iiifPort = parseInt(config['IIIF'].port.toString(), 10);
-const iiifHttps = (config['IIIF'].https.toString().toLowerCase() == 'true');
+const config = ini.parse(fs.readFileSync(path.join(__dirname, 'config.ini'), 'utf-8'))
+const imagesDir = path.isAbsolute(config.images_dir) ? config.images_dir : path.join(__dirname, config.images_dir)
+const annotationsDir = path.isAbsolute(config.annotations_dir) ? config.annotations_dir : path.join(__dirname, config.annotations_dir)
+const iiifHostname = config.IIIF.hostname.toString()
+const iiifPort = parseInt(config.IIIF.port.toString(), 10)
+const iiifHttps = (config.IIIF.https.toString().toLowerCase() === 'true')
 
 async function checkForImages () {
   const images = await walk(imagesDir, imagesDir)
   const json = JSON.stringify(images)
-  await fsp.writeFile(path.join(__dirname,'data', 'images.json'), json, 'utf8')
+  await fsp.writeFile(path.join(__dirname, 'data', 'images.json'), json, 'utf8')
 }
 
 async function walk (dir, rootDir) {
@@ -29,15 +29,15 @@ async function walk (dir, rootDir) {
   const files = await fsp.readdir(dir)
   for (const fileName of files) {
     const filePath = path.join(dir, fileName)
-    const fileInfo =  {
+    const fileInfo = {
       name: fileName,
       path: path.relative(rootDir, filePath)
     }
     const fileStat = await fsp.stat(filePath)
     if (fileStat.isDirectory()) {
-      fileInfo['children'] = []
+      fileInfo.children = []
     } else if (fileStat.isFile()) {
-      fileInfo['ext'] = path.extname(fileName)
+      fileInfo.ext = path.extname(fileName)
     }
     fileList.push(fileInfo)
   }
@@ -147,7 +147,7 @@ async function startServer () {
       res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
     }
   }))
-  
+
   app.get('/iiif', function (req, res) {
     protocol = iiifHttps ? 'https' : 'http'
     res.send(new URL('/iiif/2/', protocol + '://' + iiifHostname + ':' + iiifPort).toString())
@@ -157,9 +157,9 @@ async function startServer () {
   app.use(express.static(__dirname))
 
   app.route('/*')
-    .get(function(req, res) {
-      res.sendFile(path.join(__dirname, 'index.html'));
-    });
+    .get(function (req, res) {
+      res.sendFile(path.join(__dirname, 'index.html'))
+    })
 
   // Get the IP address of the current machine. The application will also be
   // usable over the network from this address.
@@ -167,9 +167,9 @@ async function startServer () {
 
   // Listen to requests
   app.listen(port, () => {
-    console.log(`  AIDA running at:`)
+    console.log('  AIDA running at:')
     console.log('  - Local:   ' + chalk.cyan(`http://localhost:${port}/dashboard`))
-    console.log('  - Network: ' + chalk.cyan(`http://` + networkIPAddress + `:${port}/dashboard`))
+    console.log('  - Network: ' + chalk.cyan('http://' + networkIPAddress + `:${port}/dashboard`))
   })
 }
 
