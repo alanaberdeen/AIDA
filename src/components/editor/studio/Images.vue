@@ -17,7 +17,7 @@
         v-for="(image, index) in getImages"
         :key="index"
         no-action
-        @click.native="setActiveImage(index)"
+        @click.native="setActiveImageIndex(index)"
       >
         <template v-slot:activator>
           <v-list-item-content>
@@ -80,7 +80,7 @@
                       color="error"
                       dark
                       outlined
-                      @click="deleteImage().then(() => {setActiveImage(0)})">
+                      @click="deleteImage().then(() => {setActiveImageIndex(0)})">
                       Delete
                     </v-btn>
                   </div>
@@ -118,7 +118,7 @@ export default {
   methods: {
     ...mapActions({
       setActiveImageOpacity: 'image/setActiveImageOpacity',
-      setActiveImage: 'image/setActiveImage',
+      setActiveImageIndex: 'image/setActiveImageIndex',
       setActiveImageName: 'image/setActiveImageName',
       deleteImage: 'image/deleteImage'
     }),

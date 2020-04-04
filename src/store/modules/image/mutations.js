@@ -45,7 +45,7 @@ export default {
     })
   },
 
-  setActiveImage: (state, payload) => {
+  setActiveImageIndex: (state, payload) => {
     // Payload can be either the image index or the image name.
     if (typeof payload === 'number') {
       state.activeImageIndex = payload

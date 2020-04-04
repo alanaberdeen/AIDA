@@ -27,7 +27,7 @@ export default {
               name: layer.name,
               opacity: layer.opacity
             }, { root: true })
-            await dispatch('image/setActiveImage', layer.name, { root: true })
+            await dispatch('image/setActiveImageIndex', layer.name, { root: true })
 
             // The overlay isn't present in the paperJS project. Therefore, it
             // needs to be manually added to the state.
@@ -92,7 +92,7 @@ export default {
     // image where OSD renders the overlay.
     if (state.project.layers[layerIndex].type === 'overlay') {
       const activeLayerName = state.project.layers[layerIndex].name
-      dispatch('image/setActiveImage', activeLayerName, { root: true })
+      dispatch('image/setActiveImageIndex', activeLayerName, { root: true })
     }
   },
 

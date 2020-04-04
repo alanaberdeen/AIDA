@@ -7,7 +7,7 @@ export default {
     }
 
     if (Object.prototype.hasOwnProperty.call(config, 'activeImageIndex')) {
-      dispatch('image/setActiveImage', config.activeImageIndex, { root: true })
+      dispatch('image/setActiveImageIndex', config.activeImageIndex, { root: true })
     }
 
     if (Object.prototype.hasOwnProperty.call(config, 'steps')) {

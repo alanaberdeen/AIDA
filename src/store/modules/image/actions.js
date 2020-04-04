@@ -30,10 +30,10 @@ export default {
     commit('resetImageState', rootState)
   },
 
-  setActiveImage: ({
+  setActiveImageIndex: ({
     commit
   }, payload) => {
-    commit('setActiveImage', payload)
+    commit('setActiveImageIndex', payload)
   },
 
   setActiveImageOpacity: ({
