@@ -37,16 +37,9 @@ export default {
   },
 
   setActiveImageOpacity: ({
-    state
+    commit
   }, payload) => {
-    // The opacity can be set by the 'enter' key-event or mouse interaction with
-    // the UI slider. Where exactly the value is specified it dependent on how
-    // this action was triggered.
-    let newOpacity = payload instanceof KeyboardEvent ? payload.target.value / 100 : payload / 100
-    newOpacity = Math.min(Math.max(newOpacity, 0), 1)
-
-    const image = state.OSDviewer.world.getItemAt(state.activeImageIndex)
-    if (image) image.setOpacity(newOpacity)
+    commit('setActiveImageOpacity', payload)
   },
 
   setActiveImageName: ({

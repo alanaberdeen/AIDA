@@ -66,6 +66,26 @@ export default {
     }
   },
 
+  setActiveImageOpacity: (state, payload) => {
+    // The opacity can be set by the 'enter' key-event or mouse interaction with
+    // the UI slider. Where exactly the value is specified it dependent on how
+    // this action was triggered.
+    let newOpacity = payload instanceof KeyboardEvent ? payload.target.value / 100 : payload / 100
+    newOpacity = Math.min(Math.max(newOpacity, 0), 1)
+
+    const image = state.OSDviewer.world.getItemAt(state.activeImageIndex)
+    if (image) image.setOpacity(newOpacity)
+
+    // Save changed opacity to the Vuex state.
+    // Watch out for Vue Change Detection Caveats: isn't reactive to new
+    // attributes being added to an object. Use Vue.set to get around this.
+    Vue.set(
+      state.images[state.activeImageIndex],
+      'opacity',
+      newOpacity
+    )
+  },
+
   addOSDImage: (state, payload) => {
     // Add the image to the OSD viewer.
     // Require different API method calls for tiled/simple images.

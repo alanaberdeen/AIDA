@@ -14,7 +14,7 @@
 
     <v-list>
       <v-list-group
-        v-for="(image, index) in getImages"
+        v-for="(image, index) in images"
         :key="index"
         no-action
         @click.native="setActiveImageIndex(index)"
