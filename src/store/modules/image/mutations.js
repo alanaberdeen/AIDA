@@ -14,7 +14,7 @@ export default {
     state = {
       OSDviewer: null,
       OSDworld: null,
-      activeImage: 0,
+      activeImageIndex: 0,
       view: {
         viewSize: [null, null],
         imageSize: [null, null],

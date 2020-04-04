@@ -22,7 +22,7 @@
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title
-              :class="{'blue--text text--darken-1': (activeImage === index)}">
+              :class="{'blue--text text--darken-1': (activeImageIndex === index)}">
               {{ image.name ? image.name : ('Image ' + index) }}
             </v-list-item-title>
           </v-list-item-content>
@@ -107,7 +107,7 @@ export default {
   computed: {
     ...mapState({
       images: state => state.image.images,
-      activeImage: state => state.image.activeImage
+      activeImageIndex: state => state.image.activeImageIndex
     }),
 
     ...mapGetters({
