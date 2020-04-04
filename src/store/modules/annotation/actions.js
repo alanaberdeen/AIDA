@@ -105,7 +105,7 @@ export default {
 
     // For overlay layers it is necessary to also activate the associated
     // image where OSD renders the overlay.
-    const activeLayerIndex = paper.project.activeLayerIndex.index
+    const activeLayerIndex = paper.project.activeLayer.index
     if (state.project.layers[activeLayerIndex].type === 'overlay') {
       dispatch('image/setActiveImageOpacity', payload, { root: true })
     }
