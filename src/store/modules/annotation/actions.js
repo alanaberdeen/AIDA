@@ -27,7 +27,7 @@ export default {
               name: layer.name,
               opacity: layer.opacity
             }, { root: true })
-            await dispatch('image/setActiveChannel', layer.name, { root: true })
+            await dispatch('image/setActiveImage', layer.name, { root: true })
 
             // The overlay isn't present in the paperJS project. Therefore, it
             // needs to be manually added to the state.
@@ -89,10 +89,10 @@ export default {
     dispatch('app/setActiveLayer', layerIndex, { root: true })
 
     // For overlay layers it is necessary to also activate the associated
-    // channel where OSD renders the overlay.
+    // image where OSD renders the overlay.
     if (state.project.layers[layerIndex].type === 'overlay') {
       const activeLayerName = state.project.layers[layerIndex].name
-      dispatch('image/setActiveChannel', activeLayerName, { root: true })
+      dispatch('image/setActiveImage', activeLayerName, { root: true })
     }
   },
 
@@ -104,10 +104,10 @@ export default {
     commit('setActiveLayerOpacity', payload)
 
     // For overlay layers it is necessary to also activate the associated
-    // channel where OSD renders the overlay.
+    // image where OSD renders the overlay.
     const activeLayerIndex = paper.project.activeLayer.index
     if (state.project.layers[activeLayerIndex].type === 'overlay') {
-      dispatch('image/setActiveChannelOpacity', payload, { root: true })
+      dispatch('image/setActiveImageOpacity', payload, { root: true })
     }
   },
 

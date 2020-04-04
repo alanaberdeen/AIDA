@@ -30,13 +30,13 @@ export default {
     commit('resetImageState', rootState)
   },
 
-  setActiveChannel: ({
+  setActiveImage: ({
     commit
   }, payload) => {
-    commit('setActiveChannel', payload)
+    commit('setActiveImage', payload)
   },
 
-  setActiveChannelOpacity: ({
+  setActiveImageOpacity: ({
     state
   }, payload) => {
     // The opacity can be set by the 'enter' key-event or mouse interaction with
@@ -45,14 +45,14 @@ export default {
     let newOpacity = payload instanceof KeyboardEvent ? payload.target.value / 100 : payload / 100
     newOpacity = Math.min(Math.max(newOpacity, 0), 1)
 
-    const channel = state.OSDviewer.world.getItemAt(state.activeChannelIndex)
-    if (channel) channel.setOpacity(newOpacity)
+    const image = state.OSDviewer.world.getItemAt(state.activeImageIndex)
+    if (image) image.setOpacity(newOpacity)
   },
 
-  setActiveChannelName: ({
+  setActiveImageName: ({
     commit
   }, payload) => {
-    commit('setActiveChannelName', payload)
+    commit('setActiveImageName', payload)
   },
 
   setZoom: ({

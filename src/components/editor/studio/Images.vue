@@ -8,22 +8,22 @@
       dense
     >
       <v-toolbar-title>
-        Channels
+        Images
       </v-toolbar-title>
     </v-toolbar>
 
     <v-list>
       <v-list-group
-        v-for="(channel, index) in getChannels"
+        v-for="(image, index) in getImages"
         :key="index"
         no-action
-        @click.native="setActiveChannel(index)"
+        @click.native="setActiveImage(index)"
       >
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title
-              :class="{'blue--text text--darken-1': (activeChannel === index)}">
-              {{ channel.name ? channel.name : ('Channel ' + index) }}
+              :class="{'blue--text text--darken-1': (activeImage === index)}">
+              {{ image.name ? image.name : ('Image ' + index) }}
             </v-list-item-title>
           </v-list-item-content>
         </template>
@@ -38,25 +38,25 @@
 
                 <v-tab-item>
                   <v-slider
-                    :value="channel.opacity * 100"
-                    @input="setActiveChannelOpacity"
+                    :value="image.opacity * 100"
+                    @input="setActiveImageOpacity"
                     class="align-center tab-item"
                     max=100
                     min=0
                     hide-details
-                    :prepend-icon="channel.opacity > 0 ? 'mdi-eye' : 'mdi-eye-off'"
-                    @click:prepend="toggleOpacity(channel.opacity)"
+                    :prepend-icon="image.opacity > 0 ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:prepend="toggleOpacity(image.opacity)"
                   >
                     <template v-slot:append>
                       <v-text-field
-                        :value="channel.opacity * 100"
+                        :value="image.opacity * 100"
                         class="mt-0 pt-0"
                         suffix="%"
                         hide-details
                         single-line
                         type="number"
                         style="width: 60px"
-                        @keyup.native.enter="setActiveChannelOpacity"
+                        @keyup.native.enter="setActiveImageOpacity"
                       ></v-text-field>
                     </template>
                   </v-slider>
@@ -64,11 +64,11 @@
 
                 <v-tab-item>
                   <v-text-field
-                    :value="channel.name ? channel.name : ('Channel ' + index)"
+                    :value="image.name ? image.name : ('Image ' + index)"
                     single-line
                     class="tab-item"
-                    @change="setActiveChannelName"
-                    @keyup.native.enter="setActiveChannelName"
+                    @change="setActiveImageName"
+                    @keyup.native.enter="setActiveImageName"
                   />
                 </v-tab-item>
 
@@ -80,7 +80,7 @@
                       color="error"
                       dark
                       outlined
-                      @click="deleteChannel().then(() => {setActiveChannel(0)})">
+                      @click="deleteImage().then(() => {setActiveImage(0)})">
                       Delete
                     </v-btn>
                   </div>
@@ -106,28 +106,29 @@ export default {
 
   computed: {
     ...mapState({
-      activeChannel: state => state.image.activeChannel
+      images: state => state.image.images,
+      activeImage: state => state.image.activeImage
     }),
 
     ...mapGetters({
-      getChannels: 'image/getChannels'
+      getImages: 'image/getImages'
     })
   },
 
   methods: {
     ...mapActions({
-      setActiveChannelOpacity: 'image/setActiveChannelOpacity',
-      setActiveChannel: 'image/setActiveChannel',
-      setActiveChannelName: 'image/setActiveChannelName',
-      deleteChannel: 'image/deleteChannel'
+      setActiveImageOpacity: 'image/setActiveImageOpacity',
+      setActiveImage: 'image/setActiveImage',
+      setActiveImageName: 'image/setActiveImageName',
+      deleteImage: 'image/deleteImage'
     }),
 
     toggleOpacity (currentOpacity) {
       if (currentOpacity > 0) {
         this.opacityCache = currentOpacity
-        this.setActiveChannelOpacity(0)
+        this.setActiveImageOpacity(0)
       } else {
-        this.setActiveChannelOpacity(this.opacityCache * 100)
+        this.setActiveImageOpacity(this.opacityCache * 100)
       }
     }
   }

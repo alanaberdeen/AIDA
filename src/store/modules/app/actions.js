@@ -6,8 +6,8 @@ export default {
       dispatch('setActiveLayer', config.activeLayer)
     }
 
-    if (Object.prototype.hasOwnProperty.call(config, 'activeChannel')) {
-      dispatch('image/setActiveChannel', config.activeChannel, { root: true })
+    if (Object.prototype.hasOwnProperty.call(config, 'activeImage')) {
+      dispatch('image/setActiveImage', config.activeImage, { root: true })
     }
 
     if (Object.prototype.hasOwnProperty.call(config, 'steps')) {

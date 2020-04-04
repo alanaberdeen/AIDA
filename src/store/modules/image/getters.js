@@ -31,7 +31,7 @@ export default {
     }
   },
 
-  getChannels: state => {
+  getImages: state => {
     // Filter out the overlay images as not interested in returning these.
     const projectImages = state.images.filter(image => image.function !== 'overlay')
 
@@ -45,7 +45,7 @@ export default {
         const image = state.OSDviewer.world.getItemAt(imageDetails.index)
         if (image) {
           return {
-            channel: image,
+            image: image,
             id: imageDetails.index,
             opacity: image.getOpacity(),
             name: imageDetails.name,

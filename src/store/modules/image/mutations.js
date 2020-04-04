@@ -14,7 +14,7 @@ export default {
     state = {
       OSDviewer: null,
       OSDworld: null,
-      activeChannel: 0,
+      activeImage: 0,
       view: {
         viewSize: [null, null],
         imageSize: [null, null],
@@ -45,24 +45,24 @@ export default {
     })
   },
 
-  setActiveChannel: (state, payload) => {
-    // Payload can be either the channel index or the channel name.
+  setActiveImage: (state, payload) => {
+    // Payload can be either the image index or the image name.
     if (typeof payload === 'number') {
-      state.activeChannelIndex = payload
+      state.activeImageIndex = payload
     } else if (typeof payload === 'string') {
-      state.activeChannelIndex = state.images.findIndex(image => {
+      state.activeImageIndex = state.images.findIndex(image => {
         return image.name === payload
       })
     }
   },
 
-  setActiveChannelName: (state, payload) => {
+  setActiveImageName: (state, payload) => {
     // Save changes to Vuex state, have to use Vue.set to get around the fact that vueJs
     // is not reactive to mutations of arrays.
     if (payload instanceof KeyboardEvent) {
-      Vue.set(state.images[state.activeChannelIndex], 'name', payload.target.value)
+      Vue.set(state.images[state.activeImageIndex], 'name', payload.target.value)
     } else {
-      Vue.set(state.images[state.activeChannelIndex], 'name', payload)
+      Vue.set(state.images[state.activeImageIndex], 'name', payload)
     }
   },
 
