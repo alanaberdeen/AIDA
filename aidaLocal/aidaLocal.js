@@ -1,6 +1,5 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const history = require('connect-history-api-fallback')
 const fsp = require('fs').promises
 const path = require('path')
 const chalk = require('chalk')
@@ -13,16 +12,11 @@ const ini = require('ini')
 
 const config = ini.parse(fs.readFileSync(path.join(__dirname, 'config.ini'), 'utf-8'))
 const imagesDir = path.isAbsolute(config.images_dir) ? config.images_dir : path.join(__dirname, config.images_dir)
+const dataDir = path.isAbsolute(config.data_dir) ? config.data_dir : path.join(__dirname, config.data_dir)
 const annotationsDir = path.isAbsolute(config.annotations_dir) ? config.annotations_dir : path.join(__dirname, config.annotations_dir)
 const iiifHostname = config.IIIF.hostname.toString()
 const iiifPort = parseInt(config.IIIF.port.toString(), 10)
 const iiifHttps = (config.IIIF.https.toString().toLowerCase() === 'true')
-
-async function checkForImages () {
-  const images = await walk(imagesDir, imagesDir)
-  const json = JSON.stringify(images)
-  await fsp.writeFile(path.join(__dirname, 'data', 'images.json'), json, 'utf8')
-}
 
 async function walk (dir, rootDir) {
   const fileList = []
@@ -123,11 +117,11 @@ async function startServer () {
   })
 
   // Check for images that may have been added to the directory
-  app.post('/checkForImages', async function (req, res) {
+  app.post('/checkForImagesAndProjects', async function (req, res) {
     try {
-      const dirPath = req.body
-      const images = await walk(path.join(imagesDir, dirPath), imagesDir)
-      res.send(images)
+      const childDir = req.body
+      const items = await walk(path.join(dataDir, childDir), dataDir)
+      res.send(items)
     } catch (err) {
       console.log('Could not check for images')
       console.log(err)
@@ -135,8 +129,8 @@ async function startServer () {
     }
   })
 
-  // Serve image files
-  app.use('/images', express.static(imagesDir, {}))
+  // Serve data files
+  app.use('/data', express.static(dataDir, {}))
 
   // Serve static annotation data
   // Always respond with headers that disable the cache. Specifically this is
