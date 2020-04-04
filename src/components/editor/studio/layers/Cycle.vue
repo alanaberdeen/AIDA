@@ -56,7 +56,7 @@ export default {
 
   computed: {
     ...mapState({
-      activeLayer: state => state.app.activeLayer,
+      activeLayerIndex: state => state.app.activeLayerIndex,
       viewport: state => state.image.OSDviewer.viewport
     })
   },

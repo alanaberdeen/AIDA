@@ -34,7 +34,7 @@
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title
-              :class="{'blue--text text--darken-1': (activeLayer === index)}">
+              :class="{'blue--text text--darken-1': (activeLayerIndex === index)}">
               {{ layer.name ? layer.name : ('Layer ' + index) }}
             </v-list-item-title>
           </v-list-item-content>
@@ -96,7 +96,7 @@
                       color="error"
                       dark
                       outlined
-                      @click="deleteActiveLayer().then(() => {setActiveLayer(0)})">
+                      @click="deleteActiveLayer().then(() => {setActiveLayerIndex(0)})">
                       Delete
                     </v-btn>
                   </div>
@@ -131,33 +131,29 @@ export default {
   computed: {
     ...mapState({
       layers: state => state.annotation.project.layers,
-      activeLayer: state => state.app.activeLayer,
-      steps: state => state.app.steps,
-      activeStep: state => state.app.activeStep
+      activeLayerIndex: state => state.app.activeLayerIndex
     })
   },
 
   methods: {
-    ...mapActions('annotation', [
-      'setActiveLayerOpacity',
-      'createLayer',
-      'exportLayerJSON',
-      'setActiveLayer',
-      'setActiveLayerName',
-      'deleteActiveLayer'
-    ]),
-
-    ...mapActions('editor', [
-      'setActiveStep'
-    ]),
+    ...mapActions(
+      'annotation', [
+        'setActiveLayerOpacity',
+        'createLayer',
+        'exportLayerJSON',
+        'setActiveLayerIndex',
+        'setActiveLayerName',
+        'deleteActiveLayer'
+      ]
+    ),
 
     async newLayer (index) {
       await this.createLayer()
-      this.setActiveLayer(this.layers.length - 1)
+      this.setActiveLayerIndex(this.layers.length - 1)
     },
 
     selectLayer (index) {
-      this.setActiveLayer(index)
+      this.setActiveLayerIndex(index)
 
       // Also toggle the cycletab variable. This will trigger an update in the
       // tab component and is necessary when changing layers.

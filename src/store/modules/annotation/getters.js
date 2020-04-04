@@ -1,7 +1,7 @@
 export default {
 
   getColor: (state, getters, rootState) => {
-    const activeLayerIndex = rootState.app.activeLayer
+    const activeLayerIndex = rootState.app.activeLayerIndex
     return state.defaultColors[activeLayerIndex % state.defaultColors.length]
   },
 

@@ -13,8 +13,8 @@ const state = {
     timeout: 4000
   },
   type: 'dzi',
-  activeImage: 0,
-  activeLayer: 0,
+  activeImageIndex: 0,
+  activeLayerIndex: 0,
   activeStep: 0,
   steps: null,
   settingsFlag: false,

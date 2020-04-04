@@ -101,8 +101,8 @@ export default {
     state.activeStep = stepIndex
   },
 
-  setActiveLayer: (state, layerIndex) => {
-    state.activeLayer = layerIndex
+  setActiveLayerIndex: (state, layerIndex) => {
+    state.activeLayerIndex = layerIndex
   },
 
   toggleSettings: state => {

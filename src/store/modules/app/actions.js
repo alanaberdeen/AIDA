@@ -2,12 +2,12 @@ export default {
   loadEditorConfig: ({
     dispatch
   }, config) => {
-    if (Object.prototype.hasOwnProperty.call(config, 'activeLayer')) {
-      dispatch('setActiveLayer', config.activeLayer)
+    if (Object.prototype.hasOwnProperty.call(config, 'activeLayerIndex')) {
+      dispatch('setActiveLayerIndex', config.activeLayerIndex)
     }
 
-    if (Object.prototype.hasOwnProperty.call(config, 'activeImage')) {
-      dispatch('image/setActiveImage', config.activeImage, { root: true })
+    if (Object.prototype.hasOwnProperty.call(config, 'activeImageIndex')) {
+      dispatch('image/setActiveImage', config.activeImageIndex, { root: true })
     }
 
     if (Object.prototype.hasOwnProperty.call(config, 'steps')) {
@@ -53,7 +53,7 @@ export default {
   setActiveStepAndLayer: ({
     dispatch
   }, index) => {
-    dispatch('setActiveLayer', index)
+    dispatch('setActiveLayerIndex', index)
     dispatch('setActiveStep', index)
   },
 
@@ -62,17 +62,17 @@ export default {
     dispatch
   }, step) => {
     if (typeof step.specificLayer === 'number') {
-      dispatch('annotation/setActiveLayer', (step.specificLayer), {
+      dispatch('annotation/setActiveLayerIndex', (step.specificLayer), {
         root: true
       })
     }
     commit('setActiveStep', (step.id - 1))
   },
 
-  setActiveLayer: ({
+  setActiveLayerIndex: ({
     commit
   }, layerIndex) => {
-    commit('setActiveLayer', layerIndex)
+    commit('setActiveLayerIndex', layerIndex)
   },
 
   toggleSettings: ({

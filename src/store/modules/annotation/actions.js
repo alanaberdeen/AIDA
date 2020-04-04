@@ -44,7 +44,7 @@ export default {
       paper.view.itemsTree.load(treeNodes)
 
       // Active the correct layer as specified by editor state.
-      if (payload.activeLayer) dispatch('setActiveLayer', payload.activeLayer)
+      if (payload.activeLayerIndex) dispatch('setActiveLayerIndex', payload.activeLayerIndex)
     } else {
       await dispatch('createLayer')
       dispatch('setActiveLayerName', 'Layer 1')
@@ -70,8 +70,8 @@ export default {
     rootState
   }) => {
     paper.view.element.style.pointerEvents = 'auto'
-    if (rootState.app.activeLayer) {
-      paper.project.layers[rootState.app.activeLayer].activate()
+    if (rootState.app.activeLayerIndex) {
+      paper.project.layers[rootState.app.activeLayerIndex].activate()
     }
   },
 
@@ -81,12 +81,12 @@ export default {
     commit('createLayer')
   },
 
-  setActiveLayer: ({
+  setActiveLayerIndex: ({
     state,
     dispatch
   }, layerIndex) => {
     paper.project.layers[layerIndex].activate()
-    dispatch('app/setActiveLayer', layerIndex, { root: true })
+    dispatch('app/setActiveLayerIndex', layerIndex, { root: true })
 
     // For overlay layers it is necessary to also activate the associated
     // image where OSD renders the overlay.
@@ -105,7 +105,7 @@ export default {
 
     // For overlay layers it is necessary to also activate the associated
     // image where OSD renders the overlay.
-    const activeLayerIndex = paper.project.activeLayer.index
+    const activeLayerIndex = paper.project.activeLayerIndex.index
     if (state.project.layers[activeLayerIndex].type === 'overlay') {
       dispatch('image/setActiveImageOpacity', payload, { root: true })
     }
