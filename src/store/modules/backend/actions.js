@@ -15,15 +15,15 @@ export default {
 
     // Check for project file, if found then load that project
     try {
-      const ext = path.extname(state.projectFilePath)
-      const filePath = state.projectFilePath.split(ext)[0]
-      const dataLocation = location.origin + '/projects/' + filePath + '.json'
+      const dataLocation = location.origin + state.projectFilePath
       const response = await window.fetch(dataLocation)
       const project = await response.json()
 
       // Load project annotation
       if (Object.prototype.hasOwnProperty.call(project, 'annotation')) {
-        dispatch('annotation/loadAnnotation', project.annotation, { root: true })
+        const response = await window.fetch(project.annotation)
+        const annotation = await response.json()
+        dispatch('annotation/loadAnnotation', annotation, { root: true })
       }
 
       // Load project images
@@ -78,14 +78,14 @@ export default {
       await dispatch('annotation/refreshAnnotationState', null, { root: true })
 
       // Post API request.
-      const postUrl = location.origin + '/save'
+      const postUrl = `${location.origin}/save`
       await axios.post(
         postUrl,
         {
           editor: {
-            activeChannel: rootState.image.activeChannelIndex,
+            activeImageIndex: rootState.image.activeImageIndex,
             activeStep: rootState.app.activeStep,
-            activeLayer: rootState.app.activeLayer,
+            activeLayerIndex: rootState.app.activeLayerIndex,
             type: rootState.app.type,
             steps: rootState.app.setps
           },
@@ -194,10 +194,10 @@ export default {
     dispatch
   }) {
     const ext = path.extname(state.projectFilePath)
-    const filePath = state.projectFilePath.split(ext)[0]
-    const dataLocation = location.origin + '/annotations/' + filePath + '.json'
+    const filePath = state.projectFilePath.split(ext)[0].split('images/')[1]
+    const annotationLocation = `${location.origin}/annotations/${filePath}.json`
     try {
-      const response = await axios.get(dataLocation)
+      const response = await axios.get(annotationLocation)
       dispatch('annotation/loadAnnotation', response.data, { root: true })
     } catch (err) {
       console.log('Annotation data either could not be found or could not be loaded')
@@ -232,7 +232,7 @@ export default {
       dispatch('image/addOSDImage', {
         name: rootState.image.projectImageName,
         fileType: 'dzi',
-        source: location.origin + '/images/' + state.projectFilePath,
+        source: `${location.origin}/data/${state.projectFilePath}`,
         function: 'project',
         opacity: 1
       }, { root: true })
@@ -241,7 +241,7 @@ export default {
       dispatch('image/addOSDImage', {
         name: rootState.image.projectImageName,
         fileType: 'simple',
-        source: location.origin + '/images/' + state.projectFilePath,
+        source: `${location.origin}/data/${state.projectFilePath}`,
         function: 'project',
         opacity: 1
       }, { root: true })
@@ -255,9 +255,7 @@ export default {
     dispatch
   }) {
     // Construct path to file
-    const propsLocation = location.origin + '/images/' +
-                      state.projectFilePath.slice(0, -4) +
-                      '_files/vips-properties.xml'
+    const propsLocation = `${location.origin}/data/${state.projectFilePath.slice(0, -4)}_files/vips-properties.xml`
 
     // Fetch data and convert to jsObject
     const propertiesFile = await fetch(propsLocation)

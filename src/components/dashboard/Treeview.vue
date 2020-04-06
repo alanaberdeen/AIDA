@@ -66,7 +66,7 @@ export default {
     files: {
       '.html': 'mdi-language-html5',
       '.js': 'mdi-nodejs',
-      '.json': 'mdi-json',
+      '.json': 'mdi-code-json',
       '.md': 'mdi-markdown',
       '.pdf': 'mdi-file-pdf',
       '.png': 'mdi-file-image',
@@ -80,7 +80,7 @@ export default {
       '.ndpi': 'mdi-image-off'
     },
     filesDefault: 'mdi-file-document-outline',
-    loadableImageTypes: ['.tif', '.tiff', '.dzi', '.png', '.jpg', '.jpeg'],
+    loadableImageTypes: ['.tif', '.tiff', '.dzi', '.png', '.jpg', '.jpeg', '.json'],
     tree: [],
     open: ['public'],
     search: null,
@@ -89,7 +89,7 @@ export default {
   }),
 
   created () {
-    fetch(location.origin + '/checkForImages', {
+    fetch(location.origin + '/checkForImagesAndProjects', {
       method: 'post',
       headers: {
         Accept: 'application/json',
@@ -115,7 +115,7 @@ export default {
 
   methods: {
     async readDir (item) {
-      return fetch(location.origin + '/checkForImages', {
+      return fetch(location.origin + '/checkForImagesAndProjects', {
         method: 'post',
         headers: {
           Accept: 'application/json',
