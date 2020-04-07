@@ -46,8 +46,7 @@ export default {
       await this.setProjectFilePath(this.$route.params.filePath)
       this.$router.replace('/edit?q=' + this.$route.params.filePath)
     } catch (error) {
-      console.log('could not load the data into AIDA')
-      console.log(error)
+      // console.error(error)
     }
   }
 }

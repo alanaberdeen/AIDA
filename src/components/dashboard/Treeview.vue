@@ -89,7 +89,7 @@ export default {
   }),
 
   created () {
-    fetch(location.origin + '/checkForImagesAndProjects', {
+    fetch(`${location.origin}/checkForImagesAndProjects`, {
       method: 'post',
       headers: {
         Accept: 'application/json',
@@ -115,7 +115,7 @@ export default {
 
   methods: {
     async readDir (item) {
-      return fetch(location.origin + '/checkForImagesAndProjects', {
+      return fetch(`${location.origin}/checkForImagesAndProjects`, {
         method: 'post',
         headers: {
           Accept: 'application/json',
