@@ -38,19 +38,19 @@ export default {
         // Load project images
         if (Object.prototype.hasOwnProperty.call(project, 'images')) {
           project.images.forEach(image => {
-            if (image.source.endsWith('.tif') || image.source.endsWith('.tiff')) {
+            if (image.path.endsWith('.tif') || image.path.endsWith('.tiff')) {
               dispatch('image/addOSDImage', {
                 name: image.name,
                 fileType: 'tiled',
-                source: `${location.origin}/data/images/${image.source}`,
+                source: `${location.origin}/data/images/${image.path}`,
                 function: 'project',
                 opacity: 1
               }, { root: true })
-            } else if (image.source.endsWith('.dzi')) {
+            } else if (image.path.endsWith('.dzi')) {
               dispatch('image/addOSDImage', {
                 name: image.name,
                 fileType: 'dzi',
-                source: `${location.origin}/data/images/${image.source}`,
+                source: `${location.origin}/data/images/${image.path}`,
                 function: 'project',
                 opacity: 1
               }, { root: true })
@@ -60,7 +60,7 @@ export default {
               dispatch('image/addOSDImage', {
                 name: image.name,
                 fileType: 'simple',
-                source: `${location.origin}/data/images/${image.source}`,
+                source: `${location.origin}/data/images/${image.path}`,
                 function: 'project',
                 opacity: 1
               }, { root: true })
