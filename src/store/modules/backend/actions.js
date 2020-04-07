@@ -15,7 +15,7 @@ export default {
 
     // Load project data
     try {
-      const dataLocation = `${location.origin}/data/state.projectFilePath`
+      const dataLocation = `${location.origin}/data/${state.projectFilePath}`
       const response = await window.fetch(dataLocation)
       const project = await response.json()
 
@@ -42,7 +42,7 @@ export default {
               dispatch('image/addOSDImage', {
                 name: image.name,
                 fileType: 'tiled',
-                source: `${location.origin}data/images/${image.source}`,
+                source: `${location.origin}/data/images/${image.source}`,
                 function: 'project',
                 opacity: 1
               }, { root: true })
