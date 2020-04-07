@@ -13,64 +13,83 @@ export default {
     // Sync
     await dispatch('app/synchroniseAnnotationAndOSDCanvas', null, { root: true })
 
-    // Check for project file, if found then load that project
+    // Load project data
     try {
-      const dataLocation = location.origin + state.projectFilePath
+      const dataLocation = `${location.origin}/data/state.projectFilePath`
       const response = await window.fetch(dataLocation)
       const project = await response.json()
 
-      // Load project annotation
-      if (Object.prototype.hasOwnProperty.call(project, 'annotation')) {
-        const response = await window.fetch(project.annotation)
-        const annotation = await response.json()
-        dispatch('annotation/loadAnnotation', annotation, { root: true })
+      // Check for project file, if found then load that project
+      try {
+        // Load project annotation
+        if (Object.prototype.hasOwnProperty.call(project, 'annotation')) {
+          const annotationFilePath = project.annotation
+          dispatch('setAnnotationFilePath', annotationFilePath)
+
+          const response = await window.fetch(`${location.origin}/data/annotations/${annotationFilePath}`)
+          const annotation = await response.json()
+          dispatch('annotation/loadAnnotation', annotation, { root: true })
+        }
+      } catch (err) {
+        dispatch('getDefaultImageAnnotation')
       }
 
-      // Load project images
-      if (Object.prototype.hasOwnProperty.call(project, 'images')) {
-        project.images.forEach(image => {
-          if (image.source.endsWith('.tif') || image.source.endsWith('.tiff')) {
-            dispatch('image/addOSDImage', {
-              name: image.name,
-              fileType: 'tiled',
-              source: image.source,
-              function: 'project',
-              opacity: 1
-            }, { root: true })
-          } else if (image.source.endsWith('.dzi')) {
-            dispatch('image/addOSDImage', {
-              name: image.name,
-              fileType: 'dzi',
-              source: image.source,
-              function: 'project',
-              opacity: 1
-            }, { root: true })
+      try {
+        // Load project images
+        if (Object.prototype.hasOwnProperty.call(project, 'images')) {
+          project.images.forEach(image => {
+            if (image.source.endsWith('.tif') || image.source.endsWith('.tiff')) {
+              dispatch('image/addOSDImage', {
+                name: image.name,
+                fileType: 'tiled',
+                source: `${location.origin}data/images/${image.source}`,
+                function: 'project',
+                opacity: 1
+              }, { root: true })
+            } else if (image.source.endsWith('.dzi')) {
+              dispatch('image/addOSDImage', {
+                name: image.name,
+                fileType: 'dzi',
+                source: `${location.origin}/data/images/${image.source}`,
+                function: 'project',
+                opacity: 1
+              }, { root: true })
 
-            // dispatch('getProjectImageProperties')
-          } else {
-            dispatch('image/addOSDImage', {
-              name: image.name,
-              fileType: 'simple',
-              source: image.source,
-              function: 'project',
-              opacity: 1
-            }, { root: true })
-          }
-        })
-      }
+              // dispatch('getProjectImageProperties')
+            } else {
+              dispatch('image/addOSDImage', {
+                name: image.name,
+                fileType: 'simple',
+                source: `${location.origin}/data/images/${image.source}`,
+                function: 'project',
+                opacity: 1
+              }, { root: true })
+            }
+          })
+        }
 
-      // Load project editor configuration
-      if (Object.prototype.hasOwnProperty.call(project, 'editor')) {
-        dispatch('app/loadEditorConfig', project.editor, { root: true })
+        // Load project editor configuration
+        if (Object.prototype.hasOwnProperty.call(project, 'editor')) {
+          dispatch('app/loadEditorConfig', project.editor, { root: true })
+        }
+      } catch (err) {
+        dispatch('getProjectImage')
       }
     } catch (err) {
-      dispatch('getAnnotation')
+      dispatch('getDefaultImageAnnotation')
       dispatch('getProjectImage')
     }
   },
 
+  setAnnotationFilePath: ({
+    commit
+  }, payload) => {
+    commit('setAnnotationFilePath', payload)
+  },
+
   async saveProject ({
     dispatch,
+    state,
     rootState
   }) {
     try {
@@ -87,9 +106,12 @@ export default {
             activeStep: rootState.app.activeStep,
             activeLayerIndex: rootState.app.activeLayerIndex,
             type: rootState.app.type,
-            steps: rootState.app.setps
+            steps: rootState.app.steps
           },
-          annotation: rootState.annotation.project,
+          annotation: {
+            data: rootState.annotation.project,
+            filePath: state.annotationFilePath
+          },
           images: rootState.image.images
         }
       )
@@ -146,7 +168,7 @@ export default {
       await axios.post(
         postUrl,
         {
-          projectFilePath: state.projectFilePath,
+          filePath: state.annotationFilePath,
           annotationData: rootState.annotation.project
         }
       )
@@ -189,19 +211,20 @@ export default {
     }
   },
 
-  async getAnnotation ({
+  async getDefaultImageAnnotation ({
     state,
     dispatch
   }) {
     const ext = path.extname(state.projectFilePath)
     const filePath = state.projectFilePath.split(ext)[0].split('images/')[1]
-    const annotationLocation = `${location.origin}/annotations/${filePath}.json`
+    const annotationLocation = `${location.origin}/data/annotations/${filePath}.json`
     try {
-      const response = await axios.get(annotationLocation)
-      dispatch('annotation/loadAnnotation', response.data, { root: true })
+      const response = await window.fetch(annotationLocation)
+      const annotationData = await response.json()
+      dispatch('annotation/loadAnnotation', annotationData, { root: true })
     } catch (err) {
-      console.log('Annotation data either could not be found or could not be loaded')
-      console.log('Loading the default empty project')
+      // console.log('Annotation data either could not be found or could not be loaded')
+      // console.log('Loading the default empty project')
       dispatch('annotation/loadAnnotation', null, { root: true })
     }
   },

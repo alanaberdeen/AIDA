@@ -11,7 +11,6 @@ const ini = require('ini')
 // Write a file an array of the available images as reference.
 
 const config = ini.parse(fs.readFileSync(path.join(__dirname, 'config.ini'), 'utf-8'))
-const imagesDir = path.isAbsolute(config.images_dir) ? config.images_dir : path.join(__dirname, config.images_dir)
 const dataDir = path.isAbsolute(config.data_dir) ? config.data_dir : path.join(__dirname, config.data_dir)
 const annotationsDir = path.isAbsolute(config.annotations_dir) ? config.annotations_dir : path.join(__dirname, config.annotations_dir)
 const iiifHostname = config.IIIF.hostname.toString()
@@ -38,7 +37,7 @@ async function walk (dir, rootDir) {
   return fileList
 }
 
-async function saveAnnotation (data) {
+async function saveAnnotation (payload) {
   // Get the IP address of the current machine. If we need to write a new raster
   // file we should save the link to it using the IP address. This ensures the
   // API endpoint where the image can be found is referenced correctly even
@@ -47,7 +46,7 @@ async function saveAnnotation (data) {
 
   // Check for raster image items and if found we need to save these as image
   // files and replace the item.source with link to that file.
-  data.annotation.layers.forEach(layer => {
+  payload.annotation.data.layers.forEach(layer => {
     layer.items.forEach((item, index) => {
       if (item.type === 'raster' && item.source.substring(0, 4) === 'data') {
         const imagePath = path.join(annotationsDir, 'raster', index + '_' + layer.name + '.png')
@@ -62,8 +61,9 @@ async function saveAnnotation (data) {
   })
 
   // Write annotation data as JSON file.
-  const annotationFilePath = path.join(annotationsDir, data.images[0].name + '.json')
-  const json = JSON.stringify(data.annotation)
+  let annotationFilePath = payload.annotation.filePath ? payload.annotation.filePath : path.join(annotationsDir, payload.images[0].name + '.json')
+  annotationFilePath = `${annotationsDir}/${annotationFilePath}`
+  const json = JSON.stringify(payload.annotation.data)
 
   try {
     await fsp.writeFile(annotationFilePath, json, 'utf8')
@@ -129,14 +129,11 @@ async function startServer () {
     }
   })
 
-  // Serve data files
-  app.use('/data', express.static(dataDir, {}))
-
-  // Serve static annotation data
+  // Serve static  data
   // Always respond with headers that disable the cache. Specifically this is
   // important when editing raster images. Without this, when the editor is
   // reloaded the browser will serve the original, pre-edit, from the cache.
-  app.use('/annotations', express.static(annotationsDir, {
+  app.use('/data', express.static(dataDir, {
     setHeaders: function (res, path) {
       res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
     }

@@ -3,7 +3,8 @@ import mutations from './mutations'
 
 const state = {
   availableImages: [],
-  projectFilePath: ''
+  projectFilePath: '',
+  annotationFilePath: ''
 }
 
 export default {

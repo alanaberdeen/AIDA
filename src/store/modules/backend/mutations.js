@@ -5,5 +5,9 @@ export default {
 
   setProjectFilePath (state, projectFilePath) {
     state.projectFilePath = projectFilePath
+  },
+
+  setAnnotationFilePath: (state, payload) => {
+    state.annotationFilePath = payload
   }
 }
