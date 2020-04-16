@@ -16,19 +16,21 @@ Play with a live example [here](https://alanaberdeen.github.io/AIDA/#/demo)
 
 The user interface is a [VueJS](https://vuejs.org/) Single Page Application, encapsulating and interacting with two other significant JavaScript libraries: [OpenSeaDragon](https://openseadragon.github.io/) to manipulate the high-res images and [PaperJS](http://paperjs.org/) to provide the drawing functionality. [VuetifyJS](http://vuetifyjs.com/) is used as a UI component library which implements the material design language.
 
-AIDA reads and writes data in a simple JSON structure over a web API. Login and user accounts can enable specific configuration of the tool for different trials and tasks.
+AIDA reads and writes data in a simple JSON structure over a web API.
 
 ## What's planned?
 
-The software is published as Open Source under the permissive [MIT license](https://github.com/alanaberdeen/AIDA/blob/master/LICENSE). The [API](https://aida.gitbook.io/docs/api-reference) will also be public.
+The next stage of development will be to integrate intelligent tools that leverage the power of machine learning techniques. We hope to enhance the ability of the user to quickly and accurately mark up images through predictive assistance.
 
-The next stage of development will be to integrate intelligent tools that leverage the power of machine learning techniques. We hope to enhance the ability of the user to quickly and accurately mark up images through predictive assistance
+## License
+
+The software is published as Open Source under the permissive [MIT license](https://github.com/alanaberdeen/AIDA/blob/master/LICENSE). The [API](https://aida.gitbook.io/docs/api-reference) is also be public.
 
 ## Run Locally
 
 You can use AIDA on your local machine. The only requirement [NodeJS >v11](https://nodejs.org/en/).
 
-A built and built version of the local application is included with the source code in the `/dist` directory. To begin using AIDA locally:
+A built version of the local application is included with the source code in the `/dist` directory. To begin using AIDA locally:
 
 1. Clone the repository
 2. `cd` to `/dist`
@@ -49,7 +51,8 @@ Example work-flow:
 4.  For deployment: bundle together with `npm run build`
 
 ## Support for tiled images, International Image Interoperability Framework (IIIF)
-This removes the requirement for DZI file formats and replaces it with a web-server. At this point it is still a bit experimental. 
+
+This removes the requirement for DZI file formats and replaces it with a web-server. At this point it is still a bit experimental.
 
 - Deploy Cantaloupe IIIF server as described [here](https://cantaloupe-project.github.io/).
 - Edit the Cantaloupe configuration file so that `FilesystemSource.BasicLookupStrategy.path_prefix` points to `/dist/data/images/`.
@@ -58,4 +61,4 @@ This removes the requirement for DZI file formats and replaces it with a web-ser
 
 ## About
 
-This interface was built by Alan Aberdeen. It is a project of Jens Rittscher, Nasullah Khalid Alham and Alan Aberdeen at the University of Oxford, specifically the [Quantitative Biological Imaging Group](http://www.ludwig.ox.ac.uk/jens-rittscher-group-page).
+This application was built by Alan Aberdeen and Stefano Malacrino. It originated at the [Quantitative Biological Imaging Group](http://www.ludwig.ox.ac.uk/jens-rittscher-group-page), The University of Oxford.
