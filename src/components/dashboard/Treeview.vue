@@ -80,7 +80,7 @@ export default {
       '.ndpi': 'mdi-image-off'
     },
     filesDefault: 'mdi-file-document-outline',
-    loadableImageTypes: ['.tif', '.tiff', '.dzi', '.png', '.jpg', '.jpeg', '.json'],
+    loadableImageTypes: ['.tif', '.tiff', '.dzi', '.png', '.jpg', '.jpeg', '.json', '.JPG'],
     tree: [],
     open: ['public'],
     search: null,
