@@ -61,7 +61,7 @@ async function saveAnnotation (payload) {
   })
 
   // Write annotation data as JSON file.
-  let annotationFilePath = payload.annotation.filePath ? payload.annotation.filePath : path.join(annotationsDir, payload.images[0].name + '.json')
+  let annotationFilePath = payload.annotation.filePath ? payload.annotation.filePath : `${payload.images[0].name}.json`
   annotationFilePath = `${annotationsDir}/${annotationFilePath}`
   const json = JSON.stringify(payload.annotation.data)
 
