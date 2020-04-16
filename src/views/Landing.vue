@@ -50,7 +50,7 @@
         </v-flex>
         <v-flex xs8 sm3 my-1 md2>
           <v-btn block href='https://github.com/alanaberdeen/AIDA'>
-            <v-icon left> mdi-github-circle </v-icon>
+            <v-icon left> mdi-github </v-icon>
             Github
           </v-btn>
         </v-flex>
