@@ -61,4 +61,4 @@ This removes the requirement for DZI file formats and replaces it with a web-ser
 
 ## About
 
-This application was built by Alan Aberdeen and Stefano Malacrino. It originated at the [Quantitative Biological Imaging Group](http://www.ludwig.ox.ac.uk/jens-rittscher-group-page), The University of Oxford.
+This application was built by Alan Aberdeen with contributions from Stefano Malacrino and Nasullah Khalid Alham. It originated at the [Quantitative Biological Imaging Group](http://www.ludwig.ox.ac.uk/jens-rittscher-group-page), The University of Oxford.
