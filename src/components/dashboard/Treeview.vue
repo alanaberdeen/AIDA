@@ -128,7 +128,6 @@ export default {
     },
 
     isLoadable (item) {
-      console.log(item.ext)
       return (
         this.loadableImageTypes.includes(item.ext) && // Is permiteed image type
         !item.path.startsWith('annotations') // Is not an annotation file
