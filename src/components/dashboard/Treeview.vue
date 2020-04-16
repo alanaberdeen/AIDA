@@ -39,13 +39,13 @@
 
         <template slot="label" slot-scope="{ item }">
           <router-link
-            v-if="!item.children && loadableImageTypes.includes(item.ext)"
+            v-if="isLoadable(item)"
             :to="{ name: 'loading', params: { filePath: item.path }}"
           >
             {{item.name}}
           </router-link>
           <span
-            v-else-if="!item.children && !loadableImageTypes.includes(item.ext)"
+            v-else-if="!isLoadable(item) && !item.children"
             class='grey--text'
           >
             {{ item.name }}
@@ -125,6 +125,14 @@ export default {
       })
         .then(res => res.json())
         .then(json => (item.children.push(...json)))
+    },
+
+    isLoadable (item) {
+      console.log(item.ext)
+      return (
+        this.loadableImageTypes.includes(item.ext) && // Is permiteed image type
+        !item.path.startsWith('annotations') // Is not an annotation file
+      )
     }
   }
 }
