@@ -1,7 +1,12 @@
 export default {
-  addOSDImage: ({
+  addOSDImage: async ({
     commit
   }, payload) => {
+    if (payload.fileType === 'iiif') {
+      const response = await fetch(`${location.origin}/iiif`)
+      const iiifURL = await response.text()
+      payload.source = new URL(`${encodeURIComponent(payload.source)}/info.json`, iiifURL).toString()
+    }
     commit('addOSDImage', payload)
   },
 
