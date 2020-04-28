@@ -89,6 +89,7 @@ export default {
             paper.project.activeLayer.addChildren(item.children)
             item = null
             mode = modes.SELECT
+            this.setSelectedItems(paper.project.selectedItems)
           }
           break
       }
@@ -233,6 +234,7 @@ export default {
             item.bounds.selected = true
             mode = modes.GROUPEDIT
           }
+          this.setSelectedItems(paper.project.selectedItems)
           break
         case modes.EDIT:
           if (hitResult) {
@@ -326,6 +328,7 @@ export default {
           paper.view.itemsTree.remove(item)
           item.remove()
           item = null
+          this.setSelectedItems(paper.project.selectedItems)
           paper.view.element.style.cursor = 'auto'
           mode = modes.SELECT
         }
@@ -343,6 +346,7 @@ export default {
   methods: {
     ...mapActions({
       prepareCanvas: 'annotation/prepareCanvas',
+      setSelectedItems: 'annotation/setSelectedItems',
       flagAnnotationEdits: 'annotation/flagAnnotationEdits'
     }),
 
