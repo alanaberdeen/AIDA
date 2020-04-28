@@ -34,9 +34,7 @@ export default {
 
     // Gather all the Path/Raster items in the paperJS environment
     const items = paper.project.getItems({
-      className: function (className) {
-        return (className === 'Path' || className === 'Raster' || className === 'Shape')
-      }
+      className: cn => (cn === 'Path' || cn === 'Shape' || cn === 'Raster')
     })
 
     // Store them in the state appropriately. Convention follows AIDA annotation
