@@ -77,7 +77,7 @@ export default {
       })
 
       const overlap = paper.project.getItem({
-        class: 'Path',
+        className: cn => (cn === 'Path' || cn === 'Shape'),
         match: function (item) {
           if (item.data.class !== 'megakaryocyte') { return true }
         },

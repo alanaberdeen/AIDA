@@ -239,7 +239,7 @@ export default {
 
   drawItemColor (paperItem, stateItem) {
     const defaultColors = this.defaultColors()
-    if (paperItem.closed) {
+    if (paperItem.closed || paperItem.className === 'Shape') {
       if (stateItem.color && stateItem.color.fill) {
         if (typeof stateItem.color.fill === 'string') {
           paperItem.fillColor = stateItem.color.fill
