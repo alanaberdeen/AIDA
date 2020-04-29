@@ -49,16 +49,21 @@ export default {
         this.path.data.active = true
         this.path.data.class = ''
         this.path.data.type = 'path'
-      }
-      // If option key is held down then close the path.
-      if (event.modifiers.option) {
+        this.path.add(event.point)
+
+      } else if (this.path.segments.length === 1) {
+        this.path.add(event.point)
+        this.path.smooth()
+
+        // If option key is held down then close the path.
+      } else if (event.modifiers.option) {
         this.path.closed = true
         this.path.smooth()
         this.path.selected = false
         this.path.data.active = false
 
-      // If first segment clicked, close path.
-      } else if (this.path.firstSegment && event.point.isClose(this.path.firstSegment.point, this.hitOptions.tolerance)) {
+        // If first segment clicked, close path.
+      } else if (event.point.isClose(this.path.firstSegment.point, this.hitOptions.tolerance)) {
         this.path.closed = true
         this.path.fillColor = new paper.Color(this.getColor().fill)
         this.path.smooth()
@@ -66,14 +71,26 @@ export default {
         this.path.data.active = false
 
       // If last segment clicked close path.
-      } else if (this.path.lastSegment && event.point.isClose(this.path.lastSegment.point, this.hitOptions.tolerance)) {
+      } else if (event.point.isClose(this.path.lastSegment.point, this.hitOptions.tolerance)) {
         this.path.selected = false
         this.path.data.active = false
 
       // Else add new point
       } else {
-        this.path.add(event.point)
-        this.path.smooth()
+        const newSegment = this.newPath()
+        newSegment.add(this.path.lastSegment.point, event.point)
+        if (this.path.getIntersections(newSegment).length === 1) {
+          this.path.join(newSegment)
+          this.path.smooth()
+        } else {
+          newSegment.remove()
+        }
+      }
+
+      if (this.path && !this.path.selected) {
+        const bounds = this.path.bounds
+        const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: this.path }
+        paper.view.itemsTree.insert(treeNode)
       }
     }
 
@@ -84,14 +101,15 @@ export default {
       if (this.path && this.path.firstSegment && event.point.isClose(this.path.firstSegment.point, this.hitOptions.tolerance)) {
         this.path.closed = true
         this.path.selected = false
-        const bounds = this.path.bounds
-        const treeNode = { minX: bounds.x, minY: bounds.y, maxX: bounds.x + bounds.width, maxY: bounds.y + bounds.height, item: this.path }
-        paper.view.itemsTree.insert(treeNode)
+        this.path.smooth()
       } else if (this.path && this.path.lastSegment && event.point.isClose(this.path.lastSegment.point, this.hitOptions.tolerance)) {
-        this.path.selected = false
-      } else if (this.path && this.path.data.active) {
-        this.path.selected = true
         this.path.closed = false
+        this.path.selected = false
+        this.path.smooth()
+      } else if (this.path && this.path.data.active) {
+        this.path.closed = false
+        this.path.selected = true
+        this.path.smooth()
       }
     }
 

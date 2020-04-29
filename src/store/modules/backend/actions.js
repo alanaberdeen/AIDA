@@ -14,6 +14,11 @@ export default {
     await dispatch('app/synchroniseAnnotationAndOSDCanvas', null, { root: true })
 
     // Load project data
+    if (!state.projectFilePath.endsWith('.json')) {
+      dispatch('getDefaultImageAnnotation')
+      dispatch('getProjectImage')
+      return
+    }
     try {
       const dataLocation = `${location.origin}/data/${state.projectFilePath}`
       const response = await window.fetch(dataLocation)

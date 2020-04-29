@@ -49,7 +49,7 @@ export default {
   watch: {
     cycleTabEvent: function () {
       this.totalItems = paper.project.layers[this.layerIndex].getItems({
-        class: 'Path'
+        className: cn => (cn === 'Path' || cn === 'Shape')
       }).length
     }
   },
@@ -74,7 +74,7 @@ export default {
       // On increment just do a check to make sure we have all the items as
       // some may have been added/removed between increments.
       const items = paper.project.layers[this.layerIndex].getItems({
-        class: 'Path'
+        className: cn => (cn === 'Path' || cn === 'Shape')
       })
       this.totalItems = items.length
 

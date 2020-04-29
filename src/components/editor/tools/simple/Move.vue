@@ -129,7 +129,7 @@ export default {
         // Select items inside the selection rectangle.
         paper.project.deselectAll()
         paper.project.getItems({
-          class: 'Path',
+          className: cn => (cn === 'Path' || cn === 'Shape'),
           inside: selectionRect.bounds,
           match: this.matchFilter
         }).forEach((item) => {
@@ -211,7 +211,7 @@ export default {
       // We will have to manually move them back. Bit unsatisfactory this!
       if (this.toolMode !== 'move' && this.toolMode !== 'transform') {
         paper.project.getItems({
-          class: 'Path',
+          className: cn => (cn === 'Path' || cn === 'Shape'),
           selected: true
         }).forEach(item => {
           if (!this.selectedItemsCache.some(e => e.id === item.id)) {
