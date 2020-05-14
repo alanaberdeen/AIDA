@@ -179,6 +179,25 @@ export default {
           locked: item.locked
         })
         this.drawItemColor(newPaperItem, item)
+      } else if (item.type === 'cpath') {
+        const childrenItems = []
+        item.children.forEach(child => {
+          const childItem = this.drawItem(child)
+          const childItemPath = childItem.toPath()
+          childItem.remove()
+          childrenItems.push(childItemPath)
+        })
+        newPaperItem = new paper.CompoundPath({
+          children: childrenItems,
+          fillRule: 'evenodd',
+          data: {
+            type: 'cpath',
+            class: item.class,
+            data: item.data
+          },
+          locked: item.locked
+        })
+        this.drawItemColor(newPaperItem, item)
       } else if (item.type === 'raster') {
         const itemPosition = Object.prototype.hasOwnProperty.call(item, 'position') ? new paper.Point(item.position.x, item.position.y) : new paper.Point(0, 0)
         newPaperItem = new paper.Raster({
@@ -196,6 +215,103 @@ export default {
       }
       newPaperItem.strokeScaling = false
       return newPaperItem
+    }
+  },
+
+  getItemState (item) {
+    if (item.data.type === 'circle') {
+      return {
+        class: item.data.class,
+        type: 'circle',
+        color: this.getColor(item),
+        center: {
+          x: item.position.x,
+          y: item.position.y
+        },
+        radius: item.bounds.width / 2,
+        locked: item.locked,
+        data: item.data.data
+      }
+    } else if (item.data.type === 'rectangle') {
+      return {
+        ...item.data,
+        color: this.getColor(item),
+        x: item.bounds.x,
+        y: item.bounds.y,
+        width: item.bounds.width,
+        height: item.bounds.height,
+        locked: item.locked
+      }
+    } else if (item.data.type === 'path') {
+      return {
+        class: item.data.class,
+        type: 'path',
+        color: this.getColor(item),
+        segments: this.getSegments(item),
+        closed: item.closed,
+        locked: item.locked,
+        data: item.data.data
+      }
+    } else if (item.data.type === 'cpath') {
+      const childrenItemsState = []
+      item.children.forEach(child => { childrenItemsState.push(this.getItemState(child)) })
+      return {
+        class: item.data.class,
+        type: 'cpath',
+        color: this.getColor(item),
+        children: childrenItemsState,
+        locked: item.locked,
+        data: item.data.data
+      }
+    // Check if the item is meant to represent an edit to an image. For
+    // example when editing a segmentation mask that is tiled and overlayed
+    // on the project image.
+    } else if (item.data.type === 'imageEdit') {
+      const rasterizedItem = item.rasterize()
+      const itemDataURL = rasterizedItem.toDataURL()
+      return {
+        class: item.data.class,
+        type: 'raster',
+        source: itemDataURL,
+        position: {
+          x: item.position.x,
+          y: item.position.y
+        },
+        data: item.data.data
+      }
+    // If the item is a raster, we need to incorporate edits to it.
+    // Therefore, necessary to 'rasterise' this image and it's combined edits.
+    } else if (item.data.type === 'raster') {
+      const editItems = item.layer.getItems({
+        match: item => { return item.locked },
+        overlapping: item.bounds
+      })
+
+      // Add the original raster item to the array. Make sure to include
+      // as the first child so that the edits are displayed above it in the
+      // project hierarchy
+      editItems.unshift(item)
+
+      // When a new group is created the default behaviour is to place is at
+      // the top of the active layer. Avoid this by explicitly sending it to
+      // the back of the project hierarchy.
+      const itemsToRaster = new paper.Group(editItems)
+      itemsToRaster.sendToBack()
+
+      // Rasterize the image and it's edits. Convert to a base64 encoded URL.
+      const rasterizedGroup = itemsToRaster.rasterize(item.resolution.height, false)
+      const rasterizedData = rasterizedGroup.toDataURL()
+
+      return {
+        class: item.data.class,
+        type: 'raster',
+        source: rasterizedData,
+        position: {
+          x: item.position.x,
+          y: item.position.y
+        },
+        data: item.data.data
+      }
     }
   },
 

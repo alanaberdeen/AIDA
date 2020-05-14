@@ -34,96 +34,14 @@ export default {
 
     // Gather all the Path/Raster items in the paperJS environment
     const items = paper.project.getItems({
-      className: cn => (cn === 'Path' || cn === 'Shape' || cn === 'Raster')
+      className: cn => (cn === 'Path' || cn === 'Shape' || cn === 'CompoundPath' || cn === 'Raster'),
+      match: item => item.parent.className !== 'CompoundPath'
     })
 
     // Store them in the state appropriately. Convention follows AIDA annotation
     // schema: https://github.com/alanaberdeen/AIDA/wiki/Annotation-Schema
     for (const item of items) {
-      if (item.data.type === 'circle') {
-        state.project.layers[item.layer.index].items.push({
-          class: item.data.class,
-          type: 'circle',
-          color: helpers.getColor(item),
-          center: {
-            x: item.position.x,
-            y: item.position.y
-          },
-          radius: item.bounds.width / 2,
-          locked: item.locked,
-          data: item.data.data
-        })
-      } else if (item.data.type === 'rectangle') {
-        state.project.layers[item.layer.index].items.push({
-          ...item.data,
-          color: helpers.getColor(item),
-          x: item.bounds.x,
-          y: item.bounds.y,
-          width: item.bounds.width,
-          height: item.bounds.height,
-          locked: item.locked
-        })
-      } else if (item.data.type === 'path') {
-        state.project.layers[item.layer.index].items.push({
-          class: item.data.class,
-          type: 'path',
-          color: helpers.getColor(item),
-          segments: helpers.getSegments(item),
-          closed: item.closed,
-          locked: item.locked,
-          data: item.data.data
-        })
-      // Check if the item is meant to represent an edit to an image. For
-      // example when editing a segmentation mask that is tiled and overlayed
-      // on the project image.
-      } else if (item.data.type === 'imageEdit') {
-        const rasterizedItem = item.rasterize()
-        const itemDataURL = rasterizedItem.toDataURL()
-
-        state.project.layers[item.layer.index].items.push({
-          class: item.data.class,
-          type: 'raster',
-          source: itemDataURL,
-          position: {
-            x: item.position.x,
-            y: item.position.y
-          },
-          data: item.data.data
-        })
-      // If the item is a raster, we need to incorporate edits to it.
-      // Therefore, necessary to 'rasterise' this image and it's combined edits.
-      } else if (item.data.type === 'raster') {
-        const editItems = item.layer.getItems({
-          match: item => { return item.locked },
-          overlapping: item.bounds
-        })
-
-        // Add the original raster item to the array. Make sure to include
-        // as the first child so that the edits are displayed above it in the
-        // project hierarchy
-        editItems.unshift(item)
-
-        // When a new group is created the default behaviour is to place is at
-        // the top of the active layer. Avoid this by explicitly sending it to
-        // the back of the project hierarchy.
-        const itemsToRaster = new paper.Group(editItems)
-        itemsToRaster.sendToBack()
-
-        // Rasterize the image and it's edits. Convert to a base64 encoded URL.
-        const rasterizedGroup = itemsToRaster.rasterize(item.resolution.height, false)
-        const rasterizedData = rasterizedGroup.toDataURL()
-
-        state.project.layers[item.layer.index].items.push({
-          class: item.data.class,
-          type: 'raster',
-          source: rasterizedData,
-          position: {
-            x: item.position.x,
-            y: item.position.y
-          },
-          data: item.data.data
-        })
-      }
+      state.project.layers[item.layer.index].items.push(helpers.getItemState(item))
     }
 
     // Increment a tally of the number of time the project state has been

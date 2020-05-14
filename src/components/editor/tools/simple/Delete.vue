@@ -123,7 +123,7 @@ export default {
       // Get items inside the selection rectangle.
       toBeDeleted = paper.project.getItems({
         inside: selectionRect.bounds,
-        match: this.matchFilter
+        match: item => (item.parent.className !== 'CompoundPath' && this.matchFilter)
       })
 
       // Clean current selection

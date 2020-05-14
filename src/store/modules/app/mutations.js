@@ -21,7 +21,7 @@ export default {
   synchroniseAnnotationAndOSDCanvas: (state, viewer) => {
     viewer.addHandler('animation', () => {
       paper.view.autoUpdate = false
-      paper.project.layers.forEach(layer => { layer.getItems({ }).forEach(item => { item.visible = false }) })
+      paper.project.layers.forEach(layer => { layer.getItems().forEach(item => { item.visible = false }) })
       const baseImage = viewer.world.getItemAt(0)
       const center = baseImage.viewportToImageCoordinates(viewer.viewport.getCenter(true))
       // Sync Zoom
@@ -37,7 +37,7 @@ export default {
 
     viewer.addHandler('resize', function (e) {
       paper.view.autoUpdate = false
-      paper.project.layers.forEach(layer => { layer.getItems({ }).forEach(item => { item.visible = false }) })
+      paper.project.layers.forEach(layer => { layer.getItems().forEach(item => { item.visible = false }) })
       const baseImage = viewer.world.getItemAt(0)
 
       // Sync Size
