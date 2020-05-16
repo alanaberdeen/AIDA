@@ -50,7 +50,6 @@ export default {
         this.path.data.class = ''
         this.path.data.type = 'path'
         this.path.add(event.point)
-
       } else if (this.path.segments.length === 1) {
         this.path.add(event.point)
         this.path.smooth()
