@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-content>
+    <v-main>
       <router-view/>
-    </v-content>
+    </v-main>
     <v-snackbar
       v-model="snackbar"
-      :timeout=0
+      :timeout=-1
     >
       This site uses cookies to function optimally.
       <v-btn

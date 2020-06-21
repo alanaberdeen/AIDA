@@ -7,7 +7,7 @@
     :value="this.toolsDrawer"
     mini-variant
     mini-variant-width="52"
-    mobile-break-point="800"
+    mobile-breakpoint="800"
     class='mt-12'
     v-if="['loading'].indexOf($route.name) === -1"
   >
