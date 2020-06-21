@@ -19,7 +19,7 @@ export default {
       return
     }
     try {
-      const dataLocation = `${'http://localhost:3000'}/data/${state.projectFilePath}`
+      const dataLocation = `${location.origin}/data/${state.projectFilePath}`
       const response = await fetch(dataLocation)
       const project = await response.json()
 
