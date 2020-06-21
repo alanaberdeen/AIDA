@@ -20,7 +20,7 @@ const iiifHttps = (config.IIIF.https.toString().toLowerCase() === 'true')
 async function walk (dir, rootDir) {
   const fileList = []
   const files = await fsp.readdir(dir)
-  for (const fileName of files) { 
+  for (const fileName of files) {
     const filePath = path.join(dir, fileName)
     const fileInfo = {
       name: fileName,
