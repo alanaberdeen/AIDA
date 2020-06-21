@@ -19,13 +19,12 @@ export default {
       return
     }
     try {
-      const dataLocation = `${location.origin}/data/${state.projectFilePath}`
+      const dataLocation = `${'http://localhost:3000'}/data/${state.projectFilePath}`
       const response = await fetch(dataLocation)
       const project = await response.json()
 
-      // Check for project file, if found then load that project
+      // Check for a specified annotation file, if found load it up.
       try {
-        // Load project annotation
         if (Object.prototype.hasOwnProperty.call(project, 'annotation')) {
           const annotationFilePath = project.annotation
           dispatch('setAnnotationFilePath', annotationFilePath)
