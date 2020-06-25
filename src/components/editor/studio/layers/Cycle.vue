@@ -41,16 +41,14 @@ export default {
 
   data () {
     return {
-      totalItems: null,
+      totalItems: this.getTotalItems(),
       activeItemIndex: 0
     }
   },
 
   watch: {
     cycleTabEvent: function () {
-      this.totalItems = paper.project.layers[this.layerIndex].getItems({
-        className: cn => (cn === 'Path' || cn === 'Shape')
-      }).length
+      this.totalItems = this.getTotalItems()
     }
   },
 
@@ -62,6 +60,13 @@ export default {
   },
 
   methods: {
+    getTotalItems () {
+      return paper.project.layers[this.layerIndex].getItems({
+        className: cn => (cn === 'Path' || cn === 'Shape' || cn === 'CompoundPath'),
+        match: item => item.parent.className !== 'CompoundPath'
+      }).length
+    },
+
     incrementActiveItemBy (value) {
       if (this.activeItemIndex === (this.totalItems - 1) && value > 0) {
         this.activeItemIndex = 0
@@ -74,7 +79,8 @@ export default {
       // On increment just do a check to make sure we have all the items as
       // some may have been added/removed between increments.
       const items = paper.project.layers[this.layerIndex].getItems({
-        className: cn => (cn === 'Path' || cn === 'Shape')
+        className: cn => (cn === 'Path' || cn === 'Shape' || cn === 'CompoundPath'),
+        match: item => item.parent.className !== 'CompoundPath'
       })
       this.totalItems = items.length
 

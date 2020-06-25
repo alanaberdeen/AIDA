@@ -128,12 +128,17 @@ export default {
 
         // Select items inside the selection rectangle.
         paper.project.deselectAll()
-        paper.project.getItems({
-          className: cn => (cn === 'Path' || cn === 'Shape'),
-          inside: selectionRect.bounds,
-          match: this.matchFilter
-        }).forEach((item) => {
-          item.selected = true
+
+        var bounds = selectionRect.bounds
+        paper.view.itemsTree.search({
+          minX: bounds.x,
+          minY: bounds.y,
+          maxX: bounds.x + bounds.width,
+          maxY: bounds.y + bounds.height
+        }).forEach(treeNode => {
+          if (treeNode.item.isInside(bounds) && this.matchFilter(treeNode.item) && (treeNode.item.className === 'Path' || treeNode.item.className === 'Shape' || treeNode.item.className === 'CompoundPath')) {
+            treeNode.item.selected = true
+          }
         })
 
       // Move mode: adjusts the position of the selected group
@@ -211,7 +216,8 @@ export default {
       // We will have to manually move them back. Bit unsatisfactory this!
       if (this.toolMode !== 'move' && this.toolMode !== 'transform') {
         paper.project.getItems({
-          className: cn => (cn === 'Path' || cn === 'Shape'),
+          className: cn => (cn === 'Path' || cn === 'Shape' || cn === 'CompoundPath'),
+          match: item => item.parent.className !== 'CompoundPath',
           selected: true
         }).forEach(item => {
           if (!this.selectedItemsCache.some(e => e.id === item.id)) {

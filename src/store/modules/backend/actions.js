@@ -38,10 +38,12 @@ export default {
       }
 
       try {
+        const iiifImageTypes = ['.tif', '.tiff', '.czi', '.dcm', '.dicom', '.ndpi', '.qptiff', '.scn', '.svs', '.vsi', '.jp2', '.j2k']
         // Load project images
         if (Object.prototype.hasOwnProperty.call(project, 'images')) {
           project.images.forEach(image => {
-            if (image.path.endsWith('.tif') || image.path.endsWith('.tiff')) {
+            const ext = path.extname(image.path)
+            if (iiifImageTypes.includes(ext)) {
               dispatch('image/addOSDImage', {
                 name: image.name,
                 fileType: 'iiif',
@@ -49,7 +51,7 @@ export default {
                 function: 'project',
                 opacity: 1
               }, { root: true })
-            } else if (image.path.endsWith('.dzi')) {
+            } else if (ext === '.dzi') {
               dispatch('image/addOSDImage', {
                 name: image.name,
                 fileType: 'dzi',
@@ -191,7 +193,9 @@ export default {
   }) {
     // Clear any images in the current vuex state.
     await dispatch('image/clearImages', null, { root: true })
-    if (state.projectFilePath.endsWith('.tif') || state.projectFilePath.endsWith('.tiff')) {
+    const iiifImageTypes = ['.tif', '.tiff', '.czi', '.dcm', '.dicom', '.ndpi', '.qptiff', '.scn', '.svs', '.vsi', '.jp2', '.j2k']
+    const ext = path.extname(state.projectFilePath)
+    if (iiifImageTypes.includes(ext)) {
       dispatch('image/addOSDImage', {
         name: rootState.image.projectImageName,
         fileType: 'tiled',
