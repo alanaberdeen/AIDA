@@ -1,4 +1,3 @@
-import axios from 'axios'
 import convert from 'xml-js'
 import path from 'path'
 
@@ -21,17 +20,16 @@ export default {
     }
     try {
       const dataLocation = `${location.origin}/data/${state.projectFilePath}`
-      const response = await window.fetch(dataLocation)
+      const response = await fetch(dataLocation)
       const project = await response.json()
 
-      // Check for project file, if found then load that project
+      // Check for a specified annotation file, if found load it up.
       try {
-        // Load project annotation
         if (Object.prototype.hasOwnProperty.call(project, 'annotation')) {
           const annotationFilePath = project.annotation
           dispatch('setAnnotationFilePath', annotationFilePath)
 
-          const response = await window.fetch(`${location.origin}/data/annotations/${annotationFilePath}`)
+          const response = await fetch(`${location.origin}/data/annotations/${annotationFilePath}`)
           const annotation = await response.json()
           dispatch('annotation/loadAnnotation', annotation, { root: true })
         }
@@ -48,8 +46,8 @@ export default {
             if (iiifImageTypes.includes(ext)) {
               dispatch('image/addOSDImage', {
                 name: image.name,
-                fileType: 'tiled',
-                source: `${location.origin}/data/images/${image.path}`,
+                fileType: 'iiif',
+                source: image.path,
                 function: 'project',
                 opacity: 1
               }, { root: true })
@@ -105,9 +103,10 @@ export default {
 
       // Post API request.
       const postUrl = `${location.origin}/save`
-      await axios.post(
-        postUrl,
-        {
+
+      const response = await fetch(postUrl, {
+        method: 'POST',
+        body: JSON.stringify({
           editor: {
             activeImageIndex: rootState.image.activeImageIndex,
             activeStep: rootState.app.activeStep,
@@ -120,31 +119,14 @@ export default {
             filePath: state.annotationFilePath
           },
           images: rootState.image.images
-        }
-      )
+        })
+      })
 
-      // Activate notification
-      dispatch('app/activateSnackbar', {
-        text: 'Saved annotation data',
-        color: 'success'
-      }, { root: true })
-
-      // Set annotation save state
-      dispatch('annotation/setSaveState', {
-        changesSaved: true,
-        lastSaveTimeStamp: new Date()
-      }, { root: true })
-
-    // Handle errors
-    } catch (err) {
-      try {
-        // Save to local browser storage
-        window.localStorage.setItem('annotation', JSON.stringify(rootState.annotation.project))
-
+      if (response.status === 200) {
         // Activate notification
         dispatch('app/activateSnackbar', {
-          text: 'Could not reach server, data saved in browser',
-          color: 'warning'
+          text: 'Saved annotation data',
+          color: 'success'
         }, { root: true })
 
         // Set annotation save state
@@ -152,47 +134,9 @@ export default {
           changesSaved: true,
           lastSaveTimeStamp: new Date()
         }, { root: true })
-      } catch (err) {
-        dispatch('app/activateSnackbar', {
-          text: 'Annotation data could not be saved',
-          color: 'error'
-        }, { root: true })
+      } else {
+        throw response.statusText
       }
-    }
-  },
-
-  async saveAnnotation ({
-    state,
-    dispatch,
-    rootState
-  }) {
-    try {
-      // Ensure all the paperJS items are included in the vuex state
-      await dispatch('annotation/refreshAnnotationState', null, { root: true })
-
-      // Post API request.
-      const postUrl = location.origin + '/save'
-      await axios.post(
-        postUrl,
-        {
-          filePath: state.annotationFilePath,
-          annotationData: rootState.annotation.project
-        }
-      )
-
-      // Activate notification
-      dispatch('app/activateSnackbar', {
-        text: 'Saved annotation data',
-        color: 'success'
-      }, { root: true })
-
-      // Set annotation save state
-      dispatch('annotation/setSaveState', {
-        changesSaved: true,
-        lastSaveTimeStamp: new Date()
-      }, { root: true })
-
-    // Handle errors
     } catch (err) {
       try {
         // Save to local browser storage
@@ -226,7 +170,7 @@ export default {
     const filePath = state.projectFilePath.split(ext)[0].split('images/')[1]
     const annotationLocation = `${location.origin}/data/annotations/${filePath}.json`
     try {
-      const response = await window.fetch(annotationLocation)
+      const response = await fetch(annotationLocation)
       const annotationData = await response.json()
       dispatch('annotation/loadAnnotation', annotationData, { root: true })
     } catch (err) {

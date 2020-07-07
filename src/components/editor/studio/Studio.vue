@@ -6,7 +6,7 @@
     @input="updateStudioDrawerState"
     :value="this.studioDrawer"
     right
-    mobile-break-point="1000"
+    mobile-breakpoint="1000"
     v-if="['loading', 'landing', 'examples'].indexOf($route.name) === -1"
   >
     <div class="studioPanel">

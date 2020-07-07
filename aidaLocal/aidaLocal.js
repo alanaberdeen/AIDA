@@ -20,7 +20,7 @@ const iiifHttps = (config.IIIF.https.toString().toLowerCase() === 'true')
 async function walk (dir, rootDir) {
   const fileList = []
   const files = await fsp.readdir(dir)
-  for (const fileName of files) { 
+  for (const fileName of files) {
     const filePath = path.join(dir, fileName)
     const fileInfo = {
       name: fileName,
@@ -111,7 +111,7 @@ async function startServer () {
   // Save annoation data
   app.post('/save', async function (req, res) {
     try {
-      await saveAnnotation(req.body)
+      await saveAnnotation(JSON.parse(req.body))
       res.send('Success, annotation data saved')
     } catch (err) {
       console.log('Data could not be saved')
@@ -144,8 +144,8 @@ async function startServer () {
   }))
 
   app.get('/iiif', function (req, res) {
-    protocol = iiifHttps ? 'https' : 'http'
-    res.send(new URL('/iiif/2/', protocol + '://' + iiifHostname + ':' + iiifPort).toString())
+    const protocol = iiifHttps ? 'https' : 'http'
+    res.send(new URL('/iiif/2/', `${protocol}://${iiifHostname}:${iiifPort}`).toString())
   })
 
   // Serve the built application

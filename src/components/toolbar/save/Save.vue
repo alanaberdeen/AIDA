@@ -12,7 +12,7 @@
       <v-btn
         id='save-button'
         icon
-        @click.native="save()">
+        @click="save()">
         <v-progress-circular
           v-if="savingInProgress"
           indeterminate
@@ -46,42 +46,43 @@ export default {
 
   mounted () {
     // Add ctrl+s keyboard shortcut for saving data
-    window.addEventListener('keydown', this.keyDown)
+    window.addEventListener('keydown', this.onKeyDown)
 
     // On closing the tab/window, if the annotation data is not saved warn the
     // user and prevent closing.
-    window.addEventListener('beforeunload', this.checkForUnsavedChanges)
+    window.addEventListener('beforeunload', this.beforeUnload)
   },
 
   methods: {
     ...mapActions({
-      dispatchSave: 'backend/saveProject'
+      saveProject: 'backend/saveProject'
     }),
 
     async save () {
-      this.savingInProgress = true
-      await this.dispatchSave()
-      this.savingInProgress = false
+      if (this.saveState.changesSaved !== true) {
+        this.savingInProgress = true
+        await this.saveProject()
+        this.savingInProgress = false
+      }
     },
 
     // Prevent window unloading when annotation data has unsaved changes.
-    checkForUnsavedChanges (e) {
+    beforeUnload (e) {
       if (!this.saveState.changesSaved) {
-        // Cancel the event
-        e.preventDefault()
+        e.preventDefault() // Cancel the event
         // Chrome requires returnValue to be set
         e.returnValue = 'Annotation data has not been saved'
       }
     },
 
     // Attach event listeners for the keyboard shortcuts
-    keyDown (e) {
+    onKeyDown (e) {
       if (e.key === 's' && (e.metaKey === true || e.ctrlKey === true)) {
+        this.isSaveKeyShortcutDown = true
         e.preventDefault()
-        document.getElementById('save-button').click()
+        this.save()
       }
     }
-
   }
 }
 </script>
