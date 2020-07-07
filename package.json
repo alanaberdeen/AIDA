@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "run-script-os",
     "build:win32": "vue-cli-service build && copy aidaLocal/* dist && npm install dist && del dist/package.json && del dist/package-lock.json",
-    "build:darwin:linux": "vue-cli-service build && cp aidaLocal/* dist && npm install dist && rm dist/package*.json",
+    "build:darwin:linux": "vue-cli-service build && cp aidaLocal/* dist && npm install --prefix dist && rm dist/package*.json",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
