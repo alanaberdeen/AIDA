@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "run-script-os",
+    "build:win32": "vue-cli-service build && copy aidaLocal/* dist && npm install dist && del dist/package.json && del dist/package-lock.json",
+    "build:darwin:linux": "vue-cli-service build && cp aidaLocal/* dist && npm install dist && rm dist/package*.json",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "aida-local": "file:dist",
     "axios": "^0.19.2",
     "openseadragon": "^2.4.2",
     "paper": "^0.12.4",
@@ -35,6 +38,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.13.1",
+    "run-script-os": "1.1.1",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
     "typescript": "^3.8.3",
