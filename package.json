@@ -10,8 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "aida-local": "file:dist",
-    "axios": "^0.19.2",
+    "axios": "0.19.2",
     "openseadragon": "^2.4.2",
     "paper": "^0.12.4",
     "rbush": "3.0.1",
