@@ -198,7 +198,7 @@ export default {
     if (iiifImageTypes.includes(ext)) {
       dispatch('image/addOSDImage', {
         name: rootState.image.projectImageName,
-        fileType: 'tiled',
+        fileType: 'iiif',
         source: state.projectFilePath,
         function: 'project',
         opacity: 1
