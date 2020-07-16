@@ -1,0 +1,133 @@
+{
+  "header": {
+    "schemaVersion": "1.0",
+    "timestamp": 370,
+    "imageHash": "ABCDEFGHIJKLMNOPQRSTUV",
+    "annotatorSignature": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  },
+  "classes": [
+    {
+      "id": 1,
+      "name": "test class 1",
+      "description": "a test class",
+      "style": {
+        "color": [255, 0, 0, 255],
+        "filled": false
+      }
+    },
+    {
+      "id": 2,
+      "name": "test class 2",
+      "description": "another test class",
+      "style": {
+        "color": [0, 255, 0, 255]
+      }
+    }
+  ],
+  "annotation": {
+    "description": "Test annotation for JSON schema",
+    "layers": [
+      {
+        "name": "Layer1",
+        "features": [
+          {
+            "id": 0,
+            "class": 1,
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                102.0,
+                0.5
+              ]
+            }
+          },
+          {
+            "id": 1,
+            "class": 2,
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  102.0,
+                  0.0
+                ],
+                [
+                  103.0,
+                  1.0
+                ],
+                [
+                  104.0,
+                  0.0
+                ],
+                [
+                  105.0,
+                  1.0
+                ]
+              ]
+            }
+          },
+          {
+            "id": 2,
+            "class": 2,
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    35,
+                    10
+                  ],
+                  [
+                    45,
+                    45
+                  ],
+                  [
+                    15,
+                    40
+                  ],
+                  [
+                    10,
+                    20
+                  ],
+                  [
+                    35,
+                    10
+                  ]
+                ],
+                [
+                  [
+                    20,
+                    30
+                  ],
+                  [
+                    35,
+                    35
+                  ],
+                  [
+                    30,
+                    20
+                  ],
+                  [
+                    20,
+                    30
+                  ]
+                ]
+              ]
+            },
+            "comment": "a comment about this feature",
+            "modelHash": "5af88fb86717414fcd7506dba385c7dd0b03ca1d10bbe4004584ccc2d34d4f11",
+            "validations": [
+              {
+                "class": "class2",
+                "decisionTime": 3,
+                "timestamp": 157,
+                "validatorSignature": "8ba91c0db77de2d6c81528dd3932ddd3edb8cd6791e63c19a346c6fd0519c5db",
+                "validatorId": "Validator1"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
