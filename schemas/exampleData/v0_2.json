@@ -11,8 +11,9 @@
       "name": "test class 1",
       "description": "a test class",
       "style": {
-        "color": [255, 0, 0, 255],
-        "filled": false
+        "color": [255, 0, 0],
+        "filled": false,
+        "transparency": 0.5
       }
     },
     {
@@ -20,7 +21,7 @@
       "name": "test class 2",
       "description": "another test class",
       "style": {
-        "color": [0, 255, 0, 255]
+        "color": [0, 255, 0]
       }
     }
   ],
