@@ -37,12 +37,12 @@
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
     "run-script-os": "1.1.1",
-    "sass": "^1.26.10",
+    "sass": "^1.26.11",
     "sass-loader": "^10.0.2",
     "typescript": "^3.9.7",
     "vue-cli-plugin-vuetify": "^2.0.7",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.6.0",
-    "webpack-bundle-analyzer": "^3.7.0"
+    "webpack-bundle-analyzer": "^3.9.0"
   }
 }
