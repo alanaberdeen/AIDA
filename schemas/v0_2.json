@@ -209,7 +209,7 @@
                         ]
                       }
                     },
-                    "creator": {
+                    "created": {
                       "type": "object",
                       "properties": {
                         "type": {
