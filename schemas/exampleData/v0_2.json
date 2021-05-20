@@ -11,17 +11,23 @@
       "name": "test class 1",
       "description": "a test class",
       "style": {
-        "color": [255, 0, 0],
-        "filled": false,
-        "transparency": 0.5
-      }
+        "stroke": {
+          "color": [255, 0, 0],
+          "width": 4
+        }
+     }
     },
     {
       "id": 2,
       "name": "test class 2",
       "description": "another test class",
       "style": {
-        "color": [0, 255, 0]
+        "stroke": {
+          "color": [0, 255, 0]
+        },
+        "fill": {
+          "color": [255, 0, 0, 0.7]
+        }
       }
     }
   ],
@@ -32,7 +38,7 @@
         "name": "Layer1",
         "features": [
           {
-            "id": 0,
+            "id": "0TTo5GFshO8xAf1V7J1M",
             "class": 1,
             "geometry": {
               "type": "Point",
@@ -43,7 +49,7 @@
             }
           },
           {
-            "id": 1,
+            "id": "bOsVup8dQPj6pl2gBZgy",
             "class": 2,
             "geometry": {
               "type": "LineString",
@@ -68,7 +74,7 @@
             }
           },
           {
-            "id": 2,
+            "id": "eJcZUzcWOwnWNI9DDW9s",
             "class": 2,
             "geometry": {
               "type": "Polygon",

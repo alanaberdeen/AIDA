@@ -5,28 +5,45 @@
     "style": {
       "type": "object",
       "properties": {
-        "color": {
-          "type": "array",
-          "minItems": 3,
-          "maxItems": 3,
-          "items": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 255
+        "stroke": {
+          "type": "object",
+          "properties": {
+            "color": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 255
+              }
+            },
+            "width": {
+              "type": "integer",
+              "min": 0,
+              "default": 1
+            }
+          },
+          "required": ["color"]
+        },
+        "fill": {
+          "type": "object",
+          "color": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 4,
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 255
+            }
+          },
+          "default": {
+            "color": [0, 0, 0, 0]
           }
-        },
-        "filled": {
-          "type": "boolean",
-          "default": true
-        },
-        "transparency": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1,
-          "default": 1
         }
       },
-      "required": ["color"]
+      "required": ["stroke"]
     },
     "coordinate": {
       "type": "array",
