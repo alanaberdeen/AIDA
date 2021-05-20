@@ -183,9 +183,6 @@
                     "comment": {
                       "type": "string"
                     },
-                    "modelHash": {
-                      "type": "string"
-                    },
                     "validations": {
                       "type": "array",
                       "items": {
@@ -193,10 +190,6 @@
                         "properties": {
                           "class": {
                             "type": "string"
-                          },
-                          "decisionTime": {
-                            "type": "number",
-                            "minimum": 0
                           },
                           "validatorSignature": {
                             "type": "string"
