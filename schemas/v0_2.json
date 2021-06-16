@@ -28,18 +28,17 @@
         },
         "fill": {
           "type": "object",
-          "color": {
-            "type": "array",
-            "minItems": 3,
-            "maxItems": 4,
-            "items": {
-              "type": "number",
-              "minimum": 0,
-              "maximum": 255
+          "properties": {
+            "color": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 255
+              }
             }
-          },
-          "default": {
-            "color": [0, 0, 0, 0]
           }
         }
       },
