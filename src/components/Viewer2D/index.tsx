@@ -71,28 +71,23 @@ const Viewer2D = (props: { imageUrl: string }) => {
       const tileLayer = new TileLayer({ source: tileSource })
       tileLayer.set('id', 'image')
 
-      console.log('extent')
-      console.log(tileSource.getTileGrid().getExtent())
-
       const view = new View({
         center: [dzi.size.width / 2, dzi.size.height / 2],
         resolutions: tileSource.getTileGrid().getResolutions(),
         extent: tileSource.getTileGrid().getExtent(),
-        constrainOnlyCenter: true
+        showFullExtent: true
       })
 
       map.setView(view)
       map.addLayer(tileLayer)
+
       view.fit(tileSource.getTileGrid().getExtent())
-
-      console.log(view.getZoom())
-
       setMap(map)
     })()
   }, [imageUrl])
 
   return (
-    <div className="min-w-full min-h-screen flex bg-gray-300">
+    <div className="min-w-full min-h-screen flex bg-white">
       {/* Toolbar */}
       {map && <Toolbar />}
 
@@ -100,7 +95,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
       {map && <Viewer map={map} /> }
 
       {/* Right settings sidebar */}
-      {map && <SettingSidebar /> }
+      {map && <SettingSidebar map={map} /> }
     </div>
   )
 }
