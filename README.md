@@ -30,25 +30,28 @@ The software is published as Open Source under the permissive [MIT license](http
 
 You can use AIDA on your local machine. The only requirement [NodeJS >v11](https://nodejs.org/en/).
 
-A built version of the local application is included with the source code in the `/dist` directory. To begin using AIDA locally:
+An up to date and pre-built application is available on the gh-pages branch.
+
+Alternatively, if you'd like to build AIDA youreself:
 
 1. Clone the repository
-2. `cd` to `/dist`
-3. Install dependencies via `npm install`
-4. Add the images you want to annotate to the `/dist/data/images` directory.
-5. Run the nodeJS local application via `node aidaLocal.js`
-6. Navigate to the localhost webserver specified in the console
-7. Annotations are read from and written to `/dist/data/annotations`
+2. Run the OS specific build script `npm run build:darwin:linux` or `npm run build:win32`
+3. `cd` to `/dist`
+4. Install dependencies via `npm install`
+5. Add the images you want to annotate to the `/dist/data/images` directory.
+6. Run the nodeJS local application via `node aidaLocal.js`
+7. Navigate to the localhost webserver specified in the console
+8. Annotations are read from and written to `/dist/data/annotations`
 
 ## Develop
 
 Requirement [NodeJS](https://nodejs.org/en/).
 Example work-flow:
 
-1.  Clone the repository
-2.  Install dependencies via `npm install`
-3.  For development: start a hot-reloading dev server with `npm run serve`
-4.  For deployment: bundle together with `npm run build`
+1. Clone the repository
+2. Install dependencies via `npm install`
+3. For development: start a hot-reloading dev server with `npm run serve`
+4. For deployment: bundle together with `npm run build`
 
 ## Support for tiled images, International Image Interoperability Framework (IIIF)
 
