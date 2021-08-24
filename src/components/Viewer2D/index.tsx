@@ -5,6 +5,8 @@ import View from 'ol/View'
 import Zoomify from 'ol/source/Zoomify'
 import Proj from 'ol/proj/Projection'
 import TileLayer from 'ol/layer/Tile'
+import VectorSource from 'ol/source/Vector'
+import VectorLayer from 'ol/layer/Vector'
 
 import { parseDzi } from '../../lib/utils/parseDzi'
 
@@ -42,6 +44,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
         extent: [0, -dzi.size.height, dzi.size.width, 0],
       })
 
+      // IMAGE LAYER -----------------------------------------------------------
       const baseUrl = imageUrl.substring(0, imageUrl.lastIndexOf('.'))
       const templateUrl = `${baseUrl}_files/{z}/{x}_{y}.${dzi.format}`
       const tileSource = new Zoomify({
@@ -70,18 +73,33 @@ const Viewer2D = (props: { imageUrl: string }) => {
 
       const tileLayer = new TileLayer({ source: tileSource })
       tileLayer.set('id', 'image')
+      map.addLayer(tileLayer)
 
+
+      // ANNOTATION LAYER ------------------------------------------------------
+      const vectorSource = new VectorSource({ wrapX: false })
+
+      // Add listeners to the vectorSource that set a property on the map when 
+      // there are unsaved changes to the vector source.
+      vectorSource.on(
+        ['addfeature', 'changefeature', 'removefeature'], 
+        () => { map.set('unsavedChanges', true) }
+      )
+
+      const vectorLayer = new VectorLayer({ source: vectorSource })
+      vectorLayer.set('id', 'annotation')
+      map.addLayer(vectorLayer)
+
+      // VIEW
       const view = new View({
         center: [dzi.size.width / 2, dzi.size.height / 2],
         resolutions: tileSource.getTileGrid().getResolutions(),
         extent: tileSource.getTileGrid().getExtent(),
         showFullExtent: true
       })
-
       map.setView(view)
-      map.addLayer(tileLayer)
-
       view.fit(tileSource.getTileGrid().getExtent())
+
       setMap(map)
     })()
   }, [imageUrl])
@@ -89,7 +107,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
   return (
     <div className="min-w-full min-h-screen flex bg-white">
       {/* Toolbar */}
-      {map && <Toolbar />}
+      {map && <Toolbar map={map}/>}
 
       {/* Image view */}
       {map && <Viewer map={map} /> }
