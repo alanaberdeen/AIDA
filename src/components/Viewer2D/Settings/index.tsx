@@ -3,11 +3,13 @@ import { ChevronLeftIcon, XIcon } from '@heroicons/react/solid'
 
 import Map from 'ol/Map'
 
+import Overview from './Overview'
+
 // Settings sidebar
 // Generally for 'global' settings (ones which adjust the entire view and/or all
 // annotation items within the view). Layers and channels are other examples
 // of 'global' settings.
-const SettingSidebar = (props: { map: Map }) => {
+const Settings = (props: { map: Map }) => {
   const { map } = props
 
   const [isOpen, setIsOpen] = useState(true)
@@ -39,11 +41,13 @@ const SettingSidebar = (props: { map: Map }) => {
       {/* Content */}
       {isOpen &&
         <div className="bg-gray-100 mt-8 min-h-full w-48 p-2 shadow-sm text-gray-800">
-          Content
+          
+          {/* Overview */}
+          <Overview map={map} />
         </div>
       }
     </>
   )
 }
 
-export default SettingSidebar
+export default Settings

@@ -12,7 +12,7 @@ import { parseDzi } from '../../lib/utils/parseDzi'
 
 import Toolbar from './Toolbar'
 import Viewer from './Viewer'
-import SettingSidebar from './SettingsSidebar'
+import Settings from './Settings'
 
 const Viewer2D = (props: { imageUrl: string }) => {
   const { imageUrl } = props
@@ -107,13 +107,13 @@ const Viewer2D = (props: { imageUrl: string }) => {
   return (
     <div className="min-w-full min-h-screen flex bg-white">
       {/* Toolbar */}
-      {map && <Toolbar map={map}/>}
+      {/* {map && <Toolbar map={map}/>} */}
 
       {/* Image view */}
       {map && <Viewer map={map} /> }
 
       {/* Right settings sidebar */}
-      {map && <SettingSidebar map={map} /> }
+      {map && <Settings map={map} /> }
     </div>
   )
 }
