@@ -13,6 +13,8 @@ import DragBox from 'ol/interaction/DragBox'
 import Translate from 'ol/interaction/Translate'
 import Modify from 'ol/interaction/Modify'
 import { createBox } from 'ol/interaction/Draw'
+import * as olExtent from 'ol/extent';
+import Feature from 'ol/Feature'
 
 
 // Toolbar component
@@ -32,7 +34,14 @@ const Toolbar = (props: { map: Map }) => {
   const vectorSource = vectorLayer.getSource()
 
   const [activeTool, setActiveTool] = useState('pan')
-  
+
+  // Array placeholder for any copied features
+  let clipboardFeatures: Feature<Geometry>[] = []
+
+  // Mouse position is useful in some interactions (e.g. pasting a feature(s))
+  let mousePos = [0, 0]
+  map.on('pointermove', (event) => { mousePos = event.coordinate })
+ 
   // Initialise tools
   useEffect(() => {
     // Clear any previously set interactions
@@ -161,6 +170,130 @@ const Toolbar = (props: { map: Map }) => {
       }
     })
   }, [activeTool, map])
+
+  // Setup keyboard shortcuts
+  // TODO: support copy/paste
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code) {
+        switch (event.code) {
+          case 'Digit1':
+            event.preventDefault();
+            setActiveTool(tools[0]);
+            break;
+          case 'Digit2':
+            event.preventDefault();
+            setActiveTool(tools[1]);
+            break;
+          case 'Digit3':
+            event.preventDefault();
+            setActiveTool(tools[2]);
+            break;
+          case 'Digit4':
+            event.preventDefault();
+            setActiveTool(tools[3]);
+            break;
+          case 'Digit5':
+            event.preventDefault();
+            setActiveTool(tools[4]);
+            break;
+          case 'Digit6':
+            event.preventDefault();
+            setActiveTool(tools[5]);
+            break;
+          case 'Digit7':
+            event.preventDefault();
+            setActiveTool(tools[6]);
+            break;
+          case 'KeyA':
+            event.preventDefault();
+            
+            // On Ctrl+A, select all features
+            if (event.ctrlKey) {
+              setActiveTool('select')
+
+              const vectorLayer = map.getLayers().getArray()
+                .find(layer => layer.get('id') === 'annotation') as VectorLayer<VectorSource<Geometry>>
+              const features = vectorLayer.getSource().getFeatures()
+
+              const selectTool = map.getInteractions().getArray()
+                .find(interaction => interaction.get('id') === 'select') as Select
+              selectTool.getFeatures().clear()
+              selectTool.getFeatures().extend(features)
+            }
+            break;
+          case 'KeyC':
+            event.preventDefault();
+
+            // On Ctrl+C, copy selected features
+            if (event.ctrlKey) {
+              const selectTool = map.getInteractions().getArray()
+                .find(interaction => interaction.get('id') === 'select') as Select
+
+              // HACK: we need to copy the features with their original styles
+              // it's difficult to do this properly. Here we use private methods
+              // on the Select class to revert the feature back to its original
+              // style, clone it, and then re-apply the select style.
+              clipboardFeatures = selectTool.getFeatures().getArray().map(f => {
+                selectTool.restorePreviousStyle_(f)
+                const clonedFeature = f.clone()
+                selectTool.applySelectedStyle_(f)
+                return clonedFeature
+              })          
+            }
+            break;
+          case 'KeyV':
+            event.preventDefault();
+
+            // On Ctrl+V, paste copied features
+            if (event.ctrlKey) {
+
+              // Create extent of copied features
+              const extent = clipboardFeatures.reduce((extent, feature) => {
+                return olExtent.extend(extent, feature.getGeometry().getExtent())
+              }, olExtent.createEmpty())
+
+              // Get center of features extent
+              const copiedCenter = olExtent.getCenter(extent)
+
+              // Find difference between mouse position and center of copied
+              // features
+              const delta = mousePos.map((p, index) => p - copiedCenter[index])
+
+              // Translate copied features by delta
+              const translatedFeatures = clipboardFeatures.map(feature => {
+                const newFeature = feature.clone()
+                newFeature.getGeometry().translate(delta[0], delta[1])
+                return newFeature
+              })
+
+              // Add translated features to vector source
+              const vectorLayer = map.getLayers().getArray()
+                .find(layer => layer.get('id') === 'annotation') as VectorLayer<VectorSource<Geometry>>
+              const vectorSource = vectorLayer.getSource()
+              vectorSource.addFeatures(translatedFeatures)              
+            }
+            break;
+          case 'Delete':
+          case 'Backspace':
+            event.preventDefault();
+            const selectTool = map.getInteractions().getArray()
+              .find(interaction => interaction.get('id') === 'select') as Select
+            while (selectTool.getFeatures().getLength() > 0) {
+              const feature = selectTool.getFeatures().pop();
+              vectorSource.removeFeature(feature);
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  },);
 
   return (
     <div className="absolute left-0 top-0 z-20 flex flex-col m-1 bg-gray-100 rounded-lg pointer-events-auto border border-gray-300">

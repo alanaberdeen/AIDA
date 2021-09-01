@@ -107,7 +107,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
   return (
     <div className="min-w-full min-h-screen flex bg-white">
       {/* Toolbar */}
-      {/* {map && <Toolbar map={map}/>} */}
+      {map && <Toolbar map={map}/>}
 
       {/* Image view */}
       {map && <Viewer map={map} /> }
