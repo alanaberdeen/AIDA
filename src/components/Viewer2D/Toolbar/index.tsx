@@ -235,8 +235,10 @@ const Toolbar = (props: { map: Map }) => {
               // on the Select class to revert the feature back to its original
               // style, clone it, and then re-apply the select style.
               clipboardFeatures = selectTool.getFeatures().getArray().map(f => {
+                // @ts-ignore: private method
                 selectTool.restorePreviousStyle_(f)
                 const clonedFeature = f.clone()
+                // @ts-ignore: private method
                 selectTool.applySelectedStyle_(f)
                 return clonedFeature
               })          
