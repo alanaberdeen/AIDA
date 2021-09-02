@@ -177,6 +177,10 @@ const Toolbar = (props: { map: Map }) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code) {
         switch (event.code) {
+          case 'Space':
+            event.preventDefault();
+            setActiveTool('pan');
+            break;
           case 'Digit1':
             event.preventDefault();
             setActiveTool(tools[0]);
