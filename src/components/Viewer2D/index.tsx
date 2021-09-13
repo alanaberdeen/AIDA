@@ -73,6 +73,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
 
       const tileLayer = new TileLayer({ source: tileSource })
       tileLayer.set('id', 'image')
+      tileLayer.set('type', 'image')
       map.addLayer(tileLayer)
 
 
@@ -88,6 +89,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
 
       const vectorLayer = new VectorLayer({ source: vectorSource })
       vectorLayer.set('id', 'annotation')
+      vectorLayer.set('type', 'annotation')
       map.addLayer(vectorLayer)
 
       // VIEW
