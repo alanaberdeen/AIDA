@@ -175,7 +175,9 @@ const Toolbar = (props: { map: Map }) => {
   // TODO: support copy/paste
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.code) {
+      // Only respond to keydown events when no other interactive element (such 
+      // as a menu button or text input) is focused.
+      if (event.code && document.activeElement === document.body) {
         switch (event.code) {
           case 'Space':
             event.preventDefault();
