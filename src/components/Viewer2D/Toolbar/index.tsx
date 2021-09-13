@@ -30,7 +30,7 @@ const Toolbar = (props: { map: Map }) => {
   // essentially we know (?!) that the layer with this id both exists and is a
   // VectorLayer so we can explicitly cast it as such.
   const vectorLayer = map.getLayers().getArray()
-    .find(layer => layer.get('id') === 'annotation') as VectorLayer<VectorSource<Geometry>>
+    .find(layer => layer.get('type') === 'annotation') as VectorLayer<VectorSource<Geometry>>
   const vectorSource = vectorLayer.getSource()
 
   const [activeTool, setActiveTool] = useState('pan')
@@ -219,7 +219,7 @@ const Toolbar = (props: { map: Map }) => {
               setActiveTool('select')
 
               const vectorLayer = map.getLayers().getArray()
-                .find(layer => layer.get('id') === 'annotation') as VectorLayer<VectorSource<Geometry>>
+                .find(layer => layer.get('type') === 'annotation') as VectorLayer<VectorSource<Geometry>>
               const features = vectorLayer.getSource().getFeatures()
 
               const selectTool = map.getInteractions().getArray()
@@ -277,7 +277,7 @@ const Toolbar = (props: { map: Map }) => {
 
               // Add translated features to vector source
               const vectorLayer = map.getLayers().getArray()
-                .find(layer => layer.get('id') === 'annotation') as VectorLayer<VectorSource<Geometry>>
+                .find(layer => layer.get('type') === 'annotation') as VectorLayer<VectorSource<Geometry>>
               const vectorSource = vectorLayer.getSource()
               vectorSource.addFeatures(translatedFeatures)              
             }

@@ -82,17 +82,19 @@ const Viewer2D = (props: { imageUrl: string }) => {
 
       // Add listeners to the vectorSource that set a property on the map when 
       // there are unsaved changes to the vector source.
+      const unsavedChangesListener = () => { map.set('unsavedChanges', true) }
       vectorSource.on(
         ['addfeature', 'changefeature', 'removefeature'], 
-        () => { map.set('unsavedChanges', true) }
+        unsavedChangesListener
       )
 
+      // Default first layer
       const vectorLayer = new VectorLayer({ source: vectorSource })
-      vectorLayer.set('id', 'annotation')
+      vectorLayer.set('id', 'layer 1')
       vectorLayer.set('type', 'annotation')
       map.addLayer(vectorLayer)
 
-      // VIEW
+      // VIEW ------------------------------------------------------------------
       const view = new View({
         center: [dzi.size.width / 2, dzi.size.height / 2],
         resolutions: tileSource.getTileGrid().getResolutions(),
@@ -103,6 +105,15 @@ const Viewer2D = (props: { imageUrl: string }) => {
       view.fit(tileSource.getTileGrid().getExtent())
 
       setMap(map)
+
+      // Cleanup function 
+      return () => {
+        // Remove unsaved changes listener
+        vectorSource.un(
+          ['addfeature', 'changefeature', 'removefeature'], 
+          unsavedChangesListener
+        )
+      }
     })()
   }, [imageUrl])
 
