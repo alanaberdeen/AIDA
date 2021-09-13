@@ -4,6 +4,7 @@ import { ChevronLeftIcon, XIcon } from '@heroicons/react/solid'
 import Map from 'ol/Map'
 
 import Overview from './Overview'
+import Layers from './Layers'
 
 // Settings sidebar
 // Generally for 'global' settings (ones which adjust the entire view and/or all
@@ -26,8 +27,8 @@ const Settings = (props: { map: Map }) => {
       <button
         onClick={() => setIsOpen(isOpen => !isOpen)}
         className={`hover:bg-gray-100 ${
-          isOpen ? 'w-48 flex justify-between ' : ''
-        } bg-gray-100 h-8 absolute top-0 right-0 inline-flex items-center p-2 border border-transparent shadow-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+          isOpen ? 'w-48 flex justify-between' : ''
+        } mb-1 bg-gray-100 h-8 absolute top-0 right-0 inline-flex items-center p-1 border border-transparent shadow-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
       >
         {!isOpen && (
           <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
@@ -40,10 +41,13 @@ const Settings = (props: { map: Map }) => {
 
       {/* Content */}
       {isOpen &&
-        <div className="bg-gray-100 mt-8 min-h-full w-48 p-2 shadow-sm text-gray-800">
+        <div className="bg-gray-100 mt-8 min-h-full w-48 p-1 shadow-sm text-gray-800 flex flex-col space-y-2">
           
           {/* Overview */}
           <Overview map={map} />
+
+          {/* Layers */}
+          <Layers map={map} />
         </div>
       }
     </>
