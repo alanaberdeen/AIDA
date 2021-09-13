@@ -10,6 +10,13 @@
   "dependencies": {
     "@headlessui/react": "^1.4.0",
     "@heroicons/react": "^1.0.3",
+    "@react-aria/button": "^3.3.3",
+    "@react-aria/focus": "^3.4.1",
+    "@react-aria/numberfield": "^3.0.1",
+    "@react-aria/slider": "^3.0.3",
+    "@react-aria/visually-hidden": "^3.2.3",
+    "@react-stately/numberfield": "^3.0.2",
+    "@react-stately/slider": "^3.0.3",
     "next": "latest",
     "next-transpile-modules": "^8.0.0",
     "ol": "^6.6.1",
