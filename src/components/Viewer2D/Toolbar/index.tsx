@@ -27,13 +27,28 @@ const Toolbar = (props: { map: Map }) => {
 
   // Get a reference to the vector source where the annotations will be stored.
   // This use of 'as' in the type definition might be somewhat risky... 
-  // essentially we know (?!) that the layer with this id both exists and is a
-  // VectorLayer so we can explicitly cast it as such.
-  const vectorLayer = map.getLayers().getArray()
-    .find(layer => layer.get('type') === 'annotation') as VectorLayer<VectorSource<Geometry>>
-  const vectorSource = vectorLayer.getSource()
+  // essentially we know (?!) that the layer with this property both exists and
+  // is a VectorLayer so we can explicitly cast it as such.
+  const vectorLayer = map.getLayers().get('activeLayer') as VectorLayer<VectorSource<Geometry>>
 
   const [activeTool, setActiveTool] = useState('pan')
+  const [vectorSource, setVectorSource] = useState(vectorLayer.getSource())
+
+  // Listen to changes to the activeLayer property on the layers collection
+  // when the activeLayer updates we need to re-set all of the tools as they 
+  // are layer, and therefore source, specific.
+  useEffect(() => {
+    const layers = map.getLayers()
+    const listener = () => {
+      const activeLayer = layers.get('activeLayer')
+      if (activeLayer) {
+        setVectorSource(activeLayer.getSource())
+      }
+    }
+    
+    layers.on('propertychange', listener)
+    return () => { layers.un('propertychange', listener) }
+  }, [])
 
   // Array placeholder for any copied features
   let clipboardFeatures: Feature<Geometry>[] = []
@@ -140,7 +155,7 @@ const Toolbar = (props: { map: Map }) => {
       lineString,
       polygon,
     ])
-  }, [map])
+  }, [map, vectorSource])
 
 
   // Update the active tool
@@ -169,7 +184,7 @@ const Toolbar = (props: { map: Map }) => {
         interaction.setActive(false)
       }
     })
-  }, [activeTool, map])
+  }, [activeTool, map, vectorSource])
 
   // Setup keyboard shortcuts
   // TODO: support copy/paste

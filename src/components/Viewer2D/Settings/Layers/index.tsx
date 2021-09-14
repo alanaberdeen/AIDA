@@ -5,6 +5,7 @@ import Map from "ol/Map";
 
 import Layer from "./Layer";
 import ActiveLayerControls from "./ActiveLayerControls";
+import FooterToolbar from "./FooterToolbar";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -15,25 +16,36 @@ const Layers = (props: { map: Map }) => {
   const { map } = props;
 
   const [layers, setLayers] = useState([]);
-  const [activeLayer, setActiveLayer] = useState(null)
+  const [activeLayer, setActiveLayer] = useState(null);
 
   // Get annotation layers from map
   useEffect(() => {
     const layers = map.getLayers();
-    const annotationLayers = layers.getArray().filter((layer) => layer.get("type") === "annotation");
+    const annotationLayers = layers
+      .getArray()
+      .filter((layer) => layer.get("type") === "annotation");
     setLayers(annotationLayers);
 
-    // Set the first layer to be initially active by default
-    setActiveLayer(annotationLayers[0])
+    // Set active layer, add listener to update active layer on change
+    setActiveLayer(layers.get("activeLayer"));
+    const onActiveLayerChange = () => {
+      setActiveLayer(layers.get("activeLayer"));
+    };
+    layers.on("propertychange", onActiveLayerChange);
 
     // Add a listener to update layers state when collection changes
-    const listener = () => {
-      setLayers(layers.getArray().filter((layer) => layer.get("type") === "annotation")     );
-    }
-    layers.on("change", listener);
+    const onLayersLengthChange = () => {
+      setLayers(
+        layers.getArray().filter((layer) => layer.get("type") === "annotation")
+      );
+    };
+    layers.on("change:length", onLayersLengthChange);
 
-    // Return a cleanup function to remove the listener on component unmount
-    return () => { layers.un("change", listener); }
+    // Return a cleanup function to remove the listeners on component unmount
+    return () => {
+      layers.un("change:length", onLayersLengthChange);
+      layers.un("propertychange", onActiveLayerChange);
+    };
   }, [map]);
 
   return (
@@ -60,12 +72,28 @@ const Layers = (props: { map: Map }) => {
           </Disclosure.Button>
           <Disclosure.Panel className="bg-white rounded-b-md">
             {/* Active layer tab controls */}
-            {activeLayer && <ActiveLayerControls layer={activeLayer}/>}
+            {activeLayer && <ActiveLayerControls activeLayer={activeLayer} />}
 
             {/* Layers list */}
-            {layers.map((layer, index) => (
-              <Layer layer={layer} key={index} active={activeLayer === layer}/>
-            ))}
+
+            {/* 
+              TODO: if there are many layers in the list such that the active 
+                    layer is not visible then on-load we need to scroll the div
+                    so the user can see the active layer in the list by default.
+            */}
+            <div className="max-h-40 overflow-y-auto">
+              {layers.map((layer, index) => (
+                <Layer
+                  layer={layer}
+                  key={index}
+                  active={activeLayer === layer}
+                  map={map}
+                />
+              ))}
+            </div>
+
+            {/* Footer toolbar */}
+            <FooterToolbar activeLayer={activeLayer} map={map} />
           </Disclosure.Panel>
         </>
       )}

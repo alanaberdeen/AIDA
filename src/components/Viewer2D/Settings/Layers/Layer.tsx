@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
+import Map from "ol/Map";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from 'ol/source/Vector';
 import Geometry from 'ol/geom/Geometry'
@@ -9,9 +10,10 @@ import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
 // Manage annotation layers
 const Layer = (props: {
   layer: VectorLayer<VectorSource<Geometry>>
-  active: boolean
+  active: boolean,
+  map: Map
 }) => {
-  const { layer, active } = props;
+  const { layer, active, map } = props;
 
   const [isVisible, setIsVisible] = useState(layer.getVisible());
 
@@ -33,7 +35,12 @@ const Layer = (props: {
     const listener = () => { setIsVisible(layer.getOpacity() !== 0) }
     layer.on('change:opacity', listener);
     return () => { layer.un('change:opacity', listener) };
-  }, [layer])  
+  }, [layer])
+
+  // Set layer active 
+  const setLayerActive = (layer: VectorLayer<VectorSource<Geometry>>) => {
+    map.getLayers().set('activeLayer', layer)
+  }
 
   return (
     <div className={`${active ? '' : ''} flex items-center text-sm`}>
@@ -47,9 +54,14 @@ const Layer = (props: {
           <EyeOffIcon className="h-4 w-4" aria-hidden="true" />
         }
       </button>
-      <div className={`${active ? 'text-blue-900' : '' } m-1 truncate`}>
+
+      <button
+        type="button"
+        className={`${active ? 'text-blue-900 bg-gray-50 font-medium' : 'text-gray-700 bg-white' } m-1 truncate inline-flex items-center w-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+        onClick={() => setLayerActive(layer)}
+      >
         {layer.get('id')}
-      </div>
+      </button>
     </div>
   );
 };

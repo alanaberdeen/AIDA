@@ -76,7 +76,6 @@ const Viewer2D = (props: { imageUrl: string }) => {
       tileLayer.set('type', 'image')
       map.addLayer(tileLayer)
 
-
       // ANNOTATION LAYER ------------------------------------------------------
       const vectorSource = new VectorSource({ wrapX: false })
 
@@ -93,6 +92,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
       vectorLayer.set('id', 'layer 1')
       vectorLayer.set('type', 'annotation')
       map.addLayer(vectorLayer)
+      map.getLayers().set('activeLayer', vectorLayer)
 
       // VIEW ------------------------------------------------------------------
       const view = new View({
