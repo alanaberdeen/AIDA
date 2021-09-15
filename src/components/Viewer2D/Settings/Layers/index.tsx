@@ -16,7 +16,7 @@ const Layers = (props: { map: Map }) => {
   const { map } = props;
 
   const [layers, setLayers] = useState([]);
-  const [activeLayer, setActiveLayer] = useState(null);
+  const [activeLayer, setActiveLayer] = useState(map.getLayers().get('active').layer);
 
   // Get annotation layers from map
   useEffect(() => {
