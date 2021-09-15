@@ -39,7 +39,7 @@ const Overview = (props: { map: Map }) => {
   }, [map]);
 
   return (
-    <div>
+    <div className="shadow-sm">
       <button
         className={classNames(
           isOpen

@@ -58,7 +58,7 @@ const Layers = (props: { map: Map }) => {
   }, [map]);
 
   return (
-    <Disclosure as="div">
+    <Disclosure className="shadow-sm" as="div">
       {({ open }) => (
         <>
           <Disclosure.Button
