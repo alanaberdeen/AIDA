@@ -63,7 +63,7 @@ const Layers = (props: { map: Map }) => {
         <>
           <Disclosure.Button
             className={classNames(
-              open ? "rounded-t-md border-b-2" : "rounded-md border-b-0",
+              open ? "rounded-t-sm border-b-2" : "rounded-sm border-b-0",
               "text-gray-700 hover:bg-gray-50 hover:text-gray-900 bg-white group w-full flex items-center pr-2 py-2 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-10"
             )}
           >
@@ -79,7 +79,7 @@ const Layers = (props: { map: Map }) => {
             </svg>
             Layers
           </Disclosure.Button>
-          <Disclosure.Panel className="bg-white rounded-b-md">
+          <Disclosure.Panel className="bg-white rounded-b-sm">
             {/* Active layer tab controls */}
             {activeLayer && <ActiveLayerControls activeLayer={activeLayer} />}
 

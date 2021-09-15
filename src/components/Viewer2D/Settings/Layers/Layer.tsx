@@ -61,7 +61,7 @@ const Layer = (props: {
 
   return (  
     <div
-      className={`${active ? 'text-blue-900 bg-gray-100' : 'text-gray-700 bg-white' } flex justify-between w-full text-sm overflow-hidden`}
+      className={`${active ? 'text-blue-900 bg-gray-50' : 'text-gray-700 bg-white' } flex justify-between w-full text-sm overflow-hidden`}
       onContextMenu={(e) => {
         e.preventDefault();
         contextMenuRef.current.click();

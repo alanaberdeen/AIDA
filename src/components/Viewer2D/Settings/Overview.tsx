@@ -43,8 +43,8 @@ const Overview = (props: { map: Map }) => {
       <button
         className={classNames(
           isOpen
-            ? "rounded-t-md border-b-2"
-            : "rounded-md border-b-0",
+            ? "rounded-t-sm border-b-2"
+            : "rounded-sm border-b-0",
           "text-gray-700 hover:bg-gray-50 hover:text-gray-900 bg-white group w-full flex items-center pr-2 py-2 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-10"
         )}
         onClick={() => setIsOpen(!isOpen)}
@@ -61,7 +61,7 @@ const Overview = (props: { map: Map }) => {
         </svg>
         Overview
       </button>
-      <div ref={overviewEl} className={`${!isOpen ? 'hidden' : ''} w-full h-32 bg-white rounded-b-md`}/>
+      <div ref={overviewEl} className={`${!isOpen ? 'hidden' : ''} w-full h-32 bg-white rounded-b-sm`}/>
     </div>
   );
 };
