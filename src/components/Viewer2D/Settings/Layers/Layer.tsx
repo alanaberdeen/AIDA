@@ -21,8 +21,10 @@ const Layer = (props: {
   // Utilities for editing layer name
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef(null);
+  const [nameInputValue, setNameInputValue] = useState(layer.get('id'));
   const handleNameChange = (e: SyntheticEvent) => {
     const newName = (e.target as HTMLInputElement).value;
+    setNameInputValue(newName);
     layer.set('id', newName);
   }
 
@@ -93,7 +95,7 @@ const Layer = (props: {
         className={`${isEditingName ? 'w-full m-1' : 'w-0'} block focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 focus:border-blue-500 border-gray-300`}
         placeholder={layer.get('id')}
         onBlur={() => { setIsEditingName(false) }}
-        value={layer.get('id')}
+        value={nameInputValue}
         onChange={handleNameChange}
         onKeyUp={(e) => {if (e.key === 'Enter') { nameInputRef.current.blur() }}}
       />

@@ -93,7 +93,7 @@ const Layers = (props: { map: Map }) => {
             <div className="max-h-40 overflow-y-auto">
               {layers.map((layer, index) => (
                 <Layer
-                  key={index}
+                  key={layer.ol_uid}
                   layer={layer}
                   index={index}
                   active={activeLayer === layer}
