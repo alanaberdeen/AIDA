@@ -1,24 +1,35 @@
-import { useState, useEffect } from 'react'
+import { useRef } from 'react'
 
 import Map from "ol/Map";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from 'ol/source/Vector';
-import Geometry from 'ol/geom/Geometry'
 
 import { PlusSmIcon } from '@heroicons/react/solid';
 
 // Manage annotation layers
 const FooterToolbar = (props: {
-  activeLayer: VectorLayer<VectorSource<Geometry>>
   map: Map
 }) => {
-  const { activeLayer, map } = props;
+  const { map } = props;
+
+  // Keep track of how many new layers we have created so that we can apply 
+  // appropriate names
+  const newLayerCount = useRef(1);
+
+  const isLayerWithName = (name: string) => {
+    const layers = map.getLayers()
+    const sameNameLayer = layers.getArray().find(layer => layer.get('id') === name);
+    if (sameNameLayer !== undefined) return true;
+    else return false;
+  }
 
   const addNewLayer = () => {
-    const layers = map.getLayers()
-    const annotationLayers = layers.getArray().filter((layer) => layer.get("type") === "annotation");
-    const newLayerId = `layer ${annotationLayers.length + 1}`
+    // Find the next free layer name
+    while(isLayerWithName(`Layer ${newLayerCount.current}`)) {
+      newLayerCount.current += 1;
+    }
 
+    const newLayerId = `Layer ${newLayerCount.current}`
     const newLayer = new VectorLayer({
       source: new VectorSource({ wrapX: false })
     });

@@ -29,21 +29,19 @@ const Toolbar = (props: { map: Map }) => {
   // This use of 'as' in the type definition might be somewhat risky... 
   // essentially we know (?!) that the layer with this property both exists and
   // is a VectorLayer so we can explicitly cast it as such.
-  const vectorLayer = map.getLayers().get('activeLayer') as VectorLayer<VectorSource<Geometry>>
+  const vectorLayer = map.getLayers().get('active').layer as VectorLayer<VectorSource<Geometry>>
 
   const [activeTool, setActiveTool] = useState('pan')
   const [vectorSource, setVectorSource] = useState(vectorLayer.getSource())
 
-  // Listen to changes to the activeLayer property on the layers collection
+  // Listen to changes to the active property on the layers collection
   // when the activeLayer updates we need to re-set all of the tools as they 
   // are layer, and therefore source, specific.
   useEffect(() => {
     const layers = map.getLayers()
     const listener = () => {
-      const activeLayer = layers.get('activeLayer')
-      if (activeLayer) {
-        setVectorSource(activeLayer.getSource())
-      }
+      const activeLayer = layers.get('active').layer
+      if (activeLayer) setVectorSource(activeLayer.getSource())
     }
     
     layers.on('propertychange', listener)

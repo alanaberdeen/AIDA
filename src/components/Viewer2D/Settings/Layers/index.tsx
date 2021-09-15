@@ -27,9 +27,9 @@ const Layers = (props: { map: Map }) => {
     setLayers(annotationLayers);
 
     // Set active layer, add listener to update active layer on change
-    setActiveLayer(layers.get("activeLayer"));
+    setActiveLayer(layers.get("active").layer);
     const onActiveLayerChange = () => {
-      setActiveLayer(layers.get("activeLayer"));
+      setActiveLayer(layers.get("active").layer);
     };
     layers.on("propertychange", onActiveLayerChange);
 
@@ -38,6 +38,15 @@ const Layers = (props: { map: Map }) => {
       setLayers(
         layers.getArray().filter((layer) => layer.get("type") === "annotation")
       );
+
+      // Update active layer (to the layer above) if the currently active layer
+      // was deleted and therefore is no longer in the collection. Without this
+      // new features will still be applied to the old layer and not visible.
+      if (!layers.getArray().includes(activeLayer)) {
+        const index = layers.get('active').index
+        const newActiveLayer = layers.item(index)
+        layers.set('active', { layer: newActiveLayer, index: index })
+      }
     };
     layers.on("change:length", onLayersLengthChange);
 
@@ -84,8 +93,9 @@ const Layers = (props: { map: Map }) => {
             <div className="max-h-40 overflow-y-auto">
               {layers.map((layer, index) => (
                 <Layer
-                  layer={layer}
                   key={index}
+                  layer={layer}
+                  index={index}
                   active={activeLayer === layer}
                   map={map}
                 />
@@ -93,7 +103,7 @@ const Layers = (props: { map: Map }) => {
             </div>
 
             {/* Footer toolbar */}
-            <FooterToolbar activeLayer={activeLayer} map={map} />
+            <FooterToolbar map={map} />
           </Disclosure.Panel>
         </>
       )}

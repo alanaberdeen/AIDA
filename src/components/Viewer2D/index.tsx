@@ -89,10 +89,10 @@ const Viewer2D = (props: { imageUrl: string }) => {
 
       // Default first layer
       const vectorLayer = new VectorLayer({ source: vectorSource })
-      vectorLayer.set('id', 'layer 1')
+      vectorLayer.set('id', 'Layer 1')
       vectorLayer.set('type', 'annotation')
       map.addLayer(vectorLayer)
-      map.getLayers().set('activeLayer', vectorLayer)
+      map.getLayers().set('active', {layer: vectorLayer, index: 0})
 
       // VIEW ------------------------------------------------------------------
       const view = new View({
