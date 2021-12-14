@@ -125,11 +125,11 @@ const Layer = (props: {
           
         <Transition
           enter="transition duration-100 ease-out"
-          enterFrom="transform scale-95 opacity-0"
-          enterTo="transform scale-100 opacity-100"
+          enterFrom="scale-95 opacity-0"
+          enterTo="scale-100 opacity-100"
           leave="transition duration-75 ease-out"
-          leaveFrom="transform scale-100 opacity-100"
-          leaveTo="transform scale-95 opacity-0"
+          leaveFrom="scale-100 opacity-100"
+          leaveTo="scale-95 opacity-0"
         >
           <Menu.Items
             className={`absolute w-28 mt-2 origin-top-right -translate-x-full bg-white divide-y divide-gray-100 rounded-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}

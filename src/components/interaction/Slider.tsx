@@ -49,7 +49,7 @@ const Slider = (props) => {
           <Thumb index={0} state={state} trackRef={trackRef} />
         </div>
         
-        <div className="ml-3 text-sm w-16 text-gray-700 flex-shrink">
+        <div className="ml-3 text-sm w-16 text-gray-700 shrink">
           <NumberField {...props} />
         </div>
 
