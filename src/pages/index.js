@@ -26,7 +26,6 @@ export default function Home() {
 		<div>
 			<Head>
 				<title>Annotate Image Data by Assignment - AIDA</title>
-				<link rel="icon" href="/favicon/favicon.ico" />
 			</Head>
 
 			<header className="pt-8 overflow-hidden sm:pt-12 lg:relative lg:py-48">
