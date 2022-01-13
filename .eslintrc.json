@@ -5,16 +5,19 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "standard"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 12,
+        "ecmaVersion": 2021,
         "sourceType": "module"
     },
     "plugins": [
+        "@typescript-eslint",
         "react",
         "react-hooks"
     ],
