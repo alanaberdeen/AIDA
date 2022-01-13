@@ -60,19 +60,19 @@ const NumberField = (props) => {
 					{...inputProps}
 					ref={inputRef}
 					id={inputRef.current}
-					className="pl-1 focus:ring-blue-500 w-full focus:border-blue-500 min-width-0 text-sm border border-gray-300 rounded-l-md"
+					className="pl-1 focus:outline-none focus:ring-teal-500 w-full focus:border-teal-500 min-width-0 text-sm border border-gray-300 rounded-l-md"
 				/>
 
 				<div className="flex flex-col border border-gray-300 rounded-r-md">
 					<button
-						className="-ml-px relative inline-flex items-center px-1 text-sm font-medium rounded-r-md rounded-b-none text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						className="-ml-px relative inline-flex items-center px-1 text-sm font-medium rounded-r-md rounded-b-none text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
 						{...incrementProps}
 						ref={incrementRef}
 					>
 						<ChevronUpIcon className="h-3 w-3" aria-hidden="true" />
 					</button>
 					<button
-						className="-ml-px relative inline-flex items-center px-1 text-sm font-medium rounded-r-md rounded-t-none text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+						className="-ml-px relative inline-flex items-center px-1 text-sm font-medium rounded-r-md rounded-t-none text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
 						{...decrementProps}
 						ref={decrementRef}
 					>

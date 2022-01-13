@@ -29,7 +29,7 @@ const Settings = (props: { map: Map }) => {
 				onClick={() => setIsOpen((isOpen) => !isOpen)}
 				className={`hover:bg-gray-100 ${
 					isOpen ? 'w-48 flex justify-between' : ''
-				} mb-1 bg-gray-200 h-8 absolute top-0 right-0 inline-flex items-center p-1 border border-transparent shadow-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+				} rounded-bl-md mb-1 bg-gray-200 h-8 absolute top-0 right-0 inline-flex items-center p-1 border border-transparent shadow-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
 			>
 				{!isOpen && <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />}
 				<span className={`${isOpen ? 'font-medium' : ''}`}>Settings</span>

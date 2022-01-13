@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect, SyntheticEvent } from 'react'
 
-import { Menu, Transition } from '@headlessui/react'
-
 import Map from 'ol/Map'
 import VectorLayer from 'ol/layer/Vector'
 import VectorSource from 'ol/source/Vector'
@@ -135,10 +133,6 @@ const FeatureClass = (props: {
 		}
 	}
 
-	// Utilities for context menu
-	const [contextMenuPos, setContextMenuPos] = useState([null, null])
-	const contextMenuRef = useRef(null)
-
 	// Attach a listener for opacity changes (the opacity of this class may also
 	// be changed by the activeClassControls slider). Need to do this inside a
 	// useEffect hook so we can return a cleanup function and avoid a memory leak.
@@ -201,18 +195,13 @@ const FeatureClass = (props: {
 	return (
 		<div
 			className={`${
-				active ? 'text-blue-900 bg-gray-50' : 'text-gray-700 bg-white'
+				active ? 'text-teal-800 bg-gray-100' : 'text-gray-700 bg-white'
 			} flex justify-between w-full text-sm`}
-			onContextMenu={(e) => {
-				e.preventDefault()
-				contextMenuRef.current.click()
-				setContextMenuPos([e.clientX, e.clientY])
-			}}
 		>
 			{/* Opacity */}
 			<button
 				type="button"
-				className="m-1 inline-flex items-center text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500"
+				className="m-1 inline-flex items-center text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-teal-500"
 				onClick={toggleOpacity}
 			>
 				{isVisible ? (
@@ -241,7 +230,7 @@ const FeatureClass = (props: {
 				ref={nameInputRef}
 				className={`${
 					isEditingName ? 'w-full m-1' : 'w-0'
-				} block focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 focus:border-blue-500 border-gray-300`}
+				} block focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-teal-500 focus:border-teal-500 border-gray-300`}
 				placeholder={featureClass.name}
 				onBlur={() => {
 					setIsEditingName(false)
@@ -259,7 +248,7 @@ const FeatureClass = (props: {
 				type="button"
 				className={`${
 					isEditingName ? 'w-0' : 'w-full m-1'
-				} truncate text-left w-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500`}
+				} truncate text-left w-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-teal-500`}
 				onClick={() => activateFeatureClass()}
 				onDoubleClick={() => {
 					setIsEditingName(true)
@@ -268,47 +257,6 @@ const FeatureClass = (props: {
 			>
 				{featureClass.name}
 			</button>
-
-			{/* Context menu */}
-			{/*
-        This seems like a poor way of doing this - there is likely a better 
-        solution. We are using a hidden button to open the context menu. We are
-        activating that button via an onContextMenu event (see above). This is 
-        because headlessUI do not expose the open state of their menu so we 
-        cannot easily create a controlled component. It's a workaround.
-      */}
-			<Menu>
-				<Menu.Button ref={contextMenuRef} />
-
-				<Transition
-					enter="transition duration-100 ease-out"
-					enterFrom="scale-95 opacity-0"
-					enterTo="scale-100 opacity-100"
-					leave="transition duration-75 ease-out"
-					leaveFrom="scale-100 opacity-100"
-					leaveTo="scale-95 opacity-0"
-				>
-					<Menu.Items
-						className={`absolute w-28 mt-2 origin-top-right -translate-x-full bg-white divide-y divide-gray-100 rounded-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
-						style={{ left: contextMenuPos[0], top: contextMenuPos[1] }}
-					>
-						<div className="px-1 py-1 ">
-							<Menu.Item>
-								{({ active }) => (
-									<button
-										className={`${
-											active ? 'bg-blue-500 text-white' : 'text-gray-900'
-										} group flex rounded-sm items-center w-full p-1 text-sm`}
-										// onClick={() => { map.removeLayer(layer) }}
-									>
-										Delete
-									</button>
-								)}
-							</Menu.Item>
-						</div>
-					</Menu.Items>
-				</Transition>
-			</Menu>
 		</div>
 	)
 }

@@ -43,7 +43,7 @@ const FooterToolbar = (props: { map: Map }) => {
 		<div className="border-t border-gray-200 flex justify-end">
 			<button
 				type="button"
-				className="inline-flex items-center m-1 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+				className="inline-flex items-center m-1 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
 				onClick={addNewLayer}
 				title="Add new layer"
 			>

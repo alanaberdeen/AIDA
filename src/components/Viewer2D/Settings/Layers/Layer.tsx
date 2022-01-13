@@ -68,7 +68,7 @@ const Layer = (props: {
 	return (
 		<div
 			className={`${
-				active ? 'text-blue-900 bg-gray-50' : 'text-gray-700 bg-white'
+				active ? 'text-teal-800 bg-gray-100' : 'text-gray-700 bg-white'
 			} flex justify-between w-full text-sm overflow-hidden`}
 			onContextMenu={(e) => {
 				e.preventDefault()
@@ -78,7 +78,7 @@ const Layer = (props: {
 		>
 			<button
 				type="button"
-				className="m-1 inline-flex items-center text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500"
+				className="m-1 inline-flex items-center text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-teal-500"
 				onClick={toggleOpacity}
 			>
 				{isVisible ? (
@@ -101,7 +101,7 @@ const Layer = (props: {
 				ref={nameInputRef}
 				className={`${
 					isEditingName ? 'w-full m-1' : 'w-0'
-				} block focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 focus:border-blue-500 border-gray-300`}
+				} block focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-teal-500 focus:border-teal-500 border-gray-300`}
 				placeholder={layer.get('id')}
 				onBlur={() => {
 					setIsEditingName(false)
@@ -119,7 +119,7 @@ const Layer = (props: {
 				type="button"
 				className={`${
 					isEditingName ? 'w-0' : 'w-full m-1'
-				} truncate text-left w-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500`}
+				} truncate text-left w-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-teal-500`}
 				onClick={() => setLayerActive(layer)}
 				onDoubleClick={() => {
 					setIsEditingName(true)
@@ -157,7 +157,7 @@ const Layer = (props: {
 								{({ active }) => (
 									<button
 										className={`${
-											active ? 'bg-blue-500 text-white' : 'text-gray-900'
+											active ? 'bg-teal-500 text-white' : 'text-gray-900'
 										} group flex rounded-sm items-center w-full p-1 text-sm`}
 										onClick={() => {
 											map.removeLayer(layer)

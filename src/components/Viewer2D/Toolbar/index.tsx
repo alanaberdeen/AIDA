@@ -413,8 +413,8 @@ const Toolbar = (props: { map: Map }) => {
 			{tools?.includes('pan') && (
 				<button
 					className={`${
-						activeTool === 'pan' ? 'text-blue-800 bg-gray-200' : 'text-gray-500'
-					} block border-b rounded-t-lg p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150`}
+						activeTool === 'pan' ? 'text-teal-700 bg-gray-200' : 'text-gray-500'
+					} block border-b rounded-t-lg p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
 					onClick={() => setActiveTool('pan')}
 					aria-label="Activate pan tool"
 					title="Pan"
@@ -438,9 +438,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'select'
-							? 'text-blue-800 bg-gray-200'
+							? 'text-teal-700 bg-gray-200'
 							: 'text-gray-500'
-					} block p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150`}
+					} block p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
 					onClick={() => setActiveTool('select')}
 					aria-label="Activate select tool"
 					title="Select"
@@ -460,9 +460,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'modify'
-							? 'text-blue-800 bg-gray-200'
+							? 'text-teal-700 bg-gray-200'
 							: 'text-gray-500'
-					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150`}
+					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
 					onClick={() => setActiveTool('modify')}
 					aria-label="Activate modify tool"
 					title="Modify"
@@ -482,9 +482,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'point'
-							? 'text-blue-800 bg-gray-200'
+							? 'text-teal-700 bg-gray-200'
 							: 'text-gray-500'
-					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150`}
+					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
 					onClick={() => setActiveTool('point')}
 					aria-label="Activate point tool"
 					title="Point"
@@ -505,9 +505,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'lineString'
-							? 'text-blue-800 bg-gray-200'
+							? 'text-teal-700 bg-gray-200'
 							: 'text-gray-500'
-					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150`}
+					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
 					onClick={() => setActiveTool('lineString')}
 					aria-label="Activate line-string tool"
 					title="LineString"
@@ -527,9 +527,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'polygon'
-							? 'text-blue-800 bg-gray-200'
+							? 'text-teal-700 bg-gray-200'
 							: 'text-gray-500'
-					} block p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150`}
+					} block p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
 					onClick={() => setActiveTool('polygon')}
 					aria-label="Activate polygon tool"
 					title="Polygon"
@@ -548,8 +548,8 @@ const Toolbar = (props: { map: Map }) => {
 			{tools?.includes('box') && (
 				<button
 					className={`${
-						activeTool === 'box' ? 'text-blue-800 bg-gray-200' : 'text-gray-500'
-					} block p-2 rounded-b-lg text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150`}
+						activeTool === 'box' ? 'text-teal-700 bg-gray-200' : 'text-gray-500'
+					} block p-2 rounded-b-lg text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
 					onClick={() => setActiveTool('box')}
 					aria-label="Activate box tool"
 					title="Box"
