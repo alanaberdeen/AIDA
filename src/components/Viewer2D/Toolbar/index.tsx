@@ -15,7 +15,7 @@ import Modify from 'ol/interaction/Modify'
 import { createBox } from 'ol/interaction/Draw'
 import * as olExtent from 'ol/extent';
 import Feature from 'ol/Feature'
-
+import { Style, Fill, Stroke } from 'ol/style';
 
 // Toolbar component
 // Hovers over the image canvas.
@@ -54,6 +54,32 @@ const Toolbar = (props: { map: Map }) => {
   // Mouse position is useful in some interactions (e.g. pasting a feature(s))
   let mousePos = [0, 0]
   map.on('pointermove', (event) => { mousePos = event.coordinate })
+
+  // Callback to set the class of a newly created feature to the active class
+  const setClass = (e) => {
+    const featureClass = map.get('featureClasses')[map.get('activeFeatureClass')]
+    e.feature.set('class', featureClass.id);
+
+    e.feature.setStyle(new Style({
+      stroke: new Stroke({
+        color: featureClass.style.stroke.color,
+        width: featureClass.style.stroke.width
+      }),
+    }));
+
+    if (featureClass.style.fill) {
+      e.feature.setStyle(new Style({
+        fill: new Fill({
+          color: featureClass.style.fill.color,
+        }),
+        stroke: new Stroke({
+          color: featureClass.style.stroke.color,
+          width: featureClass.style.stroke.width
+        }),
+      }));
+    }
+    
+  };
  
   // Initialise tools
   useEffect(() => {
@@ -114,6 +140,7 @@ const Toolbar = (props: { map: Map }) => {
     });
     box.setActive(false)
     box.set('id', 'box')
+    box.on('drawend', setClass)
 
     // point
     const point = new Draw({
@@ -138,6 +165,7 @@ const Toolbar = (props: { map: Map }) => {
     })
     polygon.setActive(false)
     polygon.set('id', 'polygon')
+    polygon.on('drawend', setClass)
 
     map.getInteractions().extend([
       conditionalDragPan,
@@ -154,7 +182,6 @@ const Toolbar = (props: { map: Map }) => {
       polygon,
     ])
   }, [map, vectorSource])
-
 
   // Update the active tool
   useEffect(() => {

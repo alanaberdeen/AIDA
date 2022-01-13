@@ -94,6 +94,26 @@ const Viewer2D = (props: { imageUrl: string }) => {
       map.addLayer(vectorLayer)
       map.getLayers().set('active', {layer: vectorLayer, index: 0})
 
+      // FEATURES --------------------------------------------------------------
+      // Set default feature class
+      map.set('featureClasses', {
+        0: {
+          id: 0,
+          name: 'Default class',
+          description: 'Default feature class.',
+          style: {
+            stroke: {
+              color: [51, 153, 204],
+              width: 1.25,
+            },
+            fill: {
+              color: [255,255,255,0.4]
+            }
+          }
+        }
+      })
+      map.set('activeFeatureClass', 0)
+
       // VIEW ------------------------------------------------------------------
       const view = new View({
         center: [dzi.size.width / 2, dzi.size.height / 2],
@@ -120,7 +140,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
   return (
     <div className="min-w-full min-h-screen flex bg-white">
       {/* Toolbar */}
-      {map && <Toolbar map={map}/>}
+      {map && <Toolbar map={map} />}
 
       {/* Image view */}
       {map && <Viewer map={map} /> }
