@@ -9,7 +9,7 @@ const Demo = () => {
 	return (
 		<>
 			<Head>
-				<link rel="icon" href="/favicon/favicon.ico" />
+				<title>Demo - AIDA</title>
 			</Head>
 			<Viewer2D imageUrl={imageUrl} />
 		</>
