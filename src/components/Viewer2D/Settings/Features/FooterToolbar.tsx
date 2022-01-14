@@ -55,7 +55,7 @@ const FooterToolbar = (props: {
 				type="button"
 				className="inline-flex items-center m-1 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
 				onClick={addFeatureClass}
-				title="Add new layer"
+				title="Add new feature class"
 			>
 				<PlusSmIcon className="h-4 w-4" aria-hidden="true" />
 			</button>
