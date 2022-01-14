@@ -39,11 +39,10 @@ const Overview = (props: { map: Map }) => {
 	}, [map])
 
 	return (
-		<div className="shadow-sm">
+		<div>
 			<button
 				className={classNames(
-					isOpen ? 'rounded-t-sm border-b-2' : 'rounded-sm border-b-0',
-					'text-gray-700 hover:bg-gray-50 hover:text-gray-900 bg-white group w-full flex items-center pr-2 py-2 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 relative z-10'
+					'text-gray-700 hover:bg-gray-50 hover:text-gray-900 bg-white group w-full flex items-center pr-2 py-2 text-left text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 relative z-10 ring-inset'
 				)}
 				onClick={() => setIsOpen(!isOpen)}
 			>
@@ -61,9 +60,7 @@ const Overview = (props: { map: Map }) => {
 			</button>
 			<div
 				ref={overviewEl}
-				className={`${
-					!isOpen ? 'hidden' : ''
-				} w-full h-32 bg-white rounded-b-sm`}
+				className={`${!isOpen ? 'hidden bg-gray-50' : ''} h-32`}
 			/>
 		</div>
 	)

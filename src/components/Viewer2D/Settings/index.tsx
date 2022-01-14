@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ChevronLeftIcon, XIcon } from '@heroicons/react/solid'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
 
 import Map from 'ol/Map'
 
@@ -27,21 +27,25 @@ const Settings = (props: { map: Map }) => {
 			{/* Open and close button */}
 			<button
 				onClick={() => setIsOpen((isOpen) => !isOpen)}
-				className={`hover:bg-gray-100 ${
-					isOpen ? 'w-48 flex justify-between' : ''
-				} rounded-bl-md mb-1 bg-gray-200 h-8 absolute top-0 right-0 inline-flex items-center p-1 border border-transparent shadow-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
+				className={`${
+					isOpen
+						? 'w-48 flex justify-between border-l border-b-2 ring-inset'
+						: 'rounded-bl-md'
+				} hover:bg-gray-100 border-gray-200 shadow p-2 bg-white absolute top-0 right-0 inline-flex items-center text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500`}
 			>
 				{!isOpen && <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />}
-				<span className={`${isOpen ? 'font-medium' : ''}`}>Settings</span>
-				{isOpen && <XIcon className="h-4 w-4" aria-hidden="true" />}
+				Settings
+				{isOpen && <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />}
 			</button>
 
 			{/* Content */}
 			{isOpen && (
-				<div className="bg-gray-200 mt-8 min-h-full w-48 p-1 shadow-sm text-gray-800 flex flex-col space-y-2">
+				<div className="bg-white border-l border-gray-200 mt-10 min-h-full w-48 shadow text-gray-800 flex flex-col divide-y">
+					<div />
 					<Overview map={map} />
 					<Layers map={map} />
 					<Features map={map} />
+					<div />
 				</div>
 			)}
 		</>

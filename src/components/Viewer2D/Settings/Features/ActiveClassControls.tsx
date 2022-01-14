@@ -107,7 +107,7 @@ const ActiveClassControls = (props: {
 	}, [activeFeatureClass])
 
 	return (
-		<div className="border-b border-gray-200 flex items-center">
+		<div className="border-b border-t border-gray-100 flex items-center">
 			{/* Opacity slider */}
 			<Slider
 				minValue={0}

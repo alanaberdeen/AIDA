@@ -409,12 +409,14 @@ const Toolbar = (props: { map: Map }) => {
 	})
 
 	return (
-		<div className="absolute left-0 top-0 z-20 flex flex-col m-1 bg-gray-100 rounded-lg pointer-events-auto border border-gray-300">
+		<div className="absolute left-0 top-0 z-20 flex flex-col m-1 bg-white rounded-md pointer-events-auto border border-gray-300 shadow">
 			{tools?.includes('pan') && (
 				<button
 					className={`${
-						activeTool === 'pan' ? 'text-teal-700 bg-gray-200' : 'text-gray-500'
-					} block border-b rounded-t-lg p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
+						activeTool === 'pan'
+							? 'text-teal-700 bg-gray-100 ring-2 ring-teal-500'
+							: 'text-gray-500'
+					} block border-b rounded-t-md p-2 text-sm leading-5 font-medium hover:ring-2 hover:ring-teal-500 hover:bg-gray-100 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 ring-inset`}
 					onClick={() => setActiveTool('pan')}
 					aria-label="Activate pan tool"
 					title="Pan"
@@ -438,9 +440,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'select'
-							? 'text-teal-700 bg-gray-200'
+							? 'text-teal-700 bg-gray-100 ring-2 ring-teal-500'
 							: 'text-gray-500'
-					} block p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
+					} block p-2 text-sm leading-5 font-medium hover:ring-2 hover:ring-teal-500 hover:bg-gray-100 active:bg-gray-100 transition ease-in-out duration-150  focus:outline-none focus:ring-2 focus:ring-teal-500 ring-inset`}
 					onClick={() => setActiveTool('select')}
 					aria-label="Activate select tool"
 					title="Select"
@@ -460,9 +462,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'modify'
-							? 'text-teal-700 bg-gray-200'
+							? 'text-teal-700 bg-gray-100 ring-2 ring-teal-500'
 							: 'text-gray-500'
-					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
+					} block border-b p-2 text-sm leading-5 font-medium hover:ring-2 hover:ring-teal-500 hover:bg-gray-100 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 ring-inset`}
 					onClick={() => setActiveTool('modify')}
 					aria-label="Activate modify tool"
 					title="Modify"
@@ -482,9 +484,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'point'
-							? 'text-teal-700 bg-gray-200'
+							? 'text-teal-700 bg-gray-100 ring-2 ring-teal-500'
 							: 'text-gray-500'
-					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
+					} block border-b p-2 text-sm leading-5 font-medium hover:ring-2 hover:ring-teal-500 hover:bg-gray-100 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 ring-inset`}
 					onClick={() => setActiveTool('point')}
 					aria-label="Activate point tool"
 					title="Point"
@@ -505,9 +507,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'lineString'
-							? 'text-teal-700 bg-gray-200'
+							? 'text-teal-700 bg-gray-100 ring-2 ring-teal-500'
 							: 'text-gray-500'
-					} block border-b p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
+					} block border-b p-2 text-sm leading-5 font-medium hover:ring-2 hover:ring-teal-500 hover:bg-gray-100 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 ring-inset`}
 					onClick={() => setActiveTool('lineString')}
 					aria-label="Activate line-string tool"
 					title="LineString"
@@ -527,9 +529,9 @@ const Toolbar = (props: { map: Map }) => {
 				<button
 					className={`${
 						activeTool === 'polygon'
-							? 'text-teal-700 bg-gray-200'
+							? 'text-teal-700 bg-gray-100 ring-2 ring-teal-500'
 							: 'text-gray-500'
-					} block p-2 text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
+					} block p-2 text-sm leading-5 font-medium hover:ring-2 hover:ring-teal-500 hover:bg-gray-100 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 ring-inset`}
 					onClick={() => setActiveTool('polygon')}
 					aria-label="Activate polygon tool"
 					title="Polygon"
@@ -548,8 +550,10 @@ const Toolbar = (props: { map: Map }) => {
 			{tools?.includes('box') && (
 				<button
 					className={`${
-						activeTool === 'box' ? 'text-teal-700 bg-gray-200' : 'text-gray-500'
-					} block p-2 rounded-b-lg text-sm leading-5 font-medium hover:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500`}
+						activeTool === 'box'
+							? 'text-teal-700 bg-gray-100 ring-2 ring-teal-500'
+							: 'text-gray-500'
+					} block p-2 rounded-b-md text-sm leading-5 font-medium hover:ring-2 hover:ring-teal-500 hover:bg-gray-100 active:bg-gray-100 transition ease-in-out duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 ring-inset`}
 					onClick={() => setActiveTool('box')}
 					aria-label="Activate box tool"
 					title="Box"
