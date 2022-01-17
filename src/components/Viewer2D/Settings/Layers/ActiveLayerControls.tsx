@@ -34,7 +34,7 @@ const ActiveLayerControls = (props: {
 	}, [activeLayer])
 
 	return (
-		<div className="border-b border-t border-gray-100">
+		<div className="flex items-center">
 			{/* Opacity slider */}
 			<Slider
 				minValue={0}

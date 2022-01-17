@@ -40,7 +40,7 @@ const FooterToolbar = (props: { map: Map }) => {
 	}
 
 	return (
-		<div className="border-t border-gray-100 flex justify-end">
+		<div className="flex justify-end">
 			<button
 				type="button"
 				className="inline-flex items-center m-1 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
