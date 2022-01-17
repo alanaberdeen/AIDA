@@ -5,7 +5,7 @@ import Map from 'ol/Map'
 
 import Overview from './Overview'
 import Layers from './Layers'
-import Features from './Features'
+import Classes from './Classes'
 
 // Settings sidebar
 // Generally for 'global' settings (ones which adjust the entire view and/or all
@@ -44,7 +44,7 @@ const Settings = (props: { map: Map }) => {
 					<div />
 					<Overview map={map} />
 					<Layers map={map} />
-					<Features map={map} />
+					<Classes map={map} />
 					<div />
 				</div>
 			)}

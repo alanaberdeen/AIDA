@@ -26,9 +26,9 @@ const FooterToolbar = (props: {
 		let newId = Object.keys(featureClasses).length + 1
 
 		// Find the next free layer name
-		while (isFeatureClassWithName(`Feature ${newId}`)) newId += 1
+		while (isFeatureClassWithName(`Class ${newId}`)) newId += 1
 
-		const newFeatureName = `Feature ${newId}`
+		const newFeatureName = `Class ${newId}`
 		featureClasses[newId] = {
 			id: newId,
 			name: newFeatureName,

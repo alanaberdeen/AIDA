@@ -15,7 +15,7 @@ function classNames(...classes: string[]) {
 }
 
 // Manage annotation layers, make adjustments such as opacity, etc.
-const Features = (props: { map: Map }) => {
+const Classes = (props: { map: Map }) => {
 	const { map } = props
 
 	const [featureClasses, setFeatureClasses]: [
@@ -46,7 +46,7 @@ const Features = (props: { map: Map }) => {
 						>
 							<path d="M6 6L14 10L6 14V6Z" fill="currentColor" />
 						</svg>
-						Features
+						Classes
 					</Disclosure.Button>
 					<Disclosure.Panel className="relative">
 						{/* Active feature class controls */}
@@ -85,4 +85,4 @@ const Features = (props: { map: Map }) => {
 	)
 }
 
-export default Features
+export default Classes
