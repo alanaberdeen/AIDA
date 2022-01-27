@@ -35,3 +35,6 @@ yarn-error.log*
 
 # ide
 .vscode/*
+
+# local data
+/local/data
