@@ -1,4 +1,5 @@
 import 'tailwindcss/tailwind.css'
+import './styles/common.css'
 import './overview.css'
 import Head from 'next/head'
 
