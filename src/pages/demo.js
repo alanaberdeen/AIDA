@@ -1,4 +1,4 @@
-import Viewer2D from '../components/Viewer2D'
+import Viewer from '../components/viewer'
 import Head from 'next/head'
 
 const Demo = () => {
@@ -11,7 +11,7 @@ const Demo = () => {
 			<Head>
 				<title>Demo - AIDA</title>
 			</Head>
-			<Viewer2D imageUrl={imageUrl} />
+			<Viewer imageUrl={imageUrl} />
 		</>
 	)
 }
