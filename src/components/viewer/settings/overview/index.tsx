@@ -5,7 +5,7 @@ import OverviewMap from 'ol/control/OverviewMap'
 import TileLayer from 'ol/layer/Tile'
 import Zoomify from 'ol/source/Zoomify'
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')
 }
 
@@ -33,7 +33,7 @@ const Overview = (props: { map: Map }) => {
 					source: imageSource,
 				}),
 			],
-			target: overviewEl.current,
+			target: overviewEl.current || undefined,
 		})
 		map.addControl(overview)
 	}, [map])

@@ -1,7 +1,7 @@
 import Map from 'ol/Map'
 import { useEffect, useRef } from 'react'
 
-const Viewer = (props: { map: Map }) => {
+const MapView = (props: { map: Map }) => {
 	const { map } = props
 
 	// Create a reference for this view, useful in cases with multiple views.
@@ -17,4 +17,4 @@ const Viewer = (props: { map: Map }) => {
 	return <div className="flex flex-grow" ref={viewEl} />
 }
 
-export default Viewer
+export default MapView

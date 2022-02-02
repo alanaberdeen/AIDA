@@ -3,9 +3,9 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
 
 import Map from 'ol/Map'
 
-import Overview from './Overview'
-import Layers from './Layers'
-import Classes from './Classes'
+import Overview from './overview'
+import Layers from './layers'
+import Classes from './classes'
 
 // Settings sidebar
 // Generally for 'global' settings (ones which adjust the entire view and/or all

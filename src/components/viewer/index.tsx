@@ -10,11 +10,11 @@ import VectorLayer from 'ol/layer/Vector'
 
 import { parseDzi } from '../../lib/utils/parseDzi'
 
-import Toolbar from './Toolbar'
-import Viewer from './Viewer'
-import Settings from './Settings'
+import Toolbar from './toolbar'
+import MapView from './MapView'
+import Settings from './settings'
 
-const Viewer2D = (props: { imageUrl: string }) => {
+const Viewer = (props: { imageUrl: string }) => {
 	const { imageUrl } = props
 
 	const [map, setMap] = useState(null)
@@ -145,7 +145,7 @@ const Viewer2D = (props: { imageUrl: string }) => {
 			{map && <Toolbar map={map} />}
 
 			{/* Image view */}
-			{map && <Viewer map={map} />}
+			{map && <MapView map={map} />}
 
 			{/* Right settings sidebar */}
 			{map && <Settings map={map} />}
@@ -153,4 +153,4 @@ const Viewer2D = (props: { imageUrl: string }) => {
 	)
 }
 
-export default Viewer2D
+export default Viewer
