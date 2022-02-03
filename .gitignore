@@ -38,3 +38,7 @@ yarn-error.log*
 
 # local data
 /local/data
+
+# typescript build content
+tsconfig.tsbuildinfo
+/local/tsconfig.tsbuildinfo
