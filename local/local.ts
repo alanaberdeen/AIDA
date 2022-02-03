@@ -38,12 +38,13 @@ async function walk(dir, rootDir) {
 			name: fileName,
 			path: path.relative(rootDir, filePath),
 			children: [],
+			type: 'file',
 			ext: '',
 		}
 		try {
 			const fileStat = await fsp.stat(filePath)
 			if (fileStat.isDirectory()) {
-				fileInfo.children = []
+				fileInfo.type = 'directory'
 			} else if (fileStat.isFile()) {
 				fileInfo.ext = path.extname(fileName)
 			}
@@ -134,6 +135,11 @@ async function startServer() {
 	)
 	app.use(bodyParser.text())
 
+	// Ping
+	app.get('/ping', (req, res) => {
+		res.send('pong')
+	})
+
 	// Save annotation data
 	app.post('/save', async function (req, res) {
 		try {
@@ -146,17 +152,17 @@ async function startServer() {
 		}
 	})
 
-	// Check for images and/or projects.
+	// Walk specified path and return items
 	// req.body.path should be the path to the directory to check.
-	app.post('/checkForImagesAndProjects', async function (req, res) {
+	app.post('/getItemsAtPath', async function (req, res) {
 		try {
 			const pathToCheck = req.body.path
 			const items = await walk(path.join(dataDir, pathToCheck), dataDir)
 			res.send(items)
 		} catch (err) {
-			console.log('Could not check for images')
-			console.log(err)
-			res.send('Failed, could not find images')
+			console.error('Could not get items at path')
+			console.error(err)
+			res.send('Failed, Could not get items at path')
 		}
 	})
 
@@ -197,8 +203,8 @@ async function startServer() {
 	// Listen to requests
 	app.listen(port, () => {
 		console.log('AIDA running at:')
-		console.log(`- Local:   http://localhost:${port}/dashboard`)
-		console.log(`- Network: http://${networkIPAddress}:${port}/dashboard`)
+		console.log(`- Local:   http://localhost:${port}/local`)
+		console.log(`- Network: http://${networkIPAddress}:${port}/local`)
 	})
 }
 

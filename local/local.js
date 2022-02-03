@@ -44,12 +44,13 @@ function walk(dir, rootDir) {
                 name: fileName,
                 path: path_1.default.relative(rootDir, filePath),
                 children: [],
+                type: 'file',
                 ext: '',
             };
             try {
                 const fileStat = yield fsp.stat(filePath);
                 if (fileStat.isDirectory()) {
-                    fileInfo.children = [];
+                    fileInfo.type = 'directory';
                 }
                 else if (fileStat.isFile()) {
                     fileInfo.ext = path_1.default.extname(fileName);
@@ -128,6 +129,10 @@ function startServer() {
             limit: '100mb',
         }));
         app.use(body_parser_1.default.text());
+        // Ping
+        app.get('/ping', (req, res) => {
+            res.send('pong');
+        });
         // Save annotation data
         app.post('/save', function (req, res) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -142,9 +147,9 @@ function startServer() {
                 }
             });
         });
-        // Check for images and/or projects.
+        // Walk specified path and return items
         // req.body.path should be the path to the directory to check.
-        app.post('/checkForImagesAndProjects', function (req, res) {
+        app.post('/getItemsAtPath', function (req, res) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
                     const pathToCheck = req.body.path;
@@ -152,9 +157,9 @@ function startServer() {
                     res.send(items);
                 }
                 catch (err) {
-                    console.log('Could not check for images');
-                    console.log(err);
-                    res.send('Failed, could not find images');
+                    console.error('Could not get items at path');
+                    console.error(err);
+                    res.send('Failed, Could not get items at path');
                 }
             });
         });
@@ -182,8 +187,8 @@ function startServer() {
         // Listen to requests
         app.listen(port, () => {
             console.log('AIDA running at:');
-            console.log(`- Local:   http://localhost:${port}/dashboard`);
-            console.log(`- Network: http://${networkIPAddress}:${port}/dashboard`);
+            console.log(`- Local:   http://localhost:${port}/local`);
+            console.log(`- Network: http://${networkIPAddress}:${port}/local`);
         });
     });
 }
