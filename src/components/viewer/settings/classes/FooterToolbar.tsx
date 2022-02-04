@@ -44,8 +44,8 @@ const FooterToolbar = (props: {
 			},
 		}
 
-		console.log(featureClasses)
 		map.set('featureClasses', featureClasses)
+		map.set('unsavedChanges', true)
 		setFeatureClasses({ ...featureClasses })
 	}
 

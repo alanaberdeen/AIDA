@@ -30,8 +30,16 @@ const FooterToolbar = (props: { map: Map }) => {
 		}
 
 		const newLayerId = `Layer ${newLayerCount.current}`
+
+		const newLayerSource = new VectorSource({ wrapX: false })
+		const unsavedChangesListener = () => map.set('unsavedChanges', true)
+		newLayerSource.on(
+			['addfeature', 'changefeature', 'removefeature'],
+			unsavedChangesListener
+		)
+
 		const newLayer = new VectorLayer({
-			source: new VectorSource({ wrapX: false }),
+			source: newLayerSource,
 		})
 		newLayer.set('id', newLayerId)
 		newLayer.set('type', 'annotation')

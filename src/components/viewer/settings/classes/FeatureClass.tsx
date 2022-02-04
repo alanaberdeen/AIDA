@@ -187,6 +187,7 @@ const FeatureClass = (props: {
 		const previousFeatureClasses = map.get('featureClasses')
 		previousFeatureClasses[featureClass.id].style = featureClass.style
 		map.set('featureClasses', previousFeatureClasses)
+		map.set('unsavedChanges', true)
 
 		setFillColor(fill)
 		setStrokeColor(stroke)

@@ -21,7 +21,7 @@ const Classes = (props: { map: Map }) => {
 	const [featureClasses, setFeatureClasses]: [
 		IFeatureClass[],
 		Dispatch<IFeatureClass[]>
-	] = useState(map.get('featureClasses') || [])
+	] = useState(map.get('featureClasses') || {})
 	const [activeFeatureClass, setActiveFeatureClass]: [
 		IFeatureClass,
 		Dispatch<IFeatureClass>
