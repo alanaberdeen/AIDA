@@ -57,8 +57,20 @@ export const save = async (map: Map) => {
 	})
 
 	// Extract path from window URL
-	const imagePath = window.location.pathname
-	const annotationPath = imagePath.replace(/\.[^.]+$/, '.json')
+	const pathname = window.location.pathname
+
+	// Default annotation path
+	let annotationPath = pathname.replace(/\.[^.]+$/, '.aida')
+
+	// If path ends in .json we assume open a project file. Therefore, we need to
+	// find and adjust the correct path for the annotation data.
+	if (pathname.endsWith('.json')) {
+		const projectResponse = await fetch(`http://localhost:8000/data${pathname}`)
+		if (projectResponse.ok) {
+			const projectResponseJson = await projectResponse.json()
+			annotationPath = projectResponseJson.annotation
+		}
+	}
 
 	// Send request
 	// Default port for localServer is 8000

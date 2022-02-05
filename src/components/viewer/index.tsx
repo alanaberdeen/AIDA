@@ -88,61 +88,28 @@ const Viewer = (props: { imageUrl: string; annotationData: Annotation }) => {
 				map.set('unsavedChanges', true)
 			}
 
-			// If we have annotation data, import it into the map.
-			if (annotationData) {
-				for (const layer of annotationData.layers) {
-					const vectorSource = new VectorSource({ wrapX: false })
-					const vectorLayer = new VectorLayer({ source: vectorSource })
-					vectorLayer.set('id', layer.id)
-					vectorLayer.set('type', 'annotation')
-					map.addLayer(vectorLayer)
-
-					const featuresToDraw = layer.features.map((feature) =>
-						parseFeature(feature, annotationData.classes)
-					)
-
-					vectorSource.addFeatures(featuresToDraw)
-
-					vectorSource.on(
-						['addfeature', 'changefeature', 'removefeature'],
-						unsavedChangesListener
-					)
-				}
-
-				map.set('featureClasses', annotationData.classes)
-				map.set('activeFeatureClass', 0)
-				// Else, create default setup
-			} else {
+			// Import annotation data into the map.
+			for (const layer of annotationData.layers) {
 				const vectorSource = new VectorSource({ wrapX: false })
 				const vectorLayer = new VectorLayer({ source: vectorSource })
-				vectorLayer.set('id', 'Layer 1')
+				vectorLayer.set('id', layer.id)
 				vectorLayer.set('type', 'annotation')
 				map.addLayer(vectorLayer)
+
+				const featuresToDraw = layer.features.map((feature) =>
+					parseFeature(feature, annotationData.classes)
+				)
+
+				vectorSource.addFeatures(featuresToDraw)
 
 				vectorSource.on(
 					['addfeature', 'changefeature', 'removefeature'],
 					unsavedChangesListener
 				)
-
-				// Set default feature class
-				map.set('featureClasses', {
-					0: {
-						id: 0,
-						name: 'Default class',
-						description: 'Default feature class.',
-						style: {
-							stroke: {
-								color: [51, 153, 204],
-								width: 1.25,
-							},
-							fill: {
-								color: [255, 255, 255, 0.4],
-							},
-						},
-					},
-				})
-				map.set('activeFeatureClass', 0)
 			}
+
+			map.set('featureClasses', annotationData.classes)
+			map.set('activeFeatureClass', 0)
 
 			// Set first layer as active layer
 			const firstLayer = map
