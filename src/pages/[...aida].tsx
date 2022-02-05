@@ -11,6 +11,9 @@ const AIDA = () => {
 	const [imageUrl, setImageUrl] = useState('')
 	const [imageName, setImageName] = useState('')
 
+	const [annotationData, setAnnotationData] = useState(null)
+	const [isLoading, setIsLoading] = useState(true)
+
 	useEffect(() => {
 		setImageName(
 			query.aida ? query.aida[query.aida.length - 1] : 'Image not found'
@@ -18,7 +21,30 @@ const AIDA = () => {
 	}, [query, router.isReady])
 
 	useEffect(() => {
-		if (router.isReady) setImageUrl(`http://localhost:8000/data${asPath}`)
+		;(async () => {
+			if (router.isReady) {
+				// We assume if the path ends in .json then we are loading an AIDA project
+				if (asPath.endsWith('.json')) {
+					// TODO: load project
+				} // Otherwise we assume we are loading an image with a corresponding
+				// .json annotation data in the same location.
+				else {
+					setImageUrl(`http://localhost:8000/data${asPath}`)
+
+					const annotationPath = asPath.split('.')[0] + '.json'
+					const response = await fetch(
+						`http://localhost:8000/data${annotationPath}`
+					)
+					const responseJson = await response.json()
+
+					// TODO: parse schema and validate.
+					//       show errors if invalid.
+					setAnnotationData(responseJson)
+
+					setIsLoading(false)
+				}
+			}
+		})()
 	}, [asPath])
 
 	return (
@@ -26,7 +52,9 @@ const AIDA = () => {
 			<Head>
 				<title>{`${imageName} - AIDA`}</title>
 			</Head>
-			{imageUrl && <Viewer imageUrl={imageUrl} />}
+			{!isLoading && (
+				<Viewer imageUrl={imageUrl} annotationData={annotationData} />
+			)}
 		</>
 	)
 }

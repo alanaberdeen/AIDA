@@ -9,13 +9,17 @@ import VectorSource from 'ol/source/Vector'
 import VectorLayer from 'ol/layer/Vector'
 
 import { parseDzi } from '../../lib/utils/parseDzi'
+import parseFeature from '../../lib/utils/parseFeature'
 
 import Toolbar from './toolbar'
 import MapView from './MapView'
 import Settings from './settings'
 
-const Viewer = (props: { imageUrl: string }) => {
-	const { imageUrl } = props
+// Types
+import { Annotation } from '../../types/annotation'
+
+const Viewer = (props: { imageUrl: string; annotationData: Annotation }) => {
+	const { imageUrl, annotationData } = props
 
 	const [map, setMap] = useState(null)
 
@@ -77,44 +81,75 @@ const Viewer = (props: { imageUrl: string }) => {
 			map.addLayer(tileLayer)
 
 			// ANNOTATION LAYER ------------------------------------------------------
-			const vectorSource = new VectorSource({ wrapX: false })
 
-			// Add listeners to the vectorSource that set a property on the map when
+			// Listener for each vectorSource that set a property on the map when
 			// there are unsaved changes to the vector source.
 			const unsavedChangesListener = () => {
 				map.set('unsavedChanges', true)
 			}
-			vectorSource.on(
-				['addfeature', 'changefeature', 'removefeature'],
-				unsavedChangesListener
-			)
 
-			// Default first layer
-			const vectorLayer = new VectorLayer({ source: vectorSource })
-			vectorLayer.set('id', 'Layer 1')
-			vectorLayer.set('type', 'annotation')
-			map.addLayer(vectorLayer)
-			map.getLayers().set('active', { layer: vectorLayer, index: 0 })
+			// If we have annotation data, import it into the map.
+			if (annotationData) {
+				for (const layer of annotationData.layers) {
+					const vectorSource = new VectorSource({ wrapX: false })
+					const vectorLayer = new VectorLayer({ source: vectorSource })
+					vectorLayer.set('id', layer.id)
+					vectorLayer.set('type', 'annotation')
+					map.addLayer(vectorLayer)
 
-			// FEATURES --------------------------------------------------------------
-			// Set default feature class
-			map.set('featureClasses', {
-				0: {
-					id: 0,
-					name: 'Default class',
-					description: 'Default feature class.',
-					style: {
-						stroke: {
-							color: [51, 153, 204],
-							width: 1.25,
-						},
-						fill: {
-							color: [255, 255, 255, 0.4],
+					const featuresToDraw = layer.features.map((feature) =>
+						parseFeature(feature, annotationData.classes)
+					)
+
+					vectorSource.addFeatures(featuresToDraw)
+
+					vectorSource.on(
+						['addfeature', 'changefeature', 'removefeature'],
+						unsavedChangesListener
+					)
+				}
+
+				map.set('featureClasses', annotationData.classes)
+				map.set('activeFeatureClass', 0)
+				// Else, create default setup
+			} else {
+				const vectorSource = new VectorSource({ wrapX: false })
+				const vectorLayer = new VectorLayer({ source: vectorSource })
+				vectorLayer.set('id', 'Layer 1')
+				vectorLayer.set('type', 'annotation')
+				map.addLayer(vectorLayer)
+
+				vectorSource.on(
+					['addfeature', 'changefeature', 'removefeature'],
+					unsavedChangesListener
+				)
+
+				// Set default feature class
+				map.set('featureClasses', {
+					0: {
+						id: 0,
+						name: 'Default class',
+						description: 'Default feature class.',
+						style: {
+							stroke: {
+								color: [51, 153, 204],
+								width: 1.25,
+							},
+							fill: {
+								color: [255, 255, 255, 0.4],
+							},
 						},
 					},
-				},
-			})
-			map.set('activeFeatureClass', 0)
+				})
+				map.set('activeFeatureClass', 0)
+			}
+
+			// Set first layer as active layer
+			const firstLayer = map
+				.getLayers()
+				.getArray()
+				.filter((layer) => layer.get('type') === 'annotation')[0]
+			map.getLayers().set('active', { layer: firstLayer, index: 0 })
 
 			// VIEW ------------------------------------------------------------------
 			const view = new View({
@@ -131,10 +166,14 @@ const Viewer = (props: { imageUrl: string }) => {
 			// Cleanup function
 			return () => {
 				// Remove unsaved changes listener
-				vectorSource.un(
-					['addfeature', 'changefeature', 'removefeature'],
-					unsavedChangesListener
-				)
+				map.getLayers().forEach((layer) => {
+					layer
+						.getSource()
+						.un(
+							['addfeature', 'changefeature', 'removefeature'],
+							unsavedChangesListener
+						)
+				})
 			}
 		})()
 	}, [imageUrl])

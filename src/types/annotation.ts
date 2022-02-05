@@ -8,7 +8,7 @@ interface Style {
 	}
 }
 
-interface FeatureClass {
+export interface FeatureClass {
 	id: number
 	name: string
 	style: Style
