@@ -418,8 +418,10 @@ const Toolbar = (props: { map: Map }) => {
 				switch (event.code) {
 					// On Ctrl+S, save annotation
 					case 'KeyS':
-						event.preventDefault()
-						if (event.ctrlKey) save(map)
+						if (event.ctrlKey) {
+							event.preventDefault()
+							save(map)
+						}
 					default:
 						break
 				}
