@@ -48,10 +48,10 @@ Alternatively, if you'd like to build AIDA youreself:
 Requirement [NodeJS](https://nodejs.org/en/).
 Example work-flow:
 
-1.  Clone the repository
-2.  Install dependencies via `npm install`
-3.  For development: start a hot-reloading dev server with `npm run serve`
-4.  For deployment: bundle together with `npm run build`
+1. Clone the repository
+2. Install dependencies via `npm install`
+3. For development: start a hot-reloading dev server with `npm run serve`
+4. For deployment: bundle together with `npm run build`
 
 ## Support for tiled images, International Image Interoperability Framework (IIIF)
 

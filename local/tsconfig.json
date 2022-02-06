@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "local.ts"
+  ],
+  "compilerOptions": {
+    "target": "es6",
+    "module": "CommonJS",
+    "noEmit": false
+  },
+  "exclude": []
+}
