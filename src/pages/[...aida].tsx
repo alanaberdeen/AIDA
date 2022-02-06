@@ -36,12 +36,16 @@ const defaultAnnotation: Annotation = {
 	],
 }
 
+const defaultDataHost = 'http://localhost:8000/data/'
+const IIIFHost = 'http://localhost:8182/iiif/2'
+
 const AIDA = () => {
 	const router = useRouter()
 	const { asPath, query } = router
 
 	const [imageUrl, setImageUrl] = useState('')
 	const [imageName, setImageName] = useState('')
+	const [imageExt, setImageExt] = useState('dzi')
 
 	const [annotationData, setAnnotationData] = useState(defaultAnnotation)
 	const [isLoading, setIsLoading] = useState(true)
@@ -55,24 +59,26 @@ const AIDA = () => {
 	useEffect(() => {
 		;(async () => {
 			if (router.isReady) {
-				// We assume if the path ends in .json then we are loading an AIDA project
+				// We assume if the path ends in .json then we are loading an AIDA
+				// project which specific image and annotation path as object properties.
 				if (asPath.endsWith('.json')) {
-					const projectResponse = await fetch(
-						`http://localhost:8000/data${asPath}`
-					)
+					const projectResponse = await fetch(`${defaultDataHost}${asPath}`)
 
 					if (projectResponse.ok) {
 						const projectResponseJson = await projectResponse.json()
-						console.log(projectResponseJson)
 
-						setImageUrl(
-							`http://localhost:8000/data/${projectResponseJson.image}`
-						)
+						if (projectResponseJson.image.endsWith('.tiff')) {
+							setImageUrl(`${IIIFHost}${projectResponseJson.image}`)
+						} else {
+							setImageUrl(`${defaultDataHost}${projectResponseJson.image}`)
+						}
+
+						setImageExt(projectResponseJson.image.split('.')[1])
 
 						// Try to load annotation data
 						try {
 							const response = await fetch(
-								`http://localhost:8000/data/${projectResponseJson.annotation}`
+								`${defaultDataHost}${projectResponseJson.annotation}`
 							)
 
 							if (response.ok) {
@@ -89,14 +95,18 @@ const AIDA = () => {
 				} // Otherwise we assume we are loading an image with a corresponding
 				// .json annotation data in the same location.
 				else {
-					setImageUrl(`http://localhost:8000/data${asPath}`)
+					if (asPath.endsWith('.tiff')) {
+						setImageUrl(`${IIIFHost}${asPath}`)
+					} else {
+						setImageUrl(`${defaultDataHost}${asPath}`)
+					}
+
+					setImageExt(asPath.split('.')[1])
 
 					// Try to load annotation data
 					try {
-						const annotationPath = asPath.split('.')[0] + '.aida'
-						const response = await fetch(
-							`http://localhost:8000/data${annotationPath}`
-						)
+						const annotationPath = asPath.replace(/\.[^.]+$/, '.aida')
+						const response = await fetch(`${defaultDataHost}${annotationPath}`)
 
 						if (response.ok) {
 							const responseJson = await response.json()
@@ -121,7 +131,11 @@ const AIDA = () => {
 				<title>{`${imageName} - AIDA`}</title>
 			</Head>
 			{!isLoading && (
-				<Viewer imageUrl={imageUrl} annotationData={annotationData} />
+				<Viewer
+					imageUrl={imageUrl}
+					annotationData={annotationData}
+					imageExt={imageExt}
+				/>
 			)}
 		</>
 	)
