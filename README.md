@@ -10,11 +10,11 @@ For documentation and further information see the [Wiki](https://github.com/alan
 
 ## See a demo
 
-Play with a live example [here](https://alanaberdeen.github.io/AIDA/#/demo)
+Play with a live example [here](https://aida-theta.vercel.app/demo)
 
 ## How has it been implemented?
 
-The user interface is a [VueJS](https://vuejs.org/) Single Page Application, encapsulating and interacting with two other significant JavaScript libraries: [OpenSeaDragon](https://openseadragon.github.io/) to manipulate the high-res images and [PaperJS](http://paperjs.org/) to provide the drawing functionality. [VuetifyJS](http://vuetifyjs.com/) is used as a UI component library which implements the material design language.
+The user interface is a React [NextJS](https://nextjs.org/) Single Page Application, encapsulating and interacting with [OpenLayers](https://openlayers.org/) to provide the images and drawing functionality. [Tailwind](https://tailwindcss.com/) is the css framework.
 
 AIDA reads and writes data in a simple JSON structure over a web API.
 
@@ -24,24 +24,19 @@ The next stage of development will be to integrate intelligent tools that levera
 
 ## License
 
-The software is published as Open Source under the permissive [MIT license](https://github.com/alanaberdeen/AIDA/blob/master/LICENSE). The [API](https://aida.gitbook.io/docs/api-reference) is also be public.
+The software is published as Open Source under the permissive [MIT license](https://github.com/alanaberdeen/AIDA/blob/master/LICENSE).
 
 ## Run Locally
 
-You can use AIDA on your local machine. The only requirement [NodeJS >v11](https://nodejs.org/en/).
-
-An up to date and pre-built application is available on the gh-pages branch.
-
-Alternatively, if you'd like to build AIDA youreself:
+You can use AIDA on your local machine. The only requirement [NodeJS](https://nodejs.org/en/).
 
 1. Clone the repository
-2. Run the OS specific build script `npm run build:darwin:linux` or `npm run build:win32`
-3. `cd` to `/dist`
-4. Install dependencies via `npm install`
-5. Add the images you want to annotate to the `/dist/data/images` directory.
-6. Run the nodeJS local application via `node aidaLocal.js`
-7. Navigate to the localhost webserver specified in the console
-8. Annotations are read from and written to `/dist/data/annotations`
+2. Install the dependencies via [NPM](https://www.npmjs.com/) `npm install`
+3. Run the build script `npm run build`
+4. Add the images you want to annotate to the `/local/data/` directory.
+5. Run the local server application via `npm run start`
+6. Navigate to the localhost webserver specified in the console
+7. Annotations are read from and written to `/local/data/`
 
 ## Develop
 
@@ -50,7 +45,7 @@ Example work-flow:
 
 1. Clone the repository
 2. Install dependencies via `npm install`
-3. For development: start a hot-reloading dev server with `npm run serve`
+3. For development: start a hot-reloading dev server with `npm run start`
 4. For deployment: bundle together with `npm run build`
 
 ## Support for tiled images, International Image Interoperability Framework (IIIF)
@@ -58,7 +53,7 @@ Example work-flow:
 This removes the requirement for DZI file formats and replaces it with a web-server. At this point it is still a bit experimental.
 
 - Deploy Cantaloupe IIIF server as described [here](https://cantaloupe-project.github.io/).
-- Edit the Cantaloupe configuration file so that `FilesystemSource.BasicLookupStrategy.path_prefix` points to `/dist/data/images/`.
+- Edit the Cantaloupe configuration file so that `FilesystemSource.BasicLookupStrategy.path_prefix` points to `/local/data`.
 - Cataloupe server must be running at 'localhost:8182'
 - Currently only TIFF files are supported.
 
