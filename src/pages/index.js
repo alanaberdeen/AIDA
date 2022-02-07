@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowRightIcon } from '@heroicons/react/solid'
 import { StarIcon, ScaleIcon } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 export default function Home() {
 	const [stars, setStars] = useState(48) // Defaults are updated by API call
@@ -132,12 +133,13 @@ export default function Home() {
 								/>
 							</svg>
 						</div>
-						<div className="relative pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
-							{/* TODO: replace with a screenshot of demo AIDA */}
-							<img
+						<div className="responsive pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
+							<Image
 								className="w-full rounded-md shadow-xl ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto lg:max-w-none"
-								src="https://tailwindui.com/img/component-images/task-app-rose.jpg"
-								alt=""
+								src="/images/aida-screenshot.png"
+								alt="screenshot of AIDA interface"
+								width={1000}
+								height={800}
 							/>
 						</div>
 					</div>
