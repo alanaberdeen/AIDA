@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { ArrowRightIcon } from '@heroicons/react/solid'
+import { ArrowRightIcon, ServerIcon } from '@heroicons/react/solid'
 import { StarIcon, ScaleIcon } from '@heroicons/react/outline'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
 	const [stars, setStars] = useState(48) // Defaults are updated by API call
@@ -21,6 +21,9 @@ export default function Home() {
 	//       setForks(data.forks_count);
 	//     });
 	// });
+
+	const [isLocalhost, setIsLocalhost] = useState(false)
+	useEffect(() => setIsLocalhost(window.location.hostname === 'localhost'), [])
 
 	return (
 		<div>
@@ -81,15 +84,28 @@ export default function Home() {
 							</div>
 
 							<div className="mt-4">
-								<Link href="/demo">
-									<a className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm leading-4 font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-										Try a demo
-										<ArrowRightIcon
-											className="ml-2 -mr-0.5 h-4 w-4"
-											aria-hidden="true"
-										/>
-									</a>
-								</Link>
+								{isLocalhost ? (
+									<Link href="/local">
+										<a className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm leading-4 font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+											<ServerIcon className="mr-2 h-4 w-4" aria-hidden="true" />
+											Local server
+											<ArrowRightIcon
+												className="ml-2 -mr-0.5 h-4 w-4"
+												aria-hidden="true"
+											/>
+										</a>
+									</Link>
+								) : (
+									<Link href="/demo">
+										<a className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm leading-4 font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+											Try a demo
+											<ArrowRightIcon
+												className="ml-2 -mr-0.5 h-4 w-4"
+												aria-hidden="true"
+											/>
+										</a>
+									</Link>
+								)}
 							</div>
 						</div>
 					</div>
