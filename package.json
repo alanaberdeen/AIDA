@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build && next export && tsc -p ./local",
+    "start": "next start & node ./local/local.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.0",

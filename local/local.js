@@ -17,10 +17,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const fs_1 = __importDefault(require("fs"));
 const fsp = fs_1.default.promises;
 const path_1 = __importDefault(require("path"));
-const ip_1 = __importDefault(require("ip"));
 const ini_1 = __importDefault(require("ini"));
-// Check for images in the data/images/
-// Write a file an array of the available images as reference.
 // Read configuration file
 const config = ini_1.default.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, 'config.ini'), 'utf-8'));
 const dataDir = path_1.default.isAbsolute(config.data_dir)
@@ -85,7 +82,6 @@ function startServer() {
         app.post('/save', function (req, res) {
             return __awaiter(this, void 0, void 0, function* () {
                 const { annotationPath, annotationData } = req.body;
-                console.log(annotationPath);
                 const absolutePath = path_1.default.join(dataDir, annotationPath);
                 try {
                     const json = JSON.stringify(annotationData);
@@ -93,7 +89,7 @@ function startServer() {
                         yield fsp.writeFile(absolutePath, json, 'utf8');
                     }
                     catch (err) {
-                        // If the error was because the directory did no exist then make it first
+                        // If the error was because the directory did not exist then make it first
                         if (err.code === 'ENOENT') {
                             try {
                                 yield fsp.mkdir(path_1.default.dirname(absolutePath), {
@@ -144,19 +140,9 @@ function startServer() {
             const protocol = iiifHttps ? 'https' : 'http';
             res.send(new URL('/iiif/2/', `${protocol}://${iiifHostname}:${iiifPort}`).toString());
         });
-        // Serve the built application
-        app.use(express_1.default.static(__dirname));
-        app.route('/*').get(function (req, res) {
-            res.sendFile(path_1.default.join(__dirname, 'index.html'));
-        });
-        // Get the IP address of the current machine. The application will also be
-        // usable over the network from this address.
-        const networkIPAddress = ip_1.default.address();
         // Listen to requests
         app.listen(port, () => {
-            console.log('AIDA running at:');
-            console.log(`- Local:   http://localhost:${port}/local`);
-            console.log(`- Network: http://${networkIPAddress}:${port}/local`);
+            console.log('AIDA running:');
         });
     });
 }

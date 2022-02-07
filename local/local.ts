@@ -145,22 +145,9 @@ async function startServer() {
 		)
 	})
 
-	// Serve the built application
-	app.use(express.static(__dirname))
-
-	app.route('/*').get(function (req, res) {
-		res.sendFile(path.join(__dirname, 'index.html'))
-	})
-
-	// Get the IP address of the current machine. The application will also be
-	// usable over the network from this address.
-	const networkIPAddress = ip.address()
-
 	// Listen to requests
 	app.listen(port, () => {
-		console.log('AIDA running at:')
-		console.log(`- Local:   http://localhost:${port}/local`)
-		console.log(`- Network: http://${networkIPAddress}:${port}/local`)
+		console.log('AIDA running:')
 	})
 }
 
