@@ -1,5 +1,9 @@
 # AIDA
 
+## See a demo
+
+Play with a live example [here](https://aida-theta.vercel.app/demo)
+
 ## The Basic Idea
 
 AIDA is an attempt to bring an open source web-based work-flow to image annotation. Currently, in the biomedical imaging space, image annotation is largely confined to single computer shrink-wrapped software with limited interactive capabilities and few, usually closed, data formats.
@@ -8,9 +12,6 @@ AIDA is a web interface that enables distributed teams of researchers to directl
 
 For documentation and further information see the [Wiki](https://github.com/alanaberdeen/AIDA/wiki).
 
-## See a demo
-
-Play with a live example [here](https://aida-theta.vercel.app/demo)
 
 ## How has it been implemented?
 
