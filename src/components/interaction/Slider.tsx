@@ -1,4 +1,5 @@
 // Adapted from https://react-spectrum.adobe.com/react-aria/useSlider.html
+import { useRef } from 'react'
 
 import { useSliderState } from '@react-stately/slider'
 import { useFocusRing } from '@react-aria/focus'
@@ -6,16 +7,27 @@ import { VisuallyHidden } from '@react-aria/visually-hidden'
 import { mergeProps } from '@react-aria/utils'
 import { useNumberFormatter } from '@react-aria/i18n'
 import { useSlider, useSliderThumb } from '@react-aria/slider'
-
-import { useRef } from 'react'
+import type { NumberFormatOptions } from '@internationalized/number'
+import type { AriaSliderProps, SliderProps } from '@react-types/slider'
+import type { SliderState } from '@react-stately/slider'
 
 import NumberField from './NumberField'
 
-const Slider = (props) => {
+const Slider = (
+	props: {
+		formatOptions: NumberFormatOptions
+		value: number[]
+		label?: string | undefined
+	} & SliderProps
+) => {
 	const trackRef = useRef(null)
 	const numberFormatter = useNumberFormatter(props.formatOptions)
 	const state = useSliderState({ ...props, numberFormatter })
-	const { groupProps, trackProps } = useSlider(props, state, trackRef)
+	const { groupProps, trackProps } = useSlider(
+		props as AriaSliderProps,
+		state,
+		trackRef
+	)
 
 	return (
 		<div {...groupProps} className="w-full p-2" style={{ touchAction: 'none' }}>
@@ -45,7 +57,11 @@ const Slider = (props) => {
 	)
 }
 
-const Thumb = (props) => {
+const Thumb = (props: {
+	state: SliderState
+	trackRef: React.RefObject<HTMLElement>
+	index: number
+}) => {
 	const { state, trackRef, index } = props
 	const inputRef = useRef(null)
 	const { thumbProps, inputProps } = useSliderThumb(

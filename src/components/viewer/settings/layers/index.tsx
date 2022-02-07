@@ -7,6 +7,11 @@ import Layer from './Layer'
 import ActiveLayerControls from './ActiveLayerControls'
 import FooterToolbar from './FooterToolbar'
 
+// Types
+import type VectorLayer from 'ol/layer/Vector'
+import type VectorSource from 'ol/source/Vector'
+import type Geometry from 'ol/geom/Geometry'
+
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')
 }
@@ -15,7 +20,9 @@ function classNames(...classes: string[]) {
 const Layers = (props: { map: Map }) => {
 	const { map } = props
 
-	const [layers, setLayers] = useState([])
+	const [layers, setLayers] = useState<VectorLayer<VectorSource<Geometry>>[]>(
+		[]
+	)
 	const [activeLayer, setActiveLayer] = useState(
 		map.getLayers().get('active').layer
 	)
@@ -23,7 +30,9 @@ const Layers = (props: { map: Map }) => {
 	// Get annotation layers from map
 	useEffect(() => {
 		const layers = map.getLayers()
-		const annotationLayers = layers
+
+		// TODO: fix type
+		const annotationLayers: any[] = layers
 			.getArray()
 			.filter((layer) => layer.get('type') === 'annotation')
 		setLayers(annotationLayers)
@@ -37,9 +46,10 @@ const Layers = (props: { map: Map }) => {
 
 		// Add a listener to update layers state when collection changes
 		const onLayersLengthChange = () => {
-			setLayers(
-				layers.getArray().filter((layer) => layer.get('type') === 'annotation')
-			)
+			const annotationLayers: any[] = layers
+				.getArray()
+				.filter((layer) => layer.get('type') === 'annotation')
+			setLayers(annotationLayers)
 
 			// Update active layer (to the layer above) if the currently active layer
 			// was deleted and therefore is no longer in the collection. Without this
@@ -94,7 +104,7 @@ const Layers = (props: { map: Map }) => {
 						<div className="max-h-40 overflow-y-auto">
 							{layers.map((layer, index) => (
 								<Layer
-									key={layer.ol_uid}
+									key={index}
 									layer={layer}
 									index={index}
 									active={activeLayer === layer}

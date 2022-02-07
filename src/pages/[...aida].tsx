@@ -25,7 +25,7 @@ const defaultAnnotation: Annotation = {
 			name: 'Default class',
 			style: {
 				stroke: {
-					color: [51, 153, 204],
+					color: [51, 153, 204, 1],
 					width: 1.25,
 				},
 				fill: {

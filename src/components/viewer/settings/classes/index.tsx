@@ -8,7 +8,7 @@ import FeatureClass from './FeatureClass'
 import FooterToolbar from './FooterToolbar'
 
 // Types
-import { IFeatureClass } from './types'
+import { FeatureClass as IFeatureClass } from '../../../../types/annotation'
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')

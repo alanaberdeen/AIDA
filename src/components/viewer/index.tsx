@@ -27,7 +27,7 @@ const Viewer = (props: {
 }) => {
 	const { imageUrl, annotationData, imageExt } = props
 
-	const [map, setMap] = useState(null)
+	const [map, setMap] = useState<Map>()
 
 	// Instantiate map object here so all child components will all have access
 	// via props. Annoyingly, we can only create our Map object once the page has
@@ -172,12 +172,14 @@ const Viewer = (props: {
 			return () => {
 				// Remove unsaved changes listener
 				map.getLayers().forEach((layer) => {
-					layer
-						.getSource()
-						.un(
-							['addfeature', 'changefeature', 'removefeature'],
-							unsavedChangesListener
-						)
+					if (layer instanceof VectorLayer) {
+						layer
+							.getSource()
+							.un(
+								['addfeature', 'changefeature', 'removefeature'],
+								unsavedChangesListener
+							)
+					}
 				})
 			}
 		})()

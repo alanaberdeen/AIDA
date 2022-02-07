@@ -2,17 +2,17 @@ import Map from 'ol/Map'
 import { PlusSmIcon } from '@heroicons/react/solid'
 
 // Types
-import { IFeatureClass } from './types'
+import { FeatureClass } from '../../../../types/annotation'
 
 // Manage annotation layers
 const FooterToolbar = (props: {
 	map: Map
-	setFeatureClasses: (featureClasses: IFeatureClass[]) => void
+	setFeatureClasses: (featureClasses: FeatureClass[]) => void
 }) => {
 	const { map, setFeatureClasses } = props
 
 	const isFeatureClassWithName = (name: string) => {
-		const featureClasses: { [key: string]: IFeatureClass } =
+		const featureClasses: { [key: string]: FeatureClass } =
 			map.get('featureClasses')
 		const sameNameClass = Object.values(featureClasses).find(
 			(featureClass) => featureClass.name === name

@@ -7,7 +7,7 @@
 
 import { useState } from 'react'
 
-const memoryState = {}
+const memoryState: { [key: string]: any } = {}
 
 function useMemoryState(key: string, initialState: any) {
 	const [state, setState] = useState(() => {

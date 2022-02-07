@@ -58,7 +58,7 @@ const Dashboard = () => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'k' && e.ctrlKey) {
 				e.preventDefault()
-				if (searchInput.current) searchInput.current.focus()
+				if (searchInput.current) (searchInput.current as HTMLElement).focus()
 			}
 		}
 

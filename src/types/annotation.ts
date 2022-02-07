@@ -1,10 +1,10 @@
 interface Style {
 	stroke: {
-		color: [red: number, green: number, blue: number, alpha?: number]
+		color: [red: number, green: number, blue: number, alpha: number]
 		width: number | 1
 	}
 	fill?: {
-		color: [red: number, green: number, blue: number, alpha?: number]
+		color: [red: number, green: number, blue: number, alpha: number]
 	}
 }
 
@@ -15,17 +15,17 @@ export interface FeatureClass {
 	description?: string
 }
 
-interface Point {
+export interface Point {
 	type: 'Point'
 	coordinates: number[]
 }
 
-interface LineString {
+export interface LineString {
 	type: 'LineString'
 	coordinates: number[][]
 }
 
-interface Polygon {
+export interface Polygon {
 	type: 'Polygon'
 	coordinates: number[][][] // Minimum of 3 points
 }

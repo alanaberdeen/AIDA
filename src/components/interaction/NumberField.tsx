@@ -1,24 +1,29 @@
 // Adapted from:
 // https://react-spectrum.adobe.com/react-aria/useNumberField.html
-
+import { useRef } from 'react'
 import { useNumberFieldState } from '@react-stately/numberfield'
 import { useLocale } from '@react-aria/i18n'
 import { useButton } from '@react-aria/button'
 import { useNumberField } from '@react-aria/numberfield'
-
-import { useRef } from 'react'
-
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid'
 
-const NumberField = (props) => {
+import createSimpleId from '../../lib/utils/createSimpleId'
+
+// Types
+import type { KeyboardEvent } from 'react'
+
+const NumberField = (props: { label?: string }) => {
 	const { locale } = useLocale()
 	const state = useNumberFieldState({ ...props, locale })
-	const inputRef = useRef()
-	const incrementRef = useRef()
-	const decrementRef = useRef()
+	const inputRef = useRef<HTMLInputElement>(null)
+	const incrementRef = useRef<HTMLButtonElement>(null)
+	const decrementRef = useRef<HTMLButtonElement>(null)
 
-	const handleKeyDown = (event: KeyboardEvent) => {
-		if (event.key === 'Enter') state.commit()
+	// Create a unique id for the input
+	const id = createSimpleId()
+
+	const handleKeyDown = (e: KeyboardEvent) => {
+		if (e.key === 'Enter') state.commit()
 	}
 
 	const {
@@ -44,7 +49,7 @@ const NumberField = (props) => {
 				<label
 					className="block text-sm font-medium text-gray-700"
 					{...labelProps}
-					htmlFor={inputRef.current}
+					htmlFor={id}
 				>
 					{props.label}
 				</label>
@@ -59,7 +64,7 @@ const NumberField = (props) => {
 					type="number"
 					{...inputProps}
 					ref={inputRef}
-					id={inputRef.current}
+					id={id}
 					className="pl-1 focus:outline-none focus:ring-teal-500 w-full focus:border-teal-500 min-width-0 text-sm border border-gray-300 rounded-l-md"
 				/>
 

@@ -4,7 +4,7 @@ import Map from 'ol/Map'
 import VectorLayer from 'ol/layer/Vector'
 import VectorSource from 'ol/source/Vector'
 import Geometry from 'ol/geom/Geometry'
-import Draw from 'ol/interaction/Draw'
+import Draw, { DrawEvent } from 'ol/interaction/Draw'
 import DragPan from 'ol/interaction/DragPan'
 import MouseWheelZoom from 'ol/interaction/MouseWheelZoom'
 import DragRotate from 'ol/interaction/DragRotate'
@@ -80,7 +80,7 @@ const Toolbar = (props: { map: Map }) => {
 	}, [])
 
 	// Callback to set the class of a newly created feature to the active class
-	const setClass = (e) => {
+	const setClass = (e: DrawEvent) => {
 		const featureClass =
 			map.get('featureClasses')[map.get('activeFeatureClass')]
 		e.feature.set('class', featureClass.id)
@@ -362,10 +362,10 @@ const Toolbar = (props: { map: Map }) => {
 						if (event.ctrlKey) {
 							// Create extent of copied features
 							const extent = clipboardFeatures.reduce((extent, feature) => {
-								return olExtent.extend(
-									extent,
-									feature.getGeometry().getExtent()
-								)
+								const geometry = feature.getGeometry()
+								return geometry
+									? olExtent.extend(extent, geometry.getExtent())
+									: extent
 							}, olExtent.createEmpty())
 
 							// Get center of features extent
@@ -378,7 +378,8 @@ const Toolbar = (props: { map: Map }) => {
 							// Translate copied features by delta
 							const translatedFeatures = clipboardFeatures.map((feature) => {
 								const newFeature = feature.clone()
-								newFeature.getGeometry().translate(delta[0], delta[1])
+								const geometry = newFeature.getGeometry()
+								if (geometry) geometry.translate(delta[0], delta[1])
 								return newFeature
 							})
 
@@ -404,7 +405,7 @@ const Toolbar = (props: { map: Map }) => {
 							) as Select
 						while (selectTool.getFeatures().getLength() > 0) {
 							const feature = selectTool.getFeatures().pop()
-							vectorSource.removeFeature(feature)
+							if (feature) vectorSource.removeFeature(feature)
 						}
 						break
 					default:

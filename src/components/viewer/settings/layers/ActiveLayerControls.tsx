@@ -13,7 +13,7 @@ const ActiveLayerControls = (props: {
 	const { activeLayer } = props
 
 	// Opacity controls
-	const handleOpacityChange = (value: [number] | number) => {
+	const handleOpacityChange = (value: number[]) => {
 		const newOpacity = typeof value === 'number' ? value : value[0]
 		activeLayer.setOpacity(newOpacity)
 	}

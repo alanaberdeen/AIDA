@@ -7,7 +7,13 @@ import Polygon from 'ol/geom/Polygon'
 import { Style, Fill, Stroke } from 'ol/style'
 
 // Types
-import { Feature as FeatureType, FeatureClass } from '../../types/annotation'
+import {
+	Feature as FeatureType,
+	FeatureClass,
+	Point as PointFeature,
+	LineString as LineStringFeature,
+	Polygon as PolygonFeature,
+} from '../../types/annotation'
 
 // Convert JSON annotation feature to Openlayers feature
 export default function parseFeature(
@@ -17,19 +23,24 @@ export default function parseFeature(
 	// De-serialize the coordinates from their Firestore string representation
 	const coordinates = inputFeature.geometry.coordinates
 
-	const outputFeature = new Feature()
-	outputFeature.setId(inputFeature.id)
+	const outputFeature = new Feature() as Feature<Point | LineString | Polygon>
 
 	// Check feature type and set appropriate geometry.
 	switch (inputFeature.geometry.type) {
 		case 'Point':
-			outputFeature.setGeometry(new Point(coordinates))
+			outputFeature.setGeometry(
+				new Point(coordinates as PointFeature['coordinates'])
+			)
 			break
 		case 'LineString':
-			outputFeature.setGeometry(new LineString(coordinates))
+			outputFeature.setGeometry(
+				new LineString(coordinates as LineStringFeature['coordinates'])
+			)
 			break
 		case 'Polygon':
-			outputFeature.setGeometry(new Polygon(coordinates))
+			outputFeature.setGeometry(
+				new Polygon(coordinates as PolygonFeature['coordinates'])
+			)
 			break
 		default:
 			break
@@ -64,12 +75,9 @@ export default function parseFeature(
 		outputFeature.setStyle(style)
 	}
 
-	// Add the remaining properties
-	Object.keys(inputFeature).forEach((key) => {
-		if (key !== 'id' && key !== 'geometry') {
-			outputFeature.set(key, inputFeature[key])
-		}
-	})
+	// Add the remaining properties, but remove 'geometry' as it is redundant.
+	outputFeature.setProperties(inputFeature)
+	outputFeature.unset('geometry')
 
 	return outputFeature
 }

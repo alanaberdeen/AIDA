@@ -7,8 +7,8 @@ interface ColorDetails {
 	hex: string
 	borderColor: string
 	bgColor: string
-	fill: [number, number, number, number?]
-	stroke: [number, number, number, number?]
+	fill: [number, number, number, number]
+	stroke: [number, number, number, number]
 }
 
 const templateColors: ColorDetails[] = [
@@ -18,7 +18,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-gray-500',
 		bgColor: 'bg-gray-500',
 		fill: [107, 114, 128, 0.3],
-		stroke: [107, 114, 128],
+		stroke: [107, 114, 128, 1],
 	},
 	{
 		name: 'Red',
@@ -26,7 +26,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-red-500',
 		bgColor: 'bg-red-500',
 		fill: [239, 68, 68, 0.3],
-		stroke: [239, 68, 68],
+		stroke: [239, 68, 68, 1],
 	},
 	{
 		name: 'Orange',
@@ -34,7 +34,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-orange-500',
 		bgColor: 'bg-orange-500',
 		fill: [249, 115, 22, 0.3],
-		stroke: [249, 115, 22],
+		stroke: [249, 115, 22, 1],
 	},
 	{
 		name: 'Yellow',
@@ -42,7 +42,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-yellow-500',
 		bgColor: 'bg-yellow-500',
 		fill: [234, 179, 8, 0.3],
-		stroke: [234, 179, 8],
+		stroke: [234, 179, 8, 1],
 	},
 	{
 		name: 'Lime',
@@ -50,7 +50,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-lime-500',
 		bgColor: 'bg-lime-500',
 		fill: [132, 204, 22, 0.3],
-		stroke: [132, 204, 22],
+		stroke: [132, 204, 22, 1],
 	},
 	{
 		name: 'Green',
@@ -58,7 +58,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-green-500',
 		bgColor: 'bg-green-500',
 		fill: [34, 197, 94, 0.3],
-		stroke: [34, 197, 94],
+		stroke: [34, 197, 94, 1],
 	},
 	{
 		name: 'Teal',
@@ -66,7 +66,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-teal-500',
 		bgColor: 'bg-teal-500',
 		fill: [20, 184, 166, 0.3],
-		stroke: [20, 184, 166],
+		stroke: [20, 184, 166, 1],
 	},
 	{
 		name: 'Blue',
@@ -74,7 +74,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-blue-500',
 		bgColor: 'bg-blue-500',
 		fill: [59, 130, 246, 0.3],
-		stroke: [59, 130, 246],
+		stroke: [59, 130, 246, 1],
 	},
 	{
 		name: 'Purple',
@@ -82,7 +82,7 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-purple-500',
 		bgColor: 'bg-purple-500',
 		fill: [168, 85, 247, 0.3],
-		stroke: [168, 85, 247],
+		stroke: [168, 85, 247, 1],
 	},
 	{
 		name: 'Pink',
@@ -90,18 +90,18 @@ const templateColors: ColorDetails[] = [
 		borderColor: 'border-pink-500',
 		bgColor: 'bg-pink-500',
 		fill: [236, 72, 153, 0.3],
-		stroke: [236, 72, 153],
+		stroke: [236, 72, 153, 1],
 	},
 ]
 
 export default function ColorPicker(props: {
 	color: {
-		fill: [number, number, number, number?]
-		stroke: [number, number, number, number?]
+		fill: [number, number, number, number]
+		stroke: [number, number, number, number]
 	}
 	onChange: (
-		fill: [number, number, number, number?],
-		stroke: [number, number, number, number?]
+		fill: [number, number, number, number],
+		stroke: [number, number, number, number]
 	) => void
 }) {
 	const { color, onChange } = props
@@ -216,7 +216,7 @@ export default function ColorPicker(props: {
 															newColor.rgb.r,
 															newColor.rgb.g,
 															newColor.rgb.b,
-															newColor.rgb.a,
+															newColor.rgb.a || 1,
 														])
 													}}
 												/>
@@ -252,7 +252,7 @@ export default function ColorPicker(props: {
 																newColor.rgb.r,
 																newColor.rgb.g,
 																newColor.rgb.b,
-																newColor.rgb.a,
+																newColor.rgb.a || 1,
 															],
 															color.stroke
 														)

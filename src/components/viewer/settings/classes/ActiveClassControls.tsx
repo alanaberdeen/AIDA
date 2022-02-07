@@ -10,11 +10,13 @@ import Geometry from 'ol/geom/Geometry'
 
 import Slider from '../../../interaction/Slider'
 
-import { IFeatureClass } from './types'
+// Types
+import { FeatureClass } from '../../../../types/annotation'
+import Select from 'ol/interaction/Select'
 
 // Manage annotation layers
 const ActiveClassControls = (props: {
-	activeFeatureClass: IFeatureClass
+	activeFeatureClass: FeatureClass
 	map: Map
 }) => {
 	const { activeFeatureClass, map } = props
@@ -24,13 +26,15 @@ const ActiveClassControls = (props: {
 		.getInteractions()
 		.getArray()
 		.find((i) => i.get('id') === 'select')
+
 	// Opacity controls
-	const handleOpacityChange = (value: [number] | number) => {
+	const handleOpacityChange = (value: number[]) => {
 		// HACK: opacity changes break when a feature is selected due to the applied
 		// style function for selection indicator. The workaround is to first
 		// deselect all features then apply the style changes.
 		// TODO: find a better way to do this.
-		selectTool.getFeatures().clear()
+		if (selectTool && selectTool instanceof Select)
+			selectTool.getFeatures().clear()
 
 		const newOpacity = typeof value === 'number' ? value : value[0]
 
@@ -75,16 +79,13 @@ const ActiveClassControls = (props: {
 		// Update component state to reflect new opacity
 		setOpacity(newOpacity)
 
-		activeFeatureClass.style.fill.color = [
-			...activeFeatureClass.style.fill.color.slice(0, 3),
-			newOpacity,
-		]
-		const previousFeatureClasses = map.get('featureClasses')
-		previousFeatureClasses[activeFeatureClass.id].style.fill.color = [
-			...activeFeatureClass.style.fill.color.slice(0, 3),
-			newOpacity,
-		]
-		map.set('featureClasses', previousFeatureClasses)
+		if (activeFeatureClass.style.fill) {
+			activeFeatureClass.style.fill.color[3] = newOpacity
+			const previousFeatureClasses = map.get('featureClasses')
+			previousFeatureClasses[activeFeatureClass.id].style.fill.color =
+				activeFeatureClass.style.fill.color
+			map.set('featureClasses', previousFeatureClasses)
+		}
 
 		// HACK: change a property on the map to a new value in order to trigger
 		// a listener that will check the opacity value of the active features.
@@ -93,13 +94,16 @@ const ActiveClassControls = (props: {
 		map.set('change', Math.random())
 	}
 
-	const [opacity, setOpacity] = useState(activeFeatureClass.style.fill.color[3])
+	const [opacity, setOpacity] = useState<number>(
+		activeFeatureClass.style.fill?.color[3] || 1
+	)
 
 	// Listen to opacity changes (the opacity of this feature class may also be
 	// changed by visibility toggle button). Do inside a useEffect so that we can
 	// return a cleanup function to remove the listener and avoid a memory leak.
 	useEffect(() => {
-		const listener = () => setOpacity(activeFeatureClass.style.fill.color[3])
+		const listener = () =>
+			setOpacity(activeFeatureClass.style.fill?.color[3] || 1)
 		map.on('propertychange', listener)
 		return () => {
 			map.un('propertychange', listener)

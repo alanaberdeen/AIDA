@@ -13,14 +13,16 @@ import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
 
 import ColorPicker from '../../../interaction/ColorPicker'
 
-import { IFeatureClass } from './types'
+// Types
+import { FeatureClass } from '../../../../types/annotation'
+import Select from 'ol/interaction/Select'
 
 // Manage annotation layers
 const FeatureClass = (props: {
-	featureClass: IFeatureClass
+	featureClass: FeatureClass
 	active: boolean
 	map: Map
-	setActiveFeatureClass: (featureClass: IFeatureClass) => void
+	setActiveFeatureClass: (featureClass: FeatureClass) => void
 }) => {
 	const { featureClass, active, map, setActiveFeatureClass } = props
 
@@ -28,11 +30,13 @@ const FeatureClass = (props: {
 	const [strokeColor, setStrokeColor] = useState(
 		featureClass.style.stroke.color
 	)
-	const [fillColor, setFillColor] = useState(featureClass.style.fill.color)
+	const [fillColor, setFillColor] = useState(
+		featureClass.style.fill?.color || featureClass.style.stroke.color
+	)
 
 	// Utilities for editing layer name
 	const [isEditingName, setIsEditingName] = useState(false)
-	const nameInputRef = useRef(null)
+	const nameInputRef = useRef<HTMLInputElement>(null)
 	const [nameInputValue, setNameInputValue] = useState(featureClass.name)
 
 	const handleNameChange = (e: SyntheticEvent) => {
@@ -51,12 +55,13 @@ const FeatureClass = (props: {
 		.find((i) => i.get('id') === 'select')
 
 	// Opacity controls
-	const handleOpacityChange = (value: [number] | number) => {
+	const handleOpacityChange = (value: number[]) => {
 		// HACK: opacity changes break when a feature is selected due to the applied
 		// style function for selection indicator. The workaround is to first
 		// deselect all features then apply the style changes.
 		// TODO: find a better way to do this.
-		selectTool.getFeatures().clear()
+		if (selectTool && selectTool instanceof Select)
+			selectTool.getFeatures().clear()
 
 		const newOpacity = typeof value === 'number' ? value : value[0]
 
@@ -98,16 +103,13 @@ const FeatureClass = (props: {
 			)
 		})
 
-		featureClass.style.fill.color = [
-			...featureClass.style.fill.color.slice(0, 3),
-			newOpacity,
-		]
-		const previousFeatureClasses = map.get('featureClasses')
-		previousFeatureClasses[featureClass.id].style.fill.color = [
-			...featureClass.style.fill.color.slice(0, 3),
-			newOpacity,
-		]
-		map.set('featureClasses', previousFeatureClasses)
+		if (featureClass.style.fill) {
+			featureClass.style.fill.color[3] = newOpacity
+			const previousFeatureClasses = map.get('featureClasses')
+			previousFeatureClasses[featureClass.id].style.fill.color =
+				featureClass.style.fill.color
+			map.set('featureClasses', previousFeatureClasses)
+		}
 
 		// HACK: change a property on the map to a new value in order to trigger
 		// a listener that will check the opacity value of the active features.
@@ -118,17 +120,19 @@ const FeatureClass = (props: {
 
 	// Utilities for toggling opacity
 	const [isVisible, setIsVisible] = useState(
-		featureClass.style.fill.color[3] > 0
+		featureClass.style.fill?.color[3] && featureClass.style.fill.color[3] > 0
 	)
-	const opacityCache = useRef(featureClass.style.fill.color[3])
+	const opacityCache = useRef(
+		featureClass.style.fill?.color[3] || featureClass.style.stroke.color[3]
+	)
 	const toggleOpacity = () => {
-		if (featureClass.style.fill.color[3] === 0) {
-			handleOpacityChange(opacityCache.current)
+		if (featureClass.style.fill?.color[3] === 0) {
+			handleOpacityChange([opacityCache.current || 1])
 			setIsVisible(true)
 		} else {
 			opacityCache.current =
 				map.get('featureClasses')[featureClass.id].style.fill.color[3]
-			handleOpacityChange(0)
+			handleOpacityChange([0])
 			setIsVisible(false)
 		}
 	}
@@ -137,7 +141,8 @@ const FeatureClass = (props: {
 	// be changed by the activeClassControls slider). Need to do this inside a
 	// useEffect hook so we can return a cleanup function and avoid a memory leak.
 	useEffect(() => {
-		const listener = () => setIsVisible(featureClass.style.fill.color[3] !== 0)
+		const listener = () =>
+			setIsVisible(featureClass.style.stroke.color[3] !== 0)
 		map.on('propertychange', listener)
 		return () => {
 			map.un('propertychange', listener)
@@ -152,14 +157,15 @@ const FeatureClass = (props: {
 
 	// On color change update all the styles of the active features.
 	const handleColorChange = (
-		fill: [number, number, number, number?],
-		stroke: [number, number, number, number?]
+		fill: [number, number, number, number],
+		stroke: [number, number, number, number]
 	) => {
 		// HACK: opacity changes break when a feature is selected due to the applied
 		// style function for selection indicator. The workaround is to first
 		// deselect all features then apply the style changes.
 		// TODO: find a better way to do this.
-		selectTool.getFeatures().clear()
+		if (selectTool && selectTool instanceof Select)
+			selectTool.getFeatures().clear()
 
 		// Get active features
 		const annotationLayer = map
@@ -182,7 +188,7 @@ const FeatureClass = (props: {
 			)
 		})
 
-		featureClass.style.fill.color = fill
+		if (featureClass.style.fill) featureClass.style.fill.color = fill
 		featureClass.style.stroke.color = stroke
 		const previousFeatureClasses = map.get('featureClasses')
 		previousFeatureClasses[featureClass.id].style = featureClass.style
@@ -239,7 +245,7 @@ const FeatureClass = (props: {
 				value={nameInputValue}
 				onChange={handleNameChange}
 				onKeyUp={(e) => {
-					if (e.key === 'Enter') {
+					if (e.key === 'Enter' && nameInputRef.current) {
 						nameInputRef.current.blur()
 					}
 				}}
@@ -253,7 +259,7 @@ const FeatureClass = (props: {
 				onClick={() => activateFeatureClass()}
 				onDoubleClick={() => {
 					setIsEditingName(true)
-					nameInputRef.current.focus()
+					if (nameInputRef.current) nameInputRef.current.focus()
 				}}
 			>
 				{featureClass.name}

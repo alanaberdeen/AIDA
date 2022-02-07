@@ -20,7 +20,7 @@ const Layer = (props: {
 
 	// Utilities for editing layer name
 	const [isEditingName, setIsEditingName] = useState(false)
-	const nameInputRef = useRef(null)
+	const nameInputRef = useRef<HTMLInputElement>(null)
 	const [nameInputValue, setNameInputValue] = useState(layer.get('id'))
 	const handleNameChange = (e: SyntheticEvent) => {
 		const newName = (e.target as HTMLInputElement).value
@@ -41,8 +41,8 @@ const Layer = (props: {
 	}
 
 	// Utilities for context menu
-	const [contextMenuPos, setContextMenuPos] = useState([null, null])
-	const contextMenuRef = useRef(null)
+	const [contextMenuPos, setContextMenuPos] = useState([0, 0])
+	const contextMenuRef = useRef<HTMLButtonElement>(null)
 
 	// Attach a listener for opacity changes (the opacity of this layer may also
 	// be changed by the activeLayer control slider). Need to do this inside a
@@ -72,7 +72,7 @@ const Layer = (props: {
 			} flex justify-between w-full text-sm overflow-hidden`}
 			onContextMenu={(e) => {
 				e.preventDefault()
-				contextMenuRef.current.click()
+				if (contextMenuRef.current) contextMenuRef.current.click()
 				setContextMenuPos([e.clientX, e.clientY])
 			}}
 		>
@@ -109,7 +109,7 @@ const Layer = (props: {
 				value={nameInputValue}
 				onChange={handleNameChange}
 				onKeyUp={(e) => {
-					if (e.key === 'Enter') {
+					if (e.key === 'Enter' && nameInputRef.current) {
 						nameInputRef.current.blur()
 					}
 				}}
@@ -123,7 +123,7 @@ const Layer = (props: {
 				onClick={() => setLayerActive(layer)}
 				onDoubleClick={() => {
 					setIsEditingName(true)
-					nameInputRef.current.focus()
+					if (nameInputRef.current) nameInputRef.current.focus()
 				}}
 			>
 				{layer.get('id')}
