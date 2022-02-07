@@ -6,9 +6,6 @@ import path from 'path'
 import ip from 'ip'
 import ini from 'ini'
 
-// Check for images in the data/images/
-// Write a file an array of the available images as reference.
-
 // Read configuration file
 const config = ini.parse(
 	fs.readFileSync(path.join(__dirname, 'config.ini'), 'utf-8')
@@ -23,7 +20,7 @@ const iiifHostname = config.IIIF.hostname.toString()
 const iiifPort = parseInt(config.IIIF.port.toString(), 10)
 const iiifHttps = config.IIIF.https.toString().toLowerCase() === 'true'
 
-async function walk(dir, rootDir) {
+async function walk(dir: string, rootDir: string) {
 	const fileList = []
 	const files = await fsp.readdir(dir)
 	for (const fileName of files) {
@@ -90,8 +87,8 @@ async function startServer() {
 			try {
 				await fsp.writeFile(absolutePath, json, 'utf8')
 			} catch (err) {
-				// If the error was because the directory did no exist then make it first
-				if (err.code === 'ENOENT') {
+				// If the error was because the directory did not exist then make it first
+				if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
 					try {
 						await fsp.mkdir(path.dirname(absolutePath), {
 							recursive: true,
