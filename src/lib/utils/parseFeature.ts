@@ -76,8 +76,11 @@ export default function parseFeature(
 	}
 
 	// Add the remaining properties, but remove 'geometry' as it is redundant.
-	outputFeature.setProperties(inputFeature)
-	outputFeature.unset('geometry')
+	Object.keys(inputFeature).forEach((key) => {
+		if (key !== 'geometry') {
+			outputFeature.set(key, inputFeature[key as keyof FeatureType])
+		}
+	})
 
 	return outputFeature
 }
