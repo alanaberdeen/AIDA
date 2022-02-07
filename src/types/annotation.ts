@@ -17,17 +17,17 @@ export interface FeatureClass {
 
 interface Point {
 	type: 'Point'
-	coordinates: [number, number]
+	coordinates: number[]
 }
 
 interface LineString {
 	type: 'LineString'
-	coordinates: [number, number][]
+	coordinates: number[][]
 }
 
 interface Polygon {
 	type: 'Polygon'
-	coordinates: [number, number][] // Minimum of 3 points
+	coordinates: number[][][] // Minimum of 3 points
 }
 
 interface Header {

@@ -1,10 +1,18 @@
 // Packages
 import Map from 'ol/Map'
+import VectorLayer from 'ol/layer/Vector'
+import VectorSource from 'ol/source/Vector'
+import Geometry from 'ol/geom/Geometry'
 
 import createSimpleId from '../lib/utils/createSimpleId'
 
 // Types
-import { Annotation, Feature } from '../types/annotation'
+import { Annotation } from '../types/annotation'
+import type Point from 'ol/geom/Point'
+import type LineString from 'ol/geom/LineString'
+import type Polygon from 'ol/geom/Polygon'
+
+type FeatureGeom = Point | LineString | Polygon
 
 // Initial default template for new annotation data
 const defaultAnnotation: Annotation = {
@@ -34,20 +42,28 @@ export const save = async (map: Map) => {
 		.filter((layer) => layer.get('type') === 'annotation')
 
 	annotation.layers = annotationLayers.map((layer) => {
-		const features = layer.getSource().getFeatures()
-		const layerFeatures: Feature[] = features.map((feature) => {
-			const geometry = feature.getGeometry()
-			const geometryType = geometry.getType()
-			const geometryCoordinates = geometry.getCoordinates()
+		const features = (layer as VectorLayer<VectorSource<Geometry>>)
+			.getSource()
+			.getFeatures()
 
-			return {
-				id: feature.get('id') || createSimpleId(),
-				class: feature.get('class'),
-				geometry: {
-					type: geometryType,
-					coordinates: geometryCoordinates,
-				},
-			}
+		// Extract features
+		// TODO: fix type problems with the below when using Feature[]
+		const layerFeatures: any[] = features.flatMap((feature) => {
+			const geometry = feature.getGeometry()
+
+			if (geometry) {
+				const geometryType = geometry.getType()
+				const geometryCoordinates = (geometry as FeatureGeom).getCoordinates()
+
+				return {
+					id: feature.get('id') || createSimpleId(),
+					class: feature.get('class'),
+					geometry: {
+						type: geometryType,
+						coordinates: geometryCoordinates,
+					},
+				}
+			} else return []
 		})
 
 		return {
