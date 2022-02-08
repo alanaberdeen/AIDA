@@ -76,7 +76,7 @@ export const save = async (map: Map) => {
 	const pathname = window.location.pathname
 
 	// Default annotation path
-	let annotationPath = pathname.replace(/\.[^.]+$/, '.aida')
+	let annotationPath = pathname.replace(/\.[^.]+$/, '.json')
 
 	// If path ends in .json we assume open a project file. Therefore, we need to
 	// find and adjust the correct path for the annotation data.

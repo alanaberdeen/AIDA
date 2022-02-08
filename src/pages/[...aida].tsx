@@ -105,7 +105,7 @@ const AIDA = () => {
 
 					// Try to load annotation data
 					try {
-						const annotationPath = asPath.replace(/\.[^.]+$/, '.aida')
+						const annotationPath = asPath.replace(/\.[^.]+$/, '.json')
 						const response = await fetch(`${defaultDataHost}${annotationPath}`)
 
 						if (response.ok) {
