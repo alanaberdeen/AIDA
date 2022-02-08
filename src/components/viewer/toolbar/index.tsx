@@ -17,6 +17,9 @@ import * as olExtent from 'ol/extent'
 import Feature from 'ol/Feature'
 import { Style, Fill, Stroke } from 'ol/style'
 
+import Link from 'next/link'
+import { MenuIcon } from '@heroicons/react/outline'
+
 import { save } from '../../../api/save'
 
 // Toolbar component
@@ -435,6 +438,13 @@ const Toolbar = (props: { map: Map }) => {
 
 	return (
 		<div className="absolute left-0 top-0 z-20 flex flex-col m-1">
+			{/* File menu */}
+			<Link href="/local">
+				<a className="p-2 mb-2 shadow bg-teal-600 text-white rounded-md flex justify-center text-base font-medium hover:bg-teal-500 focus:outline-none focus:ring-2 ring-inset focus:ring-teal-500">
+					<MenuIcon className="h-4 w-4" aria-hidden="true" />
+				</a>
+			</Link>
+
 			{/* TODO: handle save errors, add error message component */}
 			<button
 				className={`${
