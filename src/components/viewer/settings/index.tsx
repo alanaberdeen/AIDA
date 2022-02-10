@@ -20,7 +20,7 @@ const Settings = (props: { map: Map }) => {
 	// isn't aware of this. So we need to manually trigger an update to map size.
 	useEffect(() => {
 		map.updateSize()
-	}, [isOpen])
+	}, [isOpen, map])
 
 	return (
 		<>

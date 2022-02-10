@@ -67,7 +67,7 @@ const Layers = (props: { map: Map }) => {
 			layers.un('change:length', onLayersLengthChange)
 			layers.un('propertychange', onActiveLayerChange)
 		}
-	}, [map])
+	}, [map, activeLayer])
 
 	return (
 		<Disclosure className="shadow-sm" as="div">
