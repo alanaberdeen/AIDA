@@ -37,7 +37,8 @@ yarn-error.log*
 .vscode/*
 
 # local data
-/local/data
+/local/data/*
+!/local/data/README.md
 
 # typescript build content
 tsconfig.tsbuildinfo
