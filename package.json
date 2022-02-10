@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export && tsc -p ./local",
+    "build": "next build && tsc -p ./local",
     "start": "next start & node ./local/local.js"
   },
   "dependencies": {
