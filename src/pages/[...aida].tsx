@@ -123,7 +123,7 @@ const AIDA = () => {
 				setIsLoading(false)
 			}
 		})()
-	}, [asPath])
+	}, [asPath, router.isReady])
 
 	return (
 		<>

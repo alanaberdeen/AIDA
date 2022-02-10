@@ -183,7 +183,7 @@ const Viewer = (props: {
 				})
 			}
 		})()
-	}, [imageUrl])
+	}, [imageUrl, annotationData.classes, annotationData.layers, imageExt])
 
 	return (
 		<div className="min-w-full min-h-screen flex bg-gray-100">

@@ -147,7 +147,7 @@ const FeatureClass = (props: {
 		return () => {
 			map.un('propertychange', listener)
 		}
-	}, [featureClass])
+	}, [featureClass, map])
 
 	// Activate a feature class
 	const activateFeatureClass = () => {

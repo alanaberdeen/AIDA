@@ -108,7 +108,7 @@ const ActiveClassControls = (props: {
 		return () => {
 			map.un('propertychange', listener)
 		}
-	}, [activeFeatureClass])
+	}, [activeFeatureClass, map])
 
 	return (
 		<div className="flex items-center">

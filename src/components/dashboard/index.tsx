@@ -51,7 +51,7 @@ const Dashboard = () => {
 				setTree(tree)
 			}
 		})()
-	}, [])
+	}, [tree.length, setTree])
 
 	// Keyboard shortcuts
 	useEffect(() => {

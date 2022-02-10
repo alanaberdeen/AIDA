@@ -63,7 +63,7 @@ const Toolbar = (props: { map: Map }) => {
 		return () => {
 			layers.un('propertychange', listener)
 		}
-	}, [])
+	}, [map])
 
 	// Array placeholder for any copied features
 	let clipboardFeatures: Feature<Geometry>[] = []
@@ -80,40 +80,40 @@ const Toolbar = (props: { map: Map }) => {
 		const listener = () => setUnsavedChanges(map.get('unsavedChanges'))
 		map.on('propertychange', listener)
 		return () => map.un('propertychange', listener)
-	}, [])
+	}, [map])
 
-	// Callback to set the class of a newly created feature to the active class
-	const setClass = (e: DrawEvent) => {
-		const featureClass =
-			map.get('featureClasses')[map.get('activeFeatureClass')]
-		e.feature.set('class', featureClass.id)
+	// Initialise tools
+	useEffect(() => {
+		// Callback to set the class of a newly created feature to the active class
+		const setClass = (e: DrawEvent) => {
+			const featureClass =
+				map.get('featureClasses')[map.get('activeFeatureClass')]
+			e.feature.set('class', featureClass.id)
 
-		e.feature.setStyle(
-			new Style({
-				stroke: new Stroke({
-					color: featureClass.style.stroke.color,
-					width: featureClass.style.stroke.width,
-				}),
-			})
-		)
-
-		if (featureClass.style.fill) {
 			e.feature.setStyle(
 				new Style({
-					fill: new Fill({
-						color: featureClass.style.fill.color,
-					}),
 					stroke: new Stroke({
 						color: featureClass.style.stroke.color,
 						width: featureClass.style.stroke.width,
 					}),
 				})
 			)
-		}
-	}
 
-	// Initialise tools
-	useEffect(() => {
+			if (featureClass.style.fill) {
+				e.feature.setStyle(
+					new Style({
+						fill: new Fill({
+							color: featureClass.style.fill.color,
+						}),
+						stroke: new Stroke({
+							color: featureClass.style.stroke.color,
+							width: featureClass.style.stroke.width,
+						}),
+					})
+				)
+			}
+		}
+
 		// Clear any previously set interactions
 		map.getInteractions().clear()
 
@@ -345,6 +345,7 @@ const Toolbar = (props: { map: Map }) => {
 							// it's difficult to do this properly. Here we use private methods
 							// on the Select class to revert the feature back to its original
 							// style, clone it, and then re-apply the select style.
+							// eslint-disable-next-line react-hooks/exhaustive-deps
 							clipboardFeatures = selectTool
 								.getFeatures()
 								.getArray()
