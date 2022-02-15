@@ -36,7 +36,7 @@ const defaultAnnotation: Annotation = {
 	],
 }
 
-const defaultDataHost = 'http://localhost:8000/data/'
+const defaultDataHost = 'http://localhost:8000/data'
 const IIIFHost = 'http://localhost:8182/iiif/2'
 
 const AIDA = () => {
