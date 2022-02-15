@@ -67,7 +67,10 @@ const AIDA = () => {
 					if (projectResponse.ok) {
 						const projectResponseJson = await projectResponse.json()
 
-						if (projectResponseJson.image.endsWith('.tiff')) {
+						if (
+							projectResponseJson.image.endsWith('.tiff') ||
+							projectResponseJson.image.endsWith('.tif')
+						) {
 							setImageUrl(`${IIIFHost}${projectResponseJson.image}`)
 						} else {
 							setImageUrl(`${defaultDataHost}${projectResponseJson.image}`)
@@ -95,7 +98,7 @@ const AIDA = () => {
 				} // Otherwise we assume we are loading an image with a corresponding
 				// .json annotation data in the same location.
 				else {
-					if (asPath.endsWith('.tiff')) {
+					if (asPath.endsWith('.tiff') || asPath.endsWith('.tif')) {
 						setImageUrl(`${IIIFHost}${asPath}`)
 					} else {
 						setImageUrl(`${defaultDataHost}${asPath}`)
