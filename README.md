@@ -2,7 +2,7 @@
 
 ## See a demo
 
-Play with a live example [here](https://aida-theta.vercel.app/demo)
+Play with a live example [here](https://aida-demo.vercel.app/demo)
 
 ## The Basic Idea
 
