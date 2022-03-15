@@ -7,6 +7,8 @@ import Geometry from 'ol/geom/Geometry'
 import Draw, { DrawEvent } from 'ol/interaction/Draw'
 import DragPan from 'ol/interaction/DragPan'
 import MouseWheelZoom from 'ol/interaction/MouseWheelZoom'
+import PinchZoom from 'ol/interaction/PinchZoom'
+import PinchRotate from 'ol/interaction/PinchRotate'
 import DragRotate from 'ol/interaction/DragRotate'
 import Select from 'ol/interaction/Select'
 import DragBox from 'ol/interaction/DragBox'
@@ -129,6 +131,16 @@ const Toolbar = (props: { map: Map }) => {
 		mouseWheelZoom.setActive(true)
 		mouseWheelZoom.set('id', 'mouseWheelZoom')
 
+		// Pinch zoom
+		const pinchZoom = new PinchZoom()
+		pinchZoom.setActive(true)
+		pinchZoom.set('id', 'pinchZoom')
+
+		// Pinch rotate
+		const pinchRotate = new PinchRotate()
+		pinchRotate.setActive(true)
+		pinchRotate.set('id', 'pinchRotate')
+
 		// pan
 		const pan = new DragPan()
 		pan.set('id', 'pan')
@@ -207,6 +219,8 @@ const Toolbar = (props: { map: Map }) => {
 			.extend([
 				conditionalDragPan,
 				mouseWheelZoom,
+				pinchZoom,
+				pinchRotate,
 				pan,
 				rotate,
 				select,
@@ -224,7 +238,11 @@ const Toolbar = (props: { map: Map }) => {
 	useEffect(() => {
 		// Which tools we should activate depends on the activeTool as selected by
 		// the user. Some tools are actually a combination of multiple interactions.
-		const activeInteractions = ['mouseWheelZoom', 'conditionalDragPan']
+		const activeInteractions = [
+			'mouseWheelZoom',
+			'conditionalDragPan',
+			'pinchZoom',
+		]
 
 		switch (activeTool) {
 			case 'pan':
