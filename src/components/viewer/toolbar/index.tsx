@@ -160,7 +160,9 @@ const Toolbar = (props: { map: Map }) => {
 		})
 		dragBox.on('boxend', () => {
 			const extent = dragBox.getGeometry().getExtent()
-			const features = vectorSource.getFeaturesInExtent(extent)
+			const features = vectorSource
+				? vectorSource.getFeaturesInExtent(extent)
+				: []
 			select.getFeatures().clear()
 			select.getFeatures().extend(features)
 		})
@@ -181,7 +183,7 @@ const Toolbar = (props: { map: Map }) => {
 
 		// box
 		const box = new Draw({
-			source: vectorSource,
+			source: vectorSource || undefined,
 			type: 'Circle',
 			geometryFunction: createBox(),
 		})
@@ -191,7 +193,7 @@ const Toolbar = (props: { map: Map }) => {
 
 		// point
 		const point = new Draw({
-			source: vectorSource,
+			source: vectorSource || undefined,
 			type: 'Point',
 		})
 		point.setActive(false)
@@ -199,7 +201,7 @@ const Toolbar = (props: { map: Map }) => {
 
 		// lineString
 		const lineString = new Draw({
-			source: vectorSource,
+			source: vectorSource || undefined,
 			type: 'LineString',
 		})
 		lineString.setActive(false)
@@ -207,7 +209,7 @@ const Toolbar = (props: { map: Map }) => {
 
 		// polygon
 		const polygon = new Draw({
-			source: vectorSource,
+			source: vectorSource || undefined,
 			type: 'Polygon',
 		})
 		polygon.setActive(false)
@@ -335,7 +337,9 @@ const Toolbar = (props: { map: Map }) => {
 								.find(
 									(layer) => layer.get('type') === 'annotation'
 								) as VectorLayer<VectorSource<Geometry>>
-							const features = vectorLayer.getSource().getFeatures()
+
+							const vectorSource = vectorLayer.getSource()
+							const features = vectorSource ? vectorSource.getFeatures() : []
 
 							const selectTool = map
 								.getInteractions()
@@ -413,7 +417,7 @@ const Toolbar = (props: { map: Map }) => {
 									(layer) => layer.get('type') === 'annotation'
 								) as VectorLayer<VectorSource<Geometry>>
 							const vectorSource = vectorLayer.getSource()
-							vectorSource.addFeatures(translatedFeatures)
+							vectorSource?.addFeatures(translatedFeatures)
 						}
 						break
 					case 'Delete':
@@ -427,7 +431,7 @@ const Toolbar = (props: { map: Map }) => {
 							) as Select
 						while (selectTool.getFeatures().getLength() > 0) {
 							const feature = selectTool.getFeatures().pop()
-							if (feature) vectorSource.removeFeature(feature)
+							if (feature) vectorSource?.removeFeature(feature)
 						}
 						break
 					default:

@@ -74,8 +74,10 @@ const FeatureClass = (props: {
 		>
 		const annotationSource = annotationLayer.getSource()
 		const activeFeatures = annotationSource
-			.getFeatures()
-			.filter((feature) => feature.get('class') === featureClass.id)
+			? annotationSource
+					.getFeatures()
+					.filter((feature) => feature.get('class') === featureClass.id)
+			: []
 
 		// There doesn't seem to be a way to set the opacity of feature (or]
 		// collection of features) directly. Instead you have to set the color on
@@ -176,8 +178,10 @@ const FeatureClass = (props: {
 		>
 		const annotationSource = annotationLayer.getSource()
 		const activeFeatures = annotationSource
-			.getFeatures()
-			.filter((feature) => feature.get('class') === featureClass.id)
+			? annotationSource
+					.getFeatures()
+					.filter((feature) => feature.get('class') === featureClass.id)
+			: []
 
 		activeFeatures.forEach((feature) => {
 			feature.setStyle(

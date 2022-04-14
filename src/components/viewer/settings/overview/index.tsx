@@ -30,7 +30,7 @@ const Overview = (props: { map: Map }) => {
 			collapsible: false,
 			layers: [
 				new TileLayer({
-					source: imageSource,
+					source: imageSource || undefined,
 				}),
 			],
 			target: overviewEl.current || undefined,

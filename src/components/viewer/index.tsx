@@ -88,15 +88,17 @@ const Viewer = (props: {
 				tileLayer.set('type', 'image')
 				map.addLayer(tileLayer)
 
+				const tileGrid = tileSource.getTileGrid()
+
 				// VIEW ------------------------------------------------------------------
 				const view = new View({
 					center: [dzi.size.width / 2, dzi.size.height / 2],
-					resolutions: tileSource.getTileGrid().getResolutions(),
-					extent: tileSource.getTileGrid().getExtent(),
+					resolutions: tileGrid?.getResolutions(),
+					extent: tileGrid?.getExtent(),
 					showFullExtent: true,
 				})
 				map.setView(view)
-				view.fit(tileSource.getTileGrid().getExtent())
+				if (tileGrid) view.fit(tileGrid.getExtent())
 			}
 			// Otherwise, we assume we're dealing with a IIIF image server.
 			// Likely .tiff.
@@ -117,15 +119,17 @@ const Viewer = (props: {
 				tileLayer.set('type', 'image')
 				map.addLayer(tileLayer)
 
+				const tileGrid = iiifTileSource.getTileGrid()
+
 				// VIEW ------------------------------------------------------------------
 				const view = new View({
 					center: [info.width / 2, info.height / 2],
-					resolutions: iiifTileSource.getTileGrid().getResolutions(),
-					extent: iiifTileSource.getTileGrid().getExtent(),
+					resolutions: tileGrid?.getResolutions(),
+					extent: tileGrid?.getExtent(),
 					showFullExtent: true,
 				})
 				map.setView(view)
-				view.fit(iiifTileSource.getTileGrid().getExtent())
+				if (tileGrid) view.fit(tileGrid.getExtent())
 			}
 
 			// ANNOTATION LAYER ------------------------------------------------------
