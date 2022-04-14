@@ -76,7 +76,7 @@ const AIDA = () => {
 						) {
 							setImageUrl(`${IIIFHost}${projectResponseJson.image}`)
 						} else {
-							setImageUrl(`${dataHost}${projectResponseJson.image}`)
+							setImageUrl(`${dataHost}/${projectResponseJson.image}`)
 						}
 
 						setImageExt(projectResponseJson.image.split('.')[1])
@@ -84,7 +84,7 @@ const AIDA = () => {
 						// Try to load annotation data
 						try {
 							const response = await fetch(
-								`${dataHost}${projectResponseJson.annotation}`
+								`${dataHost}/${projectResponseJson.annotation}`
 							)
 
 							if (response.ok) {
