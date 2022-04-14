@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRightIcon, ServerIcon, PlayIcon } from '@heroicons/react/solid'
 import { StarIcon, ScaleIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
@@ -143,12 +144,17 @@ export default function Home() {
 								/>
 							</svg>
 						</div>
-						<div className="relative pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
-							<img
-								className="w-full rounded-md shadow-xl ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto lg:max-w-none"
-								src="/images/aida-screenshot.png"
-								alt="screenshot of AIDA interface"
-							/>
+						<div className="pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
+							<div className="grid grid-cols-1 place-content-center w-full h-full">
+								<Image
+									src="/images/aida-screenshot.png"
+									alt="screenshot of AIDA interface"
+									width={2014}
+									height={1366}
+									sizes="50vw"
+									className="rounded-md shadow-xl"
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
