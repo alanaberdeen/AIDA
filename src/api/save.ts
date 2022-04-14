@@ -45,9 +45,8 @@ export const save = async (map: Map) => {
 		.filter((layer) => layer.get('type') === 'annotation')
 
 	annotation.layers = annotationLayers.map((layer) => {
-		const features = (layer as VectorLayer<VectorSource<Geometry>>)
-			.getSource()
-			.getFeatures()
+		const source = (layer as VectorLayer<VectorSource<Geometry>>).getSource()
+		const features = source ? source.getFeatures() : []
 
 		// Extract features
 		// TODO: fix type problems with the below when using Feature[]
