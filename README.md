@@ -12,7 +12,6 @@ AIDA is a web interface that enables distributed teams of researchers to directl
 
 For documentation and further information see the [Wiki](https://github.com/alanaberdeen/AIDA/wiki).
 
-
 ## How has it been implemented?
 
 The user interface is a React [NextJS](https://nextjs.org/) Single Page Application, encapsulating and interacting with [OpenLayers](https://openlayers.org/) to provide the images and drawing functionality. [Tailwind](https://tailwindcss.com/) is the css framework.
@@ -38,6 +37,46 @@ You can use AIDA on your local machine. The only requirement [NodeJS](https://no
 5. Run the local server application via `npm run start`
 6. Navigate to the localhost webserver specified in the console
 7. Annotations are read from and written to `/local/data/`
+
+## Example local sever data directory
+
+```
+local
+|  local.ts
+|  tsconfig.json
+|  ...
+|
+|  └──data
+|    | README.md
+|    | project.json           // AIDA project file (see below for example content)
+|    | annotation.json
+|
+|    └──image-dz              // DeepZoom format 2D image
+|    |   |  image.dzi
+|    |
+|    |   └──image_files
+|    |   |
+|    |   |   └──0
+|    |   |      |  0_0.jpeg
+|    |   |      |  0_1.jpeg
+|    |   |      |  ...
+|    |   |
+|    |   |   └───1
+|    |   |      |  0_0.jpeg
+|    |   |      |  0_1.jpeg
+|    |   |      |  ...
+|    |   |
+|    |   |   └───...
+```
+
+project.json defines the combination of image and annotation data.
+
+```
+{
+  "image": "image-dz/image.dzi",
+  "annotation": "annotation.json"
+}
+```
 
 ## Develop
 
