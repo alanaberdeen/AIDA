@@ -3,6 +3,8 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
+import config from '../../aida.config'
+
 import Dashboard from '../components/dashboard'
 
 export default function Local() {
@@ -15,11 +17,10 @@ export default function Local() {
 	useEffect(() => {
 		;(async () => {
 			try {
-				// Default port for localServer is 8000
 				// Checking by ping... perhaps not the best way?
-				// TODO: handle the case the server is running on a remote machine
-				//       and being accessed over the local network.
-				await fetch('http://localhost:8000/ping')
+				await fetch(
+					`http://${window.location.hostname}:${config.server.port}/ping`
+				)
 				setIsLoading(false)
 				setServerIsActive(true)
 			} catch (error) {

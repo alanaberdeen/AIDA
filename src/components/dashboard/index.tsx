@@ -5,6 +5,8 @@ import useMemoryState from '../../lib/hooks/UseMemoryState'
 
 import TableRow from './TableRow'
 
+import config from '../../../aida.config'
+
 interface Node {
 	name: string
 	path: string
@@ -17,8 +19,7 @@ interface Node {
 // API call to local server to check for images and projects at a specific path
 const getItemsAtPath = async (path: string) => {
 	try {
-		// Default port for localServer is 8000
-		const host = 'http://localhost:8000'
+		const host = `http://${window.location.hostname}:${config.server.port}`
 
 		const res = await fetch(`${host}/getItemsAtPath`, {
 			method: 'POST',

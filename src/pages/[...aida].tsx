@@ -4,6 +4,9 @@ import { useRouter } from 'next/router'
 
 import Viewer from '../components/viewer'
 
+// Config
+import config from '../../aida.config'
+
 // Types
 import { Annotation } from '../types/annotation'
 
@@ -36,9 +39,6 @@ const defaultAnnotation: Annotation = {
 	],
 }
 
-const defaultDataHost = 'http://localhost:8000/data'
-const IIIFHost = 'http://localhost:8182/iiif/2'
-
 const AIDA = () => {
 	const router = useRouter()
 	const { asPath, query } = router
@@ -59,10 +59,13 @@ const AIDA = () => {
 	useEffect(() => {
 		;(async () => {
 			if (router.isReady) {
+				const dataHost = `http://${window.location.hostname}:${config.server.port}/data`
+				const IIIFHost = `http://${window.location.hostname}:${config.IIIF.port}/iiif/2`
+
 				// We assume if the path ends in .json then we are loading an AIDA
 				// project which specific image and annotation path as object properties.
 				if (asPath.endsWith('.json')) {
-					const projectResponse = await fetch(`${defaultDataHost}${asPath}`)
+					const projectResponse = await fetch(`${dataHost}${asPath}`)
 
 					if (projectResponse.ok) {
 						const projectResponseJson = await projectResponse.json()
@@ -73,7 +76,7 @@ const AIDA = () => {
 						) {
 							setImageUrl(`${IIIFHost}${projectResponseJson.image}`)
 						} else {
-							setImageUrl(`${defaultDataHost}${projectResponseJson.image}`)
+							setImageUrl(`${dataHost}${projectResponseJson.image}`)
 						}
 
 						setImageExt(projectResponseJson.image.split('.')[1])
@@ -81,7 +84,7 @@ const AIDA = () => {
 						// Try to load annotation data
 						try {
 							const response = await fetch(
-								`${defaultDataHost}${projectResponseJson.annotation}`
+								`${dataHost}${projectResponseJson.annotation}`
 							)
 
 							if (response.ok) {
@@ -101,7 +104,7 @@ const AIDA = () => {
 					if (asPath.endsWith('.tiff') || asPath.endsWith('.tif')) {
 						setImageUrl(`${IIIFHost}${asPath}`)
 					} else {
-						setImageUrl(`${defaultDataHost}${asPath}`)
+						setImageUrl(`${dataHost}${asPath}`)
 					}
 
 					setImageExt(asPath.split('.')[1])
@@ -109,7 +112,7 @@ const AIDA = () => {
 					// Try to load annotation data
 					try {
 						const annotationPath = asPath.replace(/\.[^.]+$/, '.json')
-						const response = await fetch(`${defaultDataHost}${annotationPath}`)
+						const response = await fetch(`${dataHost}${annotationPath}`)
 
 						if (response.ok) {
 							const responseJson = await response.json()

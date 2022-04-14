@@ -17,16 +17,15 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const fs_1 = __importDefault(require("fs"));
 const fsp = fs_1.default.promises;
 const path_1 = __importDefault(require("path"));
-const ini_1 = __importDefault(require("ini"));
+const ip_1 = __importDefault(require("ip"));
 // Read configuration file
-const config = ini_1.default.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, 'config.ini'), 'utf-8'));
-const dataDir = path_1.default.isAbsolute(config.data_dir)
-    ? config.data_dir
-    : path_1.default.join(__dirname, config.data_dir);
+const aida_config_1 = __importDefault(require("../aida.config"));
+// directory to serve static image data from
+const dataDir = aida_config_1.default.server.path || path_1.default.join(__dirname, 'data');
 // iiif configuration
-const iiifHostname = config.IIIF.hostname.toString();
-const iiifPort = parseInt(config.IIIF.port.toString(), 10);
-const iiifHttps = config.IIIF.https.toString().toLowerCase() === 'true';
+const iiifHostname = aida_config_1.default.IIIF.hostname.toString();
+const iiifPort = parseInt(aida_config_1.default.IIIF.port.toString(), 10);
+const iiifHttps = aida_config_1.default.IIIF.https;
 function walk(dir, rootDir) {
     return __awaiter(this, void 0, void 0, function* () {
         const fileList = [];
@@ -60,7 +59,7 @@ function walk(dir, rootDir) {
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = (0, express_1.default)();
-        const port = 8000;
+        const port = aida_config_1.default.server.port;
         // Allow CORS
         app.use(function (req, res, next) {
             res.header('Access-Control-Allow-Origin', '*');
@@ -143,6 +142,7 @@ function startServer() {
         // Listen to requests
         app.listen(port, () => {
             console.log('AIDA running:');
+            console.log(`Also available on the local network at: http://${ip_1.default.address()}:${aida_config_1.default.app.port}`);
         });
     });
 }

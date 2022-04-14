@@ -6,6 +6,9 @@ import Geometry from 'ol/geom/Geometry'
 
 import createSimpleId from '../lib/utils/createSimpleId'
 
+// Config
+import config from '../../aida.config'
+
 // Types
 import { Annotation } from '../types/annotation'
 import type Point from 'ol/geom/Point'
@@ -81,7 +84,9 @@ export const save = async (map: Map) => {
 	// If path ends in .json we assume open a project file. Therefore, we need to
 	// find and adjust the correct path for the annotation data.
 	if (pathname.endsWith('.json')) {
-		const projectResponse = await fetch(`http://localhost:8000/data${pathname}`)
+		const projectResponse = await fetch(
+			`http://${window.location.hostname}:${config.server.port}/data${pathname}`
+		)
 		if (projectResponse.ok) {
 			const projectResponseJson = await projectResponse.json()
 			annotationPath = projectResponseJson.annotation
@@ -89,8 +94,7 @@ export const save = async (map: Map) => {
 	}
 
 	// Send request
-	// Default port for localServer is 8000
-	const host = 'http://localhost:8000'
+	const host = `http://${window.location.hostname}:${config.server.port}`
 
 	try {
 		await fetch(`${host}/save`, {

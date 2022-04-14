@@ -4,21 +4,17 @@ import fs from 'fs'
 const fsp = fs.promises
 import path from 'path'
 import ip from 'ip'
-import ini from 'ini'
 
 // Read configuration file
-const config = ini.parse(
-	fs.readFileSync(path.join(__dirname, 'config.ini'), 'utf-8')
-)
+import config from '../aida.config'
 
-const dataDir = path.isAbsolute(config.data_dir)
-	? config.data_dir
-	: path.join(__dirname, config.data_dir)
+// directory to serve static image data from
+const dataDir = config.server.path || path.join(__dirname, 'data')
 
 // iiif configuration
 const iiifHostname = config.IIIF.hostname.toString()
 const iiifPort = parseInt(config.IIIF.port.toString(), 10)
-const iiifHttps = config.IIIF.https.toString().toLowerCase() === 'true'
+const iiifHttps = config.IIIF.https
 
 async function walk(dir: string, rootDir: string) {
 	const fileList = []
@@ -49,7 +45,7 @@ async function walk(dir: string, rootDir: string) {
 
 async function startServer() {
 	const app = express()
-	const port = 8000
+	const port = config.server.port
 
 	// Allow CORS
 	app.use(function (req, res, next) {
@@ -148,6 +144,11 @@ async function startServer() {
 	// Listen to requests
 	app.listen(port, () => {
 		console.log('AIDA running:')
+		console.log(
+			`Also available on the local network at: http://${ip.address()}:${
+				config.app.port
+			}`
+		)
 	})
 }
 
