@@ -145,7 +145,7 @@ export default function Home() {
 							</svg>
 						</div>
 						<div className="pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
-							<div className="grid grid-cols-1 place-content-center w-full h-full">
+							<div className="grid grid-cols-1 place-content-center w-full h-full max-w-4xl">
 								<Image
 									src="/images/aida-screenshot.png"
 									alt="screenshot of AIDA interface"
